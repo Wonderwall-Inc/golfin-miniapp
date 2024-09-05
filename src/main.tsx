@@ -1,19 +1,14 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { KonstaProvider } from 'konsta/react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 
 import MyApp from './App.tsx'
-import Home from './pages/HomePage/Home.tsx'
-import Links from './pages/Links.tsx'
-import Ranking from './pages/Ranking.tsx'
-import Earns from './pages/Earns.tsx'
-
-import Framework7 from "framework7/lite-bundle";
-import Framework7React from "framework7-react";
+import WebApp from '@twa-dev/sdk'
 
 import './index.css'
 
+WebApp.ready() // tell the TG that the mini app is ready to be displayed
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
