@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+.screen-title-container {
+    height: 133px;
+
+    background-color: #FFFFFF;
+    color: #000000;
+}
+
+.screen-base-title {
+    width: 242px;
+    height: 74px;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    font-size: 64px;
+    line-height: 73.59px;
+    
+    margin: auto;
+    
+}
+
+.screen-title  {
+    width: 128px;
+    height: 90px;
+    
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 90px;
+    
+    color: #000000;
+    
+    align-items: center;
+    text-align: center;
+
+    margin: auto;
+    
+}

@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.footer-navs {
+}
+
+.links {
+    text-align: center;
+    align-items: center;
+    padding: 7px 16px;
+}
