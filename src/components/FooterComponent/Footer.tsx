@@ -1,17 +1,20 @@
-import React from 'react'
 import { navLinks } from '../../constants'
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import CurrentSelectionImage from '../../assets/images/02_earn_menu_icon_selection.png'
 import './Footer.css'
 
 const Footer = () => {
-    return (
-        <nav className='footer-navs gap-[67px] w-[393px] border-t-2 h-[84px]'>
-            <div className='links flex flex:md:flex-row justify-between bottom-0 right-0 sticky h-[49px] px-10 py-[7px] pt-[90px]'>
+    const location = useLocation()
+    const nav = useNavigate()
 
+    return (
+        <nav className='footer-navs'>
+            <div className='links flex:md:flex-row px-10 bg-[#8cc73e] pb-1'>
                 {navLinks.map((nav, index) => {
                     return (
-                        <div key={index} className='scale-125'>
+                        <div key={index} className='scale-150 bg-[#8cc73e]'>
                             <Link to={nav.url}>{nav.icon}</Link>
+                            {location.pathname == nav.url && <img src={CurrentSelectionImage} width='40px' height='1px' className='' />}
                         </div>
                     )
                 })}

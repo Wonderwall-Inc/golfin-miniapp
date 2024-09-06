@@ -1,13 +1,20 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-
 .footer-navs {
+    gap: 67px;
+    width: 393px;
+    height: 80px;
 }
+
 
 .links {
     text-align: center;
     align-items: center;
-    padding: 7px 16px;
+    height: 70px;
+    width: 100%;
+    justify-content: space-around;
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
 }
