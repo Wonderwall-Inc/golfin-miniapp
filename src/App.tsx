@@ -19,8 +19,7 @@ const App = () => {
   })
 
   return (
-    isLoading ?
-      <SplashScreen /> :
+    isLoading ? <SplashScreen /> : (
       <div className='app-container'>
         <Routes>
           <Route path='/' element={<Home />} />
@@ -30,6 +29,7 @@ const App = () => {
         </Routes>
         <Footer />
       </div>
+    )
   )
 }
 

@@ -11,7 +11,7 @@ export default defineConfig({
       include: "**/*.svg",
     },
   ),
-  basicSsl()
+  // basicSsl()
   ],
   define: {
     'process.env': process.env
