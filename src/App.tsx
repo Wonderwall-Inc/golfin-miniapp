@@ -11,9 +11,7 @@ import Earns from './pages/Earns'
 
 import SplashScreen from './assets/images/Splashscreen.png'
 
-
-
-const MyApp = () => {
+const App = () => {
 
   const [isLoading, setIsLoading] = useState(true)
   useEffect(() => {
@@ -35,4 +33,4 @@ const MyApp = () => {
   )
 }
 
-export default MyApp
+export default App

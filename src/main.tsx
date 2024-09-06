@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { KonstaProvider } from 'konsta/react'
 import { BrowserRouter } from 'react-router-dom'
 
-import MyApp from './App.tsx'
+import App from './App.tsx'
 import WebApp from '@twa-dev/sdk'
 
 import './index.css'
@@ -14,7 +14,7 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <KonstaProvider>
-        <MyApp />
+        <App />
       </KonstaProvider>
     </BrowserRouter>
   </StrictMode>,
