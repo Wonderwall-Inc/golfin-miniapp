@@ -9,9 +9,7 @@ const Title = ({ titlename, style }: TitleComponentProps) => {
                     <img src={GolfinIconText} width="270px" className='mx-auto' /></div>
                 <div className='screen-title' style={style}>
                     <div className='flex flex-row justify-center'>
-                        <div className='fixed top-[164px]'>
-                            <div className='screen-title-text'>{titlename}</div>
-                        </div>
+                        <div className='screen-title-text'>{titlename}</div>
                     </div>
                 </div>
             </div>
