@@ -3,14 +3,13 @@
 @tailwind utilities;
 
 .screen-title-container {
-    height: 133px;
+    height: 100px;
 }
 
 .screen-base-title {
     width: screen;
     height: 70px;
     margin: auto;
-
 }
 
 .screen-title {
@@ -18,7 +17,7 @@
     height: 50px;
 
     margin: auto;
-    margin-top: 20px;
+    margin-top: 10px;
     background-color: #8cc73e;
 
     border: 4px #8cc73e;
@@ -33,5 +32,4 @@
     font-size: 40px;
     text-align: center;
     letter-spacing: 1px;
-
 }

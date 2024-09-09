@@ -13,3 +13,12 @@
     background-color: #FFFFFF;
     color: white;
 }
+
+.dot {
+    width: 6px;
+    height: 6px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    animation: blink 1s infinite;
+}
