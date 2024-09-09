@@ -28,10 +28,9 @@ const Home = () => {
           </Block>
 
           <Block inset>
-            <div className="grid grid-rows-2 gap-x-4 gap-y-10 justify-center">
-              <button className={`bg-gray-400 w-[180px] h-[100px] ${dailyReward == true && 'cursor-not-allowed'}`} onClick={() => dailyRewardHandler()}>Daily Reward</button>
-              <button className='bg-[#8DC63F] w-[180px] h-[100px]' onClick={() => console.log('hello')}>Invite a Friend</button>
-
+            <div className="grid grid-rows-2 gap-y-6 justify-center">
+              <button className={`bg-gray-400 w-[180px] h-[90px] ${dailyReward == true && 'cursor-not-allowed'}`} onClick={() => dailyRewardHandler()}>Daily Reward</button>
+              <button className='bg-[#8DC63F] w-[180px] h-[90px]' onClick={() => console.log('hello')}>Invite a Friend</button>
             </div>
           </Block>
         </div >

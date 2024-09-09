@@ -1,7 +1,6 @@
 .footer-navs {
     gap: 67px;
     width: 200px;
-    height: 40px;
 }
 
 
@@ -17,4 +16,14 @@
     right: 0;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
+    padding: 15px;
+    padding-top:5px ;
+    background-color: #8cc73e;
 }
+
+.link {
+   scale: 110%; 
+   
+}
+
+

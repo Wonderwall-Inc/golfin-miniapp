@@ -8,24 +8,17 @@
 
 .screen-base-title {
     width: screen;
-    height: 74px;
-
-    /* font-family: Rubik, Arial, serif; */
-    /* font-weight: 700; */
-    /* font-size: 64px; */
-    line-height: 73.59px;
-
+    height: 70px;
     margin: auto;
 
 }
 
 .screen-title {
     width: 128px;
-    height: 40px;
+    height: 50px;
 
     margin: auto;
-    margin-top: 30px;
-
+    margin-top: 20px;
     background-color: #8cc73e;
 
     border: 4px #8cc73e;
@@ -34,16 +27,10 @@
 
 .screen-title-text {
     justify-content: center;
-    margin: 2px auto;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 700;
-    line-height: 90px;
     font-weight: 700;
     font-size: 40px;
-    /* text-shadow:
-        1px 1px 2px #4eb451,
-        0 0 1em #4eb451,
-        0 0 0.2em #4eb451; */
     text-align: center;
     letter-spacing: 1px;
 

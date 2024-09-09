@@ -9,12 +9,12 @@ const Footer = () => {
 
     return (
         <nav className='footer-navs'>
-            <div className='links flex:md:flex-row px-10 bg-[#8cc73e] pb-1'>
+            <div className='links flex:md:flex-row'>
                 {navLinks.map((nav, index) => {
                     return (
-                        <div key={index} className='scale-150 bg-[#8cc73e]'>
+                        <div key={index} className='link'>
                             <Link to={nav.url}>{nav.icon}</Link>
-                            {location.pathname == nav.url && <img src={CurrentSelectionImage} width='40px' height='1px' className='' />}
+                            {location.pathname == nav.url && <img src={CurrentSelectionImage} width='40px' height='1px' />}
                         </div>
                     )
                 })}
