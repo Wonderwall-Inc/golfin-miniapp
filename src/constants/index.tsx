@@ -4,8 +4,10 @@ import GolfinWebsiteImage from '../assets/images/04_links_icon_golfin.png'
 
 
 const navLinks = [
+    { label: 'Demo Home', url: '/demo-earn' },
+    { label: 'Demo Ranking', url: '/demo-ranking' },
+    { label: 'Demo Links', url: '/demo-links' },
     { label: 'Home', url: '/' },
-    { label: 'Home', url: '/demo' },
     { label: 'Ranking', url: '/ranking' },
     { label: 'Links', url: '/links' },
 ]

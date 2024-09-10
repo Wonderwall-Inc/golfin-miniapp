@@ -9,7 +9,9 @@ import Earns from './pages/Earns'
 import { initUtils, mockTelegramEnv, parseInitData } from '@telegram-apps/sdk'
 import WebApp from '@twa-dev/sdk'
 import { ClipLoader } from 'react-spinners'
-import Demo from './pages/DemoPage/Demo'
+import DemoEarn from './pages/DemoEarnPage/DemoEarn'
+import DemoRanking from './pages/DemoRanking/DemoRanking'
+import DemoLinks from './pages/DemoLinksPage/DemoLinks'
 
 const App = () => {
 
@@ -105,8 +107,10 @@ const App = () => {
           </div> :
           <div className='app-container'>
             <Routes>
+              <Route path='/demo-earn' element={<DemoEarn />} />
+              <Route path='/demo-ranking' element={<DemoRanking />} />
+              <Route path='/demo-links' element={<DemoLinks />} />
               <Route path='/' element={<Home />} />
-              <Route path='/demo' element={<Demo />} />
               <Route path='/links' element={<Links utils={utils} />} />
               <Route path='/ranking' element={<Ranking />} />
               <Route path='/earns' element={<Earns />} />

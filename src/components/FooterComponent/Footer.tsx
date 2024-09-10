@@ -16,8 +16,11 @@ const Footer = () => {
                         <div key={index} className='link'>
                             <Link to={nav.url}>
                                 {nav.label == 'Home' && <EarnIcon color={`${location.pathname == nav.url ? 'green' : 'white'}`} />}
+                                {nav.label == 'Demo Home' && <EarnIcon color={`${location.pathname == nav.url ? 'green' : 'white'}`} />}
                                 {nav.label == 'Ranking' && <RankingIcon color={`${location.pathname == nav.url ? 'green' : 'white'}`} />}
+                                {nav.label == 'Demo Ranking' && <RankingIcon color={`${location.pathname == nav.url ? 'green' : 'white'}`} />}
                                 {nav.label == 'Links' && <LinkIcon color={`${location.pathname == nav.url ? 'green' : 'white'}`} />}
+                                {nav.label == 'Demo Links' && <LinkIcon color={`${location.pathname == nav.url ? 'green' : 'white'}`} />}
                             </Link>
                         </div>
                     )
