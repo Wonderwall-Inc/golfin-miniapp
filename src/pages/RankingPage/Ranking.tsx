@@ -9,7 +9,6 @@ const Ranking = () => {
   const [activeTab, setActiveTab] = useState('tab-1');
   const [isTabbarLabels, setIsTabbarLabels] = useState(true);
   const { account, setAccount } = useUserContext()
-  const [myRanking, setMyRanking] = useState()
 
   return (
     <div className='home-screen-slogan-container'>
@@ -81,7 +80,7 @@ const Ranking = () => {
                         <span>.</span>
                         <div className={`${index < 9 ? 'pl-7' : 'pl-5'} text-right`}>{mockPoint.name}</div>
                       </div>
-                      <div className='flex flex-row justify-start pr-5 pb-1'>
+                      <div className='flex flex-row justify-start pr-5 pb-1  font-rubik font-[600] text-xl content-start place-content-start'>
                         <div className='text-xl pr-5'>{mockPoint.point}</div>
                         <img src={CoinImage} width='30px' height='30px' className='justify-end' />
                       </div>

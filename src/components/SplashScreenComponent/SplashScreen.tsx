@@ -8,7 +8,9 @@ import SplashLoader from '../../assets/images/01_splash_loader_gage_bg.png'
 import { useEffect, useState } from 'react'
 import { boolean } from '@telegram-apps/sdk'
 import { Progressbar } from 'konsta/react'
-
+import SplashScreenMoto from '../../assets/images/01_splash_moto.png'
+import SplashLogo from '../../assets/images/01_splash_logo.png'
+import Loader from '../Loader'
 interface SplashScreenProps {
   isLoading?: boolean,
 }
@@ -59,17 +61,21 @@ const SplashScreen = ({ isLoading }: SplashScreenProps) => {
 
 
   return (
-    <div className='relative'>
-      <img src={Splash} />
-      <>
-        <div className='absolute bottom-[110px] left-[50%] translate-x-[-50%] translate-y-[-50%]'>
-          {/* <Progressbar progress={count} /> */}
-          {/* <div style={style} /> */}
-          <img src={SplashGageLoader} className='left-[50%] translate-x-[-50%] translate-y-[-50%] bottom-[120px] absolute scale-80 mt-10 pb-2' />
-          <img src={SplashLoadingText} className=' w-[100px] ml-1' />
+    <>
+
+      <div className='relative'>
+        <img src={Splash} width="390px" height="600px" className='' />
+        <div className='z-1000'>
+          <img src={SplashLogo} className='absolute top-10 left-[50%] translate-x-[-50%]' width='200px' />
+          <img src={SplashScreenMoto} className='absolute top-20 left-[50%] translate-x-[-50%]' width='200px' />
+          <img src={SplashGageLoader} className='absolute top-[270px] left-[50%] translate-x-[-50%] w-[60%]' />
+          <img src={SplashLoadingText} className='absolute top-[290px] left-[32%] translate-x-[-50%] w-[100px] ml-1' />
+          <div className='absolute top-[300px] left-[50%] translate-x-[-50%] '>
+            <Loader isLoading={true} />
+          </div>
         </div>
-      </>
-    </div>
+      </div>
+    </>
 
   )
 }

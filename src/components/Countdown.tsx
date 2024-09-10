@@ -1,5 +1,9 @@
-import React, { useState, useEffect } from 'react';
-const Countdown = ({ targetDate }) => {
+import { useState, useEffect } from 'react';
+
+interface CountdownProps {
+    targetDate: string
+}
+const Countdown = ({ targetDate }: CountdownProps) => {
     const calculateTimeLeft = () => {
         const difference = +new Date(targetDate) - +new Date();
         let timeLeft = {};

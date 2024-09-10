@@ -6,9 +6,10 @@ import Home from './pages/HomePage/Home'
 import Links from './pages/Links'
 import Ranking from './pages/RankingPage/Ranking'
 import Earns from './pages/Earns'
-import SplashScreen from './components/SplashScreenComponent/SplashScreen'
 import { initUtils, mockTelegramEnv, parseInitData } from '@telegram-apps/sdk'
 import WebApp from '@twa-dev/sdk'
+import { ClipLoader } from 'react-spinners'
+import Demo from './pages/DemoPage/Demo'
 
 const App = () => {
 
@@ -59,12 +60,23 @@ const App = () => {
   const location = useLocation()
 
   const navigate = useNavigate()
-  const [isLoading, setIsLoading] = useState(true)
+  let [isLoading, setIsLoading] = useState(false)
+  const [mockData, setMockData] = useState('')
+
+  const setHelloHandler = () => {
+    setMockData('hello')
+  }
 
   useEffect(() => {
-    const interval = setInterval(() => { setIsLoading(false) }, 1000)
-    return () => clearInterval(interval)
-  })
+
+    if (mockData == '') {
+      console.log('hello');
+
+      setIsLoading(true)
+      setHelloHandler()
+      setIsLoading(false)
+    }
+  }, [mockData])
 
   useEffect(() => {
     if (location.pathname == '/') {
@@ -78,20 +90,32 @@ const App = () => {
     navigate('/');
   };
 
+
   process.env.env !== 'test' && WebApp.BackButton.onClick(navigateToHome)
 
   return (
-    isLoading ? <SplashScreen /> : (
-      <div className='app-container'>
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/links' element={<Links utils={utils} />} />
-          <Route path='/ranking' element={<Ranking />} />
-          <Route path='/earns' element={<Earns />} />
-        </Routes>
-        <Footer />
-      </div>
-    )
+    <>
+      {
+        isLoading ?
+          <div className='bg-gray-500 opacity-20 w-[390px] h-[700px]'>
+            <ClipLoader
+              loading={isLoading}
+              size={200}
+              className='absolute top-[30%] left-[25%]' />
+          </div> :
+          <div className='app-container'>
+            <Routes>
+              <Route path='/' element={<Home />} />
+              <Route path='/demo' element={<Demo />} />
+              <Route path='/links' element={<Links utils={utils} />} />
+              <Route path='/ranking' element={<Ranking />} />
+              <Route path='/earns' element={<Earns />} />
+            </Routes>
+            <Footer />
+
+          </div >
+      }
+    </>
   )
 }
 

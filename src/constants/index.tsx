@@ -2,14 +2,12 @@ import InstagramImage from '../assets/images/04_links_icon_instagram.png'
 import XImage from '../assets/images/04_links_icon_x.png'
 import GolfinWebsiteImage from '../assets/images/04_links_icon_golfin.png'
 
-import CoinImage from '../assets/images/02_earn_menu_icon_earn.png'
-import RankingImage from '../assets/images/02_earn_menu_icon_ranking.png'
-import LinkImage from '../assets/images/02_earn_menu_icon_links.png'
 
 const navLinks = [
-    { label: 'Home', url: '/', icon: <img src={CoinImage} width='40px' height='40px' /> },
-    { label: 'Ranking', url: '/ranking', icon: <img src={RankingImage} width='40px' height='40px' /> },
-    { label: 'Links', url: '/links', icon: <img src={LinkImage} width='40px' height='40px' /> },
+    { label: 'Home', url: '/' },
+    { label: 'Home', url: '/demo' },
+    { label: 'Ranking', url: '/ranking' },
+    { label: 'Links', url: '/links' },
 ]
 
 const socialMediaLinks = [

@@ -1,20 +1,24 @@
 import { navLinks } from '../../constants'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-import CurrentSelectionImage from '../../assets/images/02_earn_menu_icon_selection.png'
+import { Link, useLocation } from 'react-router-dom'
 import './Footer.css'
+import EarnIcon from '../EarnIcon'
+import RankingIcon from '../RankingIcon'
+import LinkIcon from '../LinkIcon'
+
 
 const Footer = () => {
     const location = useLocation()
-    const nav = useNavigate()
-
     return (
         <nav className='footer-navs'>
-            <div className='links flex:md:flex-row'>
+            <div className='links flex:md:flex-cols'>
                 {navLinks.map((nav, index) => {
                     return (
                         <div key={index} className='link'>
-                            <Link to={nav.url}>{nav.icon}</Link>
-                            {location.pathname == nav.url && <img src={CurrentSelectionImage} width='40px' height='1px' />}
+                            <Link to={nav.url}>
+                                {nav.label == 'Home' && <EarnIcon color={`${location.pathname == nav.url ? 'green' : 'white'}`} />}
+                                {nav.label == 'Ranking' && <RankingIcon color={`${location.pathname == nav.url ? 'green' : 'white'}`} />}
+                                {nav.label == 'Links' && <LinkIcon color={`${location.pathname == nav.url ? 'green' : 'white'}`} />}
+                            </Link>
                         </div>
                     )
                 })}
