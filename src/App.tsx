@@ -97,7 +97,7 @@ const App = () => {
             <Background>
               <Routes>
                 <Route path='/' element={<DemoEarn />} />
-                <Route path='/anking' element={<DemoRanking />} />
+                <Route path='/ranking' element={<DemoRanking />} />
                 <Route path='/links' element={<DemoLinks />} />
                 {/* <Route path='/' element={<Home />} />
               <Route path='/links' element={<Links utils={utils} />} />

@@ -5,8 +5,8 @@ import Countdown from '../../components/Countdown'
 import { useUserContext } from '../../contexts/UserContext'
 import WebApp from '@twa-dev/sdk'
 import { Progress } from "@/components/ui/progress"
-import UpperFlag from '../../assets/icons/UpperFlag.svg'
-import LowerFlag from '../../assets/icons/LowerFlag.svg'
+
+import DemoTitle from '@/components/DemoTitleComponent/DemoTitle'
 
 const MINI_APP_BOT_NAME = import.meta.env.VITE_MINI_APP_BOT_NAME
 const MINI_APP_NAME = import.meta.env.VITE_MINI_APP_NAME
@@ -77,43 +77,11 @@ const DemoTitleComponent = ({ title }) => {
     )
 }
 
+
 const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, MINI_APP_APP }) => {
     return (
         <>
-            <div className='px-5 mb-3'>
-                <div className="w-[393px] h-[49px]">
-                    <div className="relative h-[49px] w-[393px]">
-                        <div className="h-[3px] top-[46px] [background:linear-gradient(180deg,rgb(47,220,202)_0%,rgb(127.27,231.4,127.42)_47.5%,rgb(216,244,45)_100%)] absolute w-[393px] left-[-20px]" />
-                        <div className="h-[46px] top-0 [background:linear-gradient(180deg,rgba(47,220,202,0)_0%,rgb(130,201,31)_100%)] absolute w-[393px] left-0" />
-                        <div className="absolute w-4 h-11 top-1 left-[29px]">
-                            <div className="relative h-[42px]">
-                                <div className="absolute w-4 h-[42px] top-0 left-0">
-                                    <div className="!absolute !w-0.5 !h-[42px] !top-[-6px] !left-[-0.5px] scale-50"><UpperFlag /></div>
-                                    <div className="!absolute !w-[15px] !h-[11px] !top-[15px] !left-[-14px]"><LowerFlag /></div>
-                                </div>
-                                <div className="absolute w-[3px] h-[3px] top-[39px] left-[11px] bg-[#ffffff] rounded-[1.5px]" />
-                            </div>
-                        </div>
-                        <div className="absolute top-1 left-[130px] [font-family:'Rubik-Medium',Helvetica] font-medium text-white text-[34px] text-center tracking-[0.40px] leading-[41px] whitespace-nowrap">
-                            EARN
-                        </div>
-                    </div>
-                </div>
-
-
-                {/* <div className='grid grid-cols-12 justify-center content-cente border-2 rounded-md border-[#0b3c48] bg-[#ffffff33] p-2 w-[343px] py-5 mt-5'>
-                    <img src={CoinIcon} width='53px' height='54px' />
-                    <div className='w-[250px] 
-                    text-xl 
-                    font-semibold
-                    items-center 
-                    text-center 
-                    justify-center 
-                    content-center
-                    text-yellow-300'>{(599200999).toLocaleString()}</div>
-                </div> */}
-            </div>
-
+            <DemoTitle titlename="EARN" style={"pr-10"} />
             <div className="w-[343px] h-[85px] sm:h-[95px] md:h-[105px] bg-[#ffffff33] rounded-lg flex justify-center content-center items-center mx-auto">
                 <img className="w-[53px] h-[54px]" alt="Layer" src={CoinIcon} />
                 <div className="w-[200px]
@@ -197,7 +165,7 @@ const DemoReferralComponent = ({ MINI_APP_APP }) => {
                     </div>
                 </div>
                 <div className='bg-white text-black-400 rounded-b-sm border-white h-[50%] content-center text-center items-center w-[165px]'>
-                    +2
+                    +100
                 </div>
             </div>
 

@@ -31,22 +31,27 @@
 }
 
 a {
-  font-weight: 500;
-  color: #8DC63F;
+  font-weight: 200;
+  /* color: #8DC63F; */
+  color: white;
   text-decoration: inherit;
 }
 
 a:hover {
-  color: #8DC63F;
+  /* color: #8DC63F; */
+  color: white
 }
 
 a:active {
-  color: #8DC63F;
+  /* color: #8DC63F; */
+  color: white
 }
 
 a:link {
-  color: #8DC63F;
+  /* color: #8DC63F; */
+  color: white
 }
+
 
 body {
   margin: 0;
