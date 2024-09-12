@@ -53,7 +53,7 @@ const DemoEarn = () => {
             <img src={GolfinTitle}
                 width={150}
                 height={150}
-                className='mx-auto py-12 sm:py-15 md:py-10' />
+                className='mx-auto py-10 sm:py-10 md:py-15' />
             <DemoEarnComponent timeLeft={timeLeft} dailyReward={dailyReward} setDailyReward={setDailyReward} MINI_APP_APP={MINI_APP_APP} />
             <DemoBonusComponent weeklyCount={weeklyCount} referralCount={referralCount} />
 
