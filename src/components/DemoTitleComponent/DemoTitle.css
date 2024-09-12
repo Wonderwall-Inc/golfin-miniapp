@@ -4,6 +4,7 @@
 
 .screen-title-container {
     height: 100px;
+    position: relative;
 }
 
 .screen-base-title {

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import Title from '../components/TitleComponent/Title'
+import Title from '../components/DemoTitleComponent/DemoTitle'
 import { Page } from 'konsta/react'
 import { socialMediaLinks } from '../constants'
 import { initUtils, Utils } from '@telegram-apps/sdk';

@@ -17,12 +17,12 @@
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     padding: 10px;
-    background-color: #8cc73e;
+    /* background-color: #8cc73e; */
+    background-color: #0b3c48;
 }
 
 .link {
    scale: 120%; 
-   
 }
 
 

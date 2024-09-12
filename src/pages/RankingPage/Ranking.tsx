@@ -1,4 +1,4 @@
-import Title from '../../components/TitleComponent/Title'
+import Title from '../../components/DemoTitleComponent/DemoTitle'
 import { useEffect, useState } from 'react';
 import { Page, TabbarLink, } from 'konsta/react';
 import CoinImage from '../../assets/images/02_earn_coin.png'

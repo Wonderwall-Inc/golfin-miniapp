@@ -1,9 +1,9 @@
 import React, { createContext, useContext } from "react";
-import { AccountType, UserContextType } from "../type";
+import { AccountType, UserContextType, UserType } from "../type";
 
 
 export const UserContext = createContext<UserContextType>({
-    account: {} as AccountType,
+    account: {} as UserType | AccountType,
     setAccount: () => { }
 })
 

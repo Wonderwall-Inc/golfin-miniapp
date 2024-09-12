@@ -2,23 +2,37 @@ import InstagramImage from '../assets/images/04_links_icon_instagram.png'
 import XImage from '../assets/images/04_links_icon_x.png'
 import GolfinWebsiteImage from '../assets/images/04_links_icon_golfin.png'
 
+const testInitDataRaw = [
+    ['user', JSON.stringify({
+        id: 99281932,
+        first_name: 'Andrew',
+        last_name: 'Rogue',
+        username: 'rogue',
+        language_code: 'en',
+        is_premium: true,
+        allows_write_to_pm: true,
+    })],
+    ['hash', '89d6079ad6762351f38c6dbbc41bb53048019256a9443988af7a48bcad16ba31'],
+    ['auth_date', '1716922846'],
+    ['start_param', 'debug'],
+    ['chat_type', 'sender'],
+    ['chat_instance', '8428209589180549439'],
+]
 
 const navLinks = [
-    { label: 'Demo Home', url: '/demo-earn' },
-    { label: 'Demo Ranking', url: '/demo-ranking' },
-    { label: 'Demo Links', url: '/demo-links' },
-    { label: 'Home', url: '/' },
-    { label: 'Ranking', url: '/ranking' },
-    { label: 'Links', url: '/links' },
+    { label: 'Demo Home', url: '/' },
+    { label: 'Demo Ranking', url: '/ranking' },
+    { label: 'Demo Links', url: '/links' },
+    // { label: 'Home', url: '/' },
+    // { label: 'Ranking', url: '/ranking' },
+    // { label: 'Links', url: '/links' },
 ]
 
 const socialMediaLinks = [
     { label: 'Instagram', url: 'https://www.instagram.com/golfin_official/', icon: <img src={InstagramImage} width='50px' height='50px' />, cto: 'Follow us on Instagram' },
     { label: 'X', url: 'https://x.com/GOLFIN_official', icon: <img src={XImage} width='50px' height='50px' />, cto: 'Follow us on X' },
     { label: 'Golfin Website', url: 'https://golfin.io/', icon: <img src={GolfinWebsiteImage} width='50px' height='50px' />, cto: 'Golfin Website' },
-
 ]
-
 
 const mockPointRankingData = [
     { rank: 1, name: 'player1', point: 10000 },
@@ -86,6 +100,7 @@ const earnButtonList = [
 ]
 
 export {
+    testInitDataRaw,
     navLinks,
     socialMediaLinks,
     mockPointRankingData,

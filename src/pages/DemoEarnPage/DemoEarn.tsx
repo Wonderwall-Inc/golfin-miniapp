@@ -5,21 +5,22 @@ import Countdown from '../../components/Countdown'
 import { useUserContext } from '../../contexts/UserContext'
 import WebApp from '@twa-dev/sdk'
 import { Progress } from "@/components/ui/progress"
+import UpperFlag from '../../assets/icons/UpperFlag.svg'
+import LowerFlag from '../../assets/icons/LowerFlag.svg'
 
+const MINI_APP_BOT_NAME = import.meta.env.VITE_MINI_APP_BOT_NAME
+const MINI_APP_NAME = import.meta.env.VITE_MINI_APP_NAME
+const MINI_APP_APP = `https://t.me/${MINI_APP_BOT_NAME}/${MINI_APP_NAME}/start?startapp=test`
 
-const DemoEarn  = () => {
-    const MINI_APP_BOT_NAME = import.meta.env.VITE_MINI_APP_BOT_NAME
-    const MINI_APP_NAME = import.meta.env.VITE_MINI_APP_NAME
-
-    const MINI_APP_APP = `https://t.me/${MINI_APP_BOT_NAME}/${MINI_APP_NAME}/start?startapp=test`
-
+const DemoEarn = () => {
     const { account, setAccount } = useUserContext()
-    const [dailyReward, setDailyReward] = useState(false)
+    const [dailyReward, setDailyReward] = useState(true)
     const [timeLeft, setTimeLeft] = useState("")
     let [isHomeLoading, setIsHomeLoading] = useState(false)
     let [loading, setLoading] = useState(true);
+    const [weeklyCount, setWeeklyCount] = useState(0)
+    const [referralCount, setReferralCount] = useState(0)
 
-    const mockCheckedInDayCounter = 5
 
     useEffect(() => {
         if (timeLeft == '') {
@@ -40,14 +41,21 @@ const DemoEarn  = () => {
     }, [new Date()])
 
 
+    useEffect(() => {
+        setWeeklyCount(new Date().getDay())
+        setReferralCount(new Date().getDay())
+    }, [new Date().getDay()])
+
+    console.log(weeklyCount);
+
     return (
-        <div className='bg-[#004253] w-[390px] h-[690px] '>
+        <div className='w-[100%] h-[690px]'>
             <img src={GolfinTitle}
                 width={150}
                 height={150}
-                className='mx-auto py-15' />
+                className='mx-auto py-12 sm:py-15 md:py-10' />
             <DemoEarnComponent timeLeft={timeLeft} dailyReward={dailyReward} setDailyReward={setDailyReward} MINI_APP_APP={MINI_APP_APP} />
-            <DemoBonusComponent />
+            <DemoBonusComponent weeklyCount={weeklyCount} referralCount={referralCount} />
 
         </div>
     )
@@ -55,17 +63,45 @@ const DemoEarn  = () => {
 
 const DemoTitleComponent = ({ title }) => {
     return (
-        <div className='font-bold text-[#8cc73e] text-start pb-2 text-xl'>{title}</div>
+        <div className="[font-family:'Rubik-Regular',Helvetica]
+        font-normal
+        text-white
+        text-start 
+        text-[28px]
+        tracking-[-0.38px]
+        leading-[34px]
+        whitespace-nowrap
+        pb-2 
+        text-xl">{title}</div>
     )
 }
 
 const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, MINI_APP_APP }) => {
     return (
         <>
-            <div className='px-5 py-1'>
-                <DemoTitleComponent title='Earn' />
-                <div className='grid grid-cols-12 space-x-5  border-2 rounded-md border-[#0b3c48] bg-[#0b3c48] p-2'>
-                    <img src={CoinIcon} width='41.829px' height='40px' />
+            <div className='px-5 mb-3'>
+                <div className="w-[393px] h-[49px]">
+                    <div className="relative h-[49px] w-[393px]">
+                        <div className="h-[3px] top-[46px] [background:linear-gradient(180deg,rgb(47,220,202)_0%,rgb(127.27,231.4,127.42)_47.5%,rgb(216,244,45)_100%)] absolute w-[393px] left-[-20px]" />
+                        <div className="h-[46px] top-0 [background:linear-gradient(180deg,rgba(47,220,202,0)_0%,rgb(130,201,31)_100%)] absolute w-[393px] left-0" />
+                        <div className="absolute w-4 h-11 top-1 left-[29px]">
+                            <div className="relative h-[42px]">
+                                <div className="absolute w-4 h-[42px] top-0 left-0">
+                                    <div className="!absolute !w-0.5 !h-[42px] !top-[-6px] !left-[-0.5px] scale-50"><UpperFlag /></div>
+                                    <div className="!absolute !w-[15px] !h-[11px] !top-[15px] !left-[-14px]"><LowerFlag /></div>
+                                </div>
+                                <div className="absolute w-[3px] h-[3px] top-[39px] left-[11px] bg-[#ffffff] rounded-[1.5px]" />
+                            </div>
+                        </div>
+                        <div className="absolute top-1 left-[130px] [font-family:'Rubik-Medium',Helvetica] font-medium text-white text-[34px] text-center tracking-[0.40px] leading-[41px] whitespace-nowrap">
+                            EARN
+                        </div>
+                    </div>
+                </div>
+
+
+                {/* <div className='grid grid-cols-12 justify-center content-cente border-2 rounded-md border-[#0b3c48] bg-[#ffffff33] p-2 w-[343px] py-5 mt-5'>
+                    <img src={CoinIcon} width='53px' height='54px' />
                     <div className='w-[250px] 
                     text-xl 
                     font-semibold
@@ -74,9 +110,23 @@ const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, MINI_APP_APP
                     justify-center 
                     content-center
                     text-yellow-300'>{(599200999).toLocaleString()}</div>
-                </div>
+                </div> */}
             </div>
-            <div className='grid grid-cols-2 mx-auto my-3 justify-center w-[300px]'>
+
+            <div className="w-[343px] h-[105px] bg-[#ffffff33] rounded-lg flex justify-center content-center items-center mx-auto">
+                <img className="w-[53px] h-[54px]" alt="Layer" src={CoinIcon} />
+                <div className="w-[186px]
+                font-semibold
+                [font-family:'Rubik-Medium',Helvetica]
+                text-[#ffef2b] 
+                text-[28px] 
+                tracking-[0.38px] 
+                leading-[34px]">{(599200999).toLocaleString()}
+                </div>
+
+            </div>
+
+            <div className='grid grid-cols-2 mt-3 mb-1 justify-items-center px-5 pl-3'>
                 <DemoDailyRewardComponent timeLeft={timeLeft} dailyReward={dailyReward} setDailyReward={setDailyReward} />
                 <DemoReferralComponent MINI_APP_APP={MINI_APP_APP} />
             </div>
@@ -87,19 +137,35 @@ const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, MINI_APP_APP
 
 const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward }) => {
     return (
-        <button className={`h-[100px]
-            px-1
-         bg-transparent 
-         ${dailyReward == true && 'cursor-not-allowed'}`}
-            onClick={() => setDailyReward(true)}>
-            <div className='box-border inline-block text-center w-[100%] h-[80px]'>
-                <div className={`bg-gray-400 rounded-t-sm border-[#8cc73e] h-[50%] items-center content-center text-clip text-white`}>Daily Reward</div>
-                <div className='bg-white text-gray-400 flex flex-row justify-center rounded-b-sm border-white h-[50%] content-center text-center items-center space-x-2'>
-                    <Countdown targetDate={timeLeft} />
+        <div className={`h-[100px] ${dailyReward == true && 'cursor-not-allowed'}`}
+            onClick={() => setDailyReward(false)}>
+            <div className='text-center w-[100%] h-[80px]'>
+                <div className={`relative 
+                w-[165px] 
+                h-14 
+                rounded-[6px_6px_0px_0px] 
+                ${dailyReward == true ? "[background:linear-gradient(180deg,rgb(169,231,29)_0%,rgb(94.04,196.56,89.27)_100%)]" :
+                        "[background:radial-gradient(50%_50%_at_50%_50%,rgb(112.62,108.57,77.9)_0%,rgb(119,102.27,78.84)_100%)]"}`}>
+                    {dailyReward == true ? <div className="absolute w-[77px] top-[7px] left-[40px] [font-family:'Roboto-Medium',Helvetica] font-medium text-[#ffffff] text-xl text-center tracking-[0] leading-[22px]">
+                        Daily
+                        <br />
+                        Reward
+                    </div> :
+                        <div className="absolute w-[123px] top-[7px] left-[19px] [font-family:'Roboto-Medium',Helvetica] font-medium text-[#ffffff] text-xl text-center tracking-[0] leading-[22px]">
+                            Daily Reward
+                            <br />
+                            <Countdown targetDate={timeLeft} dailyReward={dailyReward} setDailyReward={setDailyReward} />
+                        </div>
+                    }
+
+                </div>
+
+                <div className='bg-white text-black-400 rounded-b-sm border-white h-[50%] content-center text-center items-center w-[165px]'>
+                    +2
                 </div>
             </div>
 
-        </button>
+        </div >
 
     )
 
@@ -107,47 +173,84 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward }) => 
 
 const DemoReferralComponent = ({ MINI_APP_APP }) => {
     return (
-        <button className='h-[100px]
-        px-1
-        bg-transparent'
+
+        <div className={`h-[100px]`}
             onClick={() => {
                 WebApp.openTelegramLink(`https://t.me/share/url?url=${MINI_APP_APP}`)
             }}>
-            <div className='box-border inline-block text-center w-[100%] h-[80px]'>
-                <div className='bg-[#8cc73e] rounded-t-sm border-[#8cc73e] h-[50%] items-center content-center text-white'>Invite a Friend</div>
-                <div className='bg-white text-[#8cc73e] flex flex-row justify-center rounded-b-sm border-white h-[50%] content-center text-center items-center space-x-2'>
-                    <div className='text-[18px]'>+ 100</div>
-                    {/* <img src={CoinImage} width='30px' height='30px' /> */}
+            <div className='text-center w-[100%] h-[80px]'>
+                <div className="relative 
+                w-[165px] 
+                h-14 
+                rounded-[6px_6px_0px_0px] 
+                [background:linear-gradient(180deg,rgb(169,231,29)_0%,rgb(94.04,196.56,89.27)_100%)]">
+                    <div className="absolute 
+                    w-[77px] 
+                    top-[7px] 
+                    left-[46px] [font-family:'Roboto-Medium',Helvetica] font-medium text-[#ffffff] text-xl text-center tracking-[0] leading-[22px]">
+                        Invite
+                        <br />
+                        a Friend
+                    </div>
+                </div>
+                <div className='bg-white text-black-400 rounded-b-sm border-white h-[50%] content-center text-center items-center w-[165px]'>
+                    +2
                 </div>
             </div>
-        </button>
+
+        </div>
 
     )
 }
 
 
-const DemoBonusComponent = () => {
+const DemoBonusComponent = ({ weeklyCount, referralCount }) => {
+
     return (
         <>
             <div className='px-5'>
                 <DemoTitleComponent title='Bonus' />
-                <div className='border-2 
-                rounded-md 
-                border-[#0b3c48]
-                bg-[#0b3c48] 
-                p-1 
-                text-white 
-                h-[60px] 
-                content-center'>
-
-                    <div className='flex'>
-
-                        <div className='absolute z-1000 text-white px-2'>
-                            Login every day for a week and get 15 points
+                <div className="w-[342px] h-14 bg-[rgba(255,255,255,1.0)] rounded-md overflow-hidden [background:radial-gradient(50%_50%_at_50%_50%,rgb(112.62,108.57,77.9)_0%,rgb(119,102.27,78.84)_100%)] relative mb-5">
+                    <Progress className="[&>*]:[background:radial-gradient(50%_50%_at_50%_50%,rgb(255,225.25,0)_0%,rgb(255,148.75,0)_100%)]
+                    h-14
+                    rounded-[6px_0px_0px_0px] 
+                    "
+                        value={weeklyCount / 7 * 100}
+                        max={7} />
+                    <div className="relative w-[342px] h-14">
+                        <div className="absolute h-14 top-0 left-0 rounded-[6px_0px_0px_0px] [background:radial-gradient(50%_50%_at_50%_50%,rgb(255,225.25,0)_0%,rgb(255,148.75,0)_100%)]" />
+                        <div className="absolute w-[295px] top-[18px] left-[23px] [font-family:'Roboto-Black',Helvetica] font-normal text-[#ffffff] text-base text-center tracking-[0] leading-[normal]">
+                            <div className="absolute w-[98px] h-14 top-0 left-0 " />
                         </div>
+
                     </div>
+                    <p className="absolute w-[295px] top-[18px] left-[23px] [font-family:'Roboto-Black',Helvetica] font-normal text-[#ffffff] text-base text-center tracking-[0] leading-[normal]">
+                        <span className="font-black">+15 </span>
+                        <span className="[font-family:'Roboto-Medium',Helvetica] font-medium">
+                            points for login every day for a week
+                        </span>
+                    </p>
+
                 </div>
-                <DemoFriendReferralComponent />
+                {/*  <div className='relative'>
+
+                    <Progress
+                        value={5 / 7 * 100}
+                        max={100}
+                        className="[&>*]:bg-orange-600
+                        rounded-[6px_0px_0px_0px] 
+                        [background:radial-gradient(50%_50%_at_50%_50%,rgb(255,225.25,0)_0%,rgb(255,148.75,0)_100%)]
+                        opacity-80 h-[60px] 
+                        border-2 border-transparent" />
+                    <div className="absolute w-[98px] h-14 top-0 left-0 " />
+                    <div className="absolute h-[100%] top-[25%] px-3 text-white text-center items-center justify-center mx-auto [font-family:'Roboto-Medium',Helvetica] font-medium">
+                        points for login every day for a week
+                    </div>
+                    {/* <div className='absolute text-white   px-3 text-center items-center justify-center mx-auto'>
+                        Login every day for a week and get 15 points
+                    </div> */}
+                {/* </div> */}
+                <DemoFriendReferralComponent referralCount={referralCount} />
             </div >
         </>
     )
@@ -169,24 +272,37 @@ const DemoBonusComponent = () => {
 //     padding: 0 20px;
 //   }
 
-const DemoFriendReferralComponent = () => {
+const DemoFriendReferralComponent = ({ referralCount }) => {
     return (
-        <div className='border-2 
-        border-[#8cc73e]
-        rounded-md 
-        text-white 
-        items-center 
-        content-center 
-        my-2 
+        <div className="w-[342px] h-14 bg-[rgba(255,255,255,1.0)] rounded-md overflow-hidden [background:radial-gradient(50%_50%_at_50%_50%,rgb(112.62,108.57,77.9)_0%,rgb(119,102.27,78.84)_100%)] relative mb-5">
+            <Progress className="[&>*]:[background:radial-gradient(50%_50%_at_50%_50%,rgb(255,225.25,0)_0%,rgb(255,148.75,0)_100%)]
+            h-14
+            rounded-[6px_0px_0px_0px] 
+            "
+                value={referralCount / 10 * 100}
+                max={10} />
+            <div className="relative w-[342px] h-14">
+                <div className="absolute h-14 top-0 left-0 rounded-[6px_0px_0px_0px] [background:radial-gradient(50%_50%_at_50%_50%,rgb(255,225.25,0)_0%,rgb(255,148.75,0)_100%)]" />
+                <div className="absolute w-[295px] top-[18px] left-[23px] [font-family:'Roboto-Black',Helvetica] font-normal text-[#ffffff] text-base text-center tracking-[0] leading-[normal]">
+                    <div className="absolute w-[98px] h-14 top-0 left-0 " />
+                </div>
 
-        text-start 
-        px-3 
-        h-[50px] 
-        font-semibold 
-        tracking-tighter
-        bg-[#8cc73e]'>
-            3000 points for every 10 people
-        </div>
+            </div>
+            {/* <p className="absolute w-[295px] top-[18px] left-[23px] [font-family:'Roboto-Black',Helvetica] font-normal text-[#ffffff] text-base text-center tracking-[0] leading-[normal]">
+                <span className="font-black">+3000 </span>
+                <span className="[font-family:'Roboto-Medium',Helvetica] font-medium">
+                    points for every 10 people
+                </span>
+            </p> */}
+            <p className="absolute w-[269px] top-[18px] left-9 [font-family:'Roboto-Black',Helvetica] font-normal text-[#ffffff] text-base text-center tracking-[0] leading-[normal]">
+                <span className="font-black">+ 3000 </span>
+                <span className="[font-family:'Roboto-Medium',Helvetica] font-medium">
+                    points for every 10 people
+                </span>
+            </p>
+
+        </div >
     )
+
 }
 export default DemoEarn

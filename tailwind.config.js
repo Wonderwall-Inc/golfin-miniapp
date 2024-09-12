@@ -53,7 +53,10 @@ module.exports = konstaConfig({
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
-			}
+			},
+			// backgroundImage: {
+			// 	'bg-image': "url('./src/assets/images/bg.png')",
+			// }
 		}
 	},
 	plugins: [

@@ -1,6 +1,6 @@
 import React, { CSSProperties, useEffect, useState } from 'react'
 import './Home.css'
-import Title from '../../components/TitleComponent/Title'
+import Title from '../../components/DemoTitleComponent/DemoTitle'
 import { Block, Button, Page } from 'konsta/react'
 import { useUserContext } from '../../contexts/UserContext'
 import CoinImage from '../../assets/images/02_earn_coin.png'

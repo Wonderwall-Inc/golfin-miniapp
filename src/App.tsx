@@ -9,31 +9,18 @@ import Earns from './pages/Earns'
 import { initUtils, mockTelegramEnv, parseInitData } from '@telegram-apps/sdk'
 import WebApp from '@twa-dev/sdk'
 import { ClipLoader } from 'react-spinners'
-import DemoEarn from './pages/DemoEarnPage/DemoEarn'
+
 import DemoRanking from './pages/DemoRanking/DemoRanking'
 import DemoLinks from './pages/DemoLinksPage/DemoLinks'
+import { testInitDataRaw } from './constants'
+import Background from './components/BackgroundComponent/Background'
+import DemoEarn from './pages/DemoEarnPage/DemoEarn'
 
 const App = () => {
 
   useEffect(() => {
     if (process.env.env == 'test') {
-      const initDataRaw = new URLSearchParams([
-        ['user', JSON.stringify({
-          id: 99281932,
-          first_name: 'Andrew',
-          last_name: 'Rogue',
-          username: 'rogue',
-          language_code: 'en',
-          is_premium: true,
-          allows_write_to_pm: true,
-        })],
-        ['hash', '89d6079ad6762351f38c6dbbc41bb53048019256a9443988af7a48bcad16ba31'],
-        ['auth_date', '1716922846'],
-        ['start_param', 'debug'],
-        ['chat_type', 'sender'],
-        ['chat_instance', '8428209589180549439'],
-      ]).toString();
-
+      const initDataRaw = new URLSearchParams(testInitDataRaw).toString();
       mockTelegramEnv({
         themeParams: {
           accentTextColor: '#6ab2f2',
@@ -105,20 +92,25 @@ const App = () => {
               size={200}
               className='absolute top-[30%] left-[25%]' />
           </div> :
+
           <div className='app-container'>
-            <Routes>
-              <Route path='/demo-earn' element={<DemoEarn />} />
-              <Route path='/demo-ranking' element={<DemoRanking />} />
-              <Route path='/demo-links' element={<DemoLinks />} />
-              <Route path='/' element={<Home />} />
+            <Background>
+              <Routes>
+                <Route path='/' element={<DemoEarn />} />
+                <Route path='/anking' element={<DemoRanking />} />
+                <Route path='/links' element={<DemoLinks />} />
+                {/* <Route path='/' element={<Home />} />
               <Route path='/links' element={<Links utils={utils} />} />
               <Route path='/ranking' element={<Ranking />} />
-              <Route path='/earns' element={<Earns />} />
-            </Routes>
+              <Route path='/earns' element={<Earns />} /> */}
+              </Routes>
+            </Background>
             <Footer />
 
           </div >
+
       }
+
     </>
   )
 }
