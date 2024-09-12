@@ -114,15 +114,14 @@ const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, MINI_APP_APP
                 </div> */}
             </div>
 
-            <div className="w-[343px] h-[105px] bg-[#ffffff33] rounded-lg flex justify-center content-center items-center mx-auto">
+            <div className="w-[343px] h-[85px] sm:h-[95px] md:h-[105px] bg-[#ffffff33] rounded-lg flex justify-center content-center items-center mx-auto">
                 <img className="w-[53px] h-[54px]" alt="Layer" src={CoinIcon} />
-                <div className="w-[186px]
+                <div className="w-[200px]
                 font-semibold
                 [font-family:'Rubik-Medium',Helvetica]
                 text-[#ffef2b] 
                 text-[28px] 
-                tracking-[0.38px] 
-                leading-[34px]">{(599200999).toLocaleString()}
+                tracking-[0.38px]">{(599200999).toLocaleString()}
                 </div>
 
             </div>
@@ -211,72 +210,37 @@ const DemoReferralComponent = ({ MINI_APP_APP }) => {
 const DemoBonusComponent = ({ weeklyCount, referralCount }) => {
 
     return (
-        <>
-            <div>
-                <DemoTitleComponent title='Bonus' />
-                <div className='grid grid-rows-1 justify-items-center'>
 
-                    <div className="w-[342px] h-14 bg-[rgba(255,255,255,1.0)] rounded-md overflow-hidden [background:radial-gradient(50%_50%_at_50%_50%,rgb(112.62,108.57,77.9)_0%,rgb(119,102.27,78.84)_100%)] relative mb-5">
-                        <Progress className="[&>*]:[background:radial-gradient(50%_50%_at_50%_50%,rgb(255,225.25,0)_0%,rgb(255,148.75,0)_100%)]
+        <div>
+            <DemoTitleComponent title='Bonus' />
+            <div className='grid grid-rows-1 justify-items-center'>
+
+                <div className="w-[342px] h-14 bg-[rgba(255,255,255,1.0)] rounded-md overflow-hidden [background:radial-gradient(50%_50%_at_50%_50%,rgb(112.62,108.57,77.9)_0%,rgb(119,102.27,78.84)_100%)] relative mb-5">
+                    <Progress className="[&>*]:[background:radial-gradient(50%_50%_at_50%_50%,rgb(255,225.25,0)_0%,rgb(255,148.75,0)_100%)]
                     h-14
                     rounded-[6px_0px_0px_0px]"
-                            value={weeklyCount / 7 * 100}
-                            max={7} />
-                        <div className="relative w-[342px] h-14">
-                            <div className="absolute h-14 top-0 left-0 rounded-[6px_0px_0px_0px] [background:radial-gradient(50%_50%_at_50%_50%,rgb(255,225.25,0)_0%,rgb(255,148.75,0)_100%)]" />
-                            <div className="absolute w-[295px] top-[18px] left-[23px] [font-family:'Roboto-Black',Helvetica] font-normal text-[#ffffff] text-base text-center tracking-[0] leading-[normal]">
-                                <div className="absolute w-[98px] h-14 top-0 left-0 " />
-                            </div>
-
+                        value={weeklyCount / 7 * 100}
+                        max={7} />
+                    <div className="relative w-[342px] h-14">
+                        <div className="absolute h-14 top-0 left-0 rounded-[6px_0px_0px_0px] [background:radial-gradient(50%_50%_at_50%_50%,rgb(255,225.25,0)_0%,rgb(255,148.75,0)_100%)]" />
+                        <div className="absolute w-[295px] top-[18px] left-[23px] [font-family:'Roboto-Black',Helvetica] font-normal text-[#ffffff] text-base text-center tracking-[0] leading-[normal]">
+                            <div className="absolute w-[98px] h-14 top-0 left-0 " />
                         </div>
-                        <p className="absolute w-[295px] top-[18px] left-[23px] [font-family:'Roboto-Black',Helvetica] font-normal text-[#ffffff] text-base text-center tracking-[0] leading-[normal]">
-                            <span className="font-black">+15 </span>
-                            <span className="[font-family:'Roboto-Medium',Helvetica] font-medium">
-                                points for login every day for a week
-                            </span>
-                        </p>
 
                     </div>
-                    {/*  <div className='relative'>
-
-<Progress
-value={5 / 7 * 100}
-max={100}
-className="[&>*]:bg-orange-600
-rounded-[6px_0px_0px_0px] 
-[background:radial-gradient(50%_50%_at_50%_50%,rgb(255,225.25,0)_0%,rgb(255,148.75,0)_100%)]
-opacity-80 h-[60px] 
-border-2 border-transparent" />
-<div className="absolute w-[98px] h-14 top-0 left-0 " />
-<div className="absolute h-[100%] top-[25%] px-3 text-white text-center items-center justify-center mx-auto [font-family:'Roboto-Medium',Helvetica] font-medium">
-points for login every day for a week
-</div>
-{/* <div className='absolute text-white   px-3 text-center items-center justify-center mx-auto'>
-Login every day for a week and get 15 points
-</div> */}
-                    {/* </div> */}
-                    <DemoFriendReferralComponent referralCount={referralCount} />
+                    <p className="absolute w-[295px] top-[18px] left-[23px] [font-family:'Roboto-Black',Helvetica] font-normal text-[#ffffff] text-base text-center tracking-[0] leading-[normal]">
+                        <span className="font-black">+15 </span>
+                        <span className="[font-family:'Roboto-Medium',Helvetica] font-medium">
+                            points for login every day for a week
+                        </span>
+                    </p>
                 </div>
-            </div >
-        </>
+                <DemoFriendReferralComponent referralCount={referralCount} />
+            </div>
+        </div >
+
     )
 }
-
-// .currentProgress {
-//     display: flex;
-//     flex-direction: row;
-//     height: 60px;
-//     border-radius: 24px;
-//     background-color: skyblue;
-//     align-items: center;
-//     width: 90%;
-//     /* progressWidth */
-//     justify-content: flex-end;
-//   }
-
-//   .content {
-//     padding: 0 20px;
-//   }
 
 const DemoFriendReferralComponent = ({ referralCount }) => {
     return (
@@ -292,14 +256,7 @@ const DemoFriendReferralComponent = ({ referralCount }) => {
                 <div className="absolute w-[295px] top-[18px] left-[23px] [font-family:'Roboto-Black',Helvetica] font-normal text-[#ffffff] text-base text-center tracking-[0] leading-[normal]">
                     <div className="absolute w-[98px] h-14 top-0 left-0 " />
                 </div>
-
             </div>
-            {/* <p className="absolute w-[295px] top-[18px] left-[23px] [font-family:'Roboto-Black',Helvetica] font-normal text-[#ffffff] text-base text-center tracking-[0] leading-[normal]">
-                <span className="font-black">+3000 </span>
-                <span className="[font-family:'Roboto-Medium',Helvetica] font-medium">
-                    points for every 10 people
-                </span>
-            </p> */}
             <p className="absolute w-[269px] top-[18px] left-9 [font-family:'Roboto-Black',Helvetica] font-normal text-[#ffffff] text-base text-center tracking-[0] leading-[normal]">
                 <span className="font-black">+ 3000 </span>
                 <span className="[font-family:'Roboto-Medium',Helvetica] font-medium">
