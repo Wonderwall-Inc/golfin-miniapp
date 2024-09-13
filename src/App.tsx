@@ -3,7 +3,7 @@ import Footer from './components/FooterComponent/Footer'
 import { useEffect, useState } from 'react'
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 // import Home from './pages/HomePage/Home'
-// import Links from './pages/Links'
+import Links from './pages/Links'
 // import Ranking from './pages/RankingPage/Ranking'
 // import Earns from './pages/Earns'
 import { initUtils, mockTelegramEnv, parseInitData } from '@telegram-apps/sdk'
@@ -99,6 +99,7 @@ const App = () => {
                 <Route path='/' element={<DemoEarn />} />
                 <Route path='/ranking' element={<DemoRanking />} />
                 <Route path='/links' element={<DemoLinks />} />
+                <Route path='/links2' element={<Links utils={utils} />} />
                 {/* <Route path='/' element={<Home />} />
               <Route path='/links' element={<Links utils={utils} />} />
               <Route path='/ranking' element={<Ranking />} />

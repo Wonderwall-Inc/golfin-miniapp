@@ -25,7 +25,7 @@ const navLinks = [
     { label: 'Demo Links', url: '/links' },
     // { label: 'Home', url: '/' },
     // { label: 'Ranking', url: '/ranking' },
-    // { label: 'Links', url: '/links' },
+    { label: 'Links', url: '/links2' },
 ]
 
 const socialMediaLinks = [
