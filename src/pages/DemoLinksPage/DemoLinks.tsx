@@ -1,258 +1,134 @@
 import React, { useEffect, useState } from 'react'
-import CoinIcon from '../../assets/images/02_earn_coin.png'
 import GolfinTitle from '../../assets/images/02_earn_logo.png'
-import Countdown from '../../components/Countdown'
 import { useUserContext } from '../../contexts/UserContext'
-import WebApp from '@twa-dev/sdk'
-import { Progress } from "@/components/ui/progress"
-import UpperFlag from '../../assets/icons/UpperFlag.svg'
-import LowerFlag from '../../assets/icons/LowerFlag.svg'
 import DemoTitle from '@/components/DemoTitleComponent/DemoTitle'
+import { initUtils, Utils } from '@telegram-apps/sdk'
 
-const MINI_APP_BOT_NAME = import.meta.env.VITE_MINI_APP_BOT_NAME
-const MINI_APP_NAME = import.meta.env.VITE_MINI_APP_NAME
-const MINI_APP_APP = `https://t.me/${MINI_APP_BOT_NAME}/${MINI_APP_NAME}/start?startapp=test`
+interface LinkPageProp {
+    utils?: Utils
+}
 
+const DemoIgSvg = () => {
+    return (
+        <svg width={64} height={64} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M41.898 13.0239H22.1021C16.6365 13.0239 12.1841 17.4763 12.1841 22.9419V41.0581C12.1841 46.5236 16.6365 50.976 22.1021 50.976H41.898C47.3635 50.976 51.8159 46.5236 51.8159 41.0581V22.9419C51.8159 17.4763 47.3635 13.0239 41.898 13.0239ZM15.6767 22.9419C15.6767 19.3959 18.5561 16.5165 22.1021 16.5165H41.898C45.4439 16.5165 48.3233 19.3959 48.3233 22.9419V41.0581C48.3233 44.604 45.4439 47.4834 41.898 47.4834H22.1021C18.5561 47.4834 15.6767 44.604 15.6767 41.0581V22.9419Z" fill="white" />
+            <path d="M31.9934 41.2315C37.0856 41.2315 41.2181 37.0857 41.2181 32.0067C41.2181 26.9278 37.0856 22.782 31.9934 22.782C26.9011 22.782 22.7686 26.9278 22.7686 32.0067C22.7686 37.0857 26.9011 41.2315 31.9934 41.2315ZM31.9934 26.2746C35.1527 26.2746 37.7255 28.8474 37.7255 32.0067C37.7255 35.1661 35.1527 37.7389 31.9934 37.7389C28.834 37.7389 26.2612 35.1661 26.2612 32.0067C26.2612 28.8474 28.834 26.2746 31.9934 26.2746Z" fill="white" />
+            <path d="M42.0712 24.2615C43.4443 24.2615 44.5507 23.1417 44.5507 21.7687C44.5507 20.3956 43.431 19.2759 42.0712 19.2759C40.7115 19.2759 39.5784 20.3956 39.5784 21.7687C39.5784 23.1417 40.6982 24.2615 42.0712 24.2615Z" fill="white" />
+        </svg>
+    )
+}
+
+const DemoXSvg = () => {
+    return (
+        <svg width={64} height={64} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12.9733 14.1067L27.7333 33.84L12.8933 49.88H16.24L29.24 35.84L39.7466 49.88H51.12L35.5333 29.04L49.3466 14.1067H46L34.0266 27.04L24.36 14.1067H12.9866H12.9733ZM17.8933 16.5734H23.12L46.1866 47.4267H40.96L17.8933 16.5734Z" fill="white" />
+        </svg>
+    )
+}
+
+const DemoGolfinWebSvg = () => {
+    return (
+        <svg width={64} height={64} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M32.9289 51.9892C21.1269 51.9892 11.9975 43.0232 11.9975 31.9443C11.9975 20.8654 21.1269 11.9976 32.9289 11.9976C38.4232 11.9976 43.6166 14.1133 47.198 17.2855C44.2244 20.6125 39.7015 22.1658 35.3394 21.2195C34.5528 21.0499 33.7453 20.9606 32.9289 20.9606C26.5735 20.9606 21.833 25.7963 21.833 31.9413C21.833 38.0863 26.5705 43.0202 32.9289 43.0202C36.9126 43.0202 40.1901 40.5027 41.4981 36.9764H32.9289C34.8478 32.2835 39.4184 29.2185 44.4926 29.2185H51.9892V31.8401C51.9892 43.2225 43.6166 51.9863 32.9289 51.9863V51.9892Z" fill="white" />
+        </svg>
+    )
+}
+const socialMediaLinks = [
+    { label: 'Instagram', url: 'https://www.instagram.com/golfin_official/', icon: <DemoIgSvg />, cto: 'Follow us on Instagram' },
+    { label: 'X', url: 'https://x.com/GOLFIN_official', icon: <DemoXSvg />, cto: 'Follow us on X' },
+    { label: 'Golfin Website', url: 'https://golfin.io/', icon: <DemoGolfinWebSvg />, cto: 'Visit Golfin Website' },
+]
 const DemoLinks = () => {
     const { account, setAccount } = useUserContext()
-    const [dailyReward, setDailyReward] = useState(true)
-    const [timeLeft, setTimeLeft] = useState("")
-    let [isHomeLoading, setIsHomeLoading] = useState(false)
-    let [loading, setLoading] = useState(true);
-    const [weeklyCount, setWeeklyCount] = useState(0)
-    const [referralCount, setReferralCount] = useState(0)
-
-
-    useEffect(() => {
-        if (timeLeft == '') {
-            setIsHomeLoading(true)
-        } else {
-            setIsHomeLoading(false)
-        }
-    }, [timeLeft])
-
-    useEffect(() => {
-        const todayDay = new Date()
-        const todayYY = todayDay.getFullYear()
-        const todayMM = todayDay.getUTCMonth() + 1
-        const preTodayMM = todayMM < 10 ? `0${todayMM}` : todayMM
-        const todayDD = todayDay.getDate() + 1
-        const todayYYMMDD = `${todayYY}-${preTodayMM}-${todayDD}T00:00:00`
-        setTimeLeft(todayYYMMDD)
-    }, [new Date()])
-
-
-    useEffect(() => {
-        setWeeklyCount(new Date().getDay())
-        setReferralCount(new Date().getDay())
-    }, [new Date().getDay()])
-
-    console.log(weeklyCount);
-
+    const utils = initUtils()
     return (
         <div className='w-[100%] h-[690px]'>
             <img src={GolfinTitle}
                 width={150}
                 height={150}
                 className='mx-auto py-10 sm:py-10 md:py-15' />
-            <DemoEarnComponent timeLeft={timeLeft} dailyReward={dailyReward} setDailyReward={setDailyReward} MINI_APP_APP={MINI_APP_APP} />
-            <DemoBonusComponent weeklyCount={weeklyCount} referralCount={referralCount} />
+            <DemoEarnComponent utils={utils} />
         </div>
     )
 }
 
-const DemoTitleComponent = ({ title }) => {
-    return (
-        <div className="[font-family:'Rubik-Regular',Helvetica]
-        font-normal
-        text-white
-        text-start 
-        text-[28px]
-        tracking-[-0.38px]
-        leading-[34px]
-        whitespace-nowrap
-        pb-2 
-        pl-6
-        text-xl">{title}</div>
-    )
-}
-
-const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, MINI_APP_APP }) => {
+const DemoEarnComponent = ({ utils }: LinkPageProp) => {
     return (
         <>
-            {/* <div className='px-5 mb-3'>
-                <div className="w-[393px] h-[49px]">
-                    <div className="relative h-[49px] w-[393px]">
-                        <div className="h-[3px] top-[46px] [background:linear-gradient(180deg,rgb(47,220,202)_0%,rgb(127.27,231.4,127.42)_47.5%,rgb(216,244,45)_100%)] absolute w-[393px] left-[-20px]" />
-                        <div className="h-[46px] top-0 [background:linear-gradient(180deg,rgba(47,220,202,0)_0%,rgb(130,201,31)_100%)] absolute w-[393px] left-0" />
-                        <div className="absolute w-4 h-11 top-1 left-[29px]">
-                            <div className="relative h-[42px]">
-                                <div className="absolute w-4 h-[42px] top-0 left-0">
-                                    <div className="!absolute !w-0.5 !h-[42px] !top-[-6px] !left-[-0.5px] scale-50"><UpperFlag /></div>
-                                    <div className="!absolute !w-[15px] !h-[11px] !top-[15px] !left-[-14px]"><LowerFlag /></div>
-                                </div>
-                                <div className="absolute w-[3px] h-[3px] top-[39px] left-[11px] bg-[#ffffff] rounded-[1.5px]" />
+            <DemoTitle titlename='LINKS' />
+            <div className='grid space-y-5 mx-auto justify-items-center'>
+
+
+                {socialMediaLinks.map((socialMediaLink) => {
+                    return (
+                        <div key={socialMediaLink.label}
+                            className="w-[21.4375rem] h-[6.25rem] rounded-lg bg-white/[.20] content-center"
+                            onClick={() => {
+                                if (process.env.env == 'test') {
+                                    window.open(socialMediaLink.url, '_blank')
+                                }
+                                else {
+                                    if (utils !== undefined) {
+                                        utils.openLink(socialMediaLink.url, { tryInstantView: true })
+                                    } else {
+                                        window.open(socialMediaLink.url, '_blank')
+                                    }
+                                }
+
+                            }}>
+                            <div className='flex justify-start mx-3'>
+                                {socialMediaLink.icon}
+                                <div className="follow_us_on_instagram 
+                                text-white 
+                                text-xl 
+                                font-medium
+                                leading-[2.125rem]
+                                text-center
+                                font-['Rubik'] 
+                                content-center">{socialMediaLink.cto}</div>
                             </div>
+
                         </div>
-                        <div className="absolute top-1 left-[130px] [font-family:'Rubik-Medium',Helvetica] font-medium text-white text-[34px] text-center tracking-[0.40px] leading-[41px] whitespace-nowrap">
-                            LINKS
-                        </div>
+                    )
+                })}
+
+
+                {/* <div className="w-[21.4375rem] h-[6.25rem] rounded-lg bg-white/[.20] content-center">
+                    <div className='flex justify-start mx-3'>
+                        <SVG />
+                        <div className="follow_us_on_instagram 
+                        text-white 
+                        font-['Rubik'] 
+                        text-xl 
+                        font-medium
+                        leading-[2.125rem]
+                        text-center
+                        content-center">Follow us on X</div>
                     </div>
                 </div>
-            </div> */}
-            <DemoTitle titlename='LINKS' />
-            <div className="w-[343px] h-[85px] sm:h-[95px] md:h-[105px] bg-[#ffffff33] rounded-lg flex justify-center content-center items-center mx-auto">
-                <img className="w-[53px] h-[54px]" alt="Layer" src={CoinIcon} />
-                <div className="w-[200px]
-                font-semibold
-                [font-family:'Rubik-Medium',Helvetica]
-                text-[#ffef2b] 
-                text-[28px] 
-                tracking-[0.38px]">{(599200999).toLocaleString()}
-                </div>
+
+                <div className="w-[21.4375rem] h-[6.25rem] rounded-lg bg-white/[.20] content-center">
+                    <div className='flex justify-start mx-3'>
+
+                        <div className="visit_golfin_website
+                         text-white 
+                         font-['Rubik'] 
+                         text-xl 
+                         font-medium 
+                         leading-[2.125rem]
+                         text-center
+                         content-center
+                         ">Visit Golfin Website</div>
+                    </div>
+                </div> */}
 
             </div>
 
-            <div>
 
-                <div className='grid grid-cols-2 justify-items-center mx-5 sm:mx-5 md:mx-6  pt-3'>
-                    <DemoDailyRewardComponent timeLeft={timeLeft} dailyReward={dailyReward} setDailyReward={setDailyReward} />
-                    <DemoReferralComponent MINI_APP_APP={MINI_APP_APP} />
-                </div>
-            </div>
         </>
     )
 }
 
 
-const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward }) => {
-    return (
-        <div className={`h-[100px] ${dailyReward == true && 'cursor-not-allowed'}`}
-            onClick={() => setDailyReward(false)}>
-            <div className='text-center w-[100%] h-[80px]'>
-                <div className={`relative 
-                w-[165px] 
-                h-14 
-                rounded-[6px_6px_0px_0px] 
-                ${dailyReward == true ? "[background:linear-gradient(180deg,rgb(169,231,29)_0%,rgb(94.04,196.56,89.27)_100%)]" :
-                        "[background:radial-gradient(50%_50%_at_50%_50%,rgb(112.62,108.57,77.9)_0%,rgb(119,102.27,78.84)_100%)]"}`}>
-                    {dailyReward == true ? <div className="absolute w-[77px] top-[7px] left-[40px] [font-family:'Roboto-Medium',Helvetica] font-medium text-[#ffffff] text-xl text-center tracking-[0] leading-[22px]">
-                        Daily
-                        <br />
-                        Reward
-                    </div> :
-                        <div className="absolute w-[123px] top-[7px] left-[19px] [font-family:'Roboto-Medium',Helvetica] font-medium text-[#ffffff] text-xl text-center tracking-[0] leading-[22px]">
-                            Daily Reward
-                            <br />
-                            <Countdown targetDate={timeLeft} dailyReward={dailyReward} setDailyReward={setDailyReward} />
-                        </div>
-                    }
 
-                </div>
-
-                <div className='bg-white text-black-400 rounded-b-sm border-white h-[50%] content-center text-center items-center w-[165px]'>
-                    +2
-                </div>
-            </div>
-
-        </div >
-
-    )
-
-}
-
-const DemoReferralComponent = ({ MINI_APP_APP }) => {
-    return (
-
-        <div className={`h-[100px]`}
-            onClick={() => {
-                WebApp.openTelegramLink(`https://t.me/share/url?url=${MINI_APP_APP}`)
-            }}>
-            <div className='text-center w-[100%] h-[80px]'>
-                <div className="relative 
-                w-[165px] 
-                h-14 
-                rounded-[6px_6px_0px_0px] 
-                [background:linear-gradient(180deg,rgb(169,231,29)_0%,rgb(94.04,196.56,89.27)_100%)]">
-                    <div className="absolute 
-                    w-[77px] 
-                    top-[7px] 
-                    left-[46px] [font-family:'Roboto-Medium',Helvetica] font-medium text-[#ffffff] text-xl text-center tracking-[0] leading-[22px]">
-                        Invite
-                        <br />
-                        a Friend
-                    </div>
-                </div>
-                <div className='bg-white text-black-400 rounded-b-sm border-white h-[50%] content-center text-center items-center w-[165px]'>
-                    +100
-                </div>
-            </div>
-
-        </div>
-
-    )
-}
-
-
-const DemoBonusComponent = ({ weeklyCount, referralCount }) => {
-
-    return (
-
-        <div>
-            <DemoTitleComponent title='Bonus' />
-            <div className='grid grid-rows-1 justify-items-center'>
-
-                <div className="w-[342px] h-14 bg-[rgba(255,255,255,1.0)] rounded-md overflow-hidden [background:radial-gradient(50%_50%_at_50%_50%,rgb(112.62,108.57,77.9)_0%,rgb(119,102.27,78.84)_100%)] relative mb-5">
-                    <Progress className="[&>*]:[background:radial-gradient(50%_50%_at_50%_50%,rgb(255,225.25,0)_0%,rgb(255,148.75,0)_100%)]
-                    h-14
-                    rounded-[6px_0px_0px_0px]"
-                        value={weeklyCount / 7 * 100}
-                        max={7} />
-                    <div className="relative w-[342px] h-14">
-                        <div className="absolute h-14 top-0 left-0 rounded-[6px_0px_0px_0px] [background:radial-gradient(50%_50%_at_50%_50%,rgb(255,225.25,0)_0%,rgb(255,148.75,0)_100%)]" />
-                        <div className="absolute w-[295px] top-[18px] left-[23px] [font-family:'Roboto-Black',Helvetica] font-normal text-[#ffffff] text-base text-center tracking-[0] leading-[normal]">
-                            <div className="absolute w-[98px] h-14 top-0 left-0 " />
-                        </div>
-
-                    </div>
-                    <p className="absolute w-[295px] top-[18px] left-[23px] [font-family:'Roboto-Black',Helvetica] font-normal text-[#ffffff] text-base text-center tracking-[0] leading-[normal]">
-                        <span className="font-black">+15 </span>
-                        <span className="[font-family:'Roboto-Medium',Helvetica] font-medium">
-                            points for login every day for a week
-                        </span>
-                    </p>
-                </div>
-                <DemoFriendReferralComponent referralCount={referralCount} />
-            </div>
-        </div >
-
-    )
-}
-
-const DemoFriendReferralComponent = ({ referralCount }) => {
-    return (
-        <div className="w-[342px] h-14 bg-[rgba(255,255,255,1.0)] rounded-md overflow-hidden [background:radial-gradient(50%_50%_at_50%_50%,rgb(112.62,108.57,77.9)_0%,rgb(119,102.27,78.84)_100%)] relative mb-5">
-            <Progress className="[&>*]:[background:radial-gradient(50%_50%_at_50%_50%,rgb(255,225.25,0)_0%,rgb(255,148.75,0)_100%)]
-            h-14
-            rounded-[6px_0px_0px_0px] 
-            "
-                value={referralCount / 10 * 100}
-                max={10} />
-            <div className="relative w-[342px] h-14">
-                <div className="absolute h-14 top-0 left-0 rounded-[6px_0px_0px_0px] [background:radial-gradient(50%_50%_at_50%_50%,rgb(255,225.25,0)_0%,rgb(255,148.75,0)_100%)]" />
-                <div className="absolute w-[295px] top-[18px] left-[23px] [font-family:'Roboto-Black',Helvetica] font-normal text-[#ffffff] text-base text-center tracking-[0] leading-[normal]">
-                    <div className="absolute w-[98px] h-14 top-0 left-0 " />
-                </div>
-            </div>
-            <p className="absolute w-[269px] top-[18px] left-9 [font-family:'Roboto-Black',Helvetica] font-normal text-[#ffffff] text-base text-center tracking-[0] leading-[normal]">
-                <span className="font-black">+ 3000 </span>
-                <span className="[font-family:'Roboto-Medium',Helvetica] font-medium">
-                    points for every 10 people
-                </span>
-            </p>
-
-        </div >
-    )
-
-}
 export default DemoLinks

@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import CoinIcon from '../../assets/images/02_earn_coin.png'
 import GolfinTitle from '../../assets/images/02_earn_logo.png'
-import Countdown from '../../components/Countdown'
 import { useUserContext } from '../../contexts/UserContext'
-import WebApp from '@twa-dev/sdk'
-import { Progress } from "@/components/ui/progress"
-import UpperFlag from '../../assets/icons/UpperFlag.svg'
-import LowerFlag from '../../assets/icons/LowerFlag.svg'
-import { Page, TabbarLink } from 'konsta/react'
+import { TabbarLink } from 'konsta/react'
 
 import { mockPointRankingData, mockReferralRankingData } from '@/constants'
 import CoinImage from '../../assets/images/02_earn_coin.png'
@@ -35,6 +29,7 @@ const DemoRanking = () => {
                             active={activeTab === 'tab-1'}
                             onClick={() => setActiveTab('tab-1')}
                             label={isTabbarLabels && 'Referral'}
+                            style={{}}
                             className={`${activeTab === 'tab-1' ? 'text-white font-[700] rounded-t-lg border-b-2 border-white' : 'text-white font-[700] border-b-2 border-gray-500'}`}
                         />
                         <TabbarLink

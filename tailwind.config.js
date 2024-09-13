@@ -1,15 +1,17 @@
 const konstaConfig = require('konsta/config');
-
+const colors = require('tailwindcss/colors')
 /** @type {import('tailwindcss').Config} */
 module.exports = konstaConfig({
 	darkMode: ["class"],
 	content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
 	theme: {
 		extend: {
+			link:{
+				default: colors.red
+			},
 			colors: {
 				primary: {
-					// DEFAULT: 'hsl(var(--primary))',
-					DEFAULT: 'white',
+					DEFAULT: colors.white,
 					foreground: 'hsl(var(--primary-foreground))'
 				},
 				secondary: {
