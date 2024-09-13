@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
 import GolfinTitle from '../../assets/images/02_earn_logo.png'
-import { useUserContext } from '../../contexts/UserContext'
 import DemoTitle from '@/components/DemoTitleComponent/DemoTitle'
 import { initUtils, Utils } from '@telegram-apps/sdk'
+// import { useUserContext } from '../../contexts/UserContext'
 
 interface LinkPageProp {
     utils?: Utils
@@ -38,8 +37,9 @@ const socialMediaLinks = [
     { label: 'X', url: 'https://x.com/GOLFIN_official', icon: <DemoXSvg />, cto: 'Follow us on X' },
     { label: 'Golfin Website', url: 'https://golfin.io/', icon: <DemoGolfinWebSvg />, cto: 'Visit Golfin Website' },
 ]
+
 const DemoLinks = () => {
-    const { account, setAccount } = useUserContext()
+    // const { account, setAccount } = useUserContext()
     const utils = initUtils()
     return (
         <div className='w-[100%] h-[690px]'>
@@ -47,14 +47,6 @@ const DemoLinks = () => {
                 width={150}
                 height={150}
                 className='mx-auto py-10 sm:py-10 md:py-15' />
-            <DemoEarnComponent utils={utils} />
-        </div>
-    )
-}
-
-const DemoEarnComponent = ({ utils }: LinkPageProp) => {
-    return (
-        <>
             <DemoTitle titlename='LINKS' />
             <div className='grid space-y-5 mx-auto justify-items-center'>
 
@@ -64,16 +56,9 @@ const DemoEarnComponent = ({ utils }: LinkPageProp) => {
                         <div key={socialMediaLink.label}
                             className="w-[21.4375rem] h-[6.25rem] rounded-lg bg-white/[.20] content-center"
                             onClick={() => {
-                                if (process.env.env == 'test') {
-                                    window.open(socialMediaLink.url, '_blank')
-                                }
-                                else {
-                                    if (utils !== undefined) {
-                                        utils.openLink(socialMediaLink.url, { tryInstantView: true })
-                                    } else {
-                                        window.open(socialMediaLink.url, '_blank')
-                                    }
-                                }
+                                process.env.env == 'test' ?
+                                    window.open(socialMediaLink.url, '_blank') :
+                                    utils.openLink(socialMediaLink.url, { tryInstantView: true })
 
                             }}>
                             <div className='flex justify-start mx-3'>
@@ -91,44 +76,11 @@ const DemoEarnComponent = ({ utils }: LinkPageProp) => {
                         </div>
                     )
                 })}
-
-
-                {/* <div className="w-[21.4375rem] h-[6.25rem] rounded-lg bg-white/[.20] content-center">
-                    <div className='flex justify-start mx-3'>
-                        <SVG />
-                        <div className="follow_us_on_instagram 
-                        text-white 
-                        font-['Rubik'] 
-                        text-xl 
-                        font-medium
-                        leading-[2.125rem]
-                        text-center
-                        content-center">Follow us on X</div>
-                    </div>
-                </div>
-
-                <div className="w-[21.4375rem] h-[6.25rem] rounded-lg bg-white/[.20] content-center">
-                    <div className='flex justify-start mx-3'>
-
-                        <div className="visit_golfin_website
-                         text-white 
-                         font-['Rubik'] 
-                         text-xl 
-                         font-medium 
-                         leading-[2.125rem]
-                         text-center
-                         content-center
-                         ">Visit Golfin Website</div>
-                    </div>
-                </div> */}
-
             </div>
 
-
-        </>
+        </div >
     )
 }
-
 
 
 export default DemoLinks
