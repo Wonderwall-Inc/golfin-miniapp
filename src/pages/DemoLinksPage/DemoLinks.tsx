@@ -37,8 +37,8 @@ const DemoLinks = () => {
     }
     const socialMediaLinks = [
         { label: 'Instagram', url: 'https://www.instagram.com/golfin_official/', icon: <DemoIgSvg />, cto: 'Follow us on Instagram' },
-        { label: 'X', url: 'https://x.com/GOLFIN_official', icon: <DemoXSvg />, cto: 'Follow us on X' },
-        { label: 'Golfin Website', url: 'https://golfin.io/', icon: <DemoGolfinWebSvg />, cto: 'Visit Golfin Website' },
+        { label: 'X', url: 'https://x.com/GOLFIN_GL', icon: <DemoXSvg />, cto: 'Follow us on X' },
+        { label: 'Golfin Website', url: 'https://golfin.io/en/', icon: <DemoGolfinWebSvg />, cto: 'Visit Golfin Website' },
     ]
     const utils = initUtils()
 
