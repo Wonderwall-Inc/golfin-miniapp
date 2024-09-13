@@ -42,12 +42,10 @@ const DemoRanking = () => {
 
                     {activeTab === 'tab-1' && <>
                         <div className='h-[250px]
-                         sm:overflow-y-scroll 
-                         md:overflow-y-hidden
-                         sm:h-[250px] 
-                         md:h-[400px] 
-                         pt-2
-                         '>
+                        overflow-y-scroll 
+                        sm:h-[250px] 
+                        md:h-[400px] 
+                        pt-2'>
                             <div className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between border-4 border-[#8cc73e]`}>
                                 <div className='flex font-rubik font-[600] text-xl pr-10 py-1 content-start place-content-start'>
                                     <div className='text-right mx-2'>100+</div>
@@ -78,13 +76,10 @@ const DemoRanking = () => {
                     </>
                     }
                     {activeTab === 'tab-2' && <>
-                        <div className='h-[250px]
-                         sm:overflow-y-scroll 
-                         md:overflow-y-hidden
-                         sm:h-[250px] 
-                         md:h-[400px] 
-                         pt-2
-                         '>
+                        <div className='h-[350px]
+                        sm:h-[350px] 
+                        md:h-[400px] 
+                        pt-2'>
                             <div className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between border-4 border-[#8cc73e]`}>
                                 <div className='flex font-rubik font-[600] text-xl pr-10 py-1 content-start place-content-start'>
                                     <div className='text-right mx-2'>100+</div>
@@ -96,21 +91,24 @@ const DemoRanking = () => {
                                 </div>
                             </div>
 
-                            {mockPointRankingData.map((mockPoint, index) => {
-                                if (index < 10) {
-                                    return <div key={mockPoint.name} className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between`}>
-                                        <div className='flex font-rubik font-[600] text-xl pr-10 pb-1 content-start place-content-start'>
-                                            <div className='pl-5 text-right'>{mockPoint.rank}</div>
-                                            <div className={`${index < 9 ? 'pl-7' : 'pl-5'} text-right`}>{mockPoint.name}</div>
-                                        </div>
-                                        <div className='flex flex-row justify-start pr-5 pb-1  font-rubik font-[600] text-xl content-start place-content-start'>
-                                            <div className='text-xl pr-5'>{mockPoint.point}</div>
-                                            <img src={CoinImage} width='30px' height='30px' className='justify-end' />
-                                        </div>
-                                    </div>
-                                }
+                            <div className='sm:h-[250px] md:h-[400px] overflow-y-scroll'>
 
-                            })}
+                                {mockPointRankingData.map((mockPoint, index) => {
+                                    if (index < 10) {
+                                        return <div key={mockPoint.name} className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between`}>
+                                            <div className='flex font-rubik font-[600] text-xl pr-10 pb-1 content-start place-content-start'>
+                                                <div className='pl-5 text-right'>{mockPoint.rank}</div>
+                                                <div className={`${index < 9 ? 'pl-7' : 'pl-5'} text-right`}>{mockPoint.name}</div>
+                                            </div>
+                                            <div className='flex flex-row justify-start pr-5 pb-1  font-rubik font-[600] text-xl content-start place-content-start'>
+                                                <div className='text-xl pr-5'>{mockPoint.point}</div>
+                                                <img src={CoinImage} width='30px' height='30px' className='justify-end' />
+                                            </div>
+                                        </div>
+                                    }
+
+                                })}
+                            </div>
 
                         </div>
                     </>
