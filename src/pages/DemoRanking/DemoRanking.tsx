@@ -20,17 +20,17 @@ const DemoRanking = () => {
                 className='mx-auto py-10 sm:py-10 md:py-15' />
 
             <DemoTitle titlename="RANKING" style={"absolute left-[-30px]"} />
-
-            <div className='mt-[30px]'>
+            <div className='sm:mt-[7px] md:mt-[12px] lg:mt-[15px]'>
                 <div className='mx-10'>
-
-                    <div className='flex flex-row'>
+                    <div className='flex'>
                         <TabbarLink
                             active={activeTab === 'tab-1'}
                             onClick={() => setActiveTab('tab-1')}
                             label={isTabbarLabels && 'Referral'}
                             style={{}}
-                            className={`${activeTab === 'tab-1' ? 'text-white font-[700] rounded-t-lg border-b-2 border-white' : 'text-white font-[700] border-b-2 border-gray-500'}`}
+                            className={`${activeTab === 'tab-1' ?
+                                'text-white font-[700] rounded-t-lg border-b-2 border-white' :
+                                'text-white font-[700] border-b-2 border-gray-500'}`}
                         />
                         <TabbarLink
                             active={activeTab === 'tab-2'}
@@ -41,15 +41,21 @@ const DemoRanking = () => {
                     </div>
 
                     {activeTab === 'tab-1' && <>
-                        <div className='h-[350px] pt-2 overflow-y-hidden '>
-                            <div className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between`}>
-                                <div className='flex font-rubik font-[600] text-xl pr-10 pb-1 content-start place-content-start'>
+                        <div className='h-[250px]
+                         sm:overflow-y-scroll 
+                         md:overflow-y-hidden
+                         sm:h-[250px] 
+                         md:h-[400px] 
+                         pt-2
+                         '>
+                            <div className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between border-4 border-[#8cc73e]`}>
+                                <div className='flex font-rubik font-[600] text-xl pr-10 py-1 content-start place-content-start'>
                                     <div className='text-right mx-2'>100+</div>
                                     <div className='text-right'>Dev</div>
                                 </div>
-                                <div className='flex flex-row justify-start pr-5 pb-1'>
+                                <div className='flex flex-row justify-start pr-5 py-1'>
                                     <div className='text-xl pr-5'>30</div>
-                                    <img src={CoinImage} width='30px' height='30px' className='justify-end' />
+                                    <img src={CoinImage} width='30px' height='30px' className='justify-end ml-1' />
                                 </div>
                             </div>
                             {mockReferralRankingData.map((mockReferral, index) => {
@@ -72,17 +78,24 @@ const DemoRanking = () => {
                     </>
                     }
                     {activeTab === 'tab-2' && <>
-                        <div className='h-[350px] pt-2 overflow-y-hidden '>
-                            <div className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between`}>
-                                <div className='flex font-rubik font-[600] text-xl pr-10 pb-1 content-start place-content-start'>
+                        <div className='h-[250px]
+                         sm:overflow-y-scroll 
+                         md:overflow-y-hidden
+                         sm:h-[250px] 
+                         md:h-[400px] 
+                         pt-2
+                         '>
+                            <div className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between border-4 border-[#8cc73e]`}>
+                                <div className='flex font-rubik font-[600] text-xl pr-10 py-1 content-start place-content-start'>
                                     <div className='text-right mx-2'>100+</div>
                                     <div className='text-right'>Dev</div>
                                 </div>
-                                <div className='flex flex-row justify-start pr-5 pb-1'>
+                                <div className='flex flex-row justify-start pr-5 py-1'>
                                     <div className='text-xl pr-5'>100000</div>
                                     <img src={CoinImage} width='30px' height='30px' className='justify-end' />
                                 </div>
                             </div>
+
                             {mockPointRankingData.map((mockPoint, index) => {
                                 if (index < 10) {
                                     return <div key={mockPoint.name} className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between`}>
