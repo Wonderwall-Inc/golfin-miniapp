@@ -11,7 +11,10 @@ import { createUser } from '@/apis/UserSevices';
 export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const [account, setAccount] = useState<UserType | undefined | AccountType>();
     const webappUser = WebApp.initDataUnsafe.user
+    console.log(webappUser);
+
     const webappStartParam = WebApp.initDataUnsafe.start_param
+    console.log(webappStartParam);
 
     useEffect(() => {
         if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
@@ -45,6 +48,8 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
             window.alert('Same ID')
             WebApp.close()
         }
+        console.log(webappUser);
+        console.log(webappStartParam);
 
         if (webappUser?.id !== undefined && webappStartParam !== undefined) {
             console.log('userInfoPayload');

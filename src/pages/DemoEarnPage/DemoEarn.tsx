@@ -59,28 +59,20 @@ const DemoEarn = () => {
     )
 }
 
-const DemoTitleComponent = ({ title }) => {
-    return (
-        <div className="[font-family:'Rubik-Regular',Helvetica]
-        font-normal
-        text-white
-        text-start 
-        text-[28px]
-        tracking-[-0.38px]
-        leading-[34px]
-        whitespace-nowrap
-        pb-2 
-        pl-6
-        text-xl">{title}</div>
-    )
-}
-
-
 const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, MINI_APP_APP }) => {
     return (
         <>
-            <DemoTitle titlename="EARN" style={"pr-10"} />
-            <div className="w-[343px] h-[85px] sm:h-[95px] md:h-[105px] bg-[#ffffff33] rounded-lg flex justify-center content-center items-center mx-auto">
+            <div className="w-[343px] 
+            h-[85px] 
+            sm:h-[95px] 
+            md:h-[105px] 
+            bg-[#ffffff33] 
+            rounded-lg 
+            flex 
+            justify-center 
+            content-center 
+            items-center 
+            mx-auto">
                 <img className="w-[53px] h-[54px]" alt="Layer" src={CoinIcon} />
                 <div className="w-[200px]
                 font-semibold
@@ -89,15 +81,10 @@ const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, MINI_APP_APP
                 text-[28px] 
                 tracking-[0.38px]">{(599200999).toLocaleString()}
                 </div>
-
             </div>
-
-            <div>
-
-                <div className='grid grid-cols-2 justify-items-center mx-5 sm:mx-5 md:mx-6  pt-3'>
-                    <DemoDailyRewardComponent timeLeft={timeLeft} dailyReward={dailyReward} setDailyReward={setDailyReward} />
-                    <DemoReferralComponent MINI_APP_APP={MINI_APP_APP} />
-                </div>
+            <div className='flex justify-center justify-items-center mx-5 sm:mx-5 md:mx-6 pt-3 sm:pt-3  space-x-5'>
+                <DemoDailyRewardComponent timeLeft={timeLeft} dailyReward={dailyReward} setDailyReward={setDailyReward} />
+                <DemoReferralComponent MINI_APP_APP={MINI_APP_APP} />
             </div>
         </>
     )
@@ -110,7 +97,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward }) => 
             onClick={() => setDailyReward(false)}>
             <div className='text-center w-[100%] h-[80px]'>
                 <div className={`relative 
-                w-[165px] 
+                w-[160px] 
                 h-14 
                 rounded-[6px_6px_0px_0px] 
                 ${dailyReward == true ? "[background:linear-gradient(180deg,rgb(169,231,29)_0%,rgb(94.04,196.56,89.27)_100%)]" :
@@ -129,7 +116,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward }) => 
 
                 </div>
 
-                <div className='bg-white text-black-400 rounded-b-sm border-white h-[50%] content-center text-center items-center w-[165px]'>
+                <div className='bg-white text-black-400 rounded-b-sm border-white h-[50%] content-center text-center items-center w-[160px]'>
                     +2
                 </div>
             </div>
@@ -143,13 +130,13 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward }) => 
 const DemoReferralComponent = ({ MINI_APP_APP }) => {
     return (
 
-        <div className={`h-[100px]`}
+        <div className={`h-[100px] cursor-pointer`}
             onClick={() => {
                 WebApp.openTelegramLink(`https://t.me/share/url?url=${MINI_APP_APP}`)
             }}>
             <div className='text-center w-[100%] h-[80px]'>
                 <div className="relative 
-                w-[165px] 
+                w-[160px]
                 h-14 
                 rounded-[6px_6px_0px_0px] 
                 [background:linear-gradient(180deg,rgb(169,231,29)_0%,rgb(94.04,196.56,89.27)_100%)]">
@@ -162,7 +149,7 @@ const DemoReferralComponent = ({ MINI_APP_APP }) => {
                         a Friend
                     </div>
                 </div>
-                <div className='bg-white text-black-400 rounded-b-sm border-white h-[50%] content-center text-center items-center w-[165px]'>
+                <div className='bg-white text-black-400 rounded-b-sm border-white h-[50%] content-center text-center items-center w-[160px]'>
                     +100
                 </div>
             </div>
@@ -177,10 +164,22 @@ const DemoBonusComponent = ({ weeklyCount, referralCount }) => {
 
     return (
 
-        <div>
-            <DemoTitleComponent title='Bonus' />
-            <div className='grid grid-rows-1 justify-items-center'>
+        <div className='relative'>
 
+            <div className='grid grid-rows-1 justify-items-center'>
+                <div className="[font-family:'Rubik-Regular',Helvetica]
+                font-normal
+                mx-auto
+                text-white
+                text-start
+                text-[28px]
+                tracking-[-0.38px]
+                leading-[34px]
+                whitespace-nowrap
+                content-start
+                pr-[285px]
+                pb-2 
+                text-xl">Bonus</div>
                 <div className="w-[342px] h-14 bg-[rgba(255,255,255,1.0)] rounded-md overflow-hidden [background:radial-gradient(50%_50%_at_50%_50%,rgb(112.62,108.57,77.9)_0%,rgb(119,102.27,78.84)_100%)] relative mb-5">
                     <Progress className="[&>*]:[background:radial-gradient(50%_50%_at_50%_50%,rgb(255,225.25,0)_0%,rgb(255,148.75,0)_100%)]
                     h-14

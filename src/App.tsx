@@ -15,6 +15,7 @@ import DemoLinks from './pages/DemoLinksPage/DemoLinks'
 import { testInitDataRaw } from './constants'
 import Background from './components/BackgroundComponent/Background'
 import DemoEarn from './pages/DemoEarnPage/DemoEarn'
+import DemoTitle from './components/DemoTitleComponent/DemoTitle'
 
 const App = () => {
 
@@ -47,6 +48,8 @@ const App = () => {
 
   const utils = initUtils()
   const location = useLocation()
+  console.log(WebApp.initData);
+
 
   const navigate = useNavigate()
   let [isLoading, setIsLoading] = useState(false)
@@ -95,6 +98,7 @@ const App = () => {
 
           <div className='app-container'>
             <Background>
+              <DemoTitle titlename={`${location.pathname == '/' ? 'EARN' : location.pathname.split('/')[1].toUpperCase()}`} />
               <Routes>
                 <Route path='/' element={<DemoEarn />} />
                 <Route path='/ranking' element={<DemoRanking />} />

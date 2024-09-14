@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { useUserContext } from '../../contexts/UserContext'
 import { TabbarLink } from 'konsta/react'
 
 import { mockPointRankingData, mockReferralRankingData } from '@/constants'
 import CoinImage from '../../assets/images/02_earn_coin.png'
-import DemoTitle from '../../components/DemoTitleComponent/DemoTitle'
+
 
 const DemoRanking = () => {
     const { account, setAccount } = useUserContext()
@@ -14,10 +14,7 @@ const DemoRanking = () => {
     const [isTabbarLabels, setIsTabbarLabels] = useState(true);
     return (
         <div className='w-[100%] h-[690px]'>
-
-
-            <DemoTitle titlename="RANKING" style={"absolute left-[-30px]"} />
-            <div className=''>
+            <div className='flex justify-center'>
                 <div className='mx-10 mt-5 sm:mt-[5px] md:mt-[12px] lg:mt-[15px]'>
                     <div className='flex'>
                         <TabbarLink
@@ -41,7 +38,7 @@ const DemoRanking = () => {
                         <div className='h-[300px]
                         overflow-y-scroll 
                         sm:h-[300px] 
-                        md:h-[300px] 
+                        md:h-[460px] 
                         pt-2'>
                             <div className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between border-4 border-[#8cc73e]`}>
                                 <div className='flex font-rubik font-[600] text-xl pr-10 py-1 content-start place-content-start'>
@@ -53,7 +50,7 @@ const DemoRanking = () => {
                                     <img src={CoinImage} width='30px' height='30px' className='justify-end ml-1' />
                                 </div>
                             </div>
-                            <div className='sm:h-[300px] md:h-[400px] overflow-y-scroll'>
+                            <div className='sm:h-[250px] md:h-[400px] overflow-y-scroll  md:overflow-hidden'>
 
                                 {mockReferralRankingData.map((mockReferral, index) => {
                                     if (index < 10) {
@@ -76,10 +73,10 @@ const DemoRanking = () => {
                     </>
                     }
                     {activeTab === 'tab-2' && <>
-                        <div className='h-[350px]
+                        <div className='h-[300px]
                         overflow-y-scroll 
-                        sm:h-[350px] 
-                        md:h-[400px] 
+                        sm:h-[300px] 
+                        md:h-[460px] 
                         pt-2'>
                             <div className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between border-4 border-[#8cc73e]`}>
                                 <div className='flex font-rubik font-[600] text-xl pr-10 py-1 content-start place-content-start'>
@@ -92,7 +89,7 @@ const DemoRanking = () => {
                                 </div>
                             </div>
 
-                            <div className='sm:h-[250px] md:h-[400px] overflow-y-scroll'>
+                            <div className='sm:h-[250px] md:h-[400px] overflow-y-scroll md:overflow-hidden'>
 
                                 {mockPointRankingData.map((mockPoint, index) => {
                                     if (index < 10) {

@@ -1,4 +1,3 @@
-import DemoTitle from '@/components/DemoTitleComponent/DemoTitle'
 import { Utils } from '@telegram-apps/sdk'
 // import { useUserContext } from '../../contexts/UserContext'
 
@@ -38,46 +37,42 @@ const socialMediaLinks = [
 ]
 
 const DemoLinks = ({ utils }: LinkPageProp) => {
-        return (
-            <div>
-                <div className='w-[100%] h-[690px]'>
-                    <DemoTitle titlename='LINKS' />
-                    <DemoLinkPageComponent utils={utils} />
-                </div >
-            </div >
-        )
-    }
+    return (
+        <div className='w-[100%] h-[690px]'>
+            <DemoLinkPageComponent utils={utils} />
+        </div >
+    )
+}
 
-    const DemoLinkPageComponent = ({ utils }: LinkPageProp) => {
-        return (
-            <div className='grid space-y-5 mx-auto justify-items-center cursor-pointer'>
-                <>
-                    {socialMediaLinks.map((socialMediaLink, index) => {
-                        return (
+const DemoLinkPageComponent = ({ utils }: LinkPageProp) => {
+    return (
+        <div className='grid space-y-5 mx-auto justify-items-center cursor-pointer'>
+            {socialMediaLinks.map((socialMediaLink, index) => {
+                return (
 
-                            <div key={index}
-                                className="w-[21.4375rem] 
+                    <div key={index}
+                        className="w-[21.4375rem] 
                     h-[6.25rem] 
                     rounded-lg 
                     bg-white/[.20] 
                     content-center 
                     cursor-pointer"
-                                onClick={() => {
-                                    if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
-                                        window.open(socialMediaLink.url, '_blank')
-                                    }
-                                    else {
-                                        if (utils !== undefined) {
-                                            utils.openLink(socialMediaLink.url, { tryInstantView: true })
-                                        } else {
-                                            window.open(socialMediaLink.url, '_blank')
-                                        }
-                                    }
+                        onClick={() => {
+                            if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
+                                window.open(socialMediaLink.url, '_blank')
+                            }
+                            else {
+                                if (utils !== undefined) {
+                                    utils.openLink(socialMediaLink.url, { tryInstantView: true })
+                                } else {
+                                    window.open(socialMediaLink.url, '_blank')
+                                }
+                            }
 
-                                }}>
-                                <div className='flex justify-start mx-3 cursor-pointer'>
-                                    {socialMediaLink.icon}
-                                    <div className={`
+                        }}>
+                        <div className='flex justify-start mx-3 cursor-pointer'>
+                            {socialMediaLink.icon}
+                            <div className={`
                                 ${socialMediaLink.label}
                                 cursor-pointer
                                 text-white 
@@ -87,16 +82,16 @@ const DemoLinks = ({ utils }: LinkPageProp) => {
                                 text-center
                                 font-['Rubik'] 
                                 content-center`}>{socialMediaLink.cto}</div>
-                                </div>
+                        </div>
 
-                            </div>
-                        )
-                    })}
-                </>
-            </div>
-        )
+                    </div>
+                )
+            })}
 
-    }
+        </div>
+    )
+
+}
 
 
-    export default DemoLinks
+export default DemoLinks
