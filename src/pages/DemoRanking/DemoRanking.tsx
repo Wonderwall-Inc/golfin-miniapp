@@ -1,14 +1,10 @@
 import { useState } from 'react'
-
-import { useUserContext } from '../../contexts/UserContext'
 import { TabbarLink } from 'konsta/react'
 
 import { mockPointRankingData, mockReferralRankingData } from '@/constants'
 import CoinImage from '../../assets/images/02_earn_coin.png'
 
-
 const DemoRanking = () => {
-    const { account, setAccount } = useUserContext()
     const [dailyReward, setDailyReward] = useState(true)
     const [activeTab, setActiveTab] = useState('tab-1');
     const [isTabbarLabels, setIsTabbarLabels] = useState(true);
@@ -35,12 +31,7 @@ const DemoRanking = () => {
                     </div>
 
                     {activeTab === 'tab-1' && <>
-                        <div className='h-[300px]
-                        w-[343px]
-                        overflow-y-scroll 
-                        sm:h-[300px] 
-                        md:h-[460px] 
-                        pt-2'>
+                        <div className='h-[300px] w-[343px] overflow-y-scroll sm:h-[300px] md:h-[460px] pt-2'>
                             <div className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between border-4 border-[#8cc73e]`}>
                                 <div className='flex font-rubik font-[600] text-xl pr-10 py-1 content-start place-content-start'>
                                     <div className='text-right mx-2'>100+</div>
@@ -69,24 +60,18 @@ const DemoRanking = () => {
 
                                 })}
                             </div>
-
                         </div>
                     </>
                     }
                     {activeTab === 'tab-2' && <>
-                        <div className='h-[300px]
-                        w-[343px]
-                        overflow-y-scroll 
-                        sm:h-[300px] 
-                        md:h-[460px] 
-                        pt-2'>
+                        <div className='h-[300px] w-[343px] overflow-y-scroll sm:h-[300px] md:h-[460px] pt-2'>
                             <div className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between border-4 border-[#8cc73e]`}>
                                 <div className='flex font-rubik font-[600] text-xl pr-10 py-1 content-start place-content-start'>
-                                    <div className='text-right mx-2'>100+</div>
-                                    <div className='text-right'>Dev</div>
+                                    <div className='text-right mx-2'>100+</div> {/* FIXME */}
+                                    <div className='text-right'>Dev</div>  {/* FIXME */}
                                 </div>
                                 <div className='flex flex-row justify-start pr-5 py-1'>
-                                    <div className='text-xl pr-5'>100000</div>
+                                    <div className='text-xl pr-5'>100000</div>  {/* FIXME */}
                                     <img src={CoinImage} width='30px' height='30px' className='justify-end' />
                                 </div>
                             </div>

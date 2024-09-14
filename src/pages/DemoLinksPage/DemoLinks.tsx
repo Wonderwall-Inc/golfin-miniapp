@@ -2,7 +2,6 @@ import { Utils } from '@telegram-apps/sdk'
 import DemoIgSvg from '../../assets/icons/DemoIg.svg'
 import DemoXSvg from '../../assets/icons/DemoX.svg'
 import DemoGolfinWebSvg from '../../assets/icons/DemoGolfinWeb.svg'
-// import { useUserContext } from '../../contexts/UserContext'
 
 interface LinkPageProp {
     utils: Utils
@@ -27,49 +26,25 @@ const DemoLinkPageComponent = ({ utils }: LinkPageProp) => {
         <div className='grid space-y-5 mx-auto justify-items-center cursor-pointer mt-5'>
             {socialMediaLinks.map((socialMediaLink, index) => {
                 return (
-
                     <div key={index}
-                        className="w-[21.4375rem] 
-                    h-[6.25rem] 
-                    rounded-lg 
-                    bg-white/[.20] 
-                    content-center 
-                    cursor-pointer"
+                        className="w-[21.4375rem] h-[6.25rem] rounded-lg bg-white/[.20] content-center cursor-pointer"
                         onClick={() => {
                             if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
                                 window.open(socialMediaLink.url, '_blank')
                             }
                             else {
-                                if (utils !== undefined) {
-                                    utils.openLink(socialMediaLink.url, { tryInstantView: true })
-                                } else {
-                                    window.open(socialMediaLink.url, '_blank')
-                                }
+                                utils !== undefined ? utils.openLink(socialMediaLink.url, { tryInstantView: true }) : window.open(socialMediaLink.url, '_blank')
                             }
-
                         }}>
                         <div className='flex justify-start mx-3 cursor-pointer'>
                             {socialMediaLink.icon}
-                            <div className={`
-                                ${socialMediaLink.label}
-                                cursor-pointer
-                                text-white 
-                                text-xl 
-                                font-medium
-                                leading-[2.125rem]
-                                text-center
-                                font-['Rubik'] 
-                                content-center`}>{socialMediaLink.cto}</div>
+                            <div className={`${socialMediaLink.label} cursor-pointertext-white text-xl font-medium leading-[2.125rem] text-center font-['Rubik'] content-center text-white`}>{socialMediaLink.cto}</div>
                         </div>
-
                     </div>
                 )
             })}
-
-        </div>
+        </div >
     )
-
 }
-
 
 export default DemoLinks
