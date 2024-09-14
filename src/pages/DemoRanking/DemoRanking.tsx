@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import GolfinTitle from '../../assets/images/02_earn_logo.png'
+
 import { useUserContext } from '../../contexts/UserContext'
 import { TabbarLink } from 'konsta/react'
 
@@ -14,14 +14,11 @@ const DemoRanking = () => {
     const [isTabbarLabels, setIsTabbarLabels] = useState(true);
     return (
         <div className='w-[100%] h-[690px]'>
-            <img src={GolfinTitle}
-                width={150}
-                height={150}
-                className='mx-auto py-10 sm:py-10 md:py-15' />
+
 
             <DemoTitle titlename="RANKING" style={"absolute left-[-30px]"} />
-            <div className='sm:mt-[7px] md:mt-[12px] lg:mt-[15px]'>
-                <div className='mx-10'>
+            <div className=''>
+                <div className='mx-10 mt-5 sm:mt-[5px] md:mt-[12px] lg:mt-[15px]'>
                     <div className='flex'>
                         <TabbarLink
                             active={activeTab === 'tab-1'}
@@ -41,10 +38,10 @@ const DemoRanking = () => {
                     </div>
 
                     {activeTab === 'tab-1' && <>
-                        <div className='h-[250px]
+                        <div className='h-[300px]
                         overflow-y-scroll 
-                        sm:h-[250px] 
-                        md:h-[400px] 
+                        sm:h-[300px] 
+                        md:h-[300px] 
                         pt-2'>
                             <div className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between border-4 border-[#8cc73e]`}>
                                 <div className='flex font-rubik font-[600] text-xl pr-10 py-1 content-start place-content-start'>
@@ -56,27 +53,31 @@ const DemoRanking = () => {
                                     <img src={CoinImage} width='30px' height='30px' className='justify-end ml-1' />
                                 </div>
                             </div>
-                            {mockReferralRankingData.map((mockReferral, index) => {
-                                if (index < 10) {
-                                    return <div key={mockReferral.name} className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between`}>
-                                        <div className='flex font-rubik font-[600] text-xl pr-10 pb-1 content-start place-content-start'>
-                                            <div className='pl-5 text-right'>{mockReferral.rank}</div>
-                                            <div className={`${index < 9 ? 'pl-7' : 'pl-5'} text-right`}>{mockReferral.name}</div>
-                                        </div>
-                                        <div className='flex flex-row justify-start pr-5 pb-1'>
-                                            <div className='text-xl pr-5'>{mockReferral.referral}</div>
-                                            <img src={CoinImage} width='30px' height='30px' className='justify-end' />
-                                        </div>
-                                    </div>
-                                }
+                            <div className='sm:h-[300px] md:h-[400px] overflow-y-scroll'>
 
-                            })}
+                                {mockReferralRankingData.map((mockReferral, index) => {
+                                    if (index < 10) {
+                                        return <div key={mockReferral.name} className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between`}>
+                                            <div className='flex font-rubik font-[600] text-xl pr-10 pb-1 content-start place-content-start'>
+                                                <div className='pl-5 text-right'>{mockReferral.rank}</div>
+                                                <div className={`${index < 9 ? 'pl-7' : 'pl-5'} text-right`}>{mockReferral.name}</div>
+                                            </div>
+                                            <div className='flex flex-row justify-start pr-5 pb-1'>
+                                                <div className='text-xl pr-5'>{mockReferral.referral}</div>
+                                                <img src={CoinImage} width='30px' height='30px' className='justify-end' />
+                                            </div>
+                                        </div>
+                                    }
+
+                                })}
+                            </div>
 
                         </div>
                     </>
                     }
                     {activeTab === 'tab-2' && <>
                         <div className='h-[350px]
+                        overflow-y-scroll 
                         sm:h-[350px] 
                         md:h-[400px] 
                         pt-2'>

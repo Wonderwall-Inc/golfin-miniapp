@@ -19,7 +19,7 @@ import DemoEarn from './pages/DemoEarnPage/DemoEarn'
 const App = () => {
 
   useEffect(() => {
-    if (process.env.env == 'test') {
+    if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
       const initDataRaw = new URLSearchParams(testInitDataRaw).toString();
       mockTelegramEnv({
         themeParams: {
@@ -43,7 +43,7 @@ const App = () => {
         platform: 'tdesktop',
       });
     }
-  }, [process.env.env])
+  }, [import.meta.env.VITE_MINI_APP_ENV])
 
   const utils = initUtils()
   const location = useLocation()
@@ -80,7 +80,7 @@ const App = () => {
   };
 
 
-  process.env.env !== 'test' && WebApp.BackButton.onClick(navigateToHome)
+  import.meta.env.VITE_MINI_APP_ENV !== 'test' && WebApp.BackButton.onClick(navigateToHome)
 
   return (
     <>
@@ -98,8 +98,8 @@ const App = () => {
               <Routes>
                 <Route path='/' element={<DemoEarn />} />
                 <Route path='/ranking' element={<DemoRanking />} />
-                <Route path='/links' element={<DemoLinks />} />
-                <Route path='/links2' element={<Links utils={utils} />} />
+                <Route path='/links' element={<DemoLinks utils={utils} />} />
+                {/* <Route path='/links2' element={<Links utils={utils} />} /> */}
                 {/* <Route path='/' element={<Home />} />
               <Route path='/links' element={<Links utils={utils} />} />
               <Route path='/ranking' element={<Ranking />} />

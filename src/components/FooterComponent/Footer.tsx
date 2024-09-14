@@ -19,7 +19,7 @@ const Footer = () => {
                                 {nav.label == 'Demo Home' && <EarnIcon color={`${location.pathname == nav.url ? '#8cc73e' : 'white'}`} />}
                                 {/* {nav.label == 'Ranking' && <RankingIcon color={`${location.pathname == nav.url ? '#8cc73e' : 'white'}`} />} */}
                                 {nav.label == 'Demo Ranking' && <RankingIcon color={`${location.pathname == nav.url ? '#8cc73e' : 'white'}`} />}
-                                {nav.label == 'Links' && <LinkIcon color={`${location.pathname == nav.url ? '#8cc73e' : 'white'}`} />}
+                                {/* {nav.label == 'Links' && <LinkIcon color={`${location.pathname == nav.url ? '#8cc73e' : 'white'}`} />} */}
                                 {nav.label == 'Demo Links' && <LinkIcon color={`${location.pathname == nav.url ? '#8cc73e' : 'white'}`} />}
                             </Link>
                         </div>
