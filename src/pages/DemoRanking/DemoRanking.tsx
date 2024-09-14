@@ -36,6 +36,7 @@ const DemoRanking = () => {
 
                     {activeTab === 'tab-1' && <>
                         <div className='h-[300px]
+                        w-[343px]
                         overflow-y-scroll 
                         sm:h-[300px] 
                         md:h-[460px] 
@@ -74,6 +75,7 @@ const DemoRanking = () => {
                     }
                     {activeTab === 'tab-2' && <>
                         <div className='h-[300px]
+                        w-[343px]
                         overflow-y-scroll 
                         sm:h-[300px] 
                         md:h-[460px] 
