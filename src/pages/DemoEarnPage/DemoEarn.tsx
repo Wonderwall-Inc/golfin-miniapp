@@ -8,6 +8,7 @@ import { Progress } from "@/components/ui/progress"
 
 import DemoTitle from '@/components/DemoTitleComponent/DemoTitle'
 
+
 const MINI_APP_BOT_NAME = import.meta.env.VITE_MINI_APP_BOT_NAME
 const MINI_APP_NAME = import.meta.env.VITE_MINI_APP_NAME
 const MINI_APP_APP = `https://t.me/${MINI_APP_BOT_NAME}/${MINI_APP_NAME}/start?startapp=test`
@@ -47,13 +48,10 @@ const DemoEarn = () => {
     }, [new Date().getDay()])
 
     console.log(weeklyCount);
+    console.dir(account);
 
     return (
         <div className='w-[100%] h-[690px]'>
-            <img src={GolfinTitle}
-                width={150}
-                height={150}
-                className='mx-auto py-10 sm:py-10 md:py-15' />
             <DemoEarnComponent timeLeft={timeLeft} dailyReward={dailyReward} setDailyReward={setDailyReward} MINI_APP_APP={MINI_APP_APP} />
             <DemoBonusComponent weeklyCount={weeklyCount} referralCount={referralCount} />
 
@@ -108,7 +106,7 @@ const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, MINI_APP_APP
 
 const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward }) => {
     return (
-        <div className={`h-[100px] ${dailyReward == true && 'cursor-not-allowed'}`}
+        <div className={`h-[100px] cursor-pointer`}
             onClick={() => setDailyReward(false)}>
             <div className='text-center w-[100%] h-[80px]'>
                 <div className={`relative 

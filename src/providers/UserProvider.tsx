@@ -14,6 +14,16 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
     const webappStartParam = WebApp.initDataUnsafe.start_param
 
     useEffect(() => {
+        if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
+            if (mockUserAccount.name !== undefined && mockUserAccount.point !== undefined && mockUserAccount.referral !== undefined) {
+                setAccount({
+                    name: mockUserAccount.name,
+                    point: mockUserAccount.point,
+                    referral: mockUserAccount.referral,
+                })
+            }
+        }
+
         const userCreation = async (userCreatePayload: UserCreateRequestType) => {
             try {
                 const newUser = await createUser(userCreatePayload)
@@ -24,21 +34,12 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                     setAccount(user_base)
                     // setUser(userPayload)
                 }
-                return
             } catch (error) {
                 console.log(error);
                 return error
             }
         }
-        if (process.env.env == 'test') {
-            if (mockUserAccount.name !== undefined && mockUserAccount.point !== undefined && mockUserAccount.referral !== undefined) {
-                setAccount({
-                    name: mockUserAccount.name,
-                    point: mockUserAccount.point,
-                    referral: mockUserAccount.referral,
-                })
-            }
-        }
+
 
         if (webappUser && `${webappUser?.id}` == webappStartParam) {
             window.alert('Same ID')
@@ -79,7 +80,7 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
 
             })
         }
-    }, [])
+    }, [import.meta.env.VITE_MINI_APP_ENV])
     return (
         <UserContext.Provider value={{
             account,

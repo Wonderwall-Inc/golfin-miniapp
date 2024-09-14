@@ -1,10 +1,7 @@
-import React, { useEffect } from 'react'
 import Title from '../components/titleComponent/title'
 import { Page } from 'konsta/react'
 import { socialMediaLinks } from '../constants'
-import { initUtils, Utils } from '@telegram-apps/sdk';
-import { useLocation, useNavigate } from 'react-router-dom';
-
+import { Utils } from '@telegram-apps/sdk';
 
 interface LinkPageProp {
   utils?: Utils
@@ -24,7 +21,8 @@ const Links = ({ utils }: LinkPageProp) => {
                     `justify-center items-center text-start cursor-pointer pt-5` :
                     `justify-center text-start items-center cursor-pointer`} `}
                   onClick={() => {
-                    if (process.env.env == 'test') {
+                    window.alert('click')
+                    if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
                       window.open(socialMedia.url, '_blank')
                     }
                     else {
