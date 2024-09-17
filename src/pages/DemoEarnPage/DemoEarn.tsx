@@ -5,6 +5,7 @@ import { useUserContext } from '../../contexts/UserContext'
 import WebApp from '@twa-dev/sdk'
 import { Progress } from "@/components/ui/progress"
 import { usePointContext } from '@/contexts/PointContext'
+import { updatePoint } from '@/apis/PointServices'
 
 const MINI_APP_BOT_NAME = import.meta.env.VITE_MINI_APP_BOT_NAME
 const MINI_APP_NAME = import.meta.env.VITE_MINI_APP_NAME
@@ -45,23 +46,38 @@ const DemoEarn = () => {
 
     return (
         <div className='w-[100%] h-[690px]'>
-            <DemoEarnComponent timeLeft={timeLeft} dailyReward={dailyReward} setDailyReward={setDailyReward} MINI_APP_APP={MINI_APP_APP} point={point} />
-            <DemoBonusComponent weeklyCount={weeklyCount} referralCount={referralCount} />
+            <DemoEarnComponent
+                timeLeft={timeLeft}
+                dailyReward={dailyReward}
+                setDailyReward={setDailyReward}
+                MINI_APP_APP={MINI_APP_APP}
+                point={point}
+                setPoint={setPoint}
+                account={account} />
+            <DemoBonusComponent
+                weeklyCount={weeklyCount} r
+                eferralCount={referralCount} />
         </div>
     )
 }
 
-const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, MINI_APP_APP, point }) => {
+const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, MINI_APP_APP, point, setPoint, account }) => {
     return (
         <>
             <div className="w-[343px] h-[85px] sm:h-[95px] md:h-[105px] bg-[#ffffff33] rounded-lg flex justify-center content-center items-center mx-auto">
                 <img className="w-[53px] h-[54px]" alt="Layer" src={CoinIcon} />
                 <div className="w-[200px] text-white font-semibold [font-family:'Rubik-Medium',Helvetica]text-[#ffef2b] text-[28px] tracking-[0.38px]">{/* {(599200999).toLocaleString()} */}
-                    {(point.toLocaleString())}
+                    {point > 0 ? 0 : (point.toLocaleString())}
                 </div>
             </div>
             <div className='flex justify-center justify-items-center mx-5 sm:mx-5 md:mx-6 pt-3 sm:pt-3  space-x-5'>
-                <DemoDailyRewardComponent timeLeft={timeLeft} dailyReward={dailyReward} setDailyReward={setDailyReward} />
+                <DemoDailyRewardComponent
+                    timeLeft={timeLeft}
+                    dailyReward={dailyReward}
+                    setDailyReward={setDailyReward}
+                    point={point}
+                    setPoint={setPoint}
+                    account={account} />
                 <DemoReferralComponent MINI_APP_APP={MINI_APP_APP} />
             </div>
         </>
@@ -69,10 +85,31 @@ const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, MINI_APP_APP
 }
 
 
-const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward }) => {
+const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, point, setPoint, account }) => {
+    const handleCheckInDailyReward = async () => {
+        const updatePointPayload = {
+            id: account?.id,
+            type: 'add', // REVIEW: add / minus point
+            access_token: '',
+            point_payload: {
+                amount: 2,
+                // extra_profit_per_hour: optional
+            }
+        }
+        const dbPoint = await updatePoint(updatePointPayload)
+        setPoint({
+            id: dbPoint?.point_base.user_id,
+            amount: dbPoint?.point_base.point.amount,
+            extra_profit_per_hour: dbPoint?.point_base.point.extra_profit_per_hour,
+            created_at: dbPoint?.point_base.point.created_at,
+            updated_at: dbPoint?.point_base.point.updated_at,
+            custom_logs: dbPoint?.point_base.point.custom_logs
+        })
+        setDailyReward(false)
+    }
     return (
         <div className={`h-[100px] cursor-pointer`}
-            onClick={() => setDailyReward(false)}>
+            onClick={() => handleCheckInDailyReward()}>
             <div className='text-center w-[100%] h-[80px]'>
                 <div className={`relative w-[160px] h-14 rounded-[6px_6px_0px_0px] 
                 ${dailyReward == true ? "[background:linear-gradient(180deg,rgb(169,231,29)_0%,rgb(94.04,196.56,89.27)_100%)]" :
