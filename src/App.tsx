@@ -2,10 +2,6 @@ import './App.css'
 import Footer from './components/FooterComponent/Footer'
 import { useEffect, useState } from 'react'
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
-// import Home from './pages/HomePage/Home'
-import Links from './pages/Links'
-// import Ranking from './pages/RankingPage/Ranking'
-// import Earns from './pages/Earns'
 import { initUtils, mockTelegramEnv, parseInitData } from '@telegram-apps/sdk'
 import WebApp from '@twa-dev/sdk'
 import { ClipLoader } from 'react-spinners'
@@ -16,11 +12,11 @@ import { testInitDataRaw } from './constants'
 import Background from './components/BackgroundComponent/Background'
 import DemoEarn from './pages/DemoEarnPage/DemoEarn'
 import DemoTitle from './components/DemoTitleComponent/DemoTitle'
-import api from './apis/api'
 import axios from 'axios'
+import DemoUser from './pages/DemoUserPage/DemoUser'
+import { useUserContext } from './contexts/UserContext'
 
 const App = () => {
-
   useEffect(() => {
     if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
       const initDataRaw = new URLSearchParams(testInitDataRaw).toString();
@@ -53,22 +49,13 @@ const App = () => {
 
 
   const navigate = useNavigate()
-  let [isLoading, setIsLoading] = useState(false)
-  const [mockData, setMockData] = useState('')
+  const { isWaitingUser, setIsWaitingUser, account } = useUserContext()
 
   const setHelloHandler = async () => {
     const res = await axios.get('https://golfin-miniapp-server-dev.vercel.app/')
     console.log('response on server', res.status)
   }
 
-  useEffect(() => {
-
-    if (mockData == '') {
-      setIsLoading(true)
-      setHelloHandler()
-      setIsLoading(false)
-    }
-  }, [mockData])
 
   useEffect(() => {
     if (location.pathname == '/') {
@@ -88,14 +75,13 @@ const App = () => {
   return (
     <>
       {
-        isLoading ?
+        isWaitingUser ?
           <div className='bg-gray-500 opacity-20 w-[390px] h-[700px]'>
             <ClipLoader
-              loading={isLoading}
+              loading={isWaitingUser}
               size={200}
               className='absolute top-[30%] left-[25%]' />
           </div> :
-
           <div className='app-container'>
             <Background>
               <DemoTitle titlename={`${location.pathname == '/' ? 'EARN' : location.pathname.split('/')[1].toUpperCase()}`} />
@@ -103,11 +89,7 @@ const App = () => {
                 <Route path='/' element={<DemoEarn />} />
                 <Route path='/ranking' element={<DemoRanking />} />
                 <Route path='/links' element={<DemoLinks utils={utils} />} />
-                {/* <Route path='/links2' element={<Links utils={utils} />} /> */}
-                {/* <Route path='/' element={<Home />} />
-              <Route path='/links' element={<Links utils={utils} />} />
-              <Route path='/ranking' element={<Ranking />} />
-              <Route path='/earns' element={<Earns />} /> */}
+                <Route path='/user' element={<DemoUser />} />
               </Routes>
             </Background>
             <Footer />

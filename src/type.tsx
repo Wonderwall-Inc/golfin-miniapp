@@ -18,6 +18,8 @@ export interface AccountType {
 export interface UserContextType {
     account: undefined | UserType
     setAccount: Dispatch<SetStateAction<undefined | UserType>>
+    isWaitingUser: undefined | boolean
+    setIsWaitingUser: Dispatch<SetStateAction<boolean>>
 }
 
 
@@ -46,7 +48,8 @@ export interface UserTelegramInfoType {
     token_balance: number
     is_premium: boolean
     wallet_address?: string
-    chat_id: string
+    chat_id: string,
+    start_param?: string
 
 }
 

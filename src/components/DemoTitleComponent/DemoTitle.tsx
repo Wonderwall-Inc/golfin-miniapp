@@ -1,15 +1,20 @@
 import UpperFlag from '../../assets/icons/UpperFlag.svg'
 import LowerFlag from '../../assets/icons/LowerFlag.svg'
 import GolfinTitle from '../../assets/images/02_earn_logo.png'
+import { useNavigate } from 'react-router-dom'
 
 interface DemoTitleProps {
     titlename: string,
     style?: string
 }
 const DemoTitle = ({ titlename, style }: DemoTitleProps) => {
+
+    const nav = useNavigate()
     return (
         <>
-            <img src={GolfinTitle} width={150} height={150} className='mx-auto py-10 sm:py-10 md:py-15' />
+            <div onClick={() => nav('/user')}>
+                <img src={GolfinTitle} width={150} height={150} className='mx-auto py-10 sm:py-10 md:py-15' />
+            </div>
 
             <div className="relative h-[49px] w-[393px] mx-auto">
                 <div className="h-[3px] 
@@ -42,8 +47,8 @@ const DemoTitle = ({ titlename, style }: DemoTitleProps) => {
                     {titlename}
 
                 </div>
-            </div>
 
+            </div>
         </>
     )
 }

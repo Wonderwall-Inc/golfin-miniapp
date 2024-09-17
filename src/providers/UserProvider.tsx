@@ -1,40 +1,59 @@
 import React, { useEffect, useState } from 'react'
 import WebApp from '@twa-dev/sdk';
-
-import { mockUserAccount } from '../constants';
 import { UserContext } from '../contexts/UserContext';
-import { AccountType, UserCreateRequestType, UserType } from '../type';
-import { createUser } from '@/apis/UserSevices';
-import axios from 'axios';
-
-
+import { UserCreateRequestType, UserCreateResponseType, UserRetrievalRequestType, UserRetrievalResponseType, UserType } from '../type';
+import { createUser, getUser } from '@/apis/UserSevices';
 
 export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const [account, setAccount] = useState<UserType | undefined>();
+    const [isWaitingUser, setIsWaitingUser] = useState(false)
     const webappUser = WebApp.initDataUnsafe.user
-    console.log(webappUser);
-
     const webappStartParam = WebApp.initDataUnsafe.start_param
-    console.log(webappStartParam);
 
-    const userCreation = async (userCreatePayload: UserCreateRequestType) => {
-        const res = await axios.get('https://golfin-miniapp-server-dev.vercel.app/')
-        console.log('response on server for provider', res.status)
-        try {
-            const newUser = await createUser(userCreatePayload)
-            if (newUser !== undefined) {
-                const { user_details, access_token } = newUser
-                const { user_base, game_characters, point, activity, social_media, sender, receiver } = user_details
-
-                setAccount(user_base)
-                // setUser(userPayload)
-            }
-        } catch (error) {
-            console.log(error);
-            return error
-        }
-    }
     useEffect(() => {
+        const userRetrieval = async (userRetirevalPayload: UserRetrievalRequestType): Promise<UserRetrievalResponseType | undefined> => {
+            try {
+                const existingUser = await getUser(userRetirevalPayload)
+                if (existingUser !== undefined) {
+                    // const { user_details } = existingUser
+                    // const { user_base, game_characters, point, activity, social_media, sender, receiver } = user_details
+                    return existingUser
+                }
+                /* else {
+                        try {
+                            if (userCreatePayload)
+                                const newUser = await createUser(userCreatePayload)
+                            if (newUser !== undefined) {
+                                const { user_details, access_token } = newUser
+                                const { user_base, game_characters, point, activity, social_media, sender, receiver } = user_details
+
+                                setAccount(user_base)
+                            }
+                        } catch (error) {
+                            console.log(error);
+                            return error
+                        }
+                    } */
+            } catch (error) {
+                console.error(error);
+                return undefined
+            }
+        }
+        const userCreation = async (userCreatePayload: UserCreateRequestType): Promise<UserCreateResponseType | undefined> => {
+            try {
+                const newUser = await createUser(userCreatePayload)
+                if (newUser !== undefined) {
+                    return newUser
+                    // const { user_details, access_token } = newUser
+                    // const { user_base, game_characters, point, activity, social_media, sender, receiver } = user_details
+
+                    // setAccount(user_base)
+                }
+            } catch (error) {
+                console.error(error);
+                return undefined
+            }
+        }
         if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
             const mockAccount = {
                 id: 1,
@@ -65,53 +84,74 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
             setAccount(mockAccount)
         }
 
-
-        if (webappUser && `${webappUser?.id}` == webappStartParam) {
-            window.alert('Same ID')
-            WebApp.close()
-        }
+        console.log('provider');
         console.log(webappUser);
         console.log(webappStartParam);
 
-        if (webappUser?.id !== undefined && webappStartParam !== undefined) {
-            console.log('userInfoPayload');
+        // CHECK IF HAVING ID
+        if (webappUser?.id !== undefined) {
+            setIsWaitingUser(true)
+            // CHECK IF ID == START PARAM >>> BAN
+            if (`${webappUser?.id}` == webappStartParam) {
+                window.alert('Same ID')
+                WebApp.close()
+            }
+
             const { id, username, first_name, last_name, is_premium, is_bot, language_code } = webappUser
 
+            // CHECK IF THE ACC IS BOT >>> BAN
             if (is_bot) {
                 WebApp.close()
             }
 
-            console.log('userInfoPayload if');
-            userCreation({
-                app_info: {
-                    is_active: true,
-                    is_admin: false,
-                    skin: []
-                },
-                personal_info: {
-                    location: "Japan", // FIXME: change it by form later, with ENUM
-                    nationality: "Japanese" // FIXME: change it by form later, with ENUM
-                    // age?: number
-                    // gender?: string
-                    // email?: string
-                },
-                telegram_info: {
-                    username: username!,
-                    telegram_id: id.toString(),
-                    token_balance: 0,
-                    is_premium: is_premium!,
-                    chat_id: '123' // FIXME: change it by getting the chat id from tg bot later on
-                    // wallet_address?: string
-                    // chat_id: string
+            userRetrieval({
+                access_token: '111', // FIXME: read from cookie
+                telegram_id: `${id}`
+            }).then((existingUser) => {
+                if (existingUser !== undefined) {
+                    setAccount(existingUser.user_details.user_base)
+                    setIsWaitingUser(false)
+                } else {
+                    // CREATE NEW USER
+                    userCreation({
+                        app_info: {
+                            is_active: true,
+                            is_admin: false,
+                            skin: []
+                        },
+                        personal_info: {
+                            location: "Japan", // FIXME: change it by form later, with ENUM
+                            nationality: "Japanese" // FIXME: change it by form later, with ENUM
+                            // age?: number
+                            // gender?: string
+                            // email?: string
+                        },
+                        telegram_info: {
+                            start_param: webappStartParam,
+                            username: username!,
+                            telegram_id: id.toString(),
+                            token_balance: 0,
+                            is_premium: is_premium!,
+                            chat_id: '123' // FIXME: change it by getting the chat id from tg bot later on
+                            // wallet_address?: string // FIXME: integrate the TON wallet later on
+                        }
+                    }).then((newUser) => {
+                        if (newUser !== undefined) {
+                            setAccount(newUser.user_details.user_base)
+                            setIsWaitingUser(false)
+                        }
+                    })
                 }
-
             })
         }
     }, [webappUser, webappStartParam])
+
     return (
         <UserContext.Provider value={{
             account,
-            setAccount
+            setAccount,
+            isWaitingUser,
+            setIsWaitingUser
         }}>
             {children}
         </UserContext.Provider>
