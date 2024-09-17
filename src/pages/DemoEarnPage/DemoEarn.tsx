@@ -121,7 +121,7 @@ const DemoDailyRewardComponent = ({
 
 
     useEffect(() => {
-        if (activity?.logged_in == true) {
+        if (activity?.logged_in == false) {
             setAllowed(false)
         }
     }, [activity?.logged_in])
