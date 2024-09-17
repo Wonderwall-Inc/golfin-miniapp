@@ -41,7 +41,7 @@ export const PointProvider: React.FC<React.PropsWithChildren> = ({ children }) =
             setIsWaitingPoint(true)
             const mockPoint = {
                 id: 1,
-                amount: 1,
+                amount: 0,
                 extra_profit_per_hour: 1,
                 created_at: '20240917',
                 updated_at: '20240917',

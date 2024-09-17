@@ -14,6 +14,7 @@ const MINI_APP_APP = `https://t.me/${MINI_APP_BOT_NAME}/${MINI_APP_NAME}/start?s
 const DemoEarn = () => {
     const { account, setAccount } = useUserContext()
     const { point, setPoint } = usePointContext()
+
     const [dailyReward, setDailyReward] = useState(true)
     const [timeLeft, setTimeLeft] = useState("")
     let [isHomeLoading, setIsHomeLoading] = useState(false)
@@ -43,6 +44,8 @@ const DemoEarn = () => {
 
     console.log(weeklyCount);
     console.dir(account);
+    console.log(point);
+
 
     return (
         <div className='w-[100%] h-[690px]'>
@@ -67,7 +70,7 @@ const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, MINI_APP_APP
             <div className="w-[343px] h-[85px] sm:h-[95px] md:h-[105px] bg-[#ffffff33] rounded-lg flex justify-center content-center items-center mx-auto">
                 <img className="w-[53px] h-[54px]" alt="Layer" src={CoinIcon} />
                 <div className="w-[200px] text-white font-semibold [font-family:'Rubik-Medium',Helvetica]text-[#ffef2b] text-[28px] tracking-[0.38px]">
-                    {point > 0 ? 0 : ((point).toLocaleString())}
+                    {point && point.amount > 0 ? point.amount.toLocaleString() : 0}
                 </div>
             </div>
             <div className='flex justify-center justify-items-center mx-5 sm:mx-5 md:mx-6 pt-3 sm:pt-3  space-x-5'>
