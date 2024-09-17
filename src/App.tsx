@@ -44,10 +44,19 @@ const App = () => {
 
   const utils = initUtils()
   const location = useLocation()
-
+  const [isWaiting, setIsWaiting] = useState(false)
   const navigate = useNavigate()
   const { isWaitingUser, setIsWaitingUser, account } = useUserContext()
   const { isWaitingPoint, setIsWaitingPoint, point } = usePointContext()
+
+  useEffect(() => {
+    if (isWaitingUser == true || isWaitingPoint == true) {
+      setIsWaiting(true)
+    } else {
+      setIsWaiting(false)
+    }
+  }, [isWaitingUser, isWaitingPoint])
+
 
   useEffect(() => {
     location.pathname == '/' ? WebApp.BackButton.hide() : WebApp.BackButton.show()
@@ -64,7 +73,7 @@ const App = () => {
   return (
     <>
       {
-        isWaitingUser || isWaitingPoint ? //FIXME
+        isWaitingUser ? //FIXME
           <div className='bg-gray-500 opacity-10 w-[390px] h-[700px]'>
             <ClipLoader
               loading={isWaitingUser}

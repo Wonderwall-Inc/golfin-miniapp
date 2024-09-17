@@ -18,6 +18,14 @@ const DemoUser = () => {
                     <div>amount: {point?.amount}</div>
                     <div>extra_profit_per_hour: {point?.extra_profit_per_hour}</div>
                 </div>
+                <div>
+                    <div>activity</div>
+                    <div>is logged in: {point?.id}</div>
+                    <div>login_streak: {point?.amount}</div>
+                    <div>total_logins: {point?.extra_profit_per_hour}</div>
+                    <div>last_action_time: {point?.extra_profit_per_hour}</div>
+                    <div>last_login_time: {point?.extra_profit_per_hour}</div>
+                </div>
             </div>
         </div>
     )

@@ -31,6 +31,12 @@ export interface PointContextType {
     setIsWaitingPoint: Dispatch<SetStateAction<boolean>>
 }
 
+export interface ActivityContextType {
+    activity: undefined | ActivityType
+    setActivity: Dispatch<SetStateAction<undefined | ActivityType>>
+    isWaitingActivity: boolean
+    setIsWaitingActivity: Dispatch<SetStateAction<boolean>>
+}
 
 
 // USER
@@ -424,7 +430,7 @@ export interface ActivityDetailType {
 }
 
 export interface ActivityRetrievalRequestType {
-    id: number
+    id?: number
     access_token: string
     user_id?: number
 }

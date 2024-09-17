@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import WebApp from '@twa-dev/sdk';
 import { PointCreateRequestType, PointType, } from '../type';
-import { createPoint, getPoint, updatePoint } from '@/apis/PointServices';
+import { createPoint, getPoint } from '@/apis/PointServices';
 import { useUserContext } from '@/contexts/UserContext';
 import { PointContext } from '@/contexts/PointContext';
 
@@ -17,7 +17,7 @@ export const PointProvider: React.FC<React.PropsWithChildren> = ({ children }) =
         const pointCreation = async (pointCreatePayload: PointCreateRequestType) => {
             try {
                 const newpoint = await createPoint(pointCreatePayload)
-                if (newpoint !== undefined) {
+                if (newpoint) {
                     setPoint(newpoint.point_base.point)
                     setIsWaitingPoint(false)
                     return newpoint
@@ -62,7 +62,6 @@ export const PointProvider: React.FC<React.PropsWithChildren> = ({ children }) =
                         extra_profit_per_hour: 1,
                     }
                 }
-
                 pointCreation(payload)
             }
 
