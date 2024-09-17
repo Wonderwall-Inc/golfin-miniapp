@@ -35,7 +35,7 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                         }
                     } */
             } catch (error) {
-                console.error(error);
+                console.log(error);
                 return undefined
             }
         }
@@ -111,36 +111,42 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                 if (existingUser !== undefined) {
                     setAccount(existingUser.user_details.user_base)
                     setIsWaitingUser(false)
+                    return 
                 } else {
                     // CREATE NEW USER
-                    userCreation({
-                        app_info: {
-                            is_active: true,
-                            is_admin: false,
-                            skin: []
-                        },
-                        personal_info: {
-                            location: "Japan", // FIXME: change it by form later, with ENUM
-                            nationality: "Japanese" // FIXME: change it by form later, with ENUM
-                            // age?: number
-                            // gender?: string
-                            // email?: string
-                        },
-                        telegram_info: {
-                            start_param: webappStartParam,
-                            username: username!,
-                            telegram_id: id.toString(),
-                            token_balance: 0,
-                            is_premium: is_premium!,
-                            chat_id: '123' // FIXME: change it by getting the chat id from tg bot later on
+                    if (username && is_premium) {
+
+                        userCreation({
+                            app_info: {
+                                is_active: true,
+                                is_admin: false,
+                                skin: []
+                            },
+                            personal_info: {
+                                location: "Japan", // FIXME: change it by form later, with ENUM
+                                nationality: "Japanese" // FIXME: change it by form later, with ENUM
+                                // age?: number
+                                // gender?: string
+                                // email?: string
+                            },
+
+                            telegram_info: {
+                                username: username,
+                                telegram_id: id.toString(),
+                                token_balance: 0,
+                                is_premium: is_premium!,
+                                chat_id: '123', // FIXME: change it by getting the chat id from tg bot later on
+                                start_param: webappStartParam,
+                            }
                             // wallet_address?: string // FIXME: integrate the TON wallet later on
-                        }
-                    }).then((newUser) => {
-                        if (newUser !== undefined) {
-                            setAccount(newUser.user_details.user_base)
-                            setIsWaitingUser(false)
-                        }
-                    })
+                        }).then((newUser) => {
+                            if (newUser !== undefined) {
+                                setAccount(newUser.user_details.user_base)
+                                setIsWaitingUser(false)
+                                return
+                            }
+                        })
+                    }
                 }
             })
         }
