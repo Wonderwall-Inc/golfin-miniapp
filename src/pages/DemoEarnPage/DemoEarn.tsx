@@ -18,6 +18,7 @@ const DemoEarn = () => {
     const { account, setAccount } = useUserContext()
     const { point, setPoint } = usePointContext()
     const { activity, setActivity } = useActivityContext()
+    // const { friend, setFriend } = useFriendContext()
 
     const [dailyReward, setDailyReward] = useState(true)
     const [timeLeft, setTimeLeft] = useState("")
@@ -133,11 +134,18 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, point
         })
         if (existingActivity) {
             const todayDay = new Date()
-            const todayYY = todayDay.getFullYear()
-            const todayMM = todayDay.getUTCMonth() + 1
-            const preTodayMM = todayMM < 10 ? `0${todayMM}` : todayMM
-            const currentTIme = todayDay.getTime()
-            const todayDD = todayDay.getDate() + 1
+            // const todayYY = todayDay.getFullYear()
+            // const todayMM = todayDay.getUTCMonth() + 1
+            // const preTodayMM = todayMM < 10 ? `0${todayMM}` : todayMM
+            // const currentTIme = todayDay.getTime()
+            // const todayDD = todayDay.getDate() + 1
+
+            const formattedTime = todayDay.toLocaleString('en-US', {
+                hour12: false, // Use 24-hour format
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric',
+            });
             const updateActivityPayload = {
                 id: existingActivity?.activity.id,
                 access_token: '',
@@ -146,8 +154,8 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, point
                     logged_in: true,
                     login_streak: existingActivity.activity.login_streak += 1,
                     total_logins: existingActivity.activity.total_logins += 1,
-                    last_action_time: `${todayYY}-${preTodayMM}-${todayDD}T${currentTIme}`,
-                    last_login_time: `${todayYY}-${preTodayMM}-${todayDD}T${currentTIme}`,
+                    last_action_time: formattedTime,
+                    last_login_time: formattedTime
                 }
             }
             const dbActivity = await updateActivity(updateActivityPayload)
