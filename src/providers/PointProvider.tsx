@@ -38,32 +38,16 @@ export const PointProvider: React.FC<React.PropsWithChildren> = ({ children }) =
             }
         }
         if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
+            setIsWaitingPoint(true)
             const mockPoint = {
                 id: 1,
                 amount: 1,
                 extra_profit_per_hour: 1,
                 created_at: '20240917',
                 updated_at: '20240917',
-                // app_info: {
-                //     active: true,
-                //     admin: false,
-                //     skin: []
-                // },
-                // personal_info: {
-                //     location: "Japan", // FIXME: change it by form later, with ENUM
-                //     nationality: "Japanese" // FIXME: change it by form later, with ENUM
-                // },
-                // telegram_info: {
-                //     pointname: 'dev',
-                //     telegram_id: '11111111',
-                //     token_balance: 0,
-                //     premium: true,
-                //     chat_id: '123' // FIXME: change it by getting the chat id from tg bot later on
-                // },
-                // created_at: '20240917',
-                // updated_at: '20240917',
             }
             setPoint(mockPoint)
+            setIsWaitingPoint(false)
         }
         else {
             setIsWaitingPoint(true)
