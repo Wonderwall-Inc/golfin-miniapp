@@ -15,12 +15,22 @@ export interface AccountType {
     custom_logs?: object
 }
 
+
+// CONTEXT 
 export interface UserContextType {
     account: undefined | UserType
     setAccount: Dispatch<SetStateAction<undefined | UserType>>
     isWaitingUser: boolean
     setIsWaitingUser: Dispatch<SetStateAction<boolean>>
 }
+
+export interface PointContextType {
+    point: undefined | PointDetailsType
+    setPoint: Dispatch<SetStateAction<undefined | PointDetailsType>>
+    isWaitingPoint: boolean
+    setIsWaitingPoint: Dispatch<SetStateAction<boolean>>
+}
+
 
 
 // USER
@@ -336,7 +346,7 @@ export interface PointRetrievalResponseType {
 
 export interface PointUpdateByIdRequestType {
     id: number
-    type: string
+    type: string // REVIEW: add / drop point
     access_token: string
     point_payload?: PointCreateDetailsType
 }

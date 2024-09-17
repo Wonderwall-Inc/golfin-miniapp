@@ -41,7 +41,6 @@ const App = () => {
     });
   }
 
-
   const utils = initUtils()
   const location = useLocation()
 
@@ -49,11 +48,7 @@ const App = () => {
   const { isWaitingUser, setIsWaitingUser, account } = useUserContext()
 
   useEffect(() => {
-    if (location.pathname == '/') {
-      WebApp.BackButton.hide()
-    } else {
-      WebApp.BackButton.show()
-    }
+    location.pathname == '/' ? WebApp.BackButton.hide() : WebApp.BackButton.show()
   }, [location])
 
   const navigateToHome = () => {
@@ -61,17 +56,17 @@ const App = () => {
   };
 
   console.log(WebApp.initDataUnsafe.user);
-  
+
   import.meta.env.VITE_MINI_APP_ENV !== 'test' && WebApp.BackButton.onClick(navigateToHome)
 
   return (
     <>
       {
         isWaitingUser ?
-          <div className='bg-gray-500 opacity-20 w-[390px] h-[700px]'>
+          <div className='bg-gray-500 opacity-10 w-[390px] h-[700px]'>
             <ClipLoader
               loading={isWaitingUser}
-              size={200}
+              size={100}
               className='absolute top-[30%] left-[25%]' />
           </div> :
           <div className='app-container'>

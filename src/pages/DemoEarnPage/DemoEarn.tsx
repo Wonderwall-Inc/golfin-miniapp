@@ -18,13 +18,8 @@ const DemoEarn = () => {
     const [weeklyCount, setWeeklyCount] = useState(0)
     const [referralCount, setReferralCount] = useState(0)
 
-
     useEffect(() => {
-        if (timeLeft == '') {
-            setIsHomeLoading(true)
-        } else {
-            setIsHomeLoading(false)
-        }
+        timeLeft == '' ? setIsHomeLoading(true) : setIsHomeLoading(false)
     }, [timeLeft])
 
     useEffect(() => {

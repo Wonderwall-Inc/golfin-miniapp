@@ -20,7 +20,7 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                     return newUser
                 } else {
                     const existingUser = await getUser({
-                        access_token: '', // FIXME: auth later
+                        access_token: '',
                         telegram_id: `${userCreatePayload.telegram_info.telegram_id}`
                     })
                     if (existingUser) {
@@ -90,16 +90,20 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                         telegram_id: id.toString(),
                         token_balance: 0,
                         premium: true,
-                        chat_id: '123', // FIXME: check it by bot?
+                        chat_id: '123',
                         start_param: webappStartParam,
                     } : {
                         username: username,
                         telegram_id: id.toString(),
                         token_balance: 0,
                         premium: false,
-                        chat_id: '123', // FIXME: check it by bot?
+                        chat_id: '123',
                         start_param: webappStartParam,
                     }
+
+                    console.log('telegram_info');
+                    console.log(telegram_info);
+
                     const payload = {
                         app_info: app_info,
                         personal_info: personal_info,
