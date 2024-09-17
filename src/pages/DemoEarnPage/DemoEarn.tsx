@@ -132,6 +132,12 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, point
             user_id: account?.id,
         })
         if (existingActivity) {
+            const todayDay = new Date()
+            const todayYY = todayDay.getFullYear()
+            const todayMM = todayDay.getUTCMonth() + 1
+            const preTodayMM = todayMM < 10 ? `0${todayMM}` : todayMM
+            const currentTIme = todayDay.getTime()
+            const todayDD = todayDay.getDate() + 1
             const updateActivityPayload = {
                 id: existingActivity?.activity.id,
                 access_token: '',
@@ -140,8 +146,8 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, point
                     logged_in: true,
                     login_streak: existingActivity.activity.login_streak += 1,
                     total_logins: existingActivity.activity.total_logins += 1,
-                    last_action_time: `${new Date().toLocaleString()}`,
-                    last_login_time: `${new Date().toLocaleString()}`,
+                    last_action_time: `${todayYY}-${preTodayMM}-${todayDD}T${currentTIme}`,
+                    last_login_time: `${todayYY}-${preTodayMM}-${todayDD}T${currentTIme}`,
                 }
             }
             const dbActivity = await updateActivity(updateActivityPayload)
@@ -162,7 +168,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, point
     }
     return (
         <div className={`h-[100px] cursor-pointer`}
-            onClick={() => {
+            onClick={() => { // FIXME: add daily check in boolean field on each day on backend table 
                 handleCheckInDailyReward()
                 setDailyReward(false)
             }}>
