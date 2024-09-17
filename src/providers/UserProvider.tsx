@@ -111,10 +111,10 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                 if (existingUser !== undefined) {
                     setAccount(existingUser.user_details.user_base)
                     setIsWaitingUser(false)
-                    return 
+                    return
                 } else {
                     // CREATE NEW USER
-                    if (username && is_premium) {
+                    if (username) {
 
                         userCreation({
                             app_info: {
@@ -134,7 +134,7 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                                 username: username,
                                 telegram_id: id.toString(),
                                 token_balance: 0,
-                                is_premium: is_premium!,
+                                is_premium: is_premium == true ? true : false,
                                 chat_id: '123', // FIXME: change it by getting the chat id from tg bot later on
                                 start_param: webappStartParam,
                             }
