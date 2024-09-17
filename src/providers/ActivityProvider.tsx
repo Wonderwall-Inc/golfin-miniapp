@@ -8,7 +8,7 @@ import { createActivity, getActivity } from "@/apis/ActivityServices";
 export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const [activity, setActivity] = useState<ActivityBaseType | undefined>();
     const [isWaitingActivity, setIsWaitingActivity] = useState(false)
-
+    const [isTodayCheckIn, setIsTodayCheckIn] = useState(false)
     const { account } = useUserContext()
 
     useEffect(() => {
@@ -71,6 +71,8 @@ export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }
             setActivity,
             isWaitingActivity,
             setIsWaitingActivity,
+            isTodayCheckIn,
+            setIsTodayCheckIn
         }}>
             {children}
         </ActivityContext.Provider>

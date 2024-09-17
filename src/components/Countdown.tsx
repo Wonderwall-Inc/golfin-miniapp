@@ -1,3 +1,4 @@
+import { useActivityContext } from '@/contexts/ActivityContext';
 import { useState, useEffect, SetStateAction } from 'react';
 
 
@@ -7,7 +8,8 @@ import { useState, useEffect, SetStateAction } from 'react';
 //     dailyReward: boolean
 //     setDailyReward: SetStateAction<boolean>
 // }
-const Countdown = ({ targetDate, dailyReward, setDailyReward }) => {
+const Countdown = ({ targetDate, /* dailyReward, setDailyReward */ }) => {
+    const { isTodayCheckIn, setIsTodayCheckIn } = useActivityContext()
     const calculateTimeLeft = () => {
         const difference = +new Date(targetDate) - +new Date();
         let timeLeft = {};
@@ -38,7 +40,7 @@ const Countdown = ({ targetDate, dailyReward, setDailyReward }) => {
 
     useEffect(() => {
         if (!timerComponents.length) {
-            setDailyReward(true)
+            setIsTodayCheckIn(false)
         }
     }, [timerComponents])
 

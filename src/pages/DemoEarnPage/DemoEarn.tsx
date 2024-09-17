@@ -17,11 +17,12 @@ const MINI_APP_APP = `https://t.me/${MINI_APP_BOT_NAME}/${MINI_APP_NAME}/start?s
 const DemoEarn = () => {
     const { account, setAccount } = useUserContext()
     const { point, setPoint } = usePointContext()
-    const { activity, setActivity } = useActivityContext()
+    const { activity, setActivity, isTodayCheckIn, setIsTodayCheckIn } = useActivityContext()
     // const { friend, setFriend } = useFriendContext()
 
     const [dailyReward, setDailyReward] = useState(true)
     const [timeLeft, setTimeLeft] = useState("")
+
     let [isHomeLoading, setIsHomeLoading] = useState(false)
     let [loading, setLoading] = useState(true);
 
@@ -65,6 +66,8 @@ const DemoEarn = () => {
                 account={account}
                 activity={activity}
                 setActivity={setActivity}
+                isTodayCheckIn={isTodayCheckIn}
+                setIsTodayCheckIn={setIsTodayCheckIn}
             />
             <DemoBonusComponent
                 weeklyCount={activity?.login_streak} // using cont 7 day count
@@ -73,7 +76,19 @@ const DemoEarn = () => {
     )
 }
 
-const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, MINI_APP_APP, point, setPoint, account, activity, setActivity }) => {
+const DemoEarnComponent = ({
+    timeLeft,
+    dailyReward,
+    setDailyReward,
+    MINI_APP_APP,
+    point,
+    setPoint,
+    account,
+    activity,
+    setActivity,
+    isTodayCheckIn,
+    setIsTodayCheckIn
+}) => {
     return (
         <>
             <div className="w-[343px] h-[85px] sm:h-[95px] md:h-[105px] bg-[#ffffff33] rounded-lg flex justify-center content-center items-center mx-auto">
@@ -92,6 +107,8 @@ const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, MINI_APP_APP
                     account={account}
                     activity={activity}
                     setActivity={setActivity}
+                    isTodayCheckIn={isTodayCheckIn}
+                    setIsTodayCheckIn={setIsTodayCheckIn}
                 />
                 <DemoReferralComponent MINI_APP_APP={MINI_APP_APP} />
             </div>
@@ -100,7 +117,18 @@ const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, MINI_APP_APP
 }
 
 
-const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, point, setPoint, account, activity, setActivity }) => {
+const DemoDailyRewardComponent = ({
+    timeLeft,
+    dailyReward,
+    setDailyReward,
+    point,
+    setPoint,
+    account,
+    activity,
+    setActivity,
+    isTodayCheckIn,
+    setIsTodayCheckIn
+}) => {
     const handleCheckInDailyReward = async () => {
         const existingPoint = await getPoint({
             access_token: '',
@@ -172,7 +200,8 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, point
                 })
             }
         }
-        setDailyReward(false)
+        // setDailyReward(false)
+        setIsTodayCheckIn(true)
     }
     return (
         <div className={`h-[100px] cursor-pointer`}
@@ -182,9 +211,9 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, point
             }}>
             <div className='text-center w-[100%] h-[80px]'>
                 <div className={`relative w-[160px] h-14 rounded-[6px_6px_0px_0px] 
-                ${dailyReward == true ? "[background:linear-gradient(180deg,rgb(169,231,29)_0%,rgb(94.04,196.56,89.27)_100%)]" :
+                ${isTodayCheckIn !== true ? "[background:linear-gradient(180deg,rgb(169,231,29)_0%,rgb(94.04,196.56,89.27)_100%)]" :
                         "[background:radial-gradient(50%_50%_at_50%_50%,rgb(112.62,108.57,77.9)_0%,rgb(119,102.27,78.84)_100%)]"}`}>
-                    {dailyReward == true ? <div className="absolute w-[77px] top-[7px] left-[40px] [font-family:'Roboto-Medium',Helvetica] font-medium text-[#ffffff] text-xl text-center tracking-[0] leading-[22px]">
+                    {isTodayCheckIn !== true ? <div className="absolute w-[77px] top-[7px] left-[40px] [font-family:'Roboto-Medium',Helvetica] font-medium text-[#ffffff] text-xl text-center tracking-[0] leading-[22px]">
                         Daily
                         <br />
                         Reward
@@ -192,7 +221,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, point
                         <div className="absolute w-[123px] top-[7px] left-[19px] [font-family:'Roboto-Medium',Helvetica] font-medium text-[#ffffff] text-xl text-center tracking-[0] leading-[22px]">
                             Daily Reward
                             <br />
-                            <Countdown targetDate={timeLeft} dailyReward={dailyReward} setDailyReward={setDailyReward} />
+                            <Countdown targetDate={timeLeft} /* dailyReward={dailyReward} setDailyReward={setDailyReward} */ />
                         </div>
                     }
 

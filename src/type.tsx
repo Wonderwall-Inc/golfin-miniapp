@@ -36,6 +36,8 @@ export interface ActivityContextType {
     setActivity: Dispatch<SetStateAction<undefined | ActivityBaseType>>
     isWaitingActivity: boolean
     setIsWaitingActivity: Dispatch<SetStateAction<boolean>>
+    isTodayCheckIn: boolean,
+    setIsTodayCheckIn: Dispatch<SetStateAction<boolean>>
 }
 
 
