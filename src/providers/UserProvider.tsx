@@ -68,10 +68,10 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                     WebApp.close()
                 }
 
-                const { id, username, first_name, last_name, language_code, bot, premium } = webappUser
+                const { id, username, first_name, last_name, language_code, is_bot, is_premium } = webappUser
 
                 // CHECK IF THE ACC IS BOT >>> BAN
-                if (bot) {
+                if (is_bot) {
                     WebApp.close()
                 }
                 if (username !== undefined) {
@@ -85,7 +85,7 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                         location: "Japan",
                         nationality: "Japanese"
                     }
-                    const telegram_info = premium !== undefined && premium ? {
+                    const telegram_info = is_premium !== undefined && is_premium ? {
                         username: username,
                         telegram_id: id.toString(),
                         token_balance: 0,
