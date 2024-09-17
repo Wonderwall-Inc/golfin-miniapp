@@ -16,6 +16,8 @@ import { testInitDataRaw } from './constants'
 import Background from './components/BackgroundComponent/Background'
 import DemoEarn from './pages/DemoEarnPage/DemoEarn'
 import DemoTitle from './components/DemoTitleComponent/DemoTitle'
+import api from './apis/api'
+import axios from 'axios'
 
 const App = () => {
 
@@ -48,22 +50,20 @@ const App = () => {
 
   const utils = initUtils()
   const location = useLocation()
-  console.log(WebApp.initData);
 
 
   const navigate = useNavigate()
   let [isLoading, setIsLoading] = useState(false)
   const [mockData, setMockData] = useState('')
 
-  const setHelloHandler = () => {
-    setMockData('hello')
+  const setHelloHandler = async () => {
+    const res = await axios.get('https://golfin-miniapp-server-dev.vercel.app/')
+    console.log('response on server', res.status)
   }
 
   useEffect(() => {
 
     if (mockData == '') {
-      console.log('hello');
-
       setIsLoading(true)
       setHelloHandler()
       setIsLoading(false)

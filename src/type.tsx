@@ -6,9 +6,13 @@ export interface TitleComponentProps {
 }
 
 export interface AccountType {
-    name: string,
-    point: number,
-    referral: number
+    id: number
+    app_info?: UserAppInfoType
+    personal_info?: UserPersonalInfoType
+    telegram_info?: UserTelegramInfoType
+    created_at?: string
+    updated_at?: string
+    custom_logs?: object
 }
 
 export interface UserContextType {
