@@ -1,4 +1,5 @@
 import { useActivityContext } from '@/contexts/ActivityContext';
+import { useUserContext } from '@/contexts/UserContext';
 import { useState, useEffect, SetStateAction } from 'react';
 
 
@@ -9,7 +10,8 @@ import { useState, useEffect, SetStateAction } from 'react';
 //     setDailyReward: SetStateAction<boolean>
 // }
 const Countdown = ({ targetDate, /* dailyReward, setDailyReward */ }) => {
-    const { activity } = useActivityContext()
+    const { activity, setActivity } = useActivityContext()
+    const { account } = useUserContext()
     const calculateTimeLeft = () => {
         const difference = +new Date(targetDate) - +new Date();
         let timeLeft = {};
@@ -38,11 +40,22 @@ const Countdown = ({ targetDate, /* dailyReward, setDailyReward */ }) => {
         return () => clearTimeout(timer);
     });
 
-    // useEffect(() => {
-    //     if (!timerComponents.length) {
-    //         setIsTodayCheckedIn(false)
-    //     }
-    // }, [timerComponents])
+    useEffect(() => {
+        if (!timerComponents.length) {
+            if (activity && account) {
+                setActivity({
+                    id: activity.id,
+                    logged_in: true,
+                    login_streak: activity.login_streak,
+                    total_logins: activity.total_logins,
+                    last_action_time: activity.last_action_time,
+                    last_login_time: activity.last_login_time,
+                    created_at: activity.created_at,
+                    updated_at: activity.updated_at,
+                })
+            }
+        }
+    }, [timerComponents])
 
 
 
