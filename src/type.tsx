@@ -16,8 +16,8 @@ export interface AccountType {
 }
 
 export interface UserContextType {
-    account: AccountType | undefined | UserType
-    setAccount: Dispatch<SetStateAction<AccountType | undefined| UserType>>
+    account: undefined | UserType
+    setAccount: Dispatch<SetStateAction<undefined | UserType>>
 }
 
 

@@ -10,7 +10,7 @@ import axios from 'axios';
 
 
 export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-    const [account, setAccount] = useState<UserType | undefined | AccountType>();
+    const [account, setAccount] = useState<UserType | undefined>();
     const webappUser = WebApp.initDataUnsafe.user
     console.log(webappUser);
 
@@ -36,35 +36,34 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
     }
     useEffect(() => {
         if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
-            setAccount(
-                {
-                    id: 1,
-                    app_info: {
-                        is_active: true,
-                        is_admin: false,
-                        skin: []
-                    },
-                    personal_info: {
-                        location: "Japan", // FIXME: change it by form later, with ENUM
-                        nationality: "Japanese" // FIXME: change it by form later, with ENUM
-                        // age?: number
-                        // gender?: string
-                        // email?: string
-                    },
-                    telegram_info: {
-                        username: 'dev'!,
-                        telegram_id: '11111111',
-                        token_balance: 0,
-                        is_premium: true!,
-                        chat_id: '123' // FIXME: change it by getting the chat id from tg bot later on
-                        // wallet_address?: string
-                        // chat_id: string
-                    },
-                }
-            )
+            const mockAccount = {
+                id: 1,
+                app_info: {
+                    is_active: true,
+                    is_admin: false,
+                    skin: []
+                },
+                personal_info: {
+                    location: "Japan", // FIXME: change it by form later, with ENUM
+                    nationality: "Japanese" // FIXME: change it by form later, with ENUM
+                    // age?: number
+                    // gender?: string
+                    // email?: string
+                },
+                telegram_info: {
+                    username: 'dev'!,
+                    telegram_id: '11111111',
+                    token_balance: 0,
+                    is_premium: true!,
+                    chat_id: '123' // FIXME: change it by getting the chat id from tg bot later on
+                    // wallet_address?: string
+                    // chat_id: string
+                },
+                created_at: '20240917',
+                updated_at: '20240917',
+            }
+            setAccount(mockAccount)
         }
-
-
 
 
         if (webappUser && `${webappUser?.id}` == webappStartParam) {
@@ -108,7 +107,7 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
 
             })
         }
-    }, [import.meta.env.VITE_MINI_APP_ENV])
+    }, [webappUser, webappStartParam])
     return (
         <UserContext.Provider value={{
             account,

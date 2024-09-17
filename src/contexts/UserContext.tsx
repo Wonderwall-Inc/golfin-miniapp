@@ -3,7 +3,7 @@ import { AccountType, UserContextType, UserType } from "../type";
 
 
 export const UserContext = createContext<UserContextType>({
-    account: {} as UserType | AccountType,
+    account: {} as UserType,
     setAccount: () => { }
 })
 
