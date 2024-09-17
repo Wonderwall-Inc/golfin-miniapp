@@ -115,6 +115,31 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                 } else {
                     // CREATE NEW USER
                     if (username) {
+                        console.log(username);
+                        console.log({
+                            app_info: {
+                                is_active: true,
+                                is_admin: false,
+                                skin: []
+                            },
+                            personal_info: {
+                                location: "Japan", // FIXME: change it by form later, with ENUM
+                                nationality: "Japanese" // FIXME: change it by form later, with ENUM
+                                // age?: number
+                                // gender?: string
+                                // email?: string
+                            },
+
+                            telegram_info: {
+                                username: username,
+                                telegram_id: id.toString(),
+                                token_balance: 0,
+                                is_premium: is_premium == true ? true : false,
+                                chat_id: '123', // FIXME: change it by getting the chat id from tg bot later on
+                                start_param: webappStartParam,
+                            }
+                            // wallet_address?: string // FIXME: integrate the TON wallet later on
+                        });
 
                         userCreation({
                             app_info: {
