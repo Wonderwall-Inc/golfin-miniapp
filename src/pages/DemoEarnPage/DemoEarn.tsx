@@ -195,8 +195,8 @@ const DemoDailyRewardComponent = ({
 
     }
     return (
-        <div className={`h-[100px] cursor-pointer`}
-            aria-disabled={allowed == false}
+        <div className={`h-[100px] cursor-pointer ${allowed != true && 'pointer-events-none'}`}
+            aria-disabled={allowed != true}
             onClick={() => { // FIXME: add daily check in boolean field on each day on backend table 
                 handleCheckInDailyReward()
                 // setDailyReward(false)
