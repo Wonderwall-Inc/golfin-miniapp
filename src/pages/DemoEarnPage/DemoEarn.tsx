@@ -137,7 +137,6 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, point
             const todayYY = todayDay.getFullYear()
             const todayMM = todayDay.getUTCMonth() + 1
             const preTodayMM = todayMM < 10 ? `0${todayMM}` : todayMM
-            const currentTIme = todayDay.getTime()
             const todayDD = todayDay.getDate() + 1
 
             const formattedTime = todayDay.toLocaleString('en-US', {
@@ -173,12 +172,13 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, point
                 })
             }
         }
+        setDailyReward(false)
     }
     return (
         <div className={`h-[100px] cursor-pointer`}
             onClick={() => { // FIXME: add daily check in boolean field on each day on backend table 
                 handleCheckInDailyReward()
-                setDailyReward(false)
+                // setDailyReward(false)
             }}>
             <div className='text-center w-[100%] h-[80px]'>
                 <div className={`relative w-[160px] h-14 rounded-[6px_6px_0px_0px] 
