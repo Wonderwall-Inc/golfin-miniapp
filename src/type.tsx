@@ -18,7 +18,7 @@ export interface AccountType {
 export interface UserContextType {
     account: undefined | UserType
     setAccount: Dispatch<SetStateAction<undefined | UserType>>
-    isWaitingUser: undefined | boolean
+    isWaitingUser: boolean
     setIsWaitingUser: Dispatch<SetStateAction<boolean>>
 }
 

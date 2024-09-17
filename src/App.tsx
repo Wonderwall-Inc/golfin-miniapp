@@ -17,45 +17,37 @@ import DemoUser from './pages/DemoUserPage/DemoUser'
 import { useUserContext } from './contexts/UserContext'
 
 const App = () => {
-  useEffect(() => {
-    if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
-      const initDataRaw = new URLSearchParams(testInitDataRaw).toString();
-      mockTelegramEnv({
-        themeParams: {
-          accentTextColor: '#6ab2f2',
-          bgColor: '#17212b',
-          buttonColor: '#5288c1',
-          buttonTextColor: '#ffffff',
-          destructiveTextColor: '#ec3942',
-          headerBgColor: '#17212b',
-          hintColor: '#708499',
-          linkColor: '#6ab3f3',
-          secondaryBgColor: '#232e3c',
-          sectionBgColor: '#17212b',
-          sectionHeaderTextColor: '#6ab3f3',
-          subtitleTextColor: '#708499',
-          textColor: '#f5f5f5',
-        },
-        initData: parseInitData(initDataRaw),
-        initDataRaw,
-        version: '7.2',
-        platform: 'tdesktop',
-      });
-    }
-  }, [import.meta.env.VITE_MINI_APP_ENV])
+  if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
+    const initDataRaw = new URLSearchParams(testInitDataRaw).toString();
+    mockTelegramEnv({
+      themeParams: {
+        accentTextColor: '#6ab2f2',
+        bgColor: '#17212b',
+        buttonColor: '#5288c1',
+        buttonTextColor: '#ffffff',
+        destructiveTextColor: '#ec3942',
+        headerBgColor: '#17212b',
+        hintColor: '#708499',
+        linkColor: '#6ab3f3',
+        secondaryBgColor: '#232e3c',
+        sectionBgColor: '#17212b',
+        sectionHeaderTextColor: '#6ab3f3',
+        subtitleTextColor: '#708499',
+        textColor: '#f5f5f5',
+      },
+      initData: parseInitData(initDataRaw),
+      initDataRaw,
+      version: '7.2',
+      platform: 'tdesktop',
+    });
+  }
+
 
   const utils = initUtils()
   const location = useLocation()
 
-
   const navigate = useNavigate()
   const { isWaitingUser, setIsWaitingUser, account } = useUserContext()
-
-  const setHelloHandler = async () => {
-    const res = await axios.get('https://golfin-miniapp-server-dev.vercel.app/')
-    console.log('response on server', res.status)
-  }
-
 
   useEffect(() => {
     if (location.pathname == '/') {
@@ -69,7 +61,8 @@ const App = () => {
     navigate('/');
   };
 
-
+  console.log(WebApp.initDataUnsafe.user);
+  
   import.meta.env.VITE_MINI_APP_ENV !== 'test' && WebApp.BackButton.onClick(navigateToHome)
 
   return (
