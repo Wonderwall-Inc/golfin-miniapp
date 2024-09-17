@@ -11,34 +11,6 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
     const webappStartParam = WebApp.initDataUnsafe.start_param
 
     useEffect(() => {
-        // const userRetrieval = async (userRetirevalPayload: UserRetrievalRequestType): Promise<UserRetrievalResponseType | undefined> => {
-        //     try {
-        //         const existingUser = await getUser(userRetirevalPayload)
-        //         if (existingUser !== undefined) {
-        //             // const { user_details } = existingUser
-        //             // const { user_base, game_characters, point, activity, social_media, sender, receiver } = user_details
-        //             return existingUser
-        //         }
-        //         /* else {
-        //                 try {
-        //                     if (userCreatePayload)
-        //                         const newUser = await createUser(userCreatePayload)
-        //                     if (newUser !== undefined) {
-        //                         const { user_details, access_token } = newUser
-        //                         const { user_base, game_characters, point, activity, social_media, sender, receiver } = user_details
-
-        //                         setAccount(user_base)
-        //                     }
-        //                 } catch (error) {
-        //                     console.log(error);
-        //                     return error
-        //                 }
-        //             } */
-        //     } catch (error) {
-        //         console.log(error);
-        //         return undefined
-        //     }
-        // }
         const userCreation = async (userCreatePayload: UserCreateRequestType): Promise<UserCreateResponseType | undefined> => {
             try {
                 const newUser = await createUser(userCreatePayload)
@@ -73,10 +45,10 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                     // email?: string
                 },
                 telegram_info: {
-                    username: 'dev'!,
+                    username: 'dev',
                     telegram_id: '11111111',
                     token_balance: 0,
-                    is_premium: true!,
+                    is_premium: true,
                     chat_id: '123' // FIXME: change it by getting the chat id from tg bot later on
                     // wallet_address?: string
                     // chat_id: string
@@ -86,64 +58,53 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
             }
             setAccount(mockAccount)
         }
+        else {
 
-        console.log('provider');
-        console.log(webappUser);
-        console.log(webappStartParam);
 
-        // CHECK IF HAVING ID
-        if (webappUser?.id !== undefined) {
-            setIsWaitingUser(true)
-            // CHECK IF ID == START PARAM >>> BAN
-            if (`${webappUser?.id}` == webappStartParam) {
-                window.alert('Same ID')
-                WebApp.close()
-            }
+            console.log('provider');
+            console.log(webappUser);
+            console.log(webappStartParam);
 
-            const { id, username, first_name, last_name, is_premium, is_bot, language_code } = webappUser
+            // CHECK IF HAVING ID
+            if (webappUser?.id !== undefined) {
+                setIsWaitingUser(true)
+                // CHECK IF ID == START PARAM >>> BAN
+                if (`${webappUser?.id}` == webappStartParam) {
+                    window.alert('Same ID')
+                    WebApp.close()
+                }
 
-            // CHECK IF THE ACC IS BOT >>> BAN
-            if (is_bot) {
-                WebApp.close()
-            }
+                const { id, username, first_name, last_name, language_code, is_bot, is_premium } = webappUser
 
-            /*         userRetrieval({
-                        access_token: '111', // FIXME: read from cookie
-                        telegram_id: `${id}`
-                    }).then((existingUser) => {
-                        if (existingUser !== undefined) {
-                            setAccount(existingUser.user_details.user_base)
-                            setIsWaitingUser(false)
-                            return
-                        } else { */
-            // CREATE NEW USER
-            if (username) {
-                console.log(username);
-                userCreation({
-                    app_info: {
-                        is_active: true,
-                        is_admin: false,
-                        skin: []
-                    },
-                    personal_info: {
-                        location: "Japan",
-                        nationality: "Japanese"
-                    },
-                    telegram_info: {
-                        username: username,
-                        telegram_id: id.toString(),
-                        token_balance: 0,
-                        is_premium: is_premium == true ? true : false,
-                        chat_id: '123',
-                        start_param: webappStartParam,
-                    }
-                })
+                // CHECK IF THE ACC IS BOT >>> BAN
+                if (is_bot) {
+                    WebApp.close()
+                }
+
+                if (username !== undefined) {
+                    console.log(username);
+                    userCreation({
+                        app_info: {
+                            is_active: true,
+                            is_admin: false,
+                            skin: []
+                        },
+                        personal_info: {
+                            location: "Japan",
+                            nationality: "Japanese"
+                        },
+                        telegram_info: {
+                            username: username,
+                            telegram_id: id.toString(),
+                            token_balance: 0,
+                            is_premium: is_premium !== undefined && is_premium == true ? true : false,
+                            chat_id: '123',
+                            start_param: webappStartParam,
+                        }
+                    })
+                }
             }
         }
-        // }
-        // }
-        // })
-        // }
     }, [webappUser, webappStartParam])
 
     return (
