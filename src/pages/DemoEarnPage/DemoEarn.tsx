@@ -201,13 +201,14 @@ const DemoDailyRewardComponent = ({
             }
         }
         // setDailyReward(false)
-        setIsTodayCheckIn(true)
+        
     }
     return (
         <div className={`h-[100px] cursor-pointer`}
             onClick={() => { // FIXME: add daily check in boolean field on each day on backend table 
                 handleCheckInDailyReward()
                 // setDailyReward(false)
+                setIsTodayCheckIn(true)
             }}>
             <div className='text-center w-[100%] h-[80px]'>
                 <div className={`relative w-[160px] h-14 rounded-[6px_6px_0px_0px] 
