@@ -115,12 +115,14 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, point
                 updated_at: dbPoint?.point_base.point.updated_at,
                 custom_logs: dbPoint?.point_base.point.custom_logs
             })
-            setDailyReward(false)
         }
     }
     return (
         <div className={`h-[100px] cursor-pointer`}
-            onClick={() => handleCheckInDailyReward()}>
+            onClick={() => {
+                handleCheckInDailyReward()
+                setDailyReward(false)
+            }}>
             <div className='text-center w-[100%] h-[80px]'>
                 <div className={`relative w-[160px] h-14 rounded-[6px_6px_0px_0px] 
                 ${dailyReward == true ? "[background:linear-gradient(180deg,rgb(169,231,29)_0%,rgb(94.04,196.56,89.27)_100%)]" :
