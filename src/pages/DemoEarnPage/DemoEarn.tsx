@@ -190,6 +190,7 @@ const DemoDailyRewardComponent = ({
     }
     return (
         <div className={`h-[100px] cursor-pointer`}
+            aria-disabled={activity?.logged_in == false}
             onClick={() => { // FIXME: add daily check in boolean field on each day on backend table 
                 handleCheckInDailyReward()
                 // setDailyReward(false)
