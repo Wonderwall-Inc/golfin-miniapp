@@ -11,7 +11,8 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
     const webappStartParam = WebApp.initDataUnsafe.start_param
 
     useEffect(() => {
-        const userCreation = async (userCreatePayload: UserCreateRequestType): Promise<UserCreateResponseType | undefined> => {
+        const userCreation = async (userCreatePayload: UserCreateRequestType):
+            Promise<UserCreateResponseType | undefined> => {
             try {
                 const newUser = await createUser(userCreatePayload)
                 if (newUser !== undefined) {
@@ -82,8 +83,8 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                 }
 
                 if (username !== undefined) {
-                    console.log(username);
-                    userCreation({
+                    console.log('provider username');
+                    const payload = {
                         app_info: {
                             is_active: true,
                             is_admin: false,
@@ -101,7 +102,8 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                             chat_id: '123',
                             start_param: webappStartParam,
                         }
-                    })
+                    }
+                    userCreation(payload)
                 }
             }
         }
