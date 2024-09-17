@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import WebApp from '@twa-dev/sdk';
 import { UserContext } from '../contexts/UserContext';
-import { UserCreateRequestType, UserCreateResponseType, UserRetrievalRequestType, UserRetrievalResponseType, UserType } from '../type';
+import { UserCreateRequestType, UserType } from '../type';
 import { createUser, getUser } from '@/apis/UserSevices';
 
 export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
@@ -20,7 +20,7 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                     return newUser
                 } else {
                     const existingUser = await getUser({
-                        access_token: '',
+                        access_token: '', // FIXME: auth later
                         telegram_id: `${userCreatePayload.telegram_info.telegram_id}`
                     })
                     if (existingUser) {
@@ -45,9 +45,6 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                 personal_info: {
                     location: "Japan", // FIXME: change it by form later, with ENUM
                     nationality: "Japanese" // FIXME: change it by form later, with ENUM
-                    // age?: number
-                    // gender?: string
-                    // email?: string
                 },
                 telegram_info: {
                     username: 'dev',
@@ -55,8 +52,6 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                     token_balance: 0,
                     premium: true,
                     chat_id: '123' // FIXME: change it by getting the chat id from tg bot later on
-                    // wallet_address?: string
-                    // chat_id: string
                 },
                 created_at: '20240917',
                 updated_at: '20240917',
@@ -64,11 +59,6 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
             setAccount(mockAccount)
         }
         else {
-            console.log('provider');
-            console.log(webappUser);
-            console.log(webappStartParam);
-
-
             // CHECK IF HAVING ID
             if (webappUser?.id !== undefined) {
                 setIsWaitingUser(true)
@@ -100,20 +90,16 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                         telegram_id: id.toString(),
                         token_balance: 0,
                         premium: true,
-                        chat_id: '123',
+                        chat_id: '123', // FIXME: check it by bot?
                         start_param: webappStartParam,
                     } : {
                         username: username,
                         telegram_id: id.toString(),
                         token_balance: 0,
                         premium: false,
-                        chat_id: '123',
+                        chat_id: '123', // FIXME: check it by bot?
                         start_param: webappStartParam,
                     }
-
-                    console.log('telegram_info');
-                    console.log(telegram_info);
-
                     const payload = {
                         app_info: app_info,
                         personal_info: personal_info,

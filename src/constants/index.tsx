@@ -23,9 +23,7 @@ const navLinks = [
     { label: 'Demo Home', url: '/' },
     { label: 'Demo Ranking', url: '/ranking' },
     { label: 'Demo Links', url: '/links' },
-    // { label: 'Home', url: '/' },
-    // { label: 'Ranking', url: '/ranking' },
-    // { label: 'Links', url: '/links2' },
+    { label: 'Personal', url: '/user' },
 ]
 
 const socialMediaLinks = [
@@ -93,11 +91,6 @@ const mockReferralRankingData = [
 const mockUserAccount = {
     name: 'player25', point: 999999999999, referral: 25
 }
-
-
-const earnButtonList = [
-    { label: 'daily' }
-]
 
 export {
     testInitDataRaw,

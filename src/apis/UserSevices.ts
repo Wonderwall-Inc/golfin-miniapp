@@ -1,12 +1,12 @@
 import { UserCreateRequestType, UserCreateResponseType, UserRetrievalRequestType, UserRetrievalResponseType } from '@/type';
 import api from './api';
 
-export async function createUser(userCreate: UserCreateRequestType): Promise<UserCreateResponseType|  | undefined> {
+export async function createUser(userCreate: UserCreateRequestType): Promise<UserCreateResponseType | undefined> {
     try {
         api.defaults.headers.put['Content-Type'] = 'application/json'
         console.log('userCreate');
         console.log(userCreate);
-        
+
         const dbUser = await api.post('/user/create', userCreate);
         if (dbUser.status == 500 || dbUser.status == 400) { // force user to the main page relogin again         
             return undefined

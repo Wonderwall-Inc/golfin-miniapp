@@ -12,7 +12,6 @@ import { testInitDataRaw } from './constants'
 import Background from './components/BackgroundComponent/Background'
 import DemoEarn from './pages/DemoEarnPage/DemoEarn'
 import DemoTitle from './components/DemoTitleComponent/DemoTitle'
-import axios from 'axios'
 import DemoUser from './pages/DemoUserPage/DemoUser'
 import { useUserContext } from './contexts/UserContext'
 
