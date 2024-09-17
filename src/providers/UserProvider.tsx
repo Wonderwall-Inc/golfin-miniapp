@@ -11,23 +11,17 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
     const webappStartParam = WebApp.initDataUnsafe.start_param
 
     useEffect(() => {
-        const userCreation = async (userCreatePayload: UserCreateRequestType):
-            Promise<UserCreateResponseType | undefined> => {
+        const userCreation = async (userCreatePayload: UserCreateRequestType) => {
             try {
                 const newUser = await createUser(userCreatePayload)
                 if (newUser !== undefined) {
-                    // return newUser
                     setAccount(newUser.user_details.user_base)
                     setIsWaitingUser(false)
                     return newUser
-                    // const { user_details, access_token } = newUser
-                    // const { user_base, game_characters, point, activity, social_media, sender, receiver } = user_details
-
-                    // setAccount(user_base)
                 }
             } catch (error) {
-                console.error(error);
-                return undefined
+                console.log(error);
+                return error
             }
         }
         if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
@@ -60,11 +54,10 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
             setAccount(mockAccount)
         }
         else {
-
-
             console.log('provider');
             console.log(webappUser);
             console.log(webappStartParam);
+
 
             // CHECK IF HAVING ID
             if (webappUser?.id !== undefined) {
@@ -81,28 +74,42 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                 if (is_bot) {
                     WebApp.close()
                 }
-
                 if (username !== undefined) {
                     console.log('provider username');
-                    const payload = {
-                        app_info: {
-                            is_active: true,
-                            is_admin: false,
-                            skin: []
-                        },
-                        personal_info: {
-                            location: "Japan",
-                            nationality: "Japanese"
-                        },
-                        telegram_info: {
-                            username: username,
-                            telegram_id: id.toString(),
-                            token_balance: 0,
-                            is_premium: is_premium !== undefined && is_premium == true ? true : false,
-                            chat_id: '123',
-                            start_param: webappStartParam,
-                        }
+                    const app_info = {
+                        is_active: true,
+                        is_admin: false,
+                        skin: ['']
                     }
+                    const personal_info = {
+                        location: "Japan",
+                        nationality: "Japanese"
+                    }
+                    const telegram_info = is_premium !== undefined && is_premium ? {
+                        username: username,
+                        telegram_id: id.toString(),
+                        token_balance: 0,
+                        is_premium: true,
+                        chat_id: '123',
+                        start_param: webappStartParam,
+                    } : {
+                        username: username,
+                        telegram_id: id.toString(),
+                        token_balance: 0,
+                        is_premium: false,
+                        chat_id: '123',
+                        start_param: webappStartParam,
+                    }
+
+                    console.log('telegram_info');
+                    console.log(telegram_info);
+
+                    const payload = {
+                        app_info: app_info,
+                        personal_info: personal_info,
+                        telegram_info: telegram_info
+                    }
+
                     userCreation(payload)
                 }
             }
