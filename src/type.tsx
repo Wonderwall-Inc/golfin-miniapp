@@ -28,8 +28,8 @@ export interface UserBaseType {
     username: string
     telegram_id: string
     token_balance: string
-    is_active: boolean
-    is_premium: boolean
+    active: boolean
+    premium: boolean
 
 }
 
@@ -46,7 +46,7 @@ export interface UserTelegramInfoType {
     username: string
     telegram_id: string
     token_balance: number
-    is_premium: boolean
+    premium: boolean
     wallet_address?: string
     chat_id: string,
     start_param?: string
@@ -54,9 +54,9 @@ export interface UserTelegramInfoType {
 }
 
 export interface UserAppInfoType {
-    is_active: boolean
+    active: boolean
     in_game_items?: object
-    is_admin?: boolean
+    admin?: boolean
     skin: string[]
     custom_logs?: object
 }
@@ -64,8 +64,8 @@ export interface UserAppInfoType {
 
 export interface UserUpdateDetailsType {
     token_balance?: number
-    is_active?: boolean
-    is_premium?: boolean
+    active?: boolean
+    premium?: boolean
     in_game_items?: object
     skin?: string[]
     location?: string
@@ -359,7 +359,7 @@ export interface PointUpdateResponseType {
 
 export interface ActivityBaseType {
     id: number
-    is_logged_in: boolean
+    logged_in: boolean
     login_streak: number
     total_logins: number
     last_action_time: string
@@ -370,7 +370,7 @@ export interface ActivityBaseType {
 }
 
 export interface ActivityType {
-    is_logged_in: boolean
+    logged_in: boolean
     login_streak: number
     total_logins: number
     last_action_time: string
@@ -386,7 +386,7 @@ export interface ActivityCreateDetailType {
 
 
 export interface ActivityUpdateDetailType extends ActivityCreateDetailType {
-    is_logged_in?: boolean
+    logged_in?: boolean
     login_streak?: number
     total_logins?: number
     last_action_time?: string
@@ -443,21 +443,21 @@ export interface ActivityUpdateResponseType {
 // SOCIAL MEDIA
 export interface YoutubeSocialMediaType {
     youtube_id?: string
-    youtube_is_following?: boolean
-    youtube_is_viewed?: boolean
+    youtube_following?: boolean
+    youtube_viewed?: boolean
     youtube_view_date?: string
 }
 
 export interface FacebookSocialMediaType {
 
     facebook_id?: string
-    facebook_is_following?: boolean
+    facebook_following?: boolean
     facebook_followed_date?: string
 }
 
 export interface InstagramSocialMediaType {
     instagram_id?: string
-    instagram_is_following?: boolean
+    instagram_following?: boolean
     instagram_follow_trigger_verify_date?: string
     instagram_followed_date?: string
     instagram_tagged?: boolean
@@ -468,19 +468,19 @@ export interface InstagramSocialMediaType {
 
 export interface TelegramSocialMediaType {
     telegram_id?: string
-    telegram_is_following?: boolean
+    telegram_following?: boolean
     telegram_followed_date?: string
 }
 
 export interface XSocialMediaType {
     x_id?: string
-    x_is_following?: boolean
+    x_following?: boolean
     x_followed_date?: string
 }
 
 export interface DiscordSocialMedia {
     discord_id?: string
-    discord_is_following?: boolean
+    discord_following?: boolean
     discord_followed_date?: string
 }
 
@@ -505,16 +505,16 @@ export interface SocialMediaCategrizedBaseType extends SocialMediaType {
 export interface SocialMediaBaseType {
     id: number
     youtube_id?: string
-    youtube_is_following?: boolean
-    youtube_is_viewed?: boolean
+    youtube_following?: boolean
+    youtube_viewed?: boolean
     youtube_view_date?: string
 
     facebook_id?: string
-    facebook_is_following?: boolean
+    facebook_following?: boolean
     facebook_followed_date?: string
 
     instagram_id?: string
-    instagram_is_following?: boolean
+    instagram_following?: boolean
     instagram_follow_trigger_verify_date?: string
     instagram_followed_date?: string
     instagram_tagged?: boolean
@@ -523,15 +523,15 @@ export interface SocialMediaBaseType {
     instagram_reposted_date?: string
 
     telegram_id?: string
-    telegram_is_following?: boolean
+    telegram_following?: boolean
     telegram_followed_date?: string
 
     x_id?: string
-    x_is_following?: boolean
+    x_following?: boolean
     x_followed_date?: string
 
     discord_id?: string
-    discord_is_following?: boolean
+    discord_following?: boolean
     discord_followed_date?: string
 
     created_at: string

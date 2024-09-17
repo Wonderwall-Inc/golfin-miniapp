@@ -28,8 +28,8 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
             const mockAccount = {
                 id: 1,
                 app_info: {
-                    is_active: true,
-                    is_admin: false,
+                    active: true,
+                    admin: false,
                     skin: []
                 },
                 personal_info: {
@@ -43,7 +43,7 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                     username: 'dev',
                     telegram_id: '11111111',
                     token_balance: 0,
-                    is_premium: true,
+                    premium: true,
                     chat_id: '123' // FIXME: change it by getting the chat id from tg bot later on
                     // wallet_address?: string
                     // chat_id: string
@@ -68,35 +68,35 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                     WebApp.close()
                 }
 
-                const { id, username, first_name, last_name, language_code, is_bot, is_premium } = webappUser
+                const { id, username, first_name, last_name, language_code, bot, premium } = webappUser
 
                 // CHECK IF THE ACC IS BOT >>> BAN
-                if (is_bot) {
+                if (bot) {
                     WebApp.close()
                 }
                 if (username !== undefined) {
                     console.log('provider username');
                     const app_info = {
-                        is_active: true,
-                        is_admin: false,
+                        active: true,
+                        admin: false,
                         skin: ['']
                     }
                     const personal_info = {
                         location: "Japan",
                         nationality: "Japanese"
                     }
-                    const telegram_info = is_premium !== undefined && is_premium ? {
+                    const telegram_info = premium !== undefined && premium ? {
                         username: username,
                         telegram_id: id.toString(),
                         token_balance: 0,
-                        is_premium: true,
+                        premium: true,
                         chat_id: '123',
                         start_param: webappStartParam,
                     } : {
                         username: username,
                         telegram_id: id.toString(),
                         token_balance: 0,
-                        is_premium: false,
+                        premium: false,
                         chat_id: '123',
                         start_param: webappStartParam,
                     }

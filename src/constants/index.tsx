@@ -9,7 +9,7 @@ const testInitDataRaw = [
         last_name: 'Rogue',
         username: 'rogue',
         language_code: 'en',
-        is_premium: true,
+        premium: true,
         allows_write_to_pm: true,
     })],
     ['hash', '89d6079ad6762351f38c6dbbc41bb53048019256a9443988af7a48bcad16ba31'],
