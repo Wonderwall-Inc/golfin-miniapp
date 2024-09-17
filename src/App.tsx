@@ -62,8 +62,8 @@ const App = () => {
   return (
     <>
       {
-        true ?
-          <div className='bg-gray-400 opacity-30 w-[390px] h-[700px]'>
+        isWaitingUser ? //FIXME
+          <div className='bg-gray-500 opacity-10 w-[390px] h-[700px]'>
             <ClipLoader
               loading={isWaitingUser}
               size={200}

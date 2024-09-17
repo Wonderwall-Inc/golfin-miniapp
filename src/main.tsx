@@ -8,6 +8,7 @@ import WebApp from '@twa-dev/sdk'
 
 import './index.css'
 import { UserProvider } from './providers/UserProvider.tsx'
+import { PointProvider } from './providers/PointProvider.tsx'
 import { testInitDataRaw } from './constants/index.tsx'
 import { mockTelegramEnv, parseInitData } from '@telegram-apps/sdk'
 
@@ -18,7 +19,9 @@ createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
       <KonstaProvider>
         <UserProvider>
-          <App />
+          <PointProvider>
+            <App />
+          </PointProvider>
         </UserProvider>
       </KonstaProvider>
     </BrowserRouter>

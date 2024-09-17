@@ -25,8 +25,8 @@ export interface UserContextType {
 }
 
 export interface PointContextType {
-    point: undefined | PointDetailsType
-    setPoint: Dispatch<SetStateAction<undefined | PointDetailsType>>
+    point: undefined | PointType
+    setPoint: Dispatch<SetStateAction<undefined | PointType>>
     isWaitingPoint: boolean
     setIsWaitingPoint: Dispatch<SetStateAction<boolean>>
 }
@@ -333,7 +333,7 @@ export interface PointCreateResponseType {
 
 
 export interface PointRetrievalRequestType {
-    id: number
+    id?: number
     access_token: string
     user_id?: number
 }
