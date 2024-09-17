@@ -8,7 +8,7 @@ import { createActivity, getActivity } from "@/apis/ActivityServices";
 export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const [activity, setActivity] = useState<ActivityBaseType | undefined>();
     const [isWaitingActivity, setIsWaitingActivity] = useState(false)
-    const [isTodayCheckedIn, setIsTodayCheckedIn] = useState(false)
+    // const [rewardNotYetClaimed, setRewardNotYetClaimed] = useState(true) //logged_in = True
     const { account } = useUserContext()
 
     useEffect(() => {
@@ -65,14 +65,15 @@ export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }
 
         }
     }, [account])
+
     return (
         <ActivityContext.Provider value={{
             activity,
             setActivity,
             isWaitingActivity,
             setIsWaitingActivity,
-            isTodayCheckedIn,
-            setIsTodayCheckedIn
+            // isTodayCheckedIn,
+            // setIsTodayCheckedIn
         }}>
             {children}
         </ActivityContext.Provider>

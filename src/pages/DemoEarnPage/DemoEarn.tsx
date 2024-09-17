@@ -111,13 +111,13 @@ const DemoDailyRewardComponent = ({
     account,
 }) => {
     const { setPoint } = usePointContext()
-    const { isTodayCheckedIn, setIsTodayCheckedIn, setActivity, activity } = useActivityContext()
+    const {/*  isTodayCheckedIn, setIsTodayCheckedIn,  */setActivity, activity } = useActivityContext()
 
-    const todayDay = new Date()
-    const todayYY = todayDay.getFullYear()
-    const todayMM = todayDay.getUTCMonth() + 1
-    const preTodayMM = todayMM < 10 ? `0${todayMM}` : todayMM
-    const todayDD = todayDay.getDate() + 1
+    // const todayDay = new Date()
+    // const todayYY = todayDay.getFullYear()
+    // const todayMM = todayDay.getUTCMonth() + 1
+    // const preTodayMM = todayMM < 10 ? `0${todayMM}` : todayMM
+    // const todayDD = todayDay.getDate() + 1
 
 
     const handleCheckInDailyReward = async () => {
@@ -152,22 +152,22 @@ const DemoDailyRewardComponent = ({
             user_id: account?.id,
         })
         if (existingActivity) {
-            const formattedTime = todayDay.toLocaleString('en-US', {
-                hour12: false, // Use 24-hour format
-                hour: 'numeric',
-                minute: 'numeric',
-                second: 'numeric',
-            });
+            // const formattedTime = todayDay.toLocaleString('en-US', {
+            //     hour12: false, // Use 24-hour format
+            //     hour: 'numeric',
+            //     minute: 'numeric',
+            //     second: 'numeric',
+            // });
             const updateActivityPayload = {
                 id: existingActivity?.activity.id,
                 access_token: '',
                 user_id: existingActivity.user_id,
                 activity: {
-                    logged_in: true,
+                    logged_in: false,
                     login_streak: existingActivity.activity.login_streak += 1,
                     total_logins: existingActivity.activity.total_logins += 1,
-                    last_action_time: `${todayYY}-${preTodayMM}-${todayDD}T${formattedTime}`,
-                    last_login_time: `${todayYY}-${preTodayMM}-${todayDD}T${formattedTime}`,
+                    last_action_time: new Date().toISOString(),
+                    last_login_time: new Date().toISOString()
                 }
             }
             const dbActivity = await updateActivity(updateActivityPayload)
@@ -197,9 +197,9 @@ const DemoDailyRewardComponent = ({
             }}>
             <div className='text-center w-[100%] h-[80px]'>
                 <div className={`relative w-[160px] h-14 rounded-[6px_6px_0px_0px] 
-                ${activity?.last_login_time.split('T')[0] !== `${todayYY}-${preTodayMM}-${todayDD}` ? "[background:linear-gradient(180deg,rgb(169,231,29)_0%,rgb(94.04,196.56,89.27)_100%)]" :
+                ${activity?.logged_in ? "[background:linear-gradient(180deg,rgb(169,231,29)_0%,rgb(94.04,196.56,89.27)_100%)]" :
                         "[background:radial-gradient(50%_50%_at_50%_50%,rgb(112.62,108.57,77.9)_0%,rgb(119,102.27,78.84)_100%)]"}`}>
-                    {activity?.last_login_time.split('T')[0] !== `${todayYY}-${preTodayMM}-${todayDD}` ? <div className="absolute w-[77px] top-[7px] left-[40px] [font-family:'Roboto-Medium',Helvetica] font-medium text-[#ffffff] text-xl text-center tracking-[0] leading-[22px]">
+                    {activity?.logged_in ? <div className="absolute w-[77px] top-[7px] left-[40px] [font-family:'Roboto-Medium',Helvetica] font-medium text-[#ffffff] text-xl text-center tracking-[0] leading-[22px]">
                         Daily
                         <br />
                         Reward

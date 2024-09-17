@@ -6,8 +6,8 @@ export const ActivityContext = createContext<ActivityContextType>({
     setActivity: () => { },
     isWaitingActivity: false,
     setIsWaitingActivity: () => { },
-    isTodayCheckedIn: false,
-    setIsTodayCheckedIn: () => { },
+    // isTodayCheckedIn: false,
+    // setIsTodayCheckedIn: () => { },
 })
 
 export const useActivityContext = () => useContext(ActivityContext)

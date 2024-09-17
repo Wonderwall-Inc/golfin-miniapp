@@ -9,7 +9,7 @@ import { useState, useEffect, SetStateAction } from 'react';
 //     setDailyReward: SetStateAction<boolean>
 // }
 const Countdown = ({ targetDate, /* dailyReward, setDailyReward */ }) => {
-    // const { isTodayCheckedIn, setIsTodayCheckedIn } = useActivityContext()
+    const { activity } = useActivityContext()
     const calculateTimeLeft = () => {
         const difference = +new Date(targetDate) - +new Date();
         let timeLeft = {};
