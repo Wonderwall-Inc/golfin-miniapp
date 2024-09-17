@@ -63,11 +63,11 @@ const App = () => {
     <>
       {
         true ?
-          <div className='bg-gray-400 opacity-20 w-[390px] h-[700px]'>
+          <div className='bg-gray-400 opacity-30 w-[390px] h-[700px]'>
             <ClipLoader
               loading={isWaitingUser}
-              size={100}
-              className='absolute top-[50%] left-[25%] translate-x-[-50%] translate-y-[-50%]' />
+              size={200}
+              className='absolute top-[30%] left-[25%]' />
           </div> :
           <div className='app-container'>
             <Background>
