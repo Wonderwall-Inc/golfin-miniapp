@@ -55,8 +55,8 @@ const DemoEarn = () => {
                 setPoint={setPoint}
                 account={account} />
             <DemoBonusComponent
-                weeklyCount={weeklyCount} r
-                eferralCount={referralCount} />
+                weeklyCount={weeklyCount}
+                referralCount={referralCount} />
         </div>
     )
 }
@@ -66,8 +66,8 @@ const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, MINI_APP_APP
         <>
             <div className="w-[343px] h-[85px] sm:h-[95px] md:h-[105px] bg-[#ffffff33] rounded-lg flex justify-center content-center items-center mx-auto">
                 <img className="w-[53px] h-[54px]" alt="Layer" src={CoinIcon} />
-                <div className="w-[200px] text-white font-semibold [font-family:'Rubik-Medium',Helvetica]text-[#ffef2b] text-[28px] tracking-[0.38px]">{/* {(599200999).toLocaleString()} */}
-                    {point > 0 ? 0 : (point.toLocaleString())}
+                <div className="w-[200px] text-white font-semibold [font-family:'Rubik-Medium',Helvetica]text-[#ffef2b] text-[28px] tracking-[0.38px]">
+                    {point > 0 ? 0 : ((point).toLocaleString())}
                 </div>
             </div>
             <div className='flex justify-center justify-items-center mx-5 sm:mx-5 md:mx-6 pt-3 sm:pt-3  space-x-5'>
