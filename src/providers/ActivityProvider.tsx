@@ -1,4 +1,4 @@
-import { ActivityCreateRequestType, ActivityType } from "@/type";
+import { ActivityBaseType, ActivityCreateRequestType } from "@/type";
 import { useEffect, useState } from "react";
 import { ActivityContext } from "@/contexts/ActivityContext";
 import { useUserContext } from "@/contexts/UserContext";
@@ -6,7 +6,7 @@ import { createActivity, getActivity } from "@/apis/ActivityServices";
 
 
 export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-    const [activity, setActivity] = useState<ActivityType | undefined>();
+    const [activity, setActivity] = useState<ActivityBaseType | undefined>();
     const [isWaitingActivity, setIsWaitingActivity] = useState(false)
 
     const { account } = useUserContext()
@@ -37,6 +37,7 @@ export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }
         if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
             setIsWaitingActivity(true)
             const mockActivity = {
+                id: 1,
                 logged_in: true,
                 login_streak: 1,
                 total_logins: 1,

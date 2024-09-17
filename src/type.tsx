@@ -32,8 +32,8 @@ export interface PointContextType {
 }
 
 export interface ActivityContextType {
-    activity: undefined | ActivityType
-    setActivity: Dispatch<SetStateAction<undefined | ActivityType>>
+    activity: undefined | ActivityBaseType
+    setActivity: Dispatch<SetStateAction<undefined | ActivityBaseType>>
     isWaitingActivity: boolean
     setIsWaitingActivity: Dispatch<SetStateAction<boolean>>
 }

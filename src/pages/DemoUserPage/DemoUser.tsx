@@ -1,9 +1,11 @@
 import { useUserContext } from '@/contexts/UserContext'
 import { usePointContext } from '@/contexts/PointContext'
+import { useActivityContext } from '@/contexts/ActivityContext'
 
 const DemoUser = () => {
     const { account, setAccount } = useUserContext()
     const { point, setPoint } = usePointContext()
+    const { activity, setActivity } = useActivityContext()
     return (
         <div>
             <div className='text-white flex flex-col'>
@@ -20,11 +22,12 @@ const DemoUser = () => {
                 </div>
                 <div>
                     <div>activity</div>
-                    <div>is logged in: {point?.id}</div>
-                    <div>login_streak: {point?.amount}</div>
-                    <div>total_logins: {point?.extra_profit_per_hour}</div>
-                    <div>last_action_time: {point?.extra_profit_per_hour}</div>
-                    <div>last_login_time: {point?.extra_profit_per_hour}</div>
+                    <div>id: {activity?.id}</div>
+                    <div>is logged in: {activity?.logged_in}</div>
+                    <div>login_streak: {activity?.login_streak}</div>
+                    <div>total_logins: {activity?.total_logins}</div>
+                    <div>last_action_time: {activity?.last_action_time}</div>
+                    <div>last_login_time: {activity?.last_login_time}</div>
                 </div>
             </div>
         </div>
