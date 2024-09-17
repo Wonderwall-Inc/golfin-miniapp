@@ -14,6 +14,7 @@ import DemoEarn from './pages/DemoEarnPage/DemoEarn'
 import DemoTitle from './components/DemoTitleComponent/DemoTitle'
 import DemoUser from './pages/DemoUserPage/DemoUser'
 import { useUserContext } from './contexts/UserContext'
+import { usePointContext } from './contexts/PointContext'
 
 const App = () => {
   if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
@@ -46,6 +47,7 @@ const App = () => {
 
   const navigate = useNavigate()
   const { isWaitingUser, setIsWaitingUser, account } = useUserContext()
+  const { isWaitingPoint, setIsWaitingPoint, point } = usePointContext()
 
   useEffect(() => {
     location.pathname == '/' ? WebApp.BackButton.hide() : WebApp.BackButton.show()
@@ -62,7 +64,7 @@ const App = () => {
   return (
     <>
       {
-        isWaitingUser ? //FIXME
+        isWaitingUser || isWaitingPoint ? //FIXME
           <div className='bg-gray-500 opacity-10 w-[390px] h-[700px]'>
             <ClipLoader
               loading={isWaitingUser}
