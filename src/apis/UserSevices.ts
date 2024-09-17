@@ -1,7 +1,7 @@
 import { UserCreateRequestType, UserCreateResponseType, UserRetrievalRequestType, UserRetrievalResponseType } from '@/type';
 import api from './api';
 
-export async function createUser(userCreate: UserCreateRequestType): Promise<UserCreateResponseType | undefined> {
+export async function createUser(userCreate: UserCreateRequestType): Promise<UserCreateResponseType|  | undefined> {
     try {
         api.defaults.headers.put['Content-Type'] = 'application/json'
         console.log('userCreate');
