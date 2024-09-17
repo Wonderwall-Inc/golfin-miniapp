@@ -5,7 +5,7 @@ import { useUserContext } from '../../contexts/UserContext'
 import WebApp from '@twa-dev/sdk'
 import { Progress } from "@/components/ui/progress"
 import { usePointContext } from '@/contexts/PointContext'
-import { updatePoint } from '@/apis/PointServices'
+import { getPoint, updatePoint } from '@/apis/PointServices'
 
 const MINI_APP_BOT_NAME = import.meta.env.VITE_MINI_APP_BOT_NAME
 const MINI_APP_NAME = import.meta.env.VITE_MINI_APP_NAME
@@ -90,25 +90,33 @@ const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, MINI_APP_APP
 
 const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, point, setPoint, account }) => {
     const handleCheckInDailyReward = async () => {
-        const updatePointPayload = {
-            id: account?.id,
-            type: 'add', // REVIEW: add / minus point
+        const existingPoint = await getPoint({
             access_token: '',
-            point_payload: {
-                amount: 2,
-                // extra_profit_per_hour: optional
-            }
-        }
-        const dbPoint = await updatePoint(updatePointPayload)
-        setPoint({
-            id: dbPoint?.point_base.user_id,
-            amount: dbPoint?.point_base.point.amount,
-            extra_profit_per_hour: dbPoint?.point_base.point.extra_profit_per_hour,
-            created_at: dbPoint?.point_base.point.created_at,
-            updated_at: dbPoint?.point_base.point.updated_at,
-            custom_logs: dbPoint?.point_base.point.custom_logs
+            user_id: account?.id,
         })
-        setDailyReward(false)
+        if (existingPoint) {
+            const updatePointPayload = {
+                id: existingPoint?.point_base.point.id,
+                type: 'add', // REVIEW: add / minus point
+                access_token: '',
+                point_payload: {
+                    amount: 2,
+                    // extra_profit_per_hour: optional
+                }
+            }
+            const dbPoint = await updatePoint(updatePointPayload)
+            if (dbPoint) {
+            }
+            setPoint({
+                id: dbPoint?.point_base.user_id,
+                amount: dbPoint?.point_base.point.amount,
+                extra_profit_per_hour: dbPoint?.point_base.point.extra_profit_per_hour,
+                created_at: dbPoint?.point_base.point.created_at,
+                updated_at: dbPoint?.point_base.point.updated_at,
+                custom_logs: dbPoint?.point_base.point.custom_logs
+            })
+            setDailyReward(false)
+        }
     }
     return (
         <div className={`h-[100px] cursor-pointer`}
