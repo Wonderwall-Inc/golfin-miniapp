@@ -92,11 +92,24 @@ const mockUserAccount = {
     name: 'player25', point: 999999999999, referral: 25
 }
 
+
+const dailyCheckInPointReward = 2
+
+const weeklyCheckInPointReward = 15
+
+const friendReferralPointReward = 100
+
+const tenFriendsReferralPointReward = 3000
+
 export {
     testInitDataRaw,
     navLinks,
     socialMediaLinks,
     mockPointRankingData,
     mockReferralRankingData,
-    mockUserAccount
+    mockUserAccount,
+    dailyCheckInPointReward,
+    weeklyCheckInPointReward,
+    friendReferralPointReward,
+    tenFriendsReferralPointReward
 }

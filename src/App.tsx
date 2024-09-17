@@ -15,6 +15,7 @@ import DemoTitle from './components/DemoTitleComponent/DemoTitle'
 import DemoUser from './pages/DemoUserPage/DemoUser'
 import { useUserContext } from './contexts/UserContext'
 import { usePointContext } from './contexts/PointContext'
+import { useActivityContext } from './contexts/ActivityContext'
 
 const App = () => {
   if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
@@ -48,6 +49,7 @@ const App = () => {
   const navigate = useNavigate()
   const { isWaitingUser, setIsWaitingUser, account } = useUserContext()
   const { isWaitingPoint, setIsWaitingPoint, point } = usePointContext()
+  const { isWaitingActivity, setIsWaitingActivity, activity } = useActivityContext()
 
   useEffect(() => {
     if (isWaitingUser == true || isWaitingPoint == true) {
@@ -68,12 +70,17 @@ const App = () => {
 
   console.log(WebApp.initDataUnsafe.user);
 
+  console.log('isWaitingUser:', isWaitingUser);
+  console.log('isWaitingPoint:', isWaitingPoint);
+  console.log('isWaitingActivity:', isWaitingActivity);
+  
+
   import.meta.env.VITE_MINI_APP_ENV !== 'test' && WebApp.BackButton.onClick(navigateToHome)
 
   return (
     <>
       {
-        isWaitingUser ? //FIXME
+        isWaitingUser ? //FIXME: flat waiting state
           <div className='bg-gray-500 opacity-10 w-[390px] h-[700px]'>
             <ClipLoader
               loading={isWaitingUser}

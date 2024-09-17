@@ -2,6 +2,7 @@ import { useUserContext } from '@/contexts/UserContext'
 import { usePointContext } from '@/contexts/PointContext'
 import { useActivityContext } from '@/contexts/ActivityContext'
 
+
 const DemoUser = () => {
     const { account, setAccount } = useUserContext()
     const { point, setPoint } = usePointContext()

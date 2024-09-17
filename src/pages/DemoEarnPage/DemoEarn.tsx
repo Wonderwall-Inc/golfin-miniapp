@@ -6,6 +6,9 @@ import WebApp from '@twa-dev/sdk'
 import { Progress } from "@/components/ui/progress"
 import { usePointContext } from '@/contexts/PointContext'
 import { getPoint, updatePoint } from '@/apis/PointServices'
+import { dailyCheckInPointReward, friendReferralPointReward, tenFriendsReferralPointReward, weeklyCheckInPointReward } from '@/constants'
+import { useActivityContext } from '@/contexts/ActivityContext'
+import { getActivity, updateActivity } from '@/apis/ActivityServices'
 
 const MINI_APP_BOT_NAME = import.meta.env.VITE_MINI_APP_BOT_NAME
 const MINI_APP_NAME = import.meta.env.VITE_MINI_APP_NAME
@@ -14,11 +17,13 @@ const MINI_APP_APP = `https://t.me/${MINI_APP_BOT_NAME}/${MINI_APP_NAME}/start?s
 const DemoEarn = () => {
     const { account, setAccount } = useUserContext()
     const { point, setPoint } = usePointContext()
+    const { activity, setActivity } = useActivityContext()
 
     const [dailyReward, setDailyReward] = useState(true)
     const [timeLeft, setTimeLeft] = useState("")
     let [isHomeLoading, setIsHomeLoading] = useState(false)
     let [loading, setLoading] = useState(true);
+
     const [weeklyCount, setWeeklyCount] = useState(0)
     const [referralCount, setReferralCount] = useState(0)
 
@@ -56,15 +61,18 @@ const DemoEarn = () => {
                 MINI_APP_APP={MINI_APP_APP}
                 point={point}
                 setPoint={setPoint}
-                account={account} />
+                account={account}
+                activity={activity}
+                setActivity={setActivity}
+            />
             <DemoBonusComponent
-                weeklyCount={weeklyCount}
+                weeklyCount={activity?.login_streak} // using cont 7 day count
                 referralCount={referralCount} />
         </div>
     )
 }
 
-const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, MINI_APP_APP, point, setPoint, account }) => {
+const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, MINI_APP_APP, point, setPoint, account, activity, setActivity }) => {
     return (
         <>
             <div className="w-[343px] h-[85px] sm:h-[95px] md:h-[105px] bg-[#ffffff33] rounded-lg flex justify-center content-center items-center mx-auto">
@@ -80,7 +88,10 @@ const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, MINI_APP_APP
                     setDailyReward={setDailyReward}
                     point={point}
                     setPoint={setPoint}
-                    account={account} />
+                    account={account}
+                    activity={activity}
+                    setActivity={setActivity}
+                />
                 <DemoReferralComponent MINI_APP_APP={MINI_APP_APP} />
             </div>
         </>
@@ -88,7 +99,7 @@ const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, MINI_APP_APP
 }
 
 
-const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, point, setPoint, account }) => {
+const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, point, setPoint, account, activity, setActivity }) => {
     const handleCheckInDailyReward = async () => {
         const existingPoint = await getPoint({
             access_token: '',
@@ -106,15 +117,47 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, point
             }
             const dbPoint = await updatePoint(updatePointPayload)
             if (dbPoint) {
+                setPoint({
+                    id: dbPoint?.point_base.user_id,
+                    amount: dbPoint?.point_base.point.amount,
+                    extra_profit_per_hour: dbPoint?.point_base.point.extra_profit_per_hour,
+                    created_at: dbPoint?.point_base.point.created_at,
+                    updated_at: dbPoint?.point_base.point.updated_at,
+                    custom_logs: dbPoint?.point_base.point.custom_logs
+                })
             }
-            setPoint({
-                id: dbPoint?.point_base.user_id,
-                amount: dbPoint?.point_base.point.amount,
-                extra_profit_per_hour: dbPoint?.point_base.point.extra_profit_per_hour,
-                created_at: dbPoint?.point_base.point.created_at,
-                updated_at: dbPoint?.point_base.point.updated_at,
-                custom_logs: dbPoint?.point_base.point.custom_logs
-            })
+        }
+        const existingActivity = await getActivity({
+            access_token: '',
+            user_id: account?.id,
+        })
+        if (existingActivity) {
+            const updateActivityPayload = {
+                id: existingActivity?.activity.id,
+                access_token: '',
+                user_id: existingActivity.user_id,
+                activity: {
+                    logged_in: true,
+                    login_streak: existingActivity.activity.login_streak += 1,
+                    total_logins: existingActivity.activity.total_logins += 1,
+                    last_action_time: `${new Date().toLocaleString()}`,
+                    last_login_time: `${new Date().toLocaleString()}`,
+                }
+            }
+            const dbActivity = await updateActivity(updateActivityPayload)
+            if (dbActivity) {
+                setActivity({
+                    id: dbActivity.activity.id,
+                    logged_in: dbActivity.activity.logged_in,
+                    login_streak: dbActivity.activity.login_streak,
+                    total_logins: dbActivity.activity.total_logins,
+                    last_action_time: dbActivity.activity.last_action_time,
+                    last_login_time: dbActivity.activity.last_login_time,
+                    created_at: dbActivity.activity.created_at,
+                    updated_at: dbActivity.activity.updated_at,
+                    custom_logs: dbActivity.activity.custom_logs,
+                })
+            }
         }
     }
     return (
@@ -142,7 +185,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, point
                 </div>
 
                 <div className='bg-white text-black-400 rounded-b-sm border-white h-[50%] content-center text-center items-center w-[160px]'>
-                    +2
+                    + {`${dailyCheckInPointReward}`}
                 </div>
             </div>
 
@@ -168,7 +211,7 @@ const DemoReferralComponent = ({ MINI_APP_APP }) => {
                     </div>
                 </div>
                 <div className='bg-white text-black-400 rounded-b-sm border-white h-[50%] content-center text-center items-center w-[160px]'>
-                    +100
+                    + {`${friendReferralPointReward}`}
                 </div>
             </div>
 
@@ -179,9 +222,7 @@ const DemoReferralComponent = ({ MINI_APP_APP }) => {
 
 
 const DemoBonusComponent = ({ weeklyCount, referralCount }) => {
-
     return (
-
         <div className='relative'>
 
             <div className='grid grid-rows-1 justify-items-center'>
@@ -212,7 +253,7 @@ const DemoBonusComponent = ({ weeklyCount, referralCount }) => {
 
                     </div>
                     <p className="absolute w-[295px] top-[18px] left-[23px] [font-family:'Roboto-Black',Helvetica] font-normal text-[#ffffff] text-base text-center tracking-[0] leading-[normal]">
-                        <span className="font-black">+15 </span>
+                        <span className="font-black">+ {`${weeklyCheckInPointReward}`} </span>
                         <span className="[font-family:'Roboto-Medium',Helvetica] font-medium">
                             points for login every day for a week
                         </span>
@@ -241,7 +282,7 @@ const DemoFriendReferralComponent = ({ referralCount }) => {
                 </div>
             </div>
             <p className="absolute w-[269px] top-[18px] left-9 [font-family:'Roboto-Black',Helvetica] font-normal text-[#ffffff] text-base text-center tracking-[0] leading-[normal]">
-                <span className="font-black">+ 3000 </span>
+                <span className="font-black">+ {`${tenFriendsReferralPointReward}`} </span>
                 <span className="[font-family:'Roboto-Medium',Helvetica] font-medium">
                     points for every 10 people
                 </span>
