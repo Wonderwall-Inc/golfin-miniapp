@@ -11,38 +11,41 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
     const webappStartParam = WebApp.initDataUnsafe.start_param
 
     useEffect(() => {
-        const userRetrieval = async (userRetirevalPayload: UserRetrievalRequestType): Promise<UserRetrievalResponseType | undefined> => {
-            try {
-                const existingUser = await getUser(userRetirevalPayload)
-                if (existingUser !== undefined) {
-                    // const { user_details } = existingUser
-                    // const { user_base, game_characters, point, activity, social_media, sender, receiver } = user_details
-                    return existingUser
-                }
-                /* else {
-                        try {
-                            if (userCreatePayload)
-                                const newUser = await createUser(userCreatePayload)
-                            if (newUser !== undefined) {
-                                const { user_details, access_token } = newUser
-                                const { user_base, game_characters, point, activity, social_media, sender, receiver } = user_details
+        // const userRetrieval = async (userRetirevalPayload: UserRetrievalRequestType): Promise<UserRetrievalResponseType | undefined> => {
+        //     try {
+        //         const existingUser = await getUser(userRetirevalPayload)
+        //         if (existingUser !== undefined) {
+        //             // const { user_details } = existingUser
+        //             // const { user_base, game_characters, point, activity, social_media, sender, receiver } = user_details
+        //             return existingUser
+        //         }
+        //         /* else {
+        //                 try {
+        //                     if (userCreatePayload)
+        //                         const newUser = await createUser(userCreatePayload)
+        //                     if (newUser !== undefined) {
+        //                         const { user_details, access_token } = newUser
+        //                         const { user_base, game_characters, point, activity, social_media, sender, receiver } = user_details
 
-                                setAccount(user_base)
-                            }
-                        } catch (error) {
-                            console.log(error);
-                            return error
-                        }
-                    } */
-            } catch (error) {
-                console.log(error);
-                return undefined
-            }
-        }
+        //                         setAccount(user_base)
+        //                     }
+        //                 } catch (error) {
+        //                     console.log(error);
+        //                     return error
+        //                 }
+        //             } */
+        //     } catch (error) {
+        //         console.log(error);
+        //         return undefined
+        //     }
+        // }
         const userCreation = async (userCreatePayload: UserCreateRequestType): Promise<UserCreateResponseType | undefined> => {
             try {
                 const newUser = await createUser(userCreatePayload)
                 if (newUser !== undefined) {
+                    // return newUser
+                    setAccount(newUser.user_details.user_base)
+                    setIsWaitingUser(false)
                     return newUser
                     // const { user_details, access_token } = newUser
                     // const { user_base, game_characters, point, activity, social_media, sender, receiver } = user_details
@@ -104,77 +107,43 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                 WebApp.close()
             }
 
-            userRetrieval({
-                access_token: '111', // FIXME: read from cookie
-                telegram_id: `${id}`
-            }).then((existingUser) => {
-                if (existingUser !== undefined) {
-                    setAccount(existingUser.user_details.user_base)
-                    setIsWaitingUser(false)
-                    return
-                } else {
-                    // CREATE NEW USER
-                    if (username) {
-                        console.log(username);
-                        console.log({
-                            app_info: {
-                                is_active: true,
-                                is_admin: false,
-                                skin: []
-                            },
-                            personal_info: {
-                                location: "Japan", // FIXME: change it by form later, with ENUM
-                                nationality: "Japanese" // FIXME: change it by form later, with ENUM
-                                // age?: number
-                                // gender?: string
-                                // email?: string
-                            },
-
-                            telegram_info: {
-                                username: username,
-                                telegram_id: id.toString(),
-                                token_balance: 0,
-                                is_premium: is_premium == true ? true : false,
-                                chat_id: '123', // FIXME: change it by getting the chat id from tg bot later on
-                                start_param: webappStartParam,
-                            }
-                            // wallet_address?: string // FIXME: integrate the TON wallet later on
-                        });
-
-                        userCreation({
-                            app_info: {
-                                is_active: true,
-                                is_admin: false,
-                                skin: []
-                            },
-                            personal_info: {
-                                location: "Japan", // FIXME: change it by form later, with ENUM
-                                nationality: "Japanese" // FIXME: change it by form later, with ENUM
-                                // age?: number
-                                // gender?: string
-                                // email?: string
-                            },
-
-                            telegram_info: {
-                                username: username,
-                                telegram_id: id.toString(),
-                                token_balance: 0,
-                                is_premium: is_premium == true ? true : false,
-                                chat_id: '123', // FIXME: change it by getting the chat id from tg bot later on
-                                start_param: webappStartParam,
-                            }
-                            // wallet_address?: string // FIXME: integrate the TON wallet later on
-                        }).then((newUser) => {
-                            if (newUser !== undefined) {
-                                setAccount(newUser.user_details.user_base)
-                                setIsWaitingUser(false)
-                                return
-                            }
-                        })
+            /*         userRetrieval({
+                        access_token: '111', // FIXME: read from cookie
+                        telegram_id: `${id}`
+                    }).then((existingUser) => {
+                        if (existingUser !== undefined) {
+                            setAccount(existingUser.user_details.user_base)
+                            setIsWaitingUser(false)
+                            return
+                        } else { */
+            // CREATE NEW USER
+            if (username) {
+                console.log(username);
+                userCreation({
+                    app_info: {
+                        is_active: true,
+                        is_admin: false,
+                        skin: []
+                    },
+                    personal_info: {
+                        location: "Japan",
+                        nationality: "Japanese"
+                    },
+                    telegram_info: {
+                        username: username,
+                        telegram_id: id.toString(),
+                        token_balance: 0,
+                        is_premium: is_premium == true ? true : false,
+                        chat_id: '123',
+                        start_param: webappStartParam,
                     }
-                }
-            })
+                })
+            }
         }
+        // }
+        // }
+        // })
+        // }
     }, [webappUser, webappStartParam])
 
     return (
