@@ -16,8 +16,8 @@ const MINI_APP_APP = `https://t.me/${MINI_APP_BOT_NAME}/${MINI_APP_NAME}/start?s
 
 const DemoEarn = () => {
     const { account, setAccount } = useUserContext()
-    const { point, setPoint } = usePointContext()
-    const { activity, setActivity, isTodayCheckedIn, setIsTodayCheckedIn } = useActivityContext()
+    const { point } = usePointContext()
+    const { activity } = useActivityContext()
     // const { friend, setFriend } = useFriendContext()
 
     const [dailyReward, setDailyReward] = useState(true)
@@ -62,12 +62,8 @@ const DemoEarn = () => {
                 setDailyReward={setDailyReward}
                 MINI_APP_APP={MINI_APP_APP}
                 point={point}
-                setPoint={setPoint}
                 account={account}
                 activity={activity}
-                setActivity={setActivity}
-                isTodayCheckedIn={isTodayCheckedIn}
-                setIsTodayCheckedIn={setIsTodayCheckedIn}
             />
             <DemoBonusComponent
                 weeklyCount={activity?.login_streak} // using cont 7 day count
@@ -82,13 +78,10 @@ const DemoEarnComponent = ({
     setDailyReward,
     MINI_APP_APP,
     point,
-    setPoint,
     account,
     activity,
-    setActivity,
-    isTodayCheckedIn,
-    setIsTodayCheckedIn
 }) => {
+
     return (
         <>
             <div className="w-[343px] h-[85px] sm:h-[95px] md:h-[105px] bg-[#ffffff33] rounded-lg flex justify-center content-center items-center mx-auto">
@@ -102,13 +95,7 @@ const DemoEarnComponent = ({
                     timeLeft={timeLeft}
                     dailyReward={dailyReward}
                     setDailyReward={setDailyReward}
-                    point={point}
-                    setPoint={setPoint}
                     account={account}
-                    activity={activity}
-                    setActivity={setActivity}
-                    isTodayCheckedIn={isTodayCheckedIn}
-                    setIsTodayCheckedIn={setIsTodayCheckedIn}
                 />
                 <DemoReferralComponent MINI_APP_APP={MINI_APP_APP} />
             </div>
@@ -121,14 +108,11 @@ const DemoDailyRewardComponent = ({
     timeLeft,
     dailyReward,
     setDailyReward,
-    point,
-    setPoint,
     account,
-    activity,
-    setActivity,
-    isTodayCheckedIn,
-    setIsTodayCheckedIn
 }) => {
+    const { setPoint } = usePointContext()
+    const { isTodayCheckedIn, setIsTodayCheckedIn, setActivity } = useActivityContext()
+    
     const handleCheckInDailyReward = async () => {
         const existingPoint = await getPoint({
             access_token: '',
@@ -145,7 +129,7 @@ const DemoDailyRewardComponent = ({
                 }
             }
             const dbPoint = await updatePoint(updatePointPayload)
-            if (dbPoint) {
+            if (dbPoint && dbPoint?.point_base.user_id) {
                 setPoint({
                     id: dbPoint?.point_base.user_id,
                     amount: dbPoint?.point_base.point.amount,
@@ -201,7 +185,7 @@ const DemoDailyRewardComponent = ({
             }
         }
         // setDailyReward(false)
-        
+
     }
     return (
         <div className={`h-[100px] cursor-pointer`}
