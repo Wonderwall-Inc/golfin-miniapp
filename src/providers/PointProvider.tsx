@@ -83,7 +83,7 @@ export const PointProvider: React.FC<React.PropsWithChildren> = ({ children }) =
             }
 
         }
-    }, [webappUser, webappStartParam])
+    }, [account])
 
     return (
         <PointContext.Provider value={{
