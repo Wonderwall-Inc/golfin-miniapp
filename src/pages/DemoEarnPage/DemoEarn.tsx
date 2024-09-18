@@ -12,7 +12,7 @@ import { getActivity, updateActivity } from '@/apis/ActivityServices'
 
 const MINI_APP_BOT_NAME = import.meta.env.VITE_MINI_APP_BOT_NAME
 const MINI_APP_NAME = import.meta.env.VITE_MINI_APP_NAME
-const MINI_APP_APP = `https://t.me/${MINI_APP_BOT_NAME}/${MINI_APP_NAME}/start?startapp=test`
+const MINI_APP_APP = `https://t.me/${MINI_APP_BOT_NAME}/${MINI_APP_NAME}/start?startapp=${WebApp.initDataUnsafe.user?.id}`
 
 const DemoEarn = () => {
     const { account, setAccount } = useUserContext()
@@ -113,13 +113,6 @@ const DemoDailyRewardComponent = ({
     const { setPoint } = usePointContext()
     const {/*  isTodayCheckedIn, setIsTodayCheckedIn,  */setActivity, activity } = useActivityContext()
     const [allowed, setAllowed] = useState(true)
-    // const todayDay = new Date()
-    // const todayYY = todayDay.getFullYear()
-    // const todayMM = todayDay.getUTCMonth() + 1
-    // const preTodayMM = todayMM < 10 ? `0${todayMM}` : todayMM
-    // const todayDD = todayDay.getDate() + 1
-
-
     useEffect(() => {
         if (activity?.logged_in == false) {
             setAllowed(false)
@@ -137,8 +130,7 @@ const DemoDailyRewardComponent = ({
                 type: 'add', // REVIEW: add / minus point
                 access_token: '',
                 point_payload: {
-                    amount: 2,
-                    // extra_profit_per_hour: optional
+                    amount: 2, // extra_profit_per_hour: optional
                 }
             }
             const dbPoint = await updatePoint(updatePointPayload)
@@ -158,12 +150,6 @@ const DemoDailyRewardComponent = ({
             user_id: account?.id,
         })
         if (existingActivity) {
-            // const formattedTime = todayDay.toLocaleString('en-US', {
-            //     hour12: false, // Use 24-hour format
-            //     hour: 'numeric',
-            //     minute: 'numeric',
-            //     second: 'numeric',
-            // });
             const updateActivityPayload = {
                 id: existingActivity?.activity.id,
                 access_token: '',
@@ -199,8 +185,6 @@ const DemoDailyRewardComponent = ({
             aria-disabled={allowed != true}
             onClick={() => { // FIXME: add daily check in boolean field on each day on backend table 
                 handleCheckInDailyReward()
-                // setDailyReward(false)
-                // return setIsTodayCheckedIn(true)
             }}>
             <div className='text-center w-[100%] h-[80px]'>
                 <div className={`relative w-[160px] h-14 rounded-[6px_6px_0px_0px] 
