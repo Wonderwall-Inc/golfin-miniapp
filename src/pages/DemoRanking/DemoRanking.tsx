@@ -5,6 +5,8 @@ import { mockPointRankingData, mockReferralRankingData } from '@/constants'
 import CoinImage from '../../assets/images/02_earn_coin.png'
 import { getUsers } from '@/apis/UserSevices'
 import { useUserContext } from '@/contexts/UserContext'
+import { useFriendContext } from '@/contexts/FriendContext'
+import { usePointContext } from '@/contexts/PointContext'
 
 interface ReferralRankingItem {
     rank: number,
@@ -17,7 +19,9 @@ interface PointRankingItem {
     point: number;
 }
 const DemoRanking = () => {
-    const { account } = useUserContext()
+    const { account, setIsWaitingUser } = useUserContext()
+    const { setIsWaitingFriend } = useFriendContext()
+    const { setIsWaitingPoint } = usePointContext()
     const [dailyReward, setDailyReward] = useState(true)
     const [activeTab, setActiveTab] = useState('tab-1');
     const [isTabbarLabels, setIsTabbarLabels] = useState(true);
@@ -30,6 +34,7 @@ const DemoRanking = () => {
 
     useEffect(() => {
         const handleReferralRanking = async () => {
+            setIsWaitingUser(true)
             const existingUsers = await getUsers();
             if (existingUsers && existingUsers.length > 0) {
                 const referralRanking: ReferralRankingItem[] = existingUsers.map((user, index) => {
@@ -41,6 +46,7 @@ const DemoRanking = () => {
                         referral: senderCount,
                     };
                 });
+                setIsWaitingFriend(true)
                 referralRanking.sort((a, b) => b.referral - a.referral);
                 referralRanking.map((r, sortIndex) => {
                     if (r.name == account?.telegram_info.username) {
@@ -61,6 +67,7 @@ const DemoRanking = () => {
         }
 
         const handlePointRanking = async () => {
+            setIsWaitingUser(true)
             const existingUsers = await getUsers();
 
             if (existingUsers && existingUsers.length > 0) {
@@ -82,6 +89,7 @@ const DemoRanking = () => {
                         };
                     }
                 });
+                setIsWaitingPoint(true)
                 pointRanking.sort((a, b) => b.point - a.point);
                 pointRanking.map((p, sortIndex) => {
                     if (p.name == account?.telegram_info.username) {
@@ -101,8 +109,23 @@ const DemoRanking = () => {
             }
         };
 
-        handleReferralRanking()
-        handlePointRanking()
+        if (import.meta.env.VITE_MINI_APP_ENV !== 'test') {
+            handleReferralRanking()
+            handlePointRanking()
+        } else {
+            setIsWaitingUser(true)
+            setReferrakRanking(mockReferralRankingData)
+            setMyReferralRecord({ name: 'dev1', rank: 111, referral: 1 })
+            setIsWaitingFriend(true)
+            setPointRanking(mockPointRankingData)
+            setMyPointRecord({ name: 'dev1', rank: 1, point: 100 })
+            setIsWaitingPoint(true)
+
+
+        }
+        setIsWaitingUser(false)
+        setIsWaitingFriend(false)
+        setIsWaitingPoint(false)
     }, [])
     return (
         <div className='w-[100%] h-[690px]'>
@@ -127,14 +150,14 @@ const DemoRanking = () => {
                     </div>
 
                     {activeTab === 'tab-1' && <>
-                        <div className='h-[300px] w-[343px] overflow-y-scroll sm:h-[300px] md:h-[460px] pt-2'>
+                        <div className='h-[400px] w-[343px] overflow-y-scroll sm:h-[400px] md:h-[460px] pt-2'>
                             <div className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between border-4 border-[#8cc73e]`}>
-                                <div className='flex font-rubik font-[300] text-xl pr-10 py-1 content-start place-content-start'>
-                                    <div className='text-right mx-2 font-[17px]'>{myReferralRecord !== undefined && myReferralRecord.rank > 100 ? '100+' : myReferralRecord?.rank}</div>
-                                    <div className='text-right font-[17px]'>{myReferralRecord !== undefined && myReferralRecord.name}</div>
+                                <div className='flex font-rubik font-[400] text-xl pr-10 py-1 content-start place-content-start'>
+                                    <div className='text-center mx-2 font-[12px]'>{myReferralRecord !== undefined && myReferralRecord.rank > 100 ? '100+' : myReferralRecord?.rank}</div>
+                                    <div className='text-center content-center justify-center font-[12px]'>{myReferralRecord !== undefined && myReferralRecord.name}</div>
                                 </div>
                                 <div className='flex flex-row justify-start pr-5 py-1'>
-                                    <div className='text-xl pr-5 font-[17px]'>{myReferralRecord !== undefined && myReferralRecord.referral}</div>
+                                    <div className='text-xl pr-5 font-[12px]'>{myReferralRecord !== undefined && myReferralRecord.referral}</div>
                                     <img src={CoinImage} width='30px' height='30px' className='justify-end ml-1' />
                                 </div>
                             </div>
@@ -143,12 +166,12 @@ const DemoRanking = () => {
                                 {referralRanking.map((referralRank, index) => {
                                     if (index < 10) {
                                         return <div key={referralRank.name} className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between`}>
-                                            <div className='flex font-rubik font-[300] text-xl pr-10 pb-1 content-start place-content-start'>
-                                                <div className='pl-5 text-right font-[17px]'>{referralRank.rank}</div>
-                                                <div className={`${index < 9 ? 'pl-7' : 'pl-5'} text-right font-[17px]`}>{referralRank.name}</div>
+                                            <div className='flex font-rubik font-[400] text-xl pr-10 pb-1 content-start place-content-start'>
+                                                <div className='pl-5 text-right font-[12px]'>{referralRank.rank}</div>
+                                                <div className={`${index < 9 ? 'pl-7' : 'pl-5'} text-right font-[12px]`}>{referralRank.name}</div>
                                             </div>
                                             <div className='flex flex-row justify-start pr-5 pb-1'>
-                                                <div className='text-xl pr-5 font-[17px]'>{referralRank.referral}</div>
+                                                <div className='text-xl pr-5 font-[12px]'>{referralRank.referral}</div>
                                                 <img src={CoinImage} width='30px' height='30px' className='justify-end' />
                                             </div>
                                         </div>
@@ -160,14 +183,14 @@ const DemoRanking = () => {
                     </>
                     }
                     {activeTab === 'tab-2' && <>
-                        <div className='h-[300px] w-[343px] overflow-y-scroll sm:h-[300px] md:h-[460px] pt-2'>
+                        <div className='h-[400px] w-[343px] overflow-y-scroll sm:h-[400px] md:h-[460px] pt-2'>
                             <div className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between border-4 border-[#8cc73e]`}>
-                                <div className='flex font-rubik font-[300] text-xl pr-10 py-1 content-start place-content-start'>
-                                    <div className='text-right mx-2 font-[17px]'>{myPointRecord !== undefined && myPointRecord.rank > 100 ? '100+' : myPointRecord?.rank}</div> {/* FIXME */}
-                                    <div className='text-right font-[17px]'>{myPointRecord !== undefined && myPointRecord.name}</div>  {/* FIXME */}
+                                <div className='flex font-rubik font-[400] text-xl pr-10 py-1 content-start place-content-start'>
+                                    <div className='text-center mx-2 font-[12px]'>{myPointRecord !== undefined && myPointRecord.rank > 100 ? '100+' : myPointRecord?.rank}</div> {/* FIXME */}
+                                    <div className='font-[12px] text-center content-center justify-center'>{myPointRecord !== undefined && myPointRecord.name}</div>  {/* FIXME */}
                                 </div>
                                 <div className='flex flex-row justify-start pr-5 py-1'>
-                                    <div className='text-xl pr-5 font-[17px]'>{myPointRecord !== undefined && myPointRecord.point}</div>  {/* FIXME */}
+                                    <div className='text-xl pr-5 text-center content-center justify-center font-[12px]'>{myPointRecord !== undefined && myPointRecord.point}</div>  {/* FIXME */}
                                     <img src={CoinImage} width='30px' height='30px' className='justify-end' />
                                 </div>
                             </div>
@@ -178,11 +201,11 @@ const DemoRanking = () => {
                                     if (index < 10) {
                                         return <div key={pointRank.name} className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between`}>
                                             <div className='flex font-rubik font-[600] text-xl pr-10 pb-1 content-start place-content-start'>
-                                                <div className='pl-5 text-right font-[17px]'>{pointRank.rank}</div>
-                                                <div className={`${index < 9 ? 'pl-7' : 'pl-5'} text-right font-[17px]`}>{pointRank.name}</div>
+                                                <div className='pl-5 text-right font-[12px]'>{pointRank.rank}</div>
+                                                <div className={`${index < 9 ? 'pl-7' : 'pl-5'} text-right font-[12px]`}>{pointRank.name}</div>
                                             </div>
                                             <div className='flex flex-row justify-start pr-5 pb-1 font-rubik font-[600] text-xl content-start place-content-start'>
-                                                <div className='text-xl pr-5 font-[17px]'>{pointRank.point}</div>
+                                                <div className='text-xl pr-5 font-[12px]'>{pointRank.point}</div>
                                                 <img src={CoinImage} width='30px' height='30px' className='justify-end' />
                                             </div>
                                         </div>
