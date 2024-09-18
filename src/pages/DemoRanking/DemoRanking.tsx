@@ -152,7 +152,7 @@ const DemoRanking = () => {
                     </div>
 
                     {activeTab === 'tab-1' && <>
-                        <div className='h-[400px] w-[343px] overflow-y-scroll sm:h-[400px] md:h-[460px] pt-2'>
+                        <div className='h-[300px] w-[343px] overflow-y-scroll sm:h-[400px] md:h-[460px] pt-2'>
                             <div className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between border-4 border-[#8cc73e]`}>
                                 <div className='flex font-rubik font-[400] text-xl pr-10 py-1 content-start place-content-start'>
                                     <div className='text-center mx-2 font-[12px]'>{myReferralRecord !== undefined && myReferralRecord.rank > 100 ? '100+' : myReferralRecord?.rank}</div>
@@ -185,7 +185,7 @@ const DemoRanking = () => {
                     </>
                     }
                     {activeTab === 'tab-2' && <>
-                        <div className='h-[400px] w-[343px] overflow-y-scroll sm:h-[400px] md:h-[460px] pt-2'>
+                        <div className='h-[300px] w-[343px] overflow-y-scroll sm:h-[400px] md:h-[460px] pt-2'>
                             <div className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between border-4 border-[#8cc73e]`}>
                                 <div className='flex font-rubik font-[400] text-xl pr-10 py-1 content-start place-content-start'>
                                     <div className='text-center mx-2 font-[12px]'>{myPointRecord !== undefined && myPointRecord.rank > 100 ? '100+' : myPointRecord?.rank}</div> {/* FIXME */}
