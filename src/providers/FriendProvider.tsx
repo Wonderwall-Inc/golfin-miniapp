@@ -32,7 +32,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                 let count = 0
                 // FIXME:
                 existingFriend.sender.forEach(s => {
-                    if (s.custom_logs !== undefined) {
+                    if (!s.custom_logs?.action) {
                         count++
                     }
                 })

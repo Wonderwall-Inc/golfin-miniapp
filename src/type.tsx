@@ -649,13 +649,19 @@ export interface FriendBaseType {
     updated_at: string
     receiver_id: number
     created_at: string
-    custom_logs?: object
+    custom_logs?: {
+        action: string,
+        date: string
+    }
 
 }
 
 export interface FriendUpdateDetailsType {
     status: FriendStatusType
-    custom_logs?: object
+    custom_logs?: {
+        action: string,
+        date: string
+    }
 }
 
 export interface FriendType {
@@ -663,7 +669,10 @@ export interface FriendType {
     status: FriendStatusType
     created_at: string
     updated_at: string
-    custom_logs?: object
+    custom_logs?: {
+        action: string,
+        date: string
+    }
 }
 
 export interface FriendDetailsType {
