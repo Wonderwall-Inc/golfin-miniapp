@@ -21,7 +21,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                 access_token: '',
                 telegram_id: senderId
             })
-            
+
             if (sender)
                 friendCreatePayload.sender_id == sender.user_details.user_base.id
 
@@ -55,6 +55,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
         }
 
         if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
+            setIsWaitingFriend(true)
             setFriend({
                 id: 1,
                 status: FriendStatusType.active,
@@ -74,7 +75,8 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                     receiver_id: account?.id,
                     status: FriendStatusType.active
                 }
-                friendCreation(webappStartParam/*  the one who make the friend request == sender */, friendPayload)
+                /*  the one who make the friend request == sender */
+                friendCreation(webappStartParam, friendPayload)
             } else {
                 setIsWaitingFriend(false)
             }

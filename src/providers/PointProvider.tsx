@@ -39,14 +39,13 @@ export const PointProvider: React.FC<React.PropsWithChildren> = ({ children }) =
         }
         if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
             setIsWaitingPoint(true)
-            const mockPoint = {
+            setPoint({
                 id: 1,
                 amount: 0,
                 extra_profit_per_hour: 1,
                 created_at: '20240917',
                 updated_at: '20240917',
-            }
-            setPoint(mockPoint)
+            })
             setIsWaitingPoint(false)
         }
         else {
