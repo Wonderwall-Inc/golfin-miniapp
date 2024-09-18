@@ -116,7 +116,7 @@ const DemoDailyRewardComponent = ({
     const {/*  isTodayCheckedIn, setIsTodayCheckedIn,  */setActivity, activity } = useActivityContext()
     const [allowed, setAllowed] = useState(true)
     useEffect(() => {
-        if (activity?.logged_in == true) {
+        if (activity?.logged_in == false) {
             setAllowed(false)
         }
     }, [activity?.logged_in])
