@@ -23,7 +23,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
             })
 
             if (sender)
-                friendCreatePayload.sender_id == sender.user_details.user_base.id
+                friendCreatePayload.sender_id = sender.user_details.user_base.id
 
             const newFriend = await createFriend(friendCreatePayload)
             if (newFriend) {
