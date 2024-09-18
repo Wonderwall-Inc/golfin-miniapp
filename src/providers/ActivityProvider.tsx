@@ -15,9 +15,10 @@ export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }
         const activityCreation = async (activityCreatePayload: ActivityCreateRequestType) => {
             try {
                 const newActivity = await createActivity(activityCreatePayload)
-                if (newActivity !== undefined) {
+                if (newActivity) {
                     setActivity(newActivity.activity)
                     setIsWaitingActivity(false)
+                    return newActivity
                 } else {
                     const existingActivity = await getActivity({
                         access_token: '',
@@ -36,7 +37,7 @@ export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }
         }
         if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
             setIsWaitingActivity(true)
-            const mockActivity = {
+            setActivity({
                 id: 1,
                 logged_in: true,
                 login_streak: 1,
@@ -45,8 +46,7 @@ export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }
                 last_login_time: '20240917',
                 created_at: '20240917',
                 updated_at: '20240917',
-            }
-            setActivity(mockActivity)
+            })
             setIsWaitingActivity(false)
         }
         else {

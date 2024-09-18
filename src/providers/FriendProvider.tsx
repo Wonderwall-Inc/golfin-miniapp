@@ -35,6 +35,8 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                     updated_at: newFriend.friend_details.friend_base.updated_at,
                     created_at: newFriend.friend_details.friend_base.created_at,
                 })
+                setIsWaitingFriend(false)
+                return setFriend
             } else {
                 const existingFriend = await getFriend({
                     access_token: '',
@@ -50,6 +52,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                         created_at: existingFriend.friend_base.created_at,
                     })
                     setIsWaitingFriend(false)
+                    return existingFriend
                 }
             }
         }
@@ -67,7 +70,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
             setIsWaitingFriend(false)
         } else {
             setIsWaitingFriend(true)
-            if (account?.id && webappStartParam) {
+            if (account?.id !== undefined && webappStartParam !== undefined) {
                 console.log('provider friend');
                 const friendPayload = {
                     access_token: '',

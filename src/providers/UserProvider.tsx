@@ -35,7 +35,8 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
             }
         }
         if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
-            const mockAccount = {
+            setIsWaitingUser(true)
+            setAccount({
                 id: 1,
                 app_info: {
                     active: true,
@@ -55,13 +56,12 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                 },
                 created_at: '20240917',
                 updated_at: '20240917',
-            }
-            setAccount(mockAccount)
+            })
+            setIsWaitingUser(false)
         }
         else {
-            // CHECK IF HAVING ID
-            if (webappUser?.id !== undefined) {
-                setIsWaitingUser(true)
+            setIsWaitingUser(true)
+            if (webappUser?.id !== undefined) {// CHECK IF HAVING ID
                 // CHECK IF ID == START PARAM >>> BAN
                 if (`${webappUser?.id}` == webappStartParam) {
                     window.alert('Same ID')
