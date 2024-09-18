@@ -4,6 +4,7 @@ import {
     FriendDetailsType,
     FriendRetrievalRequestType,
     FriendUpdateByIdRequestType,
+    FriendWithIdsRetrievalResponseType,
     getFriendRequestType,
 } from '@/type';
 import api from './api';
@@ -32,7 +33,7 @@ export async function createFriend(friendCreate: FriendCreateRequestType): Promi
 }
 
 // FRIEND RETRIEVAL
-export async function getFriend(friendRetrieval: FriendRetrievalRequestType): Promise<FriendDetailsType | undefined> {
+export async function getFriend(friendRetrieval: FriendRetrievalRequestType): Promise<FriendWithIdsRetrievalResponseType | undefined> {
     try {
         const qs = []
         for (const [key, val] of Object.entries(friendRetrieval)) {

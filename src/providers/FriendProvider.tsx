@@ -2,12 +2,12 @@ import { createFriend, getFriend, } from "@/apis/FriendServices"
 import { getUser } from "@/apis/UserSevices"
 import { FriendContext } from "@/contexts/FriendContext"
 import { useUserContext } from "@/contexts/UserContext"
-import { FriendBaseType, FriendCreateRequestType, FriendRetrievalRequestType, FriendStatusType, getFriendRequestType } from "@/type"
+import { FriendCreateRequestType, FriendRetrievalRequestType, FriendStatusType, FriendWithIdsRetrievalResponseType, getFriendRequestType } from "@/type"
 import WebApp from "@twa-dev/sdk"
 import { useEffect, useState } from "react"
 
 export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-    const [friend, setFriend] = useState<FriendBaseType | undefined>()
+    const [friend, setFriend] = useState<FriendWithIdsRetrievalResponseType | undefined>()
     const [isWaitingFriend, setIsWaitingFriend] = useState(false)
 
     const webappUser = WebApp.initDataUnsafe.user
@@ -22,14 +22,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
             console.log(existingFriend);
 
             if (existingFriend) {
-                setFriend({
-                    id: existingFriend.friend_base.id,
-                    status: existingFriend.friend_base.status,
-                    sender_id: existingFriend.sender_id,
-                    receiver_id: existingFriend.receiver_id,
-                    updated_at: existingFriend.friend_base.updated_at,
-                    created_at: existingFriend.friend_base.created_at,
-                })
+                setFriend({ sender: existingFriend.sender, receiver: existingFriend.receiver})
                 setIsWaitingFriend(false)
                 return existingFriend
             }
@@ -45,14 +38,17 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                 friendCreatePayload.sender_id = sender.user_details.user_base.id
 
             const newFriend = await createFriend(friendCreatePayload)
-            if (newFriend!==undefined) {
+            if (newFriend !== undefined) {
                 setFriend({
-                    id: newFriend.friend_details.friend_base.id,
-                    status: newFriend.friend_details.friend_base.status,
-                    sender_id: newFriend.friend_details.sender_id,
-                    receiver_id: newFriend.friend_details.receiver_id,
-                    updated_at: newFriend.friend_details.friend_base.updated_at,
-                    created_at: newFriend.friend_details.friend_base.created_at,
+                    sender: [],
+                    receiver: [{
+                        sender_id: newFriend.friend_details.sender_id,
+                        receiver_id: newFriend.friend_details.receiver_id,
+                        status: newFriend.friend_details.friend_base.status,
+                        id: newFriend.friend_details.friend_base.id,
+                        updated_at: newFriend.friend_details.friend_base.updated_at,
+                        created_at: newFriend.friend_details.friend_base.created_at,
+                    }]
                 })
                 setIsWaitingFriend(false)
                 return newFriend
@@ -63,12 +59,8 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
 
                 if (existingFriend) {
                     setFriend({
-                        id: existingFriend.friend_base.id,
-                        status: existingFriend.friend_base.status,
-                        sender_id: existingFriend.sender_id,
-                        receiver_id: existingFriend.receiver_id,
-                        updated_at: existingFriend.friend_base.updated_at,
-                        created_at: existingFriend.friend_base.created_at,
+                        sender: existingFriend.sender,
+                        receiver: existingFriend.receiver
                     })
                     setIsWaitingFriend(false)
                     return existingFriend
@@ -79,12 +71,15 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
         if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
             setIsWaitingFriend(true)
             setFriend({
-                id: 1,
-                status: FriendStatusType.active,
-                sender_id: 60001,
-                receiver_id: 30001,
-                updated_at: new Date().toISOString(),
-                created_at: new Date().toISOString(),
+                sender: [{
+                    id: 1,
+                    status: FriendStatusType.active,
+                    sender_id: 60001,
+                    receiver_id: 30001,
+                    updated_at: new Date().toISOString(),
+                    created_at: new Date().toISOString(),
+                }],
+                receiver: []
             })
             setIsWaitingFriend(false)
         } else {
@@ -101,7 +96,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                 friendCreation(webappStartParam, friendPayload)
             } else {
                 console.log('calling friend Retrieval');
-                
+
                 friendRetrieval({ access_token: '', user_id: account?.id })
             }
         }

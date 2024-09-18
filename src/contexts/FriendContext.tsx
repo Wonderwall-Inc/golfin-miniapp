@@ -1,8 +1,8 @@
-import { FriendBaseType, FriendContextType } from "@/type";
+import { FriendBaseType, FriendContextType, FriendWithIdsRetrievalResponseType } from "@/type";
 import { createContext, useContext } from "react";
 
 export const FriendContext = createContext<FriendContextType>({
-    friend: {} as FriendBaseType,
+    friend: {} as FriendWithIdsRetrievalResponseType,
     setFriend: () => { },
     isWaitingFriend: false,
     setIsWaitingFriend: () => { }

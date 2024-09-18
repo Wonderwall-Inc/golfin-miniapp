@@ -41,8 +41,8 @@ export interface ActivityContextType {
 }
 
 export interface FriendContextType {
-    friend: undefined | FriendBaseType
-    setFriend: Dispatch<SetStateAction<undefined | FriendBaseType>>
+    friend: undefined | FriendWithIdsRetrievalResponseType
+    setFriend: Dispatch<SetStateAction<undefined | FriendWithIdsRetrievalResponseType>>
     isWaitingFriend: boolean
     setIsWaitingFriend: Dispatch<SetStateAction<boolean>>
     // isTodayCheckedIn: boolean,
