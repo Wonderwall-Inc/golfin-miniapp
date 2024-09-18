@@ -129,7 +129,7 @@ const DemoRanking = () => {
                     {activeTab === 'tab-1' && <>
                         <div className='h-[300px] w-[343px] overflow-y-scroll sm:h-[300px] md:h-[460px] pt-2'>
                             <div className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between border-4 border-[#8cc73e]`}>
-                                <div className='flex font-rubik font-[600] text-xl pr-10 py-1 content-start place-content-start'>
+                                <div className='flex font-rubik font-[300] text-xl pr-10 py-1 content-start place-content-start'>
                                     <div className='text-right mx-2'>{myReferralRecord !== undefined && myReferralRecord.rank > 100 ? '100+' : myReferralRecord?.rank}</div>
                                     <div className='text-right'>{myReferralRecord !== undefined && myReferralRecord.name}</div>
                                 </div>
@@ -143,7 +143,7 @@ const DemoRanking = () => {
                                 {referralRanking.map((referralRank, index) => {
                                     if (index < 10) {
                                         return <div key={referralRank.name} className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between`}>
-                                            <div className='flex font-rubik font-[600] text-xl pr-10 pb-1 content-start place-content-start'>
+                                            <div className='flex font-rubik font-[300] text-xl pr-10 pb-1 content-start place-content-start'>
                                                 <div className='pl-5 text-right'>{referralRank.rank}</div>
                                                 <div className={`${index < 9 ? 'pl-7' : 'pl-5'} text-right`}>{referralRank.name}</div>
                                             </div>
@@ -162,7 +162,7 @@ const DemoRanking = () => {
                     {activeTab === 'tab-2' && <>
                         <div className='h-[300px] w-[343px] overflow-y-scroll sm:h-[300px] md:h-[460px] pt-2'>
                             <div className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between border-4 border-[#8cc73e]`}>
-                                <div className='flex font-rubik font-[600] text-xl pr-10 py-1 content-start place-content-start'>
+                                <div className='flex font-rubik font-[300] text-xl pr-10 py-1 content-start place-content-start'>
                                     <div className='text-right mx-2'>{myPointRecord !== undefined && myPointRecord.rank > 100 ? '100+' : myPointRecord?.rank}</div> {/* FIXME */}
                                     <div className='text-right'>{myPointRecord !== undefined && myPointRecord.name}</div>  {/* FIXME */}
                                 </div>
@@ -181,7 +181,7 @@ const DemoRanking = () => {
                                                 <div className='pl-5 text-right'>{pointRank.rank}</div>
                                                 <div className={`${index < 9 ? 'pl-7' : 'pl-5'} text-right`}>{pointRank.name}</div>
                                             </div>
-                                            <div className='flex flex-row justify-start pr-5 pb-1  font-rubik font-[600] text-xl content-start place-content-start'>
+                                            <div className='flex flex-row justify-start pr-5 pb-1 font-rubik font-[600] text-xl content-start place-content-start'>
                                                 <div className='text-xl pr-5'>{pointRank.point}</div>
                                                 <img src={CoinImage} width='30px' height='30px' className='justify-end' />
                                             </div>
