@@ -199,9 +199,9 @@ const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, MINI_APP_APP
 
 
 const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) => {
-    const { setPoint } = usePointContext()
+    const { setPoint, setIsWaitingPoint } = usePointContext()
     const { account } = useUserContext()
-    const {/*  isTodayCheckedIn, setIsTodayCheckedIn,  */setActivity, activity } = useActivityContext()
+    const {setActivity, activity, setIsWaitingActivity } = useActivityContext()
     const [allowed, setAllowed] = useState(true)
     useEffect(() => {
         if (activity?.logged_in == false) {
@@ -210,6 +210,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
     }, [activity?.logged_in])
 
     const handleCheckInDailyReward = async () => {
+        setIsWaitingPoint(true)
         const existingPoint = await getPoint({
             access_token: '',
             user_id: account?.id,
@@ -235,6 +236,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
                 })
             }
         }
+        setIsWaitingActivity(true)
         const existingActivity = await getActivity({
             access_token: '',
             user_id: account?.id,
@@ -275,6 +277,8 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
             aria-disabled={allowed != true}
             onClick={() => { // FIXME: add daily check in boolean field on each day on backend table 
                 handleCheckInDailyReward()
+                setIsWaitingPoint(false)
+                setIsWaitingActivity(false)
             }}>
             <div className='text-center w-[100%] h-[80px]'>
                 <div className={`relative w-[160px] h-14 rounded-[6px_6px_0px_0px] 
