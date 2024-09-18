@@ -10,6 +10,7 @@ import { dailyCheckInPointReward, friendReferralPointReward, tenFriendsReferralP
 import { useActivityContext } from '@/contexts/ActivityContext'
 import { getActivity, updateActivity } from '@/apis/ActivityServices'
 import { useFriendContext } from '@/contexts/FriendContext'
+import { updateFriend } from '@/apis/FriendServices'
 
 const MINI_APP_BOT_NAME = import.meta.env.VITE_MINI_APP_BOT_NAME
 const MINI_APP_NAME = import.meta.env.VITE_MINI_APP_NAME
@@ -19,7 +20,7 @@ const DemoEarn = () => {
     const { account, setAccount } = useUserContext()
     const { point, setPoint, isWaitingPoint, setIsWaitingPoint } = usePointContext()
     const { activity, setActivity, isWaitingActivity, setIsWaitingActivity } = useActivityContext()
-    const { friend, friendTrigger } = useFriendContext()
+    const { friend, friendTrigger, notYetClaimRewardReferral } = useFriendContext()
 
     const [dailyReward, setDailyReward] = useState(true)
     const [timeLeft, setTimeLeft] = useState("")
@@ -151,6 +152,20 @@ const DemoEarn = () => {
                     })
                 }
             }
+
+            friend?.sender?.forEach(async (s) => {
+                await updateFriend({
+                    id: s.id,
+                    access_token: '',
+                    friend_payload: {
+                        status: s.status,
+                        custom_logs: {
+                            'action': 'claim reward',
+                            'date': new Date().toISOString()
+                        }
+                    }
+                })
+            })
         }
         if (friendTrigger && friendTrigger % 10 == 0) {
             //update point + 3000
@@ -170,7 +185,7 @@ const DemoEarn = () => {
             />
             <DemoBonusComponent
                 weeklyCount={activity?.login_streak} // using cont 7 day count
-                referralCount={friendTrigger} />
+                referralCount={notYetClaimRewardReferral} />
         </div>
     )
 }
@@ -201,7 +216,7 @@ const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, MINI_APP_APP
 const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) => {
     const { setPoint, setIsWaitingPoint } = usePointContext()
     const { account } = useUserContext()
-    const {setActivity, activity, setIsWaitingActivity } = useActivityContext()
+    const { setActivity, activity, setIsWaitingActivity } = useActivityContext()
     const [allowed, setAllowed] = useState(true)
     useEffect(() => {
         if (activity?.logged_in == false) {

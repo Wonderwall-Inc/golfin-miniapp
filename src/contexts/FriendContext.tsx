@@ -10,6 +10,8 @@ export const FriendContext = createContext<FriendContextType>({
     setFriendNumber: () => { },
     friendTrigger: {} as number,
     setFriendTrigger: () => { },
+    notYetClaimRewardReferral: {} as number,
+    setNotYetClaimRewardReferral: () => { },
 })
 
 export const useFriendContext = () => useContext(FriendContext)

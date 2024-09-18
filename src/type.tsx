@@ -49,6 +49,8 @@ export interface FriendContextType {
     setFriendNumber: Dispatch<SetStateAction<number>>
     friendTrigger: number,
     setFriendTrigger: Dispatch<SetStateAction<number>>
+    notYetClaimRewardReferral: number
+    setNotYetClaimRewardReferral: Dispatch<SetStateAction<number>>
     // isTodayCheckedIn: boolean,
     // setIsTodayCheckedIn: Dispatch<SetStateAction<boolean>>
 }
