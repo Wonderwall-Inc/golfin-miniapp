@@ -130,11 +130,11 @@ const DemoRanking = () => {
                         <div className='h-[300px] w-[343px] overflow-y-scroll sm:h-[300px] md:h-[460px] pt-2'>
                             <div className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between border-4 border-[#8cc73e]`}>
                                 <div className='flex font-rubik font-[300] text-xl pr-10 py-1 content-start place-content-start'>
-                                    <div className='text-right mx-2'>{myReferralRecord !== undefined && myReferralRecord.rank > 100 ? '100+' : myReferralRecord?.rank}</div>
-                                    <div className='text-right'>{myReferralRecord !== undefined && myReferralRecord.name}</div>
+                                    <div className='text-right mx-2 font-[17px]'>{myReferralRecord !== undefined && myReferralRecord.rank > 100 ? '100+' : myReferralRecord?.rank}</div>
+                                    <div className='text-right font-[17px]'>{myReferralRecord !== undefined && myReferralRecord.name}</div>
                                 </div>
                                 <div className='flex flex-row justify-start pr-5 py-1'>
-                                    <div className='text-xl pr-5'>{myReferralRecord !== undefined && myReferralRecord.referral}</div>
+                                    <div className='text-xl pr-5 font-[17px]'>{myReferralRecord !== undefined && myReferralRecord.referral}</div>
                                     <img src={CoinImage} width='30px' height='30px' className='justify-end ml-1' />
                                 </div>
                             </div>
@@ -144,11 +144,11 @@ const DemoRanking = () => {
                                     if (index < 10) {
                                         return <div key={referralRank.name} className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between`}>
                                             <div className='flex font-rubik font-[300] text-xl pr-10 pb-1 content-start place-content-start'>
-                                                <div className='pl-5 text-right'>{referralRank.rank}</div>
-                                                <div className={`${index < 9 ? 'pl-7' : 'pl-5'} text-right`}>{referralRank.name}</div>
+                                                <div className='pl-5 text-right font-[17px]'>{referralRank.rank}</div>
+                                                <div className={`${index < 9 ? 'pl-7' : 'pl-5'} text-right font-[17px]`}>{referralRank.name}</div>
                                             </div>
                                             <div className='flex flex-row justify-start pr-5 pb-1'>
-                                                <div className='text-xl pr-5'>{referralRank.referral}</div>
+                                                <div className='text-xl pr-5 font-[17px]'>{referralRank.referral}</div>
                                                 <img src={CoinImage} width='30px' height='30px' className='justify-end' />
                                             </div>
                                         </div>
@@ -163,11 +163,11 @@ const DemoRanking = () => {
                         <div className='h-[300px] w-[343px] overflow-y-scroll sm:h-[300px] md:h-[460px] pt-2'>
                             <div className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between border-4 border-[#8cc73e]`}>
                                 <div className='flex font-rubik font-[300] text-xl pr-10 py-1 content-start place-content-start'>
-                                    <div className='text-right mx-2'>{myPointRecord !== undefined && myPointRecord.rank > 100 ? '100+' : myPointRecord?.rank}</div> {/* FIXME */}
-                                    <div className='text-right'>{myPointRecord !== undefined && myPointRecord.name}</div>  {/* FIXME */}
+                                    <div className='text-right mx-2 font-[17px]'>{myPointRecord !== undefined && myPointRecord.rank > 100 ? '100+' : myPointRecord?.rank}</div> {/* FIXME */}
+                                    <div className='text-right font-[17px]'>{myPointRecord !== undefined && myPointRecord.name}</div>  {/* FIXME */}
                                 </div>
                                 <div className='flex flex-row justify-start pr-5 py-1'>
-                                    <div className='text-xl pr-5'>{myPointRecord !== undefined && myPointRecord.point}</div>  {/* FIXME */}
+                                    <div className='text-xl pr-5 font-[17px]'>{myPointRecord !== undefined && myPointRecord.point}</div>  {/* FIXME */}
                                     <img src={CoinImage} width='30px' height='30px' className='justify-end' />
                                 </div>
                             </div>
@@ -178,11 +178,11 @@ const DemoRanking = () => {
                                     if (index < 10) {
                                         return <div key={pointRank.name} className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between`}>
                                             <div className='flex font-rubik font-[600] text-xl pr-10 pb-1 content-start place-content-start'>
-                                                <div className='pl-5 text-right'>{pointRank.rank}</div>
-                                                <div className={`${index < 9 ? 'pl-7' : 'pl-5'} text-right`}>{pointRank.name}</div>
+                                                <div className='pl-5 text-right font-[17px]'>{pointRank.rank}</div>
+                                                <div className={`${index < 9 ? 'pl-7' : 'pl-5'} text-right font-[17px]`}>{pointRank.name}</div>
                                             </div>
                                             <div className='flex flex-row justify-start pr-5 pb-1 font-rubik font-[600] text-xl content-start place-content-start'>
-                                                <div className='text-xl pr-5'>{pointRank.point}</div>
+                                                <div className='text-xl pr-5 font-[17px]'>{pointRank.point}</div>
                                                 <img src={CoinImage} width='30px' height='30px' className='justify-end' />
                                             </div>
                                         </div>
