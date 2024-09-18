@@ -2,7 +2,7 @@ import { createFriend, getFriend, } from "@/apis/FriendServices"
 import { getUser } from "@/apis/UserSevices"
 import { FriendContext } from "@/contexts/FriendContext"
 import { useUserContext } from "@/contexts/UserContext"
-import { FriendBaseType, FriendCreateRequestType, FriendStatusType } from "@/type"
+import { FriendBaseType, FriendCreateRequestType, FriendRetrievalRequestType, FriendStatusType, getFriendRequestType } from "@/type"
 import WebApp from "@twa-dev/sdk"
 import { useEffect, useState } from "react"
 
@@ -16,6 +16,22 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
     const { account } = useUserContext()
 
     useEffect(() => {
+        const friendRetrieval = async (friendRetrievalPayload: getFriendRequestType) => {
+            const existingFriend = await getFriend(friendRetrievalPayload)
+            if (existingFriend) {
+                setFriend({
+                    id: existingFriend.friend_base.id,
+                    status: existingFriend.friend_base.status,
+                    sender_id: existingFriend.sender_id,
+                    receiver_id: existingFriend.receiver_id,
+                    updated_at: existingFriend.friend_base.updated_at,
+                    created_at: existingFriend.friend_base.created_at,
+                })
+                setIsWaitingFriend(false)
+                return existingFriend
+            }
+        }
+
         const friendCreation = async (senderId: string, friendCreatePayload: FriendCreateRequestType) => {
             const sender = await getUser({
                 access_token: '',
@@ -38,22 +54,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                 setIsWaitingFriend(false)
                 return setFriend
             } else {
-                const existingFriend = await getFriend({
-                    access_token: '',
-                    user_id: account?.id
-                })
-                if (existingFriend) {
-                    setFriend({
-                        id: existingFriend.friend_base.id,
-                        status: existingFriend.friend_base.status,
-                        sender_id: existingFriend.sender_id,
-                        receiver_id: existingFriend.receiver_id,
-                        updated_at: existingFriend.friend_base.updated_at,
-                        created_at: existingFriend.friend_base.created_at,
-                    })
-                    setIsWaitingFriend(false)
-                    return existingFriend
-                }
+                return friendRetrieval({ access_token: '', user_id: account?.id })
             }
         }
 
@@ -81,7 +82,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                 /*  the one who make the friend request == sender */
                 friendCreation(webappStartParam, friendPayload)
             } else {
-                setIsWaitingFriend(false)
+                friendRetrieval({ access_token: '', user_id: account?.id })
             }
         }
     }, [account, webappStartParam])

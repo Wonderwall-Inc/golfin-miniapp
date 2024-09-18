@@ -714,3 +714,8 @@ export interface FriendUpdateByReceiverIdRequestType {
 export interface FriendDetailsResponseType {
     friend_details: FriendDetailsType
 }
+export interface getFriendRequestType {
+    access_token: string
+    id?: number
+    user_id?: number
+}

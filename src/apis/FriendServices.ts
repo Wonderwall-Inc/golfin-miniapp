@@ -3,14 +3,10 @@ import {
     FriendCreateResponseType,
     FriendDetailsType,
     FriendUpdateByIdRequestType,
+    getFriendRequestType,
 } from '@/type';
 import api from './api';
 
-interface getFriendRequestType {
-    access_token: string
-    id?: number
-    user_id?: number
-}
 
 // FRIEND CREATION
 export async function createFriend(friendCreate: FriendCreateRequestType): Promise<FriendCreateResponseType | undefined> {

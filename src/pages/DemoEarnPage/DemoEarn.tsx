@@ -9,6 +9,7 @@ import { getPoint, updatePoint } from '@/apis/PointServices'
 import { dailyCheckInPointReward, friendReferralPointReward, tenFriendsReferralPointReward, weeklyCheckInPointReward } from '@/constants'
 import { useActivityContext } from '@/contexts/ActivityContext'
 import { getActivity, updateActivity } from '@/apis/ActivityServices'
+import { useFriendContext } from '@/contexts/FriendContext'
 
 const MINI_APP_BOT_NAME = import.meta.env.VITE_MINI_APP_BOT_NAME
 const MINI_APP_NAME = import.meta.env.VITE_MINI_APP_NAME
@@ -18,6 +19,7 @@ const DemoEarn = () => {
     const { account, setAccount } = useUserContext()
     const { point } = usePointContext()
     const { activity } = useActivityContext()
+    const { friend } = useFriendContext()
     // const { friend, setFriend } = useFriendContext()
 
     const [dailyReward, setDailyReward] = useState(true)
@@ -52,6 +54,7 @@ const DemoEarn = () => {
     console.log(weeklyCount);
     console.dir(account);
     console.log(point);
+    console.log(friend);
 
 
     return (
