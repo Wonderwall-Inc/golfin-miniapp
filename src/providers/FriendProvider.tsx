@@ -9,6 +9,8 @@ import { useEffect, useState } from "react"
 export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const [friend, setFriend] = useState<FriendWithIdsRetrievalResponseType | undefined>()
     const [isWaitingFriend, setIsWaitingFriend] = useState(false)
+    const [friendNumber, setFriendNumber] = useState(0)
+    const [friendTrigger, setFriendTrigger] = useState(0)
 
     const webappUser = WebApp.initDataUnsafe.user
     const webappStartParam = WebApp.initDataUnsafe.start_param
@@ -21,8 +23,10 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
             console.log('existingFriend on retrieve friend');
             console.log(existingFriend);
 
-            if (existingFriend) {
-                setFriend({ sender: existingFriend.sender, receiver: existingFriend.receiver})
+            if (existingFriend && existingFriend.sender && existingFriend.receiver) {
+                setFriend({ sender: existingFriend.sender, receiver: existingFriend.receiver })
+                setFriendNumber(existingFriend.sender?.length + existingFriend.receiver?.length)
+                setFriendTrigger(existingFriend.sender?.length)
                 setIsWaitingFriend(false)
                 return existingFriend
             }
@@ -50,6 +54,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                         created_at: newFriend.friend_details.friend_base.created_at,
                     }]
                 })
+                setFriendNumber(1)
                 setIsWaitingFriend(false)
                 return newFriend
             } else {
@@ -57,11 +62,13 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                 console.log('existingFriend');
                 console.log(existingFriend);
 
-                if (existingFriend) {
+                if (existingFriend && existingFriend.sender && existingFriend.receiver) {
                     setFriend({
                         sender: existingFriend.sender,
                         receiver: existingFriend.receiver
                     })
+                    setFriendNumber(existingFriend.sender?.length + existingFriend.receiver?.length)
+                    setFriendTrigger(existingFriend.sender?.length)
                     setIsWaitingFriend(false)
                     return existingFriend
                 }
@@ -81,6 +88,8 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                 }],
                 receiver: []
             })
+            setFriendNumber(1)
+            setFriendTrigger(1)
             setIsWaitingFriend(false)
         } else {
             setIsWaitingFriend(true)
@@ -106,7 +115,9 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
         friend,
         setFriend,
         isWaitingFriend,
-        setIsWaitingFriend
+        setIsWaitingFriend,
+        friendNumber, setFriendNumber,
+        friendTrigger, setFriendTrigger
     }}>
         {children}
     </FriendContext.Provider>

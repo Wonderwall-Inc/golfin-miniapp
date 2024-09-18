@@ -4,8 +4,12 @@ import { createContext, useContext } from "react";
 export const FriendContext = createContext<FriendContextType>({
     friend: {} as FriendWithIdsRetrievalResponseType,
     setFriend: () => { },
-    isWaitingFriend: false,
-    setIsWaitingFriend: () => { }
+    isWaitingFriend: {} as boolean,
+    setIsWaitingFriend: () => { },
+    friendNumber: {} as number,
+    setFriendNumber: () => { },
+    friendTrigger: {} as number,
+    setFriendTrigger: () => { },
 })
 
 export const useFriendContext = () => useContext(FriendContext)

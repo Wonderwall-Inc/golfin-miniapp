@@ -19,13 +19,12 @@ const DemoEarn = () => {
     const { account, setAccount } = useUserContext()
     const { point, setPoint } = usePointContext()
     const { activity, setActivity } = useActivityContext()
-    const { friend } = useFriendContext()
+    const { friend, friendTrigger } = useFriendContext()
 
     const [dailyReward, setDailyReward] = useState(true)
     const [timeLeft, setTimeLeft] = useState("")
 
     let [isHomeLoading, setIsHomeLoading] = useState(false)
-    let [loading, setLoading] = useState(true);
 
     const [weeklyCount, setWeeklyCount] = useState(0)
     const [referralCount, setReferralCount] = useState(0)
@@ -45,10 +44,6 @@ const DemoEarn = () => {
     }, [new Date()])
 
 
-    useEffect(() => {
-        setWeeklyCount(new Date().getDay())
-        setReferralCount(new Date().getDay())
-    }, [new Date().getDay()])
 
     console.log(weeklyCount);
     console.dir(account);
@@ -97,7 +92,7 @@ const DemoEarn = () => {
                         login_streak: 0,
                         total_logins: existingActivity.activity.total_logins,
                         last_action_time: new Date().toISOString(),
-                        last_login_time:existingActivity.activity.last_login_time,
+                        last_login_time: existingActivity.activity.last_login_time,
                     }
                 }
                 const dbActivity = await updateActivity(updateActivityPayload)
@@ -123,6 +118,7 @@ const DemoEarn = () => {
             weeklyRewardHandler()
         }
     }, [activity?.login_streak])
+
     return (
         <div className='w-[100%] h-[690px]'>
             <DemoEarnComponent
@@ -134,7 +130,7 @@ const DemoEarn = () => {
             />
             <DemoBonusComponent
                 weeklyCount={activity?.login_streak} // using cont 7 day count
-                referralCount={referralCount} />
+                referralCount={friendTrigger} />
         </div>
     )
 }

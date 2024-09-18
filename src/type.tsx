@@ -45,6 +45,10 @@ export interface FriendContextType {
     setFriend: Dispatch<SetStateAction<undefined | FriendWithIdsRetrievalResponseType>>
     isWaitingFriend: boolean
     setIsWaitingFriend: Dispatch<SetStateAction<boolean>>
+    friendNumber: number,
+    setFriendNumber: Dispatch<SetStateAction<number>>
+    friendTrigger: number,
+    setFriendTrigger: Dispatch<SetStateAction<number>>
     // isTodayCheckedIn: boolean,
     // setIsTodayCheckedIn: Dispatch<SetStateAction<boolean>>
 }

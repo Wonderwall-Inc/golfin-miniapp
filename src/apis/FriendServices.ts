@@ -53,6 +53,20 @@ export async function getFriend(friendRetrieval: FriendRetrievalRequestType): Pr
 }
 
 
+// FRIENDS RETRIEVAL
+export const getFriends = async (user_ids: number[], skip: number = 0, limit: number = 15) => {
+    try {
+        const response = await api.get(
+            `/friends/list?user_ids=${user_ids.join(',')}&skip=${skip}&limit=${limit}`
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error retrieving friends:', error);
+        throw error; // Re-throw for error handling
+    }
+};
+
+
 // FRIEND UPDATING
 export async function updateFriend(friendUpdate: FriendUpdateByIdRequestType): Promise<FriendUpdateByIdRequestType | undefined> {
     try {

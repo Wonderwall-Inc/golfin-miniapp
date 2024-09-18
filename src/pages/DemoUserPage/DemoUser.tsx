@@ -8,7 +8,7 @@ const DemoUser = () => {
     const { account, setAccount } = useUserContext()
     const { point, setPoint } = usePointContext()
     const { activity, setActivity } = useActivityContext()
-    const { friend, setFriend } = useFriendContext()
+    const { friend, setFriend, friendTrigger, friendNumber } = useFriendContext()
     console.log('account');
     console.log(account);
 
@@ -66,7 +66,8 @@ const DemoUser = () => {
                             </>
                         )
                     })}
-
+                    <div>friend number: {friendNumber}</div>
+                    <div>friend trigger: {friendTrigger}</div>
                 </div>
             </div>
         </div>
