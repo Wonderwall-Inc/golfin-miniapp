@@ -45,7 +45,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                 friendCreatePayload.sender_id = sender.user_details.user_base.id
 
             const newFriend = await createFriend(friendCreatePayload)
-            if (newFriend) {
+            if (newFriend!==undefined) {
                 setFriend({
                     id: newFriend.friend_details.friend_base.id,
                     status: newFriend.friend_details.friend_base.status,
