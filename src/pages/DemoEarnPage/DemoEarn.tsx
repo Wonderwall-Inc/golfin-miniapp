@@ -17,10 +17,10 @@ const MINI_APP_APP = `https://t.me/${MINI_APP_BOT_NAME}/${MINI_APP_NAME}/start?s
 
 const DemoEarn = () => {
     const { account, setAccount } = useUserContext()
-    const { point } = usePointContext()
-    const { activity } = useActivityContext()
+    const { point, setPoint } = usePointContext()
+    const { activity, setActivity } = useActivityContext()
     const { friend } = useFriendContext()
-    
+
     const [dailyReward, setDailyReward] = useState(true)
     const [timeLeft, setTimeLeft] = useState("")
 
@@ -56,6 +56,73 @@ const DemoEarn = () => {
     console.log(friend);
 
 
+    useEffect(() => {
+        const weeklyRewardHandler = async () => {
+            const existingPoint = await getPoint({
+                access_token: '',
+                user_id: account?.id,
+            })
+            if (existingPoint) {
+                const updatePointPayload = {
+                    id: existingPoint?.point_base.point.id,
+                    type: 'add', // REVIEW: add / minus point
+                    access_token: '',
+                    point_payload: {
+                        amount: 15, // extra_profit_per_hour: optional
+                    }
+                }
+                const dbPoint = await updatePoint(updatePointPayload)
+                if (dbPoint && dbPoint?.point_base.user_id) {
+                    setPoint({
+                        id: dbPoint?.point_base.user_id,
+                        amount: dbPoint?.point_base.point.amount,
+                        extra_profit_per_hour: dbPoint?.point_base.point.extra_profit_per_hour,
+                        created_at: dbPoint?.point_base.point.created_at,
+                        updated_at: dbPoint?.point_base.point.updated_at,
+                        custom_logs: dbPoint?.point_base.point.custom_logs
+                    })
+                }
+            }
+            const existingActivity = await getActivity({
+                access_token: '',
+                user_id: account?.id,
+            })
+            if (existingActivity) {
+                const updateActivityPayload = {
+                    id: existingActivity?.activity.id,
+                    access_token: '',
+                    user_id: existingActivity.user_id,
+                    activity: {
+                        logged_in: existingActivity.activity.logged_in,
+                        login_streak: 0,
+                        total_logins: existingActivity.activity.total_logins,
+                        last_action_time: new Date().toISOString(),
+                        last_login_time:existingActivity.activity.last_login_time,
+                    }
+                }
+                const dbActivity = await updateActivity(updateActivityPayload)
+                if (dbActivity) {
+                    setActivity({
+                        id: dbActivity.activity.id,
+                        logged_in: dbActivity.activity.logged_in,
+                        login_streak: dbActivity.activity.login_streak,
+                        total_logins: dbActivity.activity.total_logins,
+                        last_action_time: dbActivity.activity.last_action_time,
+                        last_login_time: dbActivity.activity.last_login_time,
+                        created_at: dbActivity.activity.created_at,
+                        updated_at: dbActivity.activity.updated_at,
+                        custom_logs: dbActivity.activity.custom_logs,
+                    })
+                }
+            }
+        }
+        if (activity?.login_streak && activity?.login_streak == 7) {
+            // update point + 15
+            // clean up activity streak
+
+            weeklyRewardHandler()
+        }
+    }, [activity?.login_streak])
     return (
         <div className='w-[100%] h-[690px]'>
             <DemoEarnComponent
@@ -64,8 +131,6 @@ const DemoEarn = () => {
                 setDailyReward={setDailyReward}
                 MINI_APP_APP={MINI_APP_APP}
                 point={point}
-                account={account}
-                activity={activity}
             />
             <DemoBonusComponent
                 weeklyCount={activity?.login_streak} // using cont 7 day count
@@ -74,15 +139,7 @@ const DemoEarn = () => {
     )
 }
 
-const DemoEarnComponent = ({
-    timeLeft,
-    dailyReward,
-    setDailyReward,
-    MINI_APP_APP,
-    point,
-    account,
-    activity,
-}) => {
+const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, MINI_APP_APP, point }) => {
 
     return (
         <>
@@ -97,7 +154,6 @@ const DemoEarnComponent = ({
                     timeLeft={timeLeft}
                     dailyReward={dailyReward}
                     setDailyReward={setDailyReward}
-                    account={account}
                 />
                 <DemoReferralComponent MINI_APP_APP={MINI_APP_APP} />
             </div>
@@ -106,13 +162,9 @@ const DemoEarnComponent = ({
 }
 
 
-const DemoDailyRewardComponent = ({
-    timeLeft,
-    dailyReward,
-    setDailyReward,
-    account,
-}) => {
+const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) => {
     const { setPoint } = usePointContext()
+    const { account } = useUserContext()
     const {/*  isTodayCheckedIn, setIsTodayCheckedIn,  */setActivity, activity } = useActivityContext()
     const [allowed, setAllowed] = useState(true)
     useEffect(() => {
