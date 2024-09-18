@@ -86,11 +86,11 @@ const App = () => {
     <>
       {
         isWaiting == true ? //FIXME: flat waiting state
-          <div className='bg-gray-500 opacity-25 w-[400px] h-[700px] relative'>
+          <div className='bg-gray-500 opacity-40 w-[400px] h-[700px] relative'>
             <ClipLoader
               loading={isWaiting}
               size={150}
-              className='absolute top-[35%] left-[30%] translate-x-[-50%]' />
+              className='w-[100%] absolute top-[35%] left-[30%] translate-x-[-50%]' />
           </div> :
           <div className='app-container'>
             <Background>
