@@ -20,7 +20,7 @@ const DemoEarn = () => {
     const { account, setAccount } = useUserContext()
     const { point, setPoint, isWaitingPoint, setIsWaitingPoint } = usePointContext()
     const { activity, setActivity, isWaitingActivity, setIsWaitingActivity } = useActivityContext()
-    const { friend, friendTrigger, notYetClaimRewardReferral } = useFriendContext()
+    const { friend, friendTrigger, notYetClaimRewardReferral, setNotYetClaimRewardReferral } = useFriendContext()
 
     const [dailyReward, setDailyReward] = useState(true)
     const [timeLeft, setTimeLeft] = useState("")
@@ -51,128 +51,244 @@ const DemoEarn = () => {
     console.log(point);
     console.log(friend);
 
-
     useEffect(() => {
-        const weeklyRewardHandler = async () => {
-            setIsWaitingPoint(true)
-            const existingPoint = await getPoint({
-                access_token: '',
-                user_id: account?.id,
-            })
-            if (existingPoint) {
-                const updatePointPayload = {
-                    id: existingPoint?.point_base.point.id,
-                    type: 'add', // REVIEW: add / minus point
-                    access_token: '',
-                    point_payload: {
-                        amount: 15, // extra_profit_per_hour: optional
+        const handleWeeklyReward = async () => {
+            if (!activity?.login_streak || activity?.login_streak !== 7) return; // Early exit if not a streak of 7
+
+            setIsWaitingPoint(true);
+            setIsWaitingActivity(true);
+
+            try {
+                // Fetch existing point and update if necessary
+                const existingPoint = await getPoint({ access_token: '', user_id: account?.id });
+                if (existingPoint) {
+                    const updatePointPayload = {
+                        id: existingPoint?.point_base.point.id,
+                        type: 'add', // REVIEW: add / minus point
+                        access_token: '',
+                        point_payload: {
+                            amount: 15, // extra_profit_per_hour: optional
+                        },
+                    };
+                    const updatedPoint = await updatePoint(updatePointPayload);
+                    if (updatedPoint && updatedPoint?.point_base.user_id) {
+                        setPoint({
+                            id: updatedPoint?.point_base.user_id,
+                            amount: updatedPoint?.point_base.point.amount,
+                            extra_profit_per_hour: updatedPoint?.point_base.point.extra_profit_per_hour,
+                            created_at: updatedPoint?.point_base.point.created_at,
+                            updated_at: updatedPoint?.point_base.point.updated_at,
+                            custom_logs: updatedPoint?.point_base.point.custom_logs
+                        })
                     }
                 }
-                const dbPoint = await updatePoint(updatePointPayload)
-                if (dbPoint && dbPoint?.point_base.user_id) {
-                    setPoint({
-                        id: dbPoint?.point_base.user_id,
-                        amount: dbPoint?.point_base.point.amount,
-                        extra_profit_per_hour: dbPoint?.point_base.point.extra_profit_per_hour,
-                        created_at: dbPoint?.point_base.point.created_at,
-                        updated_at: dbPoint?.point_base.point.updated_at,
-                        custom_logs: dbPoint?.point_base.point.custom_logs
-                    })
-                }
-            }
-            setIsWaitingActivity(true)
-            const existingActivity = await getActivity({
-                access_token: '',
-                user_id: account?.id,
-            })
-            if (existingActivity) {
+                // Update activity data (assuming login streak reset)
                 const updateActivityPayload = {
-                    id: existingActivity?.activity.id,
+                    id: activity?.id,
                     access_token: '',
-                    user_id: existingActivity.user_id,
+                    user_id: account?.id,
                     activity: {
-                        logged_in: existingActivity.activity.logged_in,
-                        login_streak: 0,
-                        total_logins: existingActivity.activity.total_logins,
+                        logged_in: true, // Update logged_in state
+                        login_streak: 0, // Reset login streak
+                        total_logins: activity?.total_logins + 1, // Increment total logins
                         last_action_time: new Date().toISOString(),
-                        last_login_time: existingActivity.activity.last_login_time,
-                    }
-                }
-                const dbActivity = await updateActivity(updateActivityPayload)
-                if (dbActivity) {
-                    setActivity({
-                        id: dbActivity.activity.id,
-                        logged_in: dbActivity.activity.logged_in,
-                        login_streak: dbActivity.activity.login_streak,
-                        total_logins: dbActivity.activity.total_logins,
-                        last_action_time: dbActivity.activity.last_action_time,
-                        last_login_time: dbActivity.activity.last_login_time,
-                        created_at: dbActivity.activity.created_at,
-                        updated_at: dbActivity.activity.updated_at,
-                        custom_logs: dbActivity.activity.custom_logs,
-                    })
-                }
+                        last_login_time: new Date().toISOString(), // Update last login time
+                    },
+                };
+                const updatedActivity = await updateActivity(updateActivityPayload);
+                setActivity(updatedActivity?.activity);
+            } catch (error) {
+                console.error('Error handling weekly reward:', error);
+            } finally {
+                setIsWaitingPoint(false);
+                setIsWaitingActivity(false);
             }
-        }
-        if (activity?.login_streak && activity?.login_streak == 7) {
-            // update point + 15
-            // clean up activity streak
+        };
 
-            weeklyRewardHandler()
-            setIsWaitingPoint(false)
-            setIsWaitingActivity(false)
-        }
-    }, [activity?.login_streak])
+        handleWeeklyReward(); // Call the function on component mount
+    }, [activity?.login_streak]); // Only re-run when login_streak changes
 
     useEffect(() => {
-        const referralRewardHandler = async () => {
-            setIsWaitingPoint(true)
-            const existingPoint = await getPoint({
-                access_token: '',
-                user_id: account?.id,
-            })
-            if (existingPoint) {
-                const updatePointPayload = {
-                    id: existingPoint?.point_base.point.id,
-                    type: 'add', // REVIEW: add / minus point
-                    access_token: '',
-                    point_payload: {
-                        amount: 3000, // extra_profit_per_hour: optional
-                    }
-                }
-                const dbPoint = await updatePoint(updatePointPayload)
-                if (dbPoint && dbPoint?.point_base.user_id) {
-                    setPoint({
-                        id: dbPoint?.point_base.user_id,
-                        amount: dbPoint?.point_base.point.amount,
-                        extra_profit_per_hour: dbPoint?.point_base.point.extra_profit_per_hour,
-                        created_at: dbPoint?.point_base.point.created_at,
-                        updated_at: dbPoint?.point_base.point.updated_at,
-                        custom_logs: dbPoint?.point_base.point.custom_logs
-                    })
-                }
-            }
+        const handleReferralReward = async () => {
+            if (!referralCount || referralCount % 10 !== 0 || notYetClaimRewardReferral) return; // Early exit if not a multiple of 10 or already claimed
 
-            const dbFriend = friend?.sender?.map(async (s) => {
-                return await updateFriend({
-                    id: s.id,
-                    access_token: '',
-                    friend_payload: {
-                        status: s.status,
-                        custom_logs: {
-                            'action': 'claim reward',
-                            'date': new Date().toISOString()
-                        }
+            setIsWaitingPoint(true);
+
+            try {
+                // Fetch existing point and update if necessary
+                const existingPoint = await getPoint({ access_token: '', user_id: account?.id });
+                if (existingPoint) {
+                    const updatePointPayload = {
+                        id: existingPoint?.point_base.point.id,
+                        type: 'add', // REVIEW: add / minus point
+                        access_token: '',
+                        point_payload: {
+                            amount: 3000, // extra_profit_per_hour: optional
+                        },
+                    };
+                    const updatedPoint = await updatePoint(updatePointPayload);
+                    if (updatedPoint && updatedPoint?.point_base.user_id) {
+                        setPoint({
+                            id: updatedPoint?.point_base.user_id,
+                            amount: updatedPoint?.point_base.point.amount,
+                            extra_profit_per_hour: updatedPoint?.point_base.point.extra_profit_per_hour,
+                            created_at: updatedPoint?.point_base.point.created_at,
+                            updated_at: updatedPoint?.point_base.point.updated_at,
+                            custom_logs: updatedPoint?.point_base.point.custom_logs
+                        })
                     }
-                })
-            })
-        }
-        if (notYetClaimRewardReferral && notYetClaimRewardReferral % 10 == 0) {
-            //update point + 3000
-            referralRewardHandler()
-            setIsWaitingPoint(false)
-        }
-    }, [friendTrigger])
+                }
+
+                // Update friend data (assuming marking claimed reward)
+                await Promise.all(
+                    friend?.sender?.map(async (s) => {
+                        await updateFriend({
+                            id: s.id,
+                            access_token: '',
+                            friend_payload: {
+                                status: s.status, // Update status if necessary
+                                custom_logs: {
+                                    action: 'claim reward',
+                                    date: new Date().toISOString(),
+                                },
+                            },
+                        });
+                    }) ?? []
+                );
+                // const results = await Promise.all(promises?.map((p) => p()) ?? []);
+                // Update local count for referral rewards claimed (optional)
+                setNotYetClaimRewardReferral(referralCount); // Update claimed count (optional)
+            } catch (error) {
+                console.error('Error handling referral reward:', error);
+            } finally {
+                setIsWaitingPoint(false);
+            }
+        };
+
+        handleReferralReward(); // Call the function on component mount
+    }, [referralCount, notYetClaimRewardReferral])
+
+    // useEffect(() => {
+    //     const weeklyRewardHandler = async () => {
+    //         setIsWaitingPoint(true)
+    //         const existingPoint = await getPoint({
+    //             access_token: '',
+    //             user_id: account?.id,
+    //         })
+    //         if (existingPoint) {
+    //             const updatePointPayload = {
+    //                 id: existingPoint?.point_base.point.id,
+    //                 type: 'add', // REVIEW: add / minus point
+    //                 access_token: '',
+    //                 point_payload: {
+    //                     amount: 15, // extra_profit_per_hour: optional
+    //                 }
+    //             }
+    //             const dbPoint = await updatePoint(updatePointPayload)
+    //             if (dbPoint && dbPoint?.point_base.user_id) {
+    //                 setPoint({
+    //                     id: dbPoint?.point_base.user_id,
+    //                     amount: dbPoint?.point_base.point.amount,
+    //                     extra_profit_per_hour: dbPoint?.point_base.point.extra_profit_per_hour,
+    //                     created_at: dbPoint?.point_base.point.created_at,
+    //                     updated_at: dbPoint?.point_base.point.updated_at,
+    //                     custom_logs: dbPoint?.point_base.point.custom_logs
+    //                 })
+    //             }
+    //         }
+    //         setIsWaitingActivity(true)
+    //         const existingActivity = await getActivity({
+    //             access_token: '',
+    //             user_id: account?.id,
+    //         })
+    //         if (existingActivity) {
+    //             const updateActivityPayload = {
+    //                 id: existingActivity?.activity.id,
+    //                 access_token: '',
+    //                 user_id: existingActivity.user_id,
+    //                 activity: {
+    //                     logged_in: existingActivity.activity.logged_in,
+    //                     login_streak: 0,
+    //                     total_logins: existingActivity.activity.total_logins,
+    //                     last_action_time: new Date().toISOString(),
+    //                     last_login_time: existingActivity.activity.last_login_time,
+    //                 }
+    //             }
+    //             const dbActivity = await updateActivity(updateActivityPayload)
+    //             if (dbActivity) {
+    //                 setActivity({
+    //                     id: dbActivity.activity.id,
+    //                     logged_in: dbActivity.activity.logged_in,
+    //                     login_streak: dbActivity.activity.login_streak,
+    //                     total_logins: dbActivity.activity.total_logins,
+    //                     last_action_time: dbActivity.activity.last_action_time,
+    //                     last_login_time: dbActivity.activity.last_login_time,
+    //                     created_at: dbActivity.activity.created_at,
+    //                     updated_at: dbActivity.activity.updated_at,
+    //                     custom_logs: dbActivity.activity.custom_logs,
+    //                 })
+    //             }
+    //         }
+    //     }
+    //     if (activity?.login_streak && activity?.login_streak == 7) {
+    //         // update point + 15
+    //         // clean up activity streak
+
+    //         weeklyRewardHandler()
+    //         setIsWaitingPoint(false)
+    //         setIsWaitingActivity(false)
+    //     }
+    // }, [activity?.login_streak])
+
+    // useEffect(() => {
+    //     const referralRewardHandler = async () => {
+    //         setIsWaitingPoint(true)
+    //         const existingPoint = await getPoint({
+    //             access_token: '',
+    //             user_id: account?.id,
+    //         })
+    //         if (existingPoint) {
+    //             const updatePointPayload = {
+    //                 id: existingPoint?.point_base.point.id,
+    //                 type: 'add', // REVIEW: add / minus point
+    //                 access_token: '',
+    //                 point_payload: {
+    //                     amount: 3000, // extra_profit_per_hour: optional
+    //                 }
+    //             }
+    //             const dbPoint = await updatePoint(updatePointPayload)
+    //             if (dbPoint && dbPoint?.point_base.user_id) {
+    //                 setPoint({
+    //                     id: dbPoint?.point_base.user_id,
+    //                     amount: dbPoint?.point_base.point.amount,
+    //                     extra_profit_per_hour: dbPoint?.point_base.point.extra_profit_per_hour,
+    //                     created_at: dbPoint?.point_base.point.created_at,
+    //                     updated_at: dbPoint?.point_base.point.updated_at,
+    //                     custom_logs: dbPoint?.point_base.point.custom_logs
+    //                 })
+    //             }
+    //         }
+
+    //         const dbFriend = await Promise.all(friend?.sender?.map(async (s) => {
+    //             await updateFriend({
+    //                 id: s.id,
+    //                 access_token: '',
+    //                 friend_payload: {
+    //                     status: s.status,
+    //                     custom_logs: {
+    //                         'action': 'claim reward',
+    //                         'date': new Date().toISOString()
+    //                     }
+    //                 }
+    //             })
+    //         }))
+    //     }
+    //     if (notYetClaimRewardReferral && notYetClaimRewardReferral % 10 == 0) {
+    //         //update point + 3000
+    //         referralRewardHandler()
+    //         setIsWaitingPoint(false)
+    //     }
+    // }, [friendTrigger])
 
     return (
         <div className='w-[100%] h-[690px]'>
