@@ -46,10 +46,27 @@ const DemoUser = () => {
                 </div>
                 <div>
                     <div className='font-extrabold'>friend</div>
-                    <div>id: {friend?.id}</div>
-                    <div>sender_id: {friend?.sender_id}</div>
-                    <div>receiver_id: {friend?.receiver_id}</div>
-                    <div>status: {friend?.status}</div>
+                    {friend?.sender?.map((s) => {
+                        return (
+                            <>
+                                <div>id: {s?.id}</div>
+                                <div>sender_id: {s?.sender_id}</div>
+                                <div>receiver_id: {s?.receiver_id}</div>
+                                <div>status: {s?.status}</div>
+                            </>
+                        )
+                    })}
+                    {friend?.receiver?.map((r) => {
+                        return (
+                            <>
+                                <div>id: {r?.id}</div>
+                                <div>sender_id: {r?.sender_id}</div>
+                                <div>receiver_id: {r?.receiver_id}</div>
+                                <div>status: {r?.status}</div>
+                            </>
+                        )
+                    })}
+
                 </div>
             </div>
         </div>
