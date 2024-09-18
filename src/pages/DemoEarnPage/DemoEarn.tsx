@@ -17,8 +17,8 @@ const MINI_APP_APP = `https://t.me/${MINI_APP_BOT_NAME}/${MINI_APP_NAME}/start?s
 
 const DemoEarn = () => {
     const { account, setAccount } = useUserContext()
-    const { point, setPoint } = usePointContext()
-    const { activity, setActivity } = useActivityContext()
+    const { point, setPoint, isWaitingPoint, setIsWaitingPoint } = usePointContext()
+    const { activity, setActivity, isWaitingActivity, setIsWaitingActivity } = useActivityContext()
     const { friend, friendTrigger } = useFriendContext()
 
     const [dailyReward, setDailyReward] = useState(true)
@@ -53,6 +53,7 @@ const DemoEarn = () => {
 
     useEffect(() => {
         const weeklyRewardHandler = async () => {
+            setIsWaitingPoint(true)
             const existingPoint = await getPoint({
                 access_token: '',
                 user_id: account?.id,
@@ -78,6 +79,7 @@ const DemoEarn = () => {
                     })
                 }
             }
+            setIsWaitingActivity(true)
             const existingActivity = await getActivity({
                 access_token: '',
                 user_id: account?.id,
@@ -116,8 +118,46 @@ const DemoEarn = () => {
             // clean up activity streak
 
             weeklyRewardHandler()
+            setIsWaitingPoint(false)
+            setIsWaitingActivity(false)
         }
     }, [activity?.login_streak])
+
+    useEffect(() => {
+        const referralRewardHandler = async () => {
+            setIsWaitingPoint(true)
+            const existingPoint = await getPoint({
+                access_token: '',
+                user_id: account?.id,
+            })
+            if (existingPoint) {
+                const updatePointPayload = {
+                    id: existingPoint?.point_base.point.id,
+                    type: 'add', // REVIEW: add / minus point
+                    access_token: '',
+                    point_payload: {
+                        amount: 3000, // extra_profit_per_hour: optional
+                    }
+                }
+                const dbPoint = await updatePoint(updatePointPayload)
+                if (dbPoint && dbPoint?.point_base.user_id) {
+                    setPoint({
+                        id: dbPoint?.point_base.user_id,
+                        amount: dbPoint?.point_base.point.amount,
+                        extra_profit_per_hour: dbPoint?.point_base.point.extra_profit_per_hour,
+                        created_at: dbPoint?.point_base.point.created_at,
+                        updated_at: dbPoint?.point_base.point.updated_at,
+                        custom_logs: dbPoint?.point_base.point.custom_logs
+                    })
+                }
+            }
+        }
+        if (friendTrigger && friendTrigger % 10 == 0) {
+            //update point + 3000
+            referralRewardHandler()
+            setIsWaitingPoint(false)
+        }
+    }, [friendTrigger])
 
     return (
         <div className='w-[100%] h-[690px]'>
