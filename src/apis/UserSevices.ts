@@ -48,7 +48,7 @@ export async function getUser(userRetrieval: UserRetrievalRequestType): Promise<
 export const getUsers = async (skip: number = 0, limit: number = 15): Promise<[UserRetrievalResponseType] | undefined> => {
     try {
         const response = await api.get(
-            `/users/details?skip=${skip}&limit=${limit}`
+            `/user/details?skip=${skip}&limit=${limit}`
         );
         return response.data;
     } catch (error) {
