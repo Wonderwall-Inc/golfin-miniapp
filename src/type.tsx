@@ -680,8 +680,9 @@ export interface FriendCreateResponseType {
 }
 
 export interface FriendRetrievalRequestType {
+    id?: number
     access_token: string
-    id: number
+    user_id?: number
 }
 
 export interface FriendWithIdsRetrievalResponseType {

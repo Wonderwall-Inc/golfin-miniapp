@@ -56,12 +56,12 @@ const App = () => {
   const { isWaitingFriend, setIsWaitingFriend, friend } = useFriendContext()
 
   useEffect(() => {
-    if (isWaitingUser == true || isWaitingPoint == true || isWaitingFriend == true) {
+    if (isWaitingUser == true || isWaitingPoint == true || isWaitingActivity == true || isWaitingFriend == true) {
       setIsWaiting(true)
     } else {
       setIsWaiting(false)
     }
-  }, [isWaitingUser, isWaitingPoint, isWaitingFriend])
+  }, [isWaitingUser, isWaitingPoint, isWaitingFriend, isWaitingActivity])
 
 
   useEffect(() => {
