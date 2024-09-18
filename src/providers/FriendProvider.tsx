@@ -1,4 +1,5 @@
 import { createFriend, getFriend, } from "@/apis/FriendServices"
+import { getUser } from "@/apis/UserSevices"
 import { FriendContext } from "@/contexts/FriendContext"
 import { useUserContext } from "@/contexts/UserContext"
 import { FriendBaseType, FriendCreateRequestType, FriendStatusType } from "@/type"
@@ -15,7 +16,15 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
     const { account } = useUserContext()
 
     useEffect(() => {
-        const friendCreation = async (friendCreatePayload: FriendCreateRequestType) => {
+        const friendCreation = async (senderId: string, friendCreatePayload: FriendCreateRequestType) => {
+            const sender = await getUser({
+                access_token: '',
+                telegram_id: senderId
+            })
+            
+            if (sender)
+                friendCreatePayload.sender_id == sender.user_details.user_base.id
+
             const newFriend = await createFriend(friendCreatePayload)
             if (newFriend) {
                 setFriend({
@@ -61,11 +70,11 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                 console.log('provider friend');
                 const friendPayload = {
                     access_token: '',
-                    sender_id: parseInt(webappStartParam),
+                    sender_id: 0,
                     receiver_id: account?.id,
                     status: FriendStatusType.active
                 }
-                friendCreation(friendPayload)
+                friendCreation(webappStartParam/*  the one who make the friend request == sender */, friendPayload)
             } else {
                 setIsWaitingFriend(false)
             }
