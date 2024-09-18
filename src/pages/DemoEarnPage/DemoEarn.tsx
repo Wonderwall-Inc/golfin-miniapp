@@ -20,8 +20,7 @@ const DemoEarn = () => {
     const { point } = usePointContext()
     const { activity } = useActivityContext()
     const { friend } = useFriendContext()
-    // const { friend, setFriend } = useFriendContext()
-
+    
     const [dailyReward, setDailyReward] = useState(true)
     const [timeLeft, setTimeLeft] = useState("")
 
@@ -117,7 +116,7 @@ const DemoDailyRewardComponent = ({
     const {/*  isTodayCheckedIn, setIsTodayCheckedIn,  */setActivity, activity } = useActivityContext()
     const [allowed, setAllowed] = useState(true)
     useEffect(() => {
-        if (activity?.logged_in == false) {
+        if (activity?.logged_in == true) {
             setAllowed(false)
         }
     }, [activity?.logged_in])
