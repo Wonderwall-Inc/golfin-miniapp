@@ -43,3 +43,16 @@ export async function getUser(userRetrieval: UserRetrievalRequestType): Promise<
         return undefined
     }
 }
+
+// FRIENDS RETRIEVAL
+export const getUsers = async (skip: number = 0, limit: number = 15): Promise<[UserRetrievalResponseType] | undefined> => {
+    try {
+        const response = await api.get(
+            `/users/details?skip=${skip}&limit=${limit}`
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error retrieving friends:', error);
+        throw error; // Re-throw for error handling
+    }
+};

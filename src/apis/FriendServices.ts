@@ -57,7 +57,7 @@ export async function getFriend(friendRetrieval: FriendRetrievalRequestType): Pr
 export const getFriends = async (user_ids: number[], skip: number = 0, limit: number = 15) => {
     try {
         const response = await api.get(
-            `/friends/list?user_ids=${user_ids.join(',')}&skip=${skip}&limit=${limit}`
+            `/friends/details?user_ids=${user_ids.join(',')}&skip=${skip}&limit=${limit}`
         );
         return response.data;
     } catch (error) {

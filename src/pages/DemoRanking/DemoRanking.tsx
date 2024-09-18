@@ -1,13 +1,109 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { TabbarLink } from 'konsta/react'
 
 import { mockPointRankingData, mockReferralRankingData } from '@/constants'
 import CoinImage from '../../assets/images/02_earn_coin.png'
+import { getUsers } from '@/apis/UserSevices'
+import { useUserContext } from '@/contexts/UserContext'
 
+interface ReferralRankingItem {
+    rank: number,
+    name: string;
+    referral: number;
+}
+interface PointRankingItem {
+    rank: number,
+    name: string;
+    point: number;
+}
 const DemoRanking = () => {
+    const { account } = useUserContext()
     const [dailyReward, setDailyReward] = useState(true)
     const [activeTab, setActiveTab] = useState('tab-1');
     const [isTabbarLabels, setIsTabbarLabels] = useState(true);
+
+    const [referralRanking, setReferrakRanking] = useState<ReferralRankingItem[]>([])
+    const [pointRanking, setPointRanking] = useState<PointRankingItem[]>([])
+
+    const [myReferralRecord, setMyReferralRecord] = useState<ReferralRankingItem>()
+    const [myPointRecord, setMyPointRecord] = useState<PointRankingItem>()
+
+    useEffect(() => {
+        const handleReferralRanking = async () => {
+            const existingUsers = await getUsers();
+            if (existingUsers && existingUsers.length > 0) {
+                const referralRanking: ReferralRankingItem[] = existingUsers.map((user, index) => {
+                    const senderCount = user.user_details.sender?.length || 0; // Handle potential nullish value
+
+                    return {
+                        rank: index,
+                        name: user.user_details.user_base.telegram_info.username,
+                        referral: senderCount,
+                    };
+                });
+                referralRanking.sort((a, b) => b.referral - a.referral);
+                referralRanking.map((r, sortIndex) => {
+                    if (r.name == account?.telegram_info.username) {
+                        setMyReferralRecord({
+                            rank: sortIndex,
+                            name: account?.telegram_info.username,
+                            referral: r.referral
+                        })
+                    }
+                    return {
+                        ...r, rank: sortIndex
+                    }
+                })
+                setReferrakRanking(referralRanking);
+            } else {
+                console.log('No users found for referral ranking.'); // Informative logging
+            }
+        }
+
+        const handlePointRanking = async () => {
+            const existingUsers = await getUsers();
+
+            if (existingUsers && existingUsers.length > 0) {
+                const pointRanking: PointRankingItem[] = existingUsers.map((user, index) => {
+                    // Handle potential nullish values for user.user_details.point and user.user_details.point[0]
+                    const pointValue = user.user_details.point?.[0]?.amount; // Use optional chaining and nullish coalescing for safety
+                    if (pointValue !== undefined) { // Check if point value is actually defined
+                        return {
+                            rank: index,
+                            name: user.user_details.user_base.telegram_info.username,
+                            point: pointValue,
+                        };
+                    } else {
+                        // Handle users with no points (optional)
+                        return {
+                            rank: index,
+                            name: user.user_details.user_base.telegram_info.username,
+                            point: 0, // Set default value for users with no points (optional)
+                        };
+                    }
+                });
+                pointRanking.sort((a, b) => b.point - a.point);
+                pointRanking.map((p, sortIndex) => {
+                    if (p.name == account?.telegram_info.username) {
+                        setMyPointRecord({
+                            rank: sortIndex,
+                            name: account?.telegram_info.username,
+                            point: p.point
+                        })
+                    }
+                    return {
+                        ...p, rank: sortIndex
+                    }
+                })
+                setPointRanking(pointRanking);
+            } else {
+                console.log('No users found for point ranking.'); // Informative logging
+            }
+        };
+
+        handleReferralRanking()
+        handlePointRanking()
+    }, [])
     return (
         <div className='w-[100%] h-[690px]'>
             <div className='flex justify-center'>
@@ -34,25 +130,25 @@ const DemoRanking = () => {
                         <div className='h-[300px] w-[343px] overflow-y-scroll sm:h-[300px] md:h-[460px] pt-2'>
                             <div className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between border-4 border-[#8cc73e]`}>
                                 <div className='flex font-rubik font-[600] text-xl pr-10 py-1 content-start place-content-start'>
-                                    <div className='text-right mx-2'>100+</div>
-                                    <div className='text-right'>Dev</div>
+                                    <div className='text-right mx-2'>{myReferralRecord !== undefined && myReferralRecord.rank > 100 ? '100+' : myReferralRecord?.rank}</div>
+                                    <div className='text-right'>{myReferralRecord !== undefined && myReferralRecord.name}</div>
                                 </div>
                                 <div className='flex flex-row justify-start pr-5 py-1'>
-                                    <div className='text-xl pr-5'>30</div>
+                                    <div className='text-xl pr-5'>{myReferralRecord !== undefined && myReferralRecord.referral}</div>
                                     <img src={CoinImage} width='30px' height='30px' className='justify-end ml-1' />
                                 </div>
                             </div>
                             <div className='sm:h-[250px] md:h-[400px] overflow-y-scroll  md:overflow-hidden'>
 
-                                {mockReferralRankingData.map((mockReferral, index) => {
+                                {referralRanking.map((referralRank, index) => {
                                     if (index < 10) {
-                                        return <div key={mockReferral.name} className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between`}>
+                                        return <div key={referralRank.name} className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between`}>
                                             <div className='flex font-rubik font-[600] text-xl pr-10 pb-1 content-start place-content-start'>
-                                                <div className='pl-5 text-right'>{mockReferral.rank}</div>
-                                                <div className={`${index < 9 ? 'pl-7' : 'pl-5'} text-right`}>{mockReferral.name}</div>
+                                                <div className='pl-5 text-right'>{referralRank.rank}</div>
+                                                <div className={`${index < 9 ? 'pl-7' : 'pl-5'} text-right`}>{referralRank.name}</div>
                                             </div>
                                             <div className='flex flex-row justify-start pr-5 pb-1'>
-                                                <div className='text-xl pr-5'>{mockReferral.referral}</div>
+                                                <div className='text-xl pr-5'>{referralRank.referral}</div>
                                                 <img src={CoinImage} width='30px' height='30px' className='justify-end' />
                                             </div>
                                         </div>
@@ -67,26 +163,26 @@ const DemoRanking = () => {
                         <div className='h-[300px] w-[343px] overflow-y-scroll sm:h-[300px] md:h-[460px] pt-2'>
                             <div className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between border-4 border-[#8cc73e]`}>
                                 <div className='flex font-rubik font-[600] text-xl pr-10 py-1 content-start place-content-start'>
-                                    <div className='text-right mx-2'>100+</div> {/* FIXME */}
-                                    <div className='text-right'>Dev</div>  {/* FIXME */}
+                                    <div className='text-right mx-2'>{myPointRecord !== undefined && myPointRecord.rank > 100 ? '100+' : myPointRecord?.rank}</div> {/* FIXME */}
+                                    <div className='text-right'>{myPointRecord !== undefined && myPointRecord.name}</div>  {/* FIXME */}
                                 </div>
                                 <div className='flex flex-row justify-start pr-5 py-1'>
-                                    <div className='text-xl pr-5'>100000</div>  {/* FIXME */}
+                                    <div className='text-xl pr-5'>{myPointRecord !== undefined && myPointRecord.point}</div>  {/* FIXME */}
                                     <img src={CoinImage} width='30px' height='30px' className='justify-end' />
                                 </div>
                             </div>
 
                             <div className='sm:h-[250px] md:h-[400px] overflow-y-scroll md:overflow-hidden'>
 
-                                {mockPointRankingData.map((mockPoint, index) => {
+                                {pointRanking.map((pointRank, index) => {
                                     if (index < 10) {
-                                        return <div key={mockPoint.name} className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between`}>
+                                        return <div key={pointRank.name} className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between`}>
                                             <div className='flex font-rubik font-[600] text-xl pr-10 pb-1 content-start place-content-start'>
-                                                <div className='pl-5 text-right'>{mockPoint.rank}</div>
-                                                <div className={`${index < 9 ? 'pl-7' : 'pl-5'} text-right`}>{mockPoint.name}</div>
+                                                <div className='pl-5 text-right'>{pointRank.rank}</div>
+                                                <div className={`${index < 9 ? 'pl-7' : 'pl-5'} text-right`}>{pointRank.name}</div>
                                             </div>
                                             <div className='flex flex-row justify-start pr-5 pb-1  font-rubik font-[600] text-xl content-start place-content-start'>
-                                                <div className='text-xl pr-5'>{mockPoint.point}</div>
+                                                <div className='text-xl pr-5'>{pointRank.point}</div>
                                                 <img src={CoinImage} width='30px' height='30px' className='justify-end' />
                                             </div>
                                         </div>
