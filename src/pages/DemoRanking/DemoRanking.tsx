@@ -34,7 +34,7 @@ const DemoRanking = () => {
 
     useEffect(() => {
         const handleReferralRanking = async () => {
-            setIsWaitingUser(true)
+            // setIsWaitingUser(true)
             const existingUsers = await getUsers();
             if (existingUsers && existingUsers.length > 0) {
                 const referralRanking: ReferralRankingItem[] = existingUsers.map((user, index) => {
@@ -46,7 +46,7 @@ const DemoRanking = () => {
                         referral: senderCount,
                     };
                 });
-                setIsWaitingFriend(true)
+                // setIsWaitingFriend(true)
                 referralRanking.sort((a, b) => b.referral - a.referral);
                 referralRanking.map((r, sortIndex) => {
                     if (r.name == account?.telegram_info.username) {
@@ -67,7 +67,7 @@ const DemoRanking = () => {
         }
 
         const handlePointRanking = async () => {
-            setIsWaitingUser(true)
+            // setIsWaitingUser(true)
             const existingUsers = await getUsers();
 
             if (existingUsers && existingUsers.length > 0) {
@@ -89,7 +89,7 @@ const DemoRanking = () => {
                         };
                     }
                 });
-                setIsWaitingPoint(true)
+                // setIsWaitingPoint(true)
                 pointRanking.sort((a, b) => b.point - a.point);
                 pointRanking.map((p, sortIndex) => {
                     if (p.name == account?.telegram_info.username) {
@@ -112,20 +112,20 @@ const DemoRanking = () => {
         if (import.meta.env.VITE_MINI_APP_ENV !== 'test') {
             handleReferralRanking()
             handlePointRanking()
-            setIsWaitingUser(false)
-            setIsWaitingFriend(false)
-            setIsWaitingPoint(false)
+            // setIsWaitingUser(false)
+            // setIsWaitingFriend(false)
+            // setIsWaitingPoint(false)
         } else {
-            setIsWaitingUser(true)
+            // setIsWaitingUser(true)
             setReferrakRanking(mockReferralRankingData)
             setMyReferralRecord({ name: 'dev1', rank: 111, referral: 1 })
-            setIsWaitingFriend(true)
+            // setIsWaitingFriend(true)
             setPointRanking(mockPointRankingData)
             setMyPointRecord({ name: 'dev1', rank: 1, point: 100 })
-            setIsWaitingPoint(true)
-            setIsWaitingUser(false)
-            setIsWaitingFriend(false)
-            setIsWaitingPoint(false)
+            // setIsWaitingPoint(true)
+            // setIsWaitingUser(false)
+            // setIsWaitingFriend(false)
+            // setIsWaitingPoint(false)
         }
        
     }, [])
