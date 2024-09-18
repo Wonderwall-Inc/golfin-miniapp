@@ -112,6 +112,9 @@ const DemoRanking = () => {
         if (import.meta.env.VITE_MINI_APP_ENV !== 'test') {
             handleReferralRanking()
             handlePointRanking()
+            setIsWaitingUser(false)
+            setIsWaitingFriend(false)
+            setIsWaitingPoint(false)
         } else {
             setIsWaitingUser(true)
             setReferrakRanking(mockReferralRankingData)
@@ -120,12 +123,11 @@ const DemoRanking = () => {
             setPointRanking(mockPointRankingData)
             setMyPointRecord({ name: 'dev1', rank: 1, point: 100 })
             setIsWaitingPoint(true)
-
-
+            setIsWaitingUser(false)
+            setIsWaitingFriend(false)
+            setIsWaitingPoint(false)
         }
-        setIsWaitingUser(false)
-        setIsWaitingFriend(false)
-        setIsWaitingPoint(false)
+       
     }, [])
     return (
         <div className='w-[100%] h-[690px]'>

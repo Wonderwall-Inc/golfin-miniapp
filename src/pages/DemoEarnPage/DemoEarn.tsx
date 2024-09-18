@@ -153,8 +153,8 @@ const DemoEarn = () => {
                 }
             }
 
-            friend?.sender?.forEach(async (s) => {
-                await updateFriend({
+            const dbFriend = friend?.sender?.map(async (s) => {
+                return await updateFriend({
                     id: s.id,
                     access_token: '',
                     friend_payload: {
@@ -167,7 +167,7 @@ const DemoEarn = () => {
                 })
             })
         }
-        if (friendTrigger && friendTrigger % 10 == 0) {
+        if (notYetClaimRewardReferral && notYetClaimRewardReferral % 10 == 0) {
             //update point + 3000
             referralRewardHandler()
             setIsWaitingPoint(false)
