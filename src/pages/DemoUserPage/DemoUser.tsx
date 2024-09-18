@@ -9,9 +9,21 @@ const DemoUser = () => {
     const { point, setPoint } = usePointContext()
     const { activity, setActivity } = useActivityContext()
     const { friend, setFriend } = useFriendContext()
+    console.log('account');
+    console.log(account);
+
+    console.log('point');
+    console.log(point);
+
+    console.log('activity');
+    console.log(activity);
+
+    console.log('friend');
+    console.log(friend);
+
     return (
         <div>
-            <div className='text-white flex flex-col'>
+            <div className='text-white grid grid-cols-2 w-[100%]'>
                 <div>
                     <div className='font-extrabold'>user</div>
                     <div>id: {account?.id}</div>
@@ -29,8 +41,8 @@ const DemoUser = () => {
                     <div>is logged in: {activity?.logged_in}</div>
                     <div>login_streak: {activity?.login_streak}</div>
                     <div>total_logins: {activity?.total_logins}</div>
-                    <div>last_action_time: {activity?.last_action_time}</div>
-                    <div>last_login_time: {activity?.last_login_time}</div>
+                    <div>last_action: {activity?.last_action_time}</div>
+                    <div>last_login: {activity?.last_login_time}</div>
                 </div>
                 <div>
                     <div className='font-extrabold'>friend</div>
