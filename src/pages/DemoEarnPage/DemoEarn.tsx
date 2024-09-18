@@ -140,25 +140,25 @@ const DemoEarn = () => {
                 }
 
                 // Update friend data (assuming marking claimed reward) // FIXME
-                // await Promise.all(
-                //     friend?.sender?.map(async (s) => {
-                //         await updateFriend({
-                //             id: s.id,
-                //             access_token: '',
-                //             friend_payload: {
-                //                 status: s.status, // Update status if necessary
-                //                 custom_logs: {
-                //                     action: 'claim reward',
-                //                     date: new Date().toISOString(),
-                //                 },
-                //             },
-                //         });
-                //     }) ?? []
-                // );
+                await Promise.all(
+                    friend?.sender?.map(async (s) => {
+                        await updateFriend({
+                            id: s.id,
+                            access_token: '',
+                            friend_payload: {
+                                status: s.status, // Update status if necessary
+                                custom_logs: {
+                                    action: 'claim reward',
+                                    date: new Date().toISOString(),
+                                },
+                            },
+                        });
+                    }) ?? []
+                );
 
                 // const results = await Promise.all(promises?.map((p) => p()) ?? []);
                 // Update local count for referral rewards claimed (optional)
-                setNotYetClaimRewardReferral(referralCount); // Update claimed count (optional)
+                // setNotYetClaimRewardReferral(referralCount); // Update claimed count (optional)
             } catch (error) {
                 console.error('Error handling referral reward:', error);
             } finally {
@@ -167,7 +167,7 @@ const DemoEarn = () => {
         };
 
         handleReferralReward(); // Call the function on component mount
-    }, [referralCount, notYetClaimRewardReferral])
+    }, [friendTrigger])
 
     // useEffect(() => {
     //     const weeklyRewardHandler = async () => {

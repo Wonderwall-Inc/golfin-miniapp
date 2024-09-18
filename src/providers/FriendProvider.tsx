@@ -29,14 +29,14 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                 setFriendNumber(existingFriend.sender?.length + existingFriend.receiver?.length)
                 setFriendTrigger(existingFriend.sender?.length)
 
-
+                let count = 0
                 // FIXME:
-                // existingFriend.sender.forEach(s => {
-                //     if (Object.getOwnPropertyNames(s.custom_logs).length === 0) {
-                //         notYetClaimRewardReferral++
-                //     }
-                // })
-                // setNotYetClaimRewardReferral(notYetClaimRewardReferral)
+                existingFriend.sender.forEach(s => {
+                    if (s.custom_logs !== undefined) {
+                        count++
+                    }
+                })
+                setNotYetClaimRewardReferral(count)
                 setIsWaitingFriend(false)
                 return existingFriend
             }
