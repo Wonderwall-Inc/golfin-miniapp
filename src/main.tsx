@@ -9,9 +9,8 @@ import WebApp from '@twa-dev/sdk'
 import './index.css'
 import { UserProvider } from './providers/UserProvider.tsx'
 import { PointProvider } from './providers/PointProvider.tsx'
-import { testInitDataRaw } from './constants/index.tsx'
-import { mockTelegramEnv, parseInitData } from '@telegram-apps/sdk'
 import { ActivityProvider } from './providers/ActivityProvider.tsx'
+import { FriendProvider } from './providers/FriendProvider.tsx'
 
 WebApp.ready() // tell the TG that the mini app is ready to be displayed
 
@@ -22,7 +21,9 @@ createRoot(document.getElementById('root')!).render(
         <UserProvider>
           <PointProvider>
             <ActivityProvider>
-              <App />
+              <FriendProvider>
+                <App />
+              </FriendProvider>
             </ActivityProvider>
           </PointProvider>
         </UserProvider>

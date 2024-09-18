@@ -16,6 +16,7 @@ import DemoUser from './pages/DemoUserPage/DemoUser'
 import { useUserContext } from './contexts/UserContext'
 import { usePointContext } from './contexts/PointContext'
 import { useActivityContext } from './contexts/ActivityContext'
+import { useFriendContext } from './contexts/FriendContext'
 
 const App = () => {
   if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
@@ -45,19 +46,22 @@ const App = () => {
 
   const utils = initUtils()
   const location = useLocation()
-  const [isWaiting, setIsWaiting] = useState(false)
   const navigate = useNavigate()
+
+  const [isWaiting, setIsWaiting] = useState(false)
+
   const { isWaitingUser, setIsWaitingUser, account } = useUserContext()
   const { isWaitingPoint, setIsWaitingPoint, point } = usePointContext()
   const { isWaitingActivity, setIsWaitingActivity, activity } = useActivityContext()
+  const { isWaitingFriend, setIsWaitingFriend, friend } = useFriendContext()
 
   useEffect(() => {
-    if (isWaitingUser == true || isWaitingPoint == true) {
+    if (isWaitingUser == true || isWaitingPoint == true || isWaitingFriend == true) {
       setIsWaiting(true)
     } else {
       setIsWaiting(false)
     }
-  }, [isWaitingUser, isWaitingPoint])
+  }, [isWaitingUser, isWaitingPoint, isWaitingFriend])
 
 
   useEffect(() => {
@@ -73,19 +77,20 @@ const App = () => {
   console.log('isWaitingUser:', isWaitingUser);
   console.log('isWaitingPoint:', isWaitingPoint);
   console.log('isWaitingActivity:', isWaitingActivity);
-  
+  console.log('isWaitingFriend:', isWaitingFriend);
+
 
   import.meta.env.VITE_MINI_APP_ENV !== 'test' && WebApp.BackButton.onClick(navigateToHome)
 
   return (
     <>
       {
-        isWaitingUser ? //FIXME: flat waiting state
-          <div className='bg-gray-500 opacity-10 w-[390px] h-[700px]'>
+        isWaiting == true ? //FIXME: flat waiting state
+          <div className='bg-gray-500 opacity-25 w-[400px] h-[700px] relative'>
             <ClipLoader
-              loading={isWaitingUser}
-              size={200}
-              className='absolute top-[30%] left-[25%]' />
+              loading={isWaiting}
+              size={150}
+              className='absolute top-[35%] left-[30%] translate-x-[-50%]' />
           </div> :
           <div className='app-container'>
             <Background>

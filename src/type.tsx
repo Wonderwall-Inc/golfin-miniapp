@@ -40,6 +40,15 @@ export interface ActivityContextType {
     // setIsTodayCheckedIn: Dispatch<SetStateAction<boolean>>
 }
 
+export interface FriendContextType {
+    friend: undefined | FriendBaseType
+    setFriend: Dispatch<SetStateAction<undefined | FriendBaseType>>
+    isWaitingFriend: boolean
+    setIsWaitingFriend: Dispatch<SetStateAction<boolean>>
+    // isTodayCheckedIn: boolean,
+    // setIsTodayCheckedIn: Dispatch<SetStateAction<boolean>>
+}
+
 
 // USER
 export interface UserBaseType {
@@ -615,7 +624,7 @@ export interface SocialMediaUpdateResponseType {
 // PatreonSocialMediaSchema,
 
 // FRIEND
-enum FriendStatusType {
+export enum FriendStatusType {
     pending = "pending",
     active = "active",
     rejected = "rejected"
