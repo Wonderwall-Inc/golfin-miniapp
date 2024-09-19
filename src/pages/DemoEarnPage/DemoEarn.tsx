@@ -346,7 +346,11 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
     const { setActivity, activity, setIsWaitingActivity } = useActivityContext()
     const [allowed, setAllowed] = useState(true)
     useEffect(() => {
-        setAllowed(isYesterday(activity?.last_action_time))
+        if (isYesterday(activity?.last_action_time) == false) {
+            setAllowed(false)
+        } else {
+            setAllowed(true)
+        }
     }, [activity?.last_action_time])
 
     const handleCheckInDailyReward = async () => {
