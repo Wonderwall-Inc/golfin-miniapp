@@ -8,7 +8,7 @@ import { getPoint, updatePoint } from '@/apis/PointServices';
 export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const [account, setAccount] = useState<UserType | undefined>();
     const [isWaitingUser, setIsWaitingUser] = useState(false)
-    
+
     const webappUser = WebApp.initDataUnsafe.user
     const webappStartParam = WebApp.initDataUnsafe.start_param
 
@@ -17,6 +17,10 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
             try {
                 const newUser = await createUser(userCreatePayload)
                 if (newUser !== undefined) {
+                    const dbPoint = await pointReward(userCreatePayload.telegram_info.start_param)
+                    console.log('update point for sender');
+                    console.log(dbPoint)
+
                     setAccount(newUser.user_details.user_base)
                     setIsWaitingUser(false)
                     return newUser
@@ -134,7 +138,6 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                     }
 
                     userCreation(payload)
-                    pointReward(webappStartParam)
                 }
             }
         }
