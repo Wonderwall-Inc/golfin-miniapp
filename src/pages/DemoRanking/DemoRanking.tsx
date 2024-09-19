@@ -40,7 +40,7 @@ const DemoRanking = () => {
                 const referralRanking: ReferralRankingItem[] = existingUsers.map((user, index) => {
                     const senderCount = user.user_details.sender?.length || 0; // Handle potential nullish value
                     return {
-                        rank: 0,
+                        rank: index + 1,
                         name: user.user_details.user_base.telegram_info.username,
                         referral: senderCount,
                     };
@@ -80,7 +80,7 @@ const DemoRanking = () => {
                     const pointValue = user.user_details.point?.[0]?.amount; // Use optional chaining and nullish coalescing for safety
                     if (pointValue !== undefined) { // Check if point value is actually defined
                         return {
-                            rank: 0,
+                            rank: index + 1,
                             name: user.user_details.user_base.telegram_info.username,
                             point: pointValue,
                         };

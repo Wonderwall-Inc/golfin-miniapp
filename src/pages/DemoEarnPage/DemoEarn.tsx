@@ -348,7 +348,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
     useEffect(() => {
         if (activity?.last_login_time) {
             // const tar = new Date(format(activity?.last_login_time.split('T')[0], 'yyyy-MM-dd')) === new Date()
-            const activityCheck = activity?.last_login_time === new Date().toISOString()
+            const activityCheck = activity?.last_login_time === new Date().getTime()
             console.log('activityCheck');
             console.log('db: ', activity?.last_login_time);
             console.log('today: ', new Date().toISOString());
