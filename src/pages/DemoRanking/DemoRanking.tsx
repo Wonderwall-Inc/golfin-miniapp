@@ -167,7 +167,7 @@ const DemoRanking = () => {
                                     <div className='text-center mx-2 text-[17px]'>{myReferralRecord !== undefined && myReferralRecord.rank > 100 ? '100+' : (myReferralRecord?.rank !== undefined && myReferralRecord?.rank)}</div>
                                     <div className='text-center content-center justify-center text-[17px]'>{myReferralRecord !== undefined && myReferralRecord.name}</div>
                                 </div>
-                                <div className='flex flex-row justify-start pr-5 py-1'>
+                                <div className='flex flex-row justify-between pr-2 py-1'>
                                     <div className='text-xl pr-5 text-[17px]'>{myReferralRecord !== undefined && myReferralRecord.referral}</div>
                                     <img src={CoinImage} width='30px' height='30px' className='justify-end ml-1' />
                                 </div>
@@ -202,7 +202,7 @@ const DemoRanking = () => {
                                     <div className='text-center mx-2 text-[17px]'>{myPointRecord !== undefined && myPointRecord.rank > 100 ? '100+' : (myPointRecord?.rank !== undefined && myPointRecord?.rank)}</div>
                                     <div className='text-center content-center justify-center text-[17px]'>{myPointRecord !== undefined && myPointRecord.name}</div>
                                 </div>
-                                <div className='flex flex-row justify-start pr-5 py-1'>
+                                <div className='flex flex-row justify-start pr-2 py-1'>
                                     <div className='text-xl pr-5 text-[17px]'>{myPointRecord !== undefined && myPointRecord.point}</div>
                                     <img src={CoinImage} width='30px' height='30px' className='justify-end ml-1' />
                                 </div>
