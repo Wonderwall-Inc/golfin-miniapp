@@ -40,7 +40,7 @@ const DemoRanking = () => {
                 const referralRanking: ReferralRankingItem[] = existingUsers.map((user, index) => {
                     const senderCount = user.user_details.sender?.length || 0; // Handle potential nullish value
                     return {
-                        rank: index + 1,
+                        rank: index,
                         name: user.user_details.user_base.telegram_info.username,
                         referral: senderCount,
                     };
@@ -80,7 +80,7 @@ const DemoRanking = () => {
                     const pointValue = user.user_details.point?.[0]?.amount; // Use optional chaining and nullish coalescing for safety
                     if (pointValue !== undefined) { // Check if point value is actually defined
                         return {
-                            rank: index + 1,
+                            rank: index,
                             name: user.user_details.user_base.telegram_info.username,
                             point: pointValue,
                         };
@@ -178,7 +178,8 @@ const DemoRanking = () => {
                                     if (index < 10) {
                                         return <div key={referralRank.name} className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between`}>
                                             <div className='flex font-rubik font-[400] text-xl pr-10 pb-1 content-start place-content-start'>
-                                                <div className='pl-5 text-right font-[12px]'>{referralRank.rank}</div>
+                                                {/* <div className='pl-5 text-right font-[12px]'>{referralRank.rank}</div> */}
+                                                <div className='pl-5 text-right font-[12px]'>{index}</div>
                                                 <div className={`${index < 9 ? 'pl-7' : 'pl-5'} text-right font-[12px]`}>{referralRank.name}</div>
                                             </div>
                                             <div className='flex flex-row justify-start pr-5 pb-1'>
@@ -212,7 +213,8 @@ const DemoRanking = () => {
                                     if (index < 10) {
                                         return <div key={pointRank.name} className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between`}>
                                             <div className='flex font-rubik font-[400] text-xl pr-10 pb-1 content-start place-content-start'>
-                                                <div className='pl-5 text-right font-[12px]'>{pointRank.rank}</div>
+                                                {/* <div className='pl-5 text-right font-[12px]'>{pointRank.rank}</div> */}
+                                                <div className='pl-5 text-right font-[12px]'>{index}</div>
                                                 <div className={`${index < 9 ? 'pl-7' : 'pl-5'} text-right font-[12px]`}>{pointRank.name}</div>
                                             </div>
                                             <div className='flex flex-row justify-start pr-5 pb-1 font-rubik font-[400] text-xl content-start place-content-start'>
