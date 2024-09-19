@@ -39,7 +39,6 @@ const DemoRanking = () => {
             if (existingUsers && existingUsers.length > 0) {
                 const referralRanking: ReferralRankingItem[] = existingUsers.map((user, index) => {
                     const senderCount = user.user_details.sender?.length || 0; // Handle potential nullish value
-
                     return {
                         rank: index,
                         name: user.user_details.user_base.telegram_info.username,
