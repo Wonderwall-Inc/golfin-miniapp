@@ -10,8 +10,16 @@ import { dailyCheckInPointReward, friendReferralPointReward, tenFriendsReferralP
 import { useActivityContext } from '@/contexts/ActivityContext'
 import { getActivity, updateActivity } from '@/apis/ActivityServices'
 import { useFriendContext } from '@/contexts/FriendContext'
-import { isYesterday } from '@/utils'
+import { isYesterday, sgTimeNow } from '@/utils'
 import { format } from 'date-fns'
+import { useSgTimeNowString } from '@/hooks/useSgTimeNowString'
+
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const MINI_APP_BOT_NAME = import.meta.env.VITE_MINI_APP_BOT_NAME
 const MINI_APP_NAME = import.meta.env.VITE_MINI_APP_NAME
@@ -31,6 +39,11 @@ const DemoEarn = () => {
     const [weeklyCount, setWeeklyCount] = useState(0)
     const [referralCount, setReferralCount] = useState(0)
 
+    console.log(weeklyCount);
+    console.dir(account);
+    console.log(point);
+    console.log(friend);
+
     useEffect(() => {
         timeLeft == '' ? setIsHomeLoading(true) : setIsHomeLoading(false)
     }, [timeLeft])
@@ -44,11 +57,6 @@ const DemoEarn = () => {
         const todayYYMMDD = `${todayYY}-${preTodayMM}-${todayDD}T00:00:00`
         setTimeLeft(todayYYMMDD)
     }, [new Date()])
-
-    console.log(weeklyCount);
-    console.dir(account);
-    console.log(point);
-    console.log(friend);
 
     useEffect(() => {
         const handleWeeklyReward = async () => {
@@ -341,28 +349,68 @@ const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, MINI_APP_APP
 
 
 const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) => {
+    // const sgTimeNowStr = sgTimeNow()
+    // const [timeLeft, setTimeLeft] = useState(sgTimeNowStr)
+
     const { setPoint, setIsWaitingPoint } = usePointContext()
     const { account } = useUserContext()
     const { setActivity, activity, setIsWaitingActivity } = useActivityContext()
     const [allowed, setAllowed] = useState(true)
+
+    // useEffect(() => {
+    //     timeLeft == '' ? setIsHomeLoading(true) : setIsHomeLoading(false)
+    // }, [timeLeft])
+    // const tz = 'Asia/Singapore'
+    // const timestamp = new Date()
+    
+    // const dayjsLocal = dayjs(timestamp); //assumes UTC
+    // //dayjsLocal.toISOString() -> 2014-06-01T12:00:00.000Z
+    // //dayjsLocal.format('YYYY-MM-DDTHH:mm:ss') -> 2014-06-01T12:00:00
+    
+    // const dayjsSG = dayjsLocal.tz(tz);
+   
+    // console.log( dayjsSG.format('YYYY-MM-DDTHH:mm:ss'));
+    
+
+    // useEffect(() => {
+    //     const d = new Date();
+    //     const localTime = d.getTime();
+    //     const localOffset = d.getTimezoneOffset() * 60000;
+    //     const utc = localTime + localOffset;
+    //     const offset = +8; // Singapore time
+    //     const singaporeTimeoffset = utc + (3600000 * offset);
+    //     const sgTimeNow = new Date(singaporeTimeoffset)
+
+    //     const sgTimeNowMonth = sgTimeNow.getMonth()
+    //     const sgTimeNowString = `${sgTimeNow.getFullYear()}-${sgTimeNowMonth + 1 < 10 ? `0${sgTimeNowMonth + 1}` : sgTimeNowMonth + 1}-${sgTimeNow.getDate()}T00:00:00`
+    //     // T${sgTimeNow.getHours() < 10 ? `0${sgTimeNow.getHours()}` : sgTimeNow.getHours()}:${sgTimeNow.getMinutes() < 10 ? `0${sgTimeNow.getMinutes()}` : sgTimeNow.getMinutes()}:${sgTimeNow.getSeconds() < 10 ? `0${sgTimeNow.getSeconds()}` : sgTimeNow.getSeconds()}`
+    //     console.log(sgTimeNowString);
+
+    //     // return sgTimeNowString
+
+    //     // const todayYYMMDD = `${todayYY}-${preTodayMM}-${todayDD}T00:00:00`
+    //     setTimeLeft(sgTimeNowString)
+    // }, [])
+
     useEffect(() => {
         if (activity?.last_login_time) {
             // const tar = new Date(format(activity?.last_login_time.split('T')[0], 'yyyy-MM-dd')) === new Date()
             // const todayDateWithoutTZ = `${today.getFullYear()}-${today.getUTCMonth() + 1 < 10 ? `0${today.getUTCMonth() + 1}` : today.getUTCMonth() + 1}-${today.getDate()}T${today.getHours() < 10 ? `0${today.getHours()}` : today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`
-            const d = new Date();
-            const localTime = d.getTime();
-            const localOffset = d.getTimezoneOffset() * 60000;
-            const utc = localTime + localOffset;
-            const offset = +8; // UTC of USA Eastern Time Zone is -05.00
-            const usa = utc + (3600000 * offset);
-            const sgTimeNow = new Date(usa)
-            const sgTimeNowString = `${sgTimeNow.getFullYear()}-${sgTimeNow.getUTCMonth() + 1 < 10 ? `0${sgTimeNow.getMonth() + 1}` : sgTimeNow.getMonth() + 1}-${sgTimeNow.getDate()}T${sgTimeNow.getHours() < 10 ? `0${sgTimeNow.getHours()}` : sgTimeNow.getHours()}:${sgTimeNow.getMinutes()<10?`0${sgTimeNow.getMinutes()}`:sgTimeNow.getMinutes()}:${sgTimeNow.getSeconds()<10?`0${sgTimeNow.getSeconds()}`:sgTimeNow.getSeconds()}`
-            console.log(sgTimeNowString)
+            // const d = new Date();
+            // const localTime = d.getTime();
+            // const localOffset = d.getTimezoneOffset() * 60000;
+            // const utc = localTime + localOffset;
+            // const offset = +8; // UTC of USA Eastern Time Zone is -05.00
+            // const singaporeTimeoffset = utc + (3600000 * offset);
+            // const sgTimeNow = new Date(singaporeTimeoffset)
+            // const sgTimeNowString = `${sgTimeNow.getFullYear()}-${sgTimeNow.getUTCMonth() + 1 < 10 ? `0${sgTimeNow.getMonth() + 1}` : sgTimeNow.getMonth() + 1}-${sgTimeNow.getDate()}T${sgTimeNow.getHours() < 10 ? `0${sgTimeNow.getHours()}` : sgTimeNow.getHours()}:${sgTimeNow.getMinutes()<10?`0${sgTimeNow.getMinutes()}`:sgTimeNow.getMinutes()}:${sgTimeNow.getSeconds()<10?`0${sgTimeNow.getSeconds()}`:sgTimeNow.getSeconds()}`
+            const sgTimeNowString = sgTimeNow()
+            console.log(sgTimeNowString);
 
             const activityCheck = activity?.last_login_time === sgTimeNowString
             console.log('activityCheck');
             console.log('db: ', activity?.last_login_time);
-            console.log('today: ',sgTimeNow);
+            console.log('today: ', sgTimeNow);
             console.log(activityCheck);
 
             activityCheck == false ? setAllowed(false) : setAllowed(true)
@@ -386,8 +434,8 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
                         logged_in: false,
                         login_streak: existingActivity.activity.login_streak += 1,
                         total_logins: existingActivity.activity.total_logins += 1,
-                        last_action_time: new Date().toISOString(),
-                        last_login_time: new Date().toISOString()
+                        last_action_time: /* new Date().toISOString(), */sgTimeNow(),
+                        last_login_time: /* new Date().toISOString() */sgTimeNow()
                     }
                 } : {
                     id: existingActivity?.activity.id,
@@ -397,8 +445,8 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
                         logged_in: false,
                         login_streak: 1,
                         total_logins: existingActivity.activity.total_logins += 1,
-                        last_action_time: new Date().toISOString(),
-                        last_login_time: new Date().toISOString()
+                        last_action_time: /* new Date().toISOString(), */sgTimeNow(),
+                        last_login_time: /* new Date().toISOString() */sgTimeNow()
                     }
                 }
             const dbActivity = await updateActivity(updateActivityPayload)
@@ -469,7 +517,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
                         >
                             Daily Reward
                             <br />
-                            <Countdown targetDate={timeLeft} /* dailyReward={dailyReward} setDailyReward={setDailyReward} */ />
+                            <Countdown targetDate={timeLeft}  /* dailyReward={dailyReward} setDailyReward={setDailyReward} */ />
                         </div>
                     }
 

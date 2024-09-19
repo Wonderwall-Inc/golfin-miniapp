@@ -1,5 +1,6 @@
 import { useActivityContext } from '@/contexts/ActivityContext';
 import { useUserContext } from '@/contexts/UserContext';
+import { sgTimeNow } from '@/utils';
 import { useState, useEffect, SetStateAction } from 'react';
 
 
@@ -9,10 +10,11 @@ import { useState, useEffect, SetStateAction } from 'react';
 //     dailyReward: boolean
 //     setDailyReward: SetStateAction<boolean>
 // }
-const Countdown = ({ targetDate, /* dailyReward, setDailyReward */ }) => {
+const Countdown = ({  targetDate  /* dailyReward, setDailyReward */ }) => {
     const { activity, setActivity } = useActivityContext()
     const { account } = useUserContext()
     const calculateTimeLeft = () => {
+
         const difference = +new Date(targetDate) - +new Date();
         let timeLeft = {};
         if (difference > 0) {
@@ -23,7 +25,7 @@ const Countdown = ({ targetDate, /* dailyReward, setDailyReward */ }) => {
 
             timeLeft = {
                 // d: d,
-                h: h,
+                h: h+1,
                 m: m,
                 s: s
             };
