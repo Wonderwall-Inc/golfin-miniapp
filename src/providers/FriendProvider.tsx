@@ -1,6 +1,8 @@
 import { createFriend, getFriend, } from "@/apis/FriendServices"
+import { getPoint, updatePoint } from "@/apis/PointServices"
 import { getUser } from "@/apis/UserSevices"
 import { FriendContext } from "@/contexts/FriendContext"
+import { usePointContext } from "@/contexts/PointContext"
 import { useUserContext } from "@/contexts/UserContext"
 import { FriendCreateRequestType, FriendRetrievalRequestType, FriendStatusType, FriendWithIdsRetrievalResponseType, getFriendRequestType } from "@/type"
 import WebApp from "@twa-dev/sdk"
@@ -17,6 +19,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
     const webappStartParam = WebApp.initDataUnsafe.start_param
 
     const { account } = useUserContext()
+    const { point, setPoint, setIsWaitingPoint } = usePointContext()
 
     useEffect(() => {
         const friendRetrieval = async (friendRetrievalPayload: FriendRetrievalRequestType) => {
@@ -64,9 +67,25 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                         created_at: newFriend.friend_details.friend_base.created_at,
                     }]
                 })
-                setFriendNumber(1)
-                setIsWaitingFriend(false)
-                return newFriend
+                const senderPoint = await getPoint({
+                    access_token: '',
+                    user_id: newFriend.friend_details.sender_id,
+                })
+                if (senderPoint) {
+                    setIsWaitingFriend(true)
+                    await updatePoint({
+                        access_token: '',
+                        id: senderPoint.point_base.point.id,
+                        type: 'add', // REVIEW: add / drop point
+                        point_payload: {
+                            amount: 100
+                        }
+                    })
+                    setFriendNumber(1)
+                    setIsWaitingFriend(false)
+                    setIsWaitingFriend(false)
+                    return newFriend
+                }
             } else {
                 const existingFriend = await getFriend({ access_token: '', user_id: account?.id })
                 console.log('existingFriend');
