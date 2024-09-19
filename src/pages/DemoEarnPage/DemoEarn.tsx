@@ -130,6 +130,8 @@ const DemoEarn = () => {
 
             try {
                 if (canClaim) {
+                    console.log('canclaim:  ', canClaim);
+
 
                     if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
                         if (point) {
@@ -366,7 +368,7 @@ const DemoEarn = () => {
         if (checkActionOnPoint() == true) {
             setCanClaim(true)
         }
-    },[point])
+    }, [point])
 
     // window.alert(canClaim)
 
