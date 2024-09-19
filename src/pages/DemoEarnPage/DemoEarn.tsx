@@ -96,7 +96,7 @@ const DemoEarn = () => {
                     user_id: account?.id,
                     activity: {
                         logged_in: true, // Update logged_in state
-                        login_streak: 0, // Reset login streak
+                        login_streak: 1, // Reset login streak
                         total_logins: activity?.total_logins + 1, // Increment total logins
                         last_action_time: new Date().toISOString(),
                         last_login_time: new Date().toISOString(), // Update last login time

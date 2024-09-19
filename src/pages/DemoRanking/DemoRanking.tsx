@@ -164,7 +164,7 @@ const DemoRanking = () => {
                         <div className='h-[300px] w-[343px] overflow-y-scroll sm:h-[400px] md:h-[460px] pt-2'>
                             <div className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between border-4 border-[#8cc73e]`}>
                                 <div className='flex font-rubik font-[400] text-xl pr-10 py-1 content-start place-content-start mx-[-1px]'>
-                                    <div className='text-center mx-2 text-[17px]'>{myReferralRecord !== undefined && myReferralRecord.rank > 100 ? '100+' : (myReferralRecord?.rank !== undefined && myReferralRecord?.rank)}</div>
+                                    <div className='text-center mx-2 text-[17px]'>{myReferralRecord !== undefined && myReferralRecord.rank > 100 ? '100+' : (myReferralRecord?.rank !== undefined && myReferralRecord?.rank + 1)}</div>
                                     <div className='text-center content-center justify-center text-[17px]'>{myReferralRecord !== undefined && myReferralRecord.name}</div>
                                 </div>
                                 <div className='flex flex-row justify-between pr-2 py-1'>
@@ -183,7 +183,7 @@ const DemoRanking = () => {
                                                 <div className={`${index < 9 ? 'pl-1' : 'pl-[-2px]'} font-[10px]`}>{referralRank.name}</div>
                                             </div>
                                             <div className='flex flex-row pb-1 justify-between'>
-                                                <div className='text-xl pr-1 font-[10px]'>{referralRank.referral}</div>
+                                                <div className={`text-xl font-[10px] px-1`}>{referralRank.referral}</div>
                                                 <img src={CoinImage} width='30px' height='30px' className='flex' />
                                             </div>
                                         </div>
@@ -195,11 +195,11 @@ const DemoRanking = () => {
                     </>
                     }
                     {activeTab === 'tab-2' && <>
-                    
+
                         <div className='h-[300px] w-[343px] overflow-y-scroll sm:h-[400px] md:h-[460px] pt-2'>
                             <div className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between border-4 border-[#8cc73e]`}>
                                 <div className='flex font-rubik font-[400] text-xl pr-10 py-1 content-start place-content-start mx-[-1px]'>
-                                    <div className='text-center mx-2 text-[17px]'>{myPointRecord !== undefined && myPointRecord.rank > 100 ? '100+' : (myPointRecord?.rank !== undefined && myPointRecord?.rank)}</div>
+                                    <div className='text-center mx-2 text-[17px]'>{myPointRecord !== undefined && myPointRecord.rank > 100 ? '100+' : (myPointRecord?.rank !== undefined && myPointRecord?.rank + 1)}</div>
                                     <div className='text-center content-center justify-center text-[17px]'>{myPointRecord !== undefined && myPointRecord.name}</div>
                                 </div>
                                 <div className='flex flex-row justify-start pr-2 py-1'>
@@ -214,10 +214,11 @@ const DemoRanking = () => {
                                             <div className={`flex font-rubik font-[400] text-xl pr-10 pb-1`}>
                                                 {/* <div className='pl-5 text-right font-[12px]'>{referralRank.rank}</div> */}
                                                 <div className='px-3 text-[17px]'>{index + 1}</div>
-                                                <div className={`${index < 9 ? 'pl-1' : 'pl-[-2px]'} font-[10px]`}>{pointRank.name}</div>
+                                                <div className={`${index < 9 ? 'pl-1' : 'pl-[-2px]'} text-[17px]`}>{pointRank.name}</div>
                                             </div>
-                                            <div className='flex flex-row pb-1 justify-between'>
-                                                <div className='text-xl pr-1 font-[10px]'>{pointRank.point}</div>
+                                            <div className='flex flex-row pb-1 justify-between px-1'>
+                                                {/* <div className='text-xl pr-1 font-[10px]'>{pointRank.point}</div> */}
+                                                <div className={`text-xl font-[10px] px-1`}>{pointRank.point}</div>
                                                 <img src={CoinImage} width='30px' height='30px' className='flex' />
                                             </div>
                                         </div>
