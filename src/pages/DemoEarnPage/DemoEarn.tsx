@@ -448,6 +448,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
                     updated_at: dbActivity.activity.updated_at,
                     custom_logs: dbActivity.activity.custom_logs,
                 })
+                setIsWaitingActivity(false)
             }
         }
 
@@ -476,6 +477,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
                     updated_at: dbPoint?.point_base.point.updated_at,
                     custom_logs: dbPoint?.point_base.point.custom_logs
                 })
+                setIsWaitingPoint(false)
             }
         }
 
@@ -512,8 +514,8 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
                     setIsClicked(true)
                     handleCheckInDailyReward()
                 }
-                setIsWaitingPoint(false)
-                setIsWaitingActivity(false)
+              
+              
             }}>
             <div className='text-center w-[100%] h-[80px]'>
                 <div className={`relative w-[160px] h-14 rounded-[6px_6px_0px_0px] 
