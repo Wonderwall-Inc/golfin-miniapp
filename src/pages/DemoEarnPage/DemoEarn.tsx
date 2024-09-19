@@ -348,10 +348,21 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
     useEffect(() => {
         if (activity?.last_login_time) {
             // const tar = new Date(format(activity?.last_login_time.split('T')[0], 'yyyy-MM-dd')) === new Date()
-            const activityCheck = activity?.last_login_time === new Date().getTime()
+            // const todayDateWithoutTZ = `${today.getFullYear()}-${today.getUTCMonth() + 1 < 10 ? `0${today.getUTCMonth() + 1}` : today.getUTCMonth() + 1}-${today.getDate()}T${today.getHours() < 10 ? `0${today.getHours()}` : today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`
+            const d = new Date();
+            const localTime = d.getTime();
+            const localOffset = d.getTimezoneOffset() * 60000;
+            const utc = localTime + localOffset;
+            const offset = +8; // UTC of USA Eastern Time Zone is -05.00
+            const usa = utc + (3600000 * offset);
+            const sgTimeNow = new Date(usa)
+            const sgTimeNowString = `${sgTimeNow.getFullYear()}-${sgTimeNow.getUTCMonth() + 1 < 10 ? `0${sgTimeNow.getMonth() + 1}` : sgTimeNow.getMonth() + 1}-${sgTimeNow.getDate()}T${sgTimeNow.getHours() < 10 ? `0${sgTimeNow.getHours()}` : sgTimeNow.getHours()}:${sgTimeNow.getMinutes()<10?`0${sgTimeNow.getMinutes()}`:sgTimeNow.getMinutes()}:${sgTimeNow.getSeconds()<10?`0${sgTimeNow.getSeconds()}`:sgTimeNow.getSeconds()}`
+            console.log(sgTimeNowString)
+
+            const activityCheck = activity?.last_login_time === sgTimeNowString
             console.log('activityCheck');
             console.log('db: ', activity?.last_login_time);
-            console.log('today: ', new Date().toISOString());
+            console.log('today: ',sgTimeNow);
             console.log(activityCheck);
 
             activityCheck == false ? setAllowed(false) : setAllowed(true)
