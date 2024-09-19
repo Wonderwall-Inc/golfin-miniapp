@@ -46,7 +46,10 @@ const DemoRanking = () => {
                     };
                 });
                 // setIsWaitingFriend(true)
-                referralRanking.sort((a, b) => b.referral - a.referral);
+                referralRanking.sort((a, b) => b.referral - a.referral).map((item, index) => ({
+                    ...item,
+                    rank: index + 1, // Assign the ranking position
+                }));
                 console.log('referralRanking');
                 console.log(referralRanking);
                 referralRanking.map((r, sortIndex) => {
@@ -91,7 +94,10 @@ const DemoRanking = () => {
                     }
                 });
                 // setIsWaitingPoint(true)
-                pointRanking.sort((a, b) => b.point - a.point);
+                pointRanking.sort((a, b) => b.point - a.point).map((item, index) => ({
+                    ...item,
+                    rank: index + 1, // Assign the ranking position
+                }));
                 console.log('pointRanking');
                 console.log(pointRanking);
                 pointRanking.map((p, sortIndex) => {
