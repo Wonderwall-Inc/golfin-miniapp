@@ -362,15 +362,15 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
     // }, [timeLeft])
     // const tz = 'Asia/Singapore'
     // const timestamp = new Date()
-    
+
     // const dayjsLocal = dayjs(timestamp); //assumes UTC
     // //dayjsLocal.toISOString() -> 2014-06-01T12:00:00.000Z
     // //dayjsLocal.format('YYYY-MM-DDTHH:mm:ss') -> 2014-06-01T12:00:00
-    
+
     // const dayjsSG = dayjsLocal.tz(tz);
-   
+
     // console.log( dayjsSG.format('YYYY-MM-DDTHH:mm:ss'));
-    
+
 
     // useEffect(() => {
     //     const d = new Date();
@@ -408,12 +408,14 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
             console.log(sgTimeNowString);
 
             const activityCheck = activity?.last_login_time === sgTimeNowString
+            // const activityCheck = dayjs(new Date()).isSame(activity?.last_login_time)
+
             console.log('activityCheck');
             console.log('db: ', activity?.last_login_time);
             console.log('today: ', sgTimeNow);
             console.log(activityCheck);
 
-            activityCheck == false ? setAllowed(false) : setAllowed(true)
+            activityCheck == false ? setAllowed(true) : setAllowed(false)
         }
     }, [activity?.last_action_time])
 

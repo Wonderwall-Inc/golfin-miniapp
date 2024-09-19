@@ -127,10 +127,10 @@ const DemoRanking = () => {
         } else {
             // setIsWaitingUser(true)
             setReferrakRanking(mockReferralRankingData)
-            setMyReferralRecord({ name: 'dev1', rank: 111, referral: 1 })
+            setMyReferralRecord({ name: 'player25', rank: 1, referral: 25 })
             // setIsWaitingFriend(true)
             setPointRanking(mockPointRankingData)
-            setMyPointRecord({ name: 'dev1', rank: 1, point: 100 })
+            setMyPointRecord({ name: 'player25', rank: 25, point: 250 })
             // setIsWaitingPoint(true)
             // setIsWaitingUser(false)
             // setIsWaitingFriend(false)
@@ -179,7 +179,7 @@ const DemoRanking = () => {
                                         return <div key={referralRank.name} className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between`}>
                                             <div className='flex font-rubik font-[400] text-xl pr-10 pb-1 content-start place-content-start'>
                                                 {/* <div className='pl-5 text-right font-[12px]'>{referralRank.rank}</div> */}
-                                                <div className='pl-5 text-right font-[12px]'>{index}</div>
+                                                <div className='pl-5 text-right font-[12px]'>{index+1}</div>
                                                 <div className={`${index < 9 ? 'pl-7' : 'pl-5'} text-right font-[12px]`}>{referralRank.name}</div>
                                             </div>
                                             <div className='flex flex-row justify-start pr-5 pb-1'>
@@ -214,7 +214,7 @@ const DemoRanking = () => {
                                         return <div key={pointRank.name} className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between`}>
                                             <div className='flex font-rubik font-[400] text-xl pr-10 pb-1 content-start place-content-start'>
                                                 {/* <div className='pl-5 text-right font-[12px]'>{pointRank.rank}</div> */}
-                                                <div className='pl-5 text-right font-[12px]'>{index}</div>
+                                                <div className='pl-5 text-right font-[12px]'>{index+1}</div>
                                                 <div className={`${index < 9 ? 'pl-7' : 'pl-5'} text-right font-[12px]`}>{pointRank.name}</div>
                                             </div>
                                             <div className='flex flex-row justify-start pr-5 pb-1 font-rubik font-[400] text-xl content-start place-content-start'>
