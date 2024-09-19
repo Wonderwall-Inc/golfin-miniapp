@@ -347,8 +347,8 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
     const [allowed, setAllowed] = useState(true)
     useEffect(() => {
         if (activity?.last_login_time) {
-            const tar = new Date(format(activity?.last_login_time.split('T')[0], 'yyyy-MM-dd'))
-            isYesterday(tar) == false ? setAllowed(false) : setAllowed(true)
+            // const tar = new Date(format(activity?.last_login_time.split('T')[0], 'yyyy-MM-dd')) === new Date()
+            (activity?.last_login_time === new Date().toISOString()) == false ? setAllowed(false) : setAllowed(true)
         }
     }, [activity?.last_action_time])
 
