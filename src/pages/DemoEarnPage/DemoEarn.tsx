@@ -415,7 +415,8 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
             console.log('today: ', sgTimeNow);
             console.log(activityCheck);
 
-            activityCheck == false ? setAllowed(true) : setAllowed(false)
+
+            activityCheck == false ? setAllowed(false) : setAllowed(true)
         }
     }, [activity?.last_action_time])
 
