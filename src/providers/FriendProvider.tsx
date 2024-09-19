@@ -99,7 +99,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                 receiver: []
             })
             setFriendNumber(1)
-            setFriendTrigger(1)
+            setFriendTrigger(10)
             setIsWaitingFriend(false)
         } else {
             setIsWaitingFriend(true)

@@ -43,8 +43,8 @@ export const PointProvider: React.FC<React.PropsWithChildren> = ({ children }) =
                 id: 1,
                 amount: 0,
                 extra_profit_per_hour: 1,
-                created_at: '20240917',
-                updated_at: '20240917',
+                created_at: '2024-09-17T00:00:00',
+                updated_at: '2024-09-17T00:00:00',
             })
             setIsWaitingPoint(false)
         }

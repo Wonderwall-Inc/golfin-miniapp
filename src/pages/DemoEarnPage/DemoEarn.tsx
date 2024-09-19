@@ -39,6 +39,8 @@ const DemoEarn = () => {
     const [weeklyCount, setWeeklyCount] = useState(0)
     const [referralCount, setReferralCount] = useState(0)
 
+    const [canClaim, setCanClaim] = useState(false)
+
     console.log(weeklyCount);
     console.dir(account);
     console.log(point);
@@ -117,34 +119,71 @@ const DemoEarn = () => {
 
     useEffect(() => {
         const handleReferralReward = async () => {
-            if (!referralCount || referralCount % 10 !== 0) return; // Early exit if not a multiple of 10 or already claimed
+            console.log(friendTrigger);
+            console.log("*****************");
+
+
+            if (!friendTrigger || friendTrigger % 10 !== 0) return; // Early exit if not a multiple of 10 or already claimed
+
 
             setIsWaitingPoint(true);
 
             try {
-                // Fetch existing point and update if necessary
-                const existingPoint = await getPoint({ access_token: '', user_id: account?.id });
-                if (existingPoint) {
-                    const updatePointPayload = {
-                        id: existingPoint?.point_base.point.id,
-                        type: 'add', // REVIEW: add / minus point
-                        access_token: '',
-                        point_payload: {
-                            amount: 3000, // extra_profit_per_hour: optional
-                        },
-                    };
-                    const updatedPoint = await updatePoint(updatePointPayload);
-                    if (updatedPoint && updatedPoint?.point_base.user_id) {
-                        setPoint({
-                            id: updatedPoint?.point_base.user_id,
-                            amount: updatedPoint?.point_base.point.amount,
-                            extra_profit_per_hour: updatedPoint?.point_base.point.extra_profit_per_hour,
-                            created_at: updatedPoint?.point_base.point.created_at,
-                            updated_at: updatedPoint?.point_base.point.updated_at,
-                            custom_logs: updatedPoint?.point_base.point.custom_logs
-                        })
+                if (canClaim) {
+
+                    if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
+                        if (point) {
+                            setPoint({
+                                id: point?.id,
+                                amount: point?.amount,
+                                extra_profit_per_hour: point.extra_profit_per_hour,
+                                created_at: point?.created_at,
+                                updated_at: point?.updated_at,
+                                custom_logs: {
+                                    action: `claim${friendTrigger / 10}`,
+                                    date: new Date().toISOString()
+                                }
+                            })
+                            console.log(point);
+                        }
+                    }
+                    console.log('on try');
+
+                    // Fetch existing point and update if necessary
+                    const existingPoint = await getPoint({ access_token: '', user_id: account?.id });
+
+                    if (existingPoint) {
+                        const dbPointAction = existingPoint?.point_base?.point?.custom_logs?.action.split('claim')[1]
+                        if (dbPointAction) {
+                            if (friendTrigger / 10 != parseInt(dbPointAction)) {
+                                const updatePointPayload = {
+                                    id: existingPoint?.point_base.point.id,
+                                    type: 'add', // REVIEW: add / minus point
+                                    access_token: '',
+                                    point_payload: {
+                                        amount: 3000, // extra_profit_per_hour: optional
+                                    },
+                                };
+                                const updatedPoint = await updatePoint(updatePointPayload);
+                                if (updatedPoint && updatedPoint?.point_base.user_id) {
+                                    setPoint({
+                                        id: updatedPoint?.point_base.user_id,
+                                        amount: updatedPoint?.point_base.point.amount,
+                                        extra_profit_per_hour: updatedPoint?.point_base.point.extra_profit_per_hour,
+                                        created_at: updatedPoint?.point_base.point.created_at,
+                                        updated_at: updatedPoint?.point_base.point.updated_at,
+                                        custom_logs: {
+                                            action: `claim${friendTrigger / 10}`,
+                                            date: new Date().toISOString()
+                                        }
+                                    })
+                                }
+                            }
+                        }
                     }
                 }
+
+
 
                 // // Update friend data (assuming marking claimed reward) // FIXME
                 // const updatedFriend = friend?.sender?.map(async (s: any) => {
@@ -309,6 +348,29 @@ const DemoEarn = () => {
     //     }
     // }, [friendTrigger])
 
+    useEffect(() => {
+        const checkActionOnPoint = () => {
+            if (point) {
+                if (point?.custom_logs?.action) {
+                    const dbPointAction = point.custom_logs?.action.split('claim')[1]
+                    if (dbPointAction) {
+                        if (referralCount / 10 != parseInt(dbPointAction))
+                            return true
+                    }
+                } else {
+                    return true
+                }
+            }
+        }
+
+        if (checkActionOnPoint() == true) {
+            setCanClaim(true)
+        }
+    },[point])
+
+    // window.alert(canClaim)
+
+
     return (
         <div className='w-[100%] h-[690px]'>
             <DemoEarnComponent
@@ -320,7 +382,7 @@ const DemoEarn = () => {
             />
             <DemoBonusComponent
                 weeklyCount={activity?.login_streak} // using cont 7 day count
-                referralCount={friendTrigger} />
+                referralCount={canClaim ? friendTrigger : 0} />
         </div>
     )
 }
@@ -514,8 +576,8 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
                     setIsClicked(true)
                     handleCheckInDailyReward()
                 }
-              
-              
+
+
             }}>
             <div className='text-center w-[100%] h-[80px]'>
                 <div className={`relative w-[160px] h-14 rounded-[6px_6px_0px_0px] 

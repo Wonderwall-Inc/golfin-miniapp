@@ -326,7 +326,10 @@ export interface PointType {
     extra_profit_per_hour: number
     created_at: string
     updated_at: string
-    custom_logs?: object
+    custom_logs?: {
+        action: string,
+        date: string
+    }
 }
 
 
