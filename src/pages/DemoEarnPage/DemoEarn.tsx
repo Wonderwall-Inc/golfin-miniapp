@@ -357,40 +357,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
     const { setActivity, activity, setIsWaitingActivity } = useActivityContext()
     const [allowed, setAllowed] = useState(true)
 
-    // useEffect(() => {
-    //     timeLeft == '' ? setIsHomeLoading(true) : setIsHomeLoading(false)
-    // }, [timeLeft])
-    // const tz = 'Asia/Singapore'
-    // const timestamp = new Date()
 
-    // const dayjsLocal = dayjs(timestamp); //assumes UTC
-    // //dayjsLocal.toISOString() -> 2014-06-01T12:00:00.000Z
-    // //dayjsLocal.format('YYYY-MM-DDTHH:mm:ss') -> 2014-06-01T12:00:00
-
-    // const dayjsSG = dayjsLocal.tz(tz);
-
-    // console.log( dayjsSG.format('YYYY-MM-DDTHH:mm:ss'));
-
-
-    // useEffect(() => {
-    //     const d = new Date();
-    //     const localTime = d.getTime();
-    //     const localOffset = d.getTimezoneOffset() * 60000;
-    //     const utc = localTime + localOffset;
-    //     const offset = +8; // Singapore time
-    //     const singaporeTimeoffset = utc + (3600000 * offset);
-    //     const sgTimeNow = new Date(singaporeTimeoffset)
-
-    //     const sgTimeNowMonth = sgTimeNow.getMonth()
-    //     const sgTimeNowString = `${sgTimeNow.getFullYear()}-${sgTimeNowMonth + 1 < 10 ? `0${sgTimeNowMonth + 1}` : sgTimeNowMonth + 1}-${sgTimeNow.getDate()}T00:00:00`
-    //     // T${sgTimeNow.getHours() < 10 ? `0${sgTimeNow.getHours()}` : sgTimeNow.getHours()}:${sgTimeNow.getMinutes() < 10 ? `0${sgTimeNow.getMinutes()}` : sgTimeNow.getMinutes()}:${sgTimeNow.getSeconds() < 10 ? `0${sgTimeNow.getSeconds()}` : sgTimeNow.getSeconds()}`
-    //     console.log(sgTimeNowString);
-
-    //     // return sgTimeNowString
-
-    //     // const todayYYMMDD = `${todayYY}-${preTodayMM}-${todayDD}T00:00:00`
-    //     setTimeLeft(sgTimeNowString)
-    // }, [])
 
     useEffect(() => {
         if (activity?.last_login_time) {
@@ -407,7 +374,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
             const sgTimeNowString = sgTimeNow()
             console.log(sgTimeNowString);
 
-            const activityCheck = activity?.last_login_time === sgTimeNowString
+            const activityCheck = activity?.last_login_time.split('T')[0] === sgTimeNowString.split('T')[0]
             // const activityCheck = dayjs(new Date()).isSame(activity?.last_login_time)
 
             console.log('activityCheck');
@@ -415,8 +382,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
             console.log('today: ', sgTimeNow);
             console.log(activityCheck);
 
-
-            activityCheck == false ? setAllowed(false) : setAllowed(true)
+            activityCheck == true ? setAllowed(false) : setAllowed(true)
         }
     }, [activity?.last_action_time])
 
