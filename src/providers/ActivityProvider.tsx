@@ -41,10 +41,10 @@ export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }
                 logged_in: true,
                 login_streak: 1,
                 total_logins: 1,
-                last_action_time: '20240916',
-                last_login_time: '20240917',
-                created_at: '20240917',
-                updated_at: '20240917',
+                last_action_time: '2024-09-16',
+                last_login_time: '2024-09-17',
+                created_at: '2024-09-17',
+                updated_at: '2024-09-17',
             })
             setIsWaitingActivity(false)
         }

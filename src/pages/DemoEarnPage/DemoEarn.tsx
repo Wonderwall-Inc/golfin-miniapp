@@ -11,6 +11,7 @@ import { useActivityContext } from '@/contexts/ActivityContext'
 import { getActivity, updateActivity } from '@/apis/ActivityServices'
 import { useFriendContext } from '@/contexts/FriendContext'
 import { isYesterday } from '@/utils'
+import { format } from 'date-fns'
 
 const MINI_APP_BOT_NAME = import.meta.env.VITE_MINI_APP_BOT_NAME
 const MINI_APP_NAME = import.meta.env.VITE_MINI_APP_NAME
@@ -345,10 +346,9 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
     const { setActivity, activity, setIsWaitingActivity } = useActivityContext()
     const [allowed, setAllowed] = useState(true)
     useEffect(() => {
-        if (isYesterday(activity?.last_action_time) == false) {
-            setAllowed(false)
-        } else {
-            setAllowed(true)
+        if (activity?.last_login_time) {
+            const tar = new Date(format(activity?.last_login_time.split('T')[0], 'yyyy-MM-dd'))
+            isYesterday(tar) == false ? setAllowed(false) : setAllowed(true)
         }
     }, [activity?.last_action_time])
 
@@ -360,7 +360,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
         })
         if (existingActivity) {
             // check if last login date was just yesterday
-            const updateActivityPayload = isYesterday(existingActivity.activity.last_login_time.split('T')) ?
+            const updateActivityPayload = activity?.last_login_time && isYesterday(new Date(format(activity?.last_login_time.split('T')[0], 'yyyy-MM-dd'))) ?
                 {
                     id: existingActivity?.activity.id,
                     access_token: '',
