@@ -368,7 +368,7 @@ const DemoEarn = () => {
         if (checkActionOnPoint() == true) {
             setCanClaim(true)
         }
-    }, [point])
+    }, [])
 
     // window.alert(canClaim)
 
