@@ -48,6 +48,8 @@ const DemoRanking = () => {
                 });
                 // setIsWaitingFriend(true)
                 referralRanking.sort((a, b) => b.referral - a.referral);
+                console.log('referralRanking');
+                console.log(referralRanking);
                 referralRanking.map((r, sortIndex) => {
                     if (r.name == account?.telegram_info.username) {
                         setMyReferralRecord({
@@ -91,6 +93,8 @@ const DemoRanking = () => {
                 });
                 // setIsWaitingPoint(true)
                 pointRanking.sort((a, b) => b.point - a.point);
+                console.log('pointRanking');
+                console.log(pointRanking);
                 pointRanking.map((p, sortIndex) => {
                     if (p.name == account?.telegram_info.username) {
                         setMyPointRecord({
@@ -127,7 +131,7 @@ const DemoRanking = () => {
             // setIsWaitingFriend(false)
             // setIsWaitingPoint(false)
         }
-       
+
     }, [])
     return (
         <div className='w-[100%] h-[690px]'>

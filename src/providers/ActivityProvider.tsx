@@ -2,7 +2,7 @@ import { ActivityBaseType, ActivityCreateRequestType } from "@/type";
 import { useEffect, useState } from "react";
 import { ActivityContext } from "@/contexts/ActivityContext";
 import { useUserContext } from "@/contexts/UserContext";
-import { createActivity, getActivity } from "@/apis/ActivityServices";
+import { createActivity, getActivity, updateActivity } from "@/apis/ActivityServices";
 
 
 export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
@@ -57,8 +57,7 @@ export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }
                 const payload = {
                     user_id: account.id,
                     access_token: '',
-                    activity: {
-                    }
+                    activity: {}
                 }
                 activityCreation(payload)
             }

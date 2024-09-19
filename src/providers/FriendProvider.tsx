@@ -26,17 +26,17 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
 
             if (existingFriend && existingFriend.sender && existingFriend.receiver) {
                 setFriend({ sender: existingFriend.sender, receiver: existingFriend.receiver })
-                setFriendNumber(existingFriend.sender?.length + existingFriend.receiver?.length)
-                setFriendTrigger(existingFriend.sender?.length)
+                setFriendNumber(existingFriend.sender?.length + existingFriend.receiver?.length) // total friend with me
+                setFriendTrigger(existingFriend.sender?.length) // total number of sender which made the friend request
 
-                let count = 0
-                // FIXME:
-                existingFriend.sender.forEach(s => {
-                    if (!s.custom_logs?.action) {
-                        count++
-                    }
-                })
-                setNotYetClaimRewardReferral(count)
+                // let count = 0
+                // // FIXME:
+                // existingFriend.sender.forEach(s => {
+                //     if (!s.custom_logs?.action) {
+                //         count++
+                //     }
+                // })
+                // setNotYetClaimRewardReferral(count)
                 setIsWaitingFriend(false)
                 return existingFriend
             }

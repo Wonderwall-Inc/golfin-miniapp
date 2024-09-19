@@ -11,6 +11,7 @@ import { useActivityContext } from '@/contexts/ActivityContext'
 import { getActivity, updateActivity } from '@/apis/ActivityServices'
 import { useFriendContext } from '@/contexts/FriendContext'
 import { updateFriend } from '@/apis/FriendServices'
+import { isYesterday } from '@/utils'
 
 const MINI_APP_BOT_NAME = import.meta.env.VITE_MINI_APP_BOT_NAME
 const MINI_APP_NAME = import.meta.env.VITE_MINI_APP_NAME
@@ -43,8 +44,6 @@ const DemoEarn = () => {
         const todayYYMMDD = `${todayYY}-${preTodayMM}-${todayDD}T00:00:00`
         setTimeLeft(todayYYMMDD)
     }, [new Date()])
-
-
 
     console.log(weeklyCount);
     console.dir(account);
@@ -139,33 +138,33 @@ const DemoEarn = () => {
                     }
                 }
 
-                // Update friend data (assuming marking claimed reward) // FIXME
-                const updatedFriend = friend?.sender?.map(async (s: any) => {
-                    return await updateFriend({
-                        id: s.id,
-                        access_token: '',
-                        friend_payload: {
-                            status: s.status, // Update status if necessary
-                            custom_logs: {
-                                action: 'claim reward',
-                                date: new Date().toISOString(),
-                            },
-                        },
-                    })
-                })
+                // // Update friend data (assuming marking claimed reward) // FIXME
+                // const updatedFriend = friend?.sender?.map(async (s: any) => {
+                //     return await updateFriend({
+                //         id: s.id,
+                //         access_token: '',
+                //         friend_payload: {
+                //             status: s.status, // Update status if necessary
+                //             custom_logs: {
+                //                 action: 'claim reward',
+                //                 date: new Date().toISOString(),
+                //             },
+                //         },
+                //     })
+                // })
 
 
-                if (updatedFriend !== undefined) {
+                // if (updatedFriend !== undefined) {
 
-                    let count = 0
-                    // FIXME:
-                    updatedFriend.forEach(s => {
-                        if (!s.custom_logs?.action) {
-                            count++
-                        }
-                    })
-                    setNotYetClaimRewardReferral(count)
-                }
+                //     let count = 0
+                //     // FIXME:
+                //     updatedFriend.forEach(s => {
+                //         if (!s.custom_logs?.action) {
+                //             count++
+                //         }
+                //     })
+                //     setNotYetClaimRewardReferral(count)
+                // }
 
                 // const results = await Promise.all(promises?.map((p) => p()) ?? []);
                 // Update local count for referral rewards claimed (optional)
@@ -347,13 +346,59 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
     const { setActivity, activity, setIsWaitingActivity } = useActivityContext()
     const [allowed, setAllowed] = useState(true)
     useEffect(() => {
-        if (activity?.logged_in == false) {
-            setAllowed(false)
-        }
-    }, [activity?.logged_in])
+        setAllowed(isYesterday(activity?.last_action_time))
+    }, [activity?.last_action_time])
 
     const handleCheckInDailyReward = async () => {
+        setIsWaitingActivity(true)
+        const existingActivity = await getActivity({
+            access_token: '',
+            user_id: account?.id,
+        })
+        if (existingActivity) {
+            // check if last login date was just yesterday
+            const updateActivityPayload = isYesterday(existingActivity.activity.last_login_time.split('T')) ?
+                {
+                    id: existingActivity?.activity.id,
+                    access_token: '',
+                    user_id: existingActivity.user_id,
+                    activity: {
+                        logged_in: false,
+                        login_streak: existingActivity.activity.login_streak += 1,
+                        total_logins: existingActivity.activity.total_logins += 1,
+                        last_action_time: new Date().toISOString(),
+                        last_login_time: new Date().toISOString()
+                    }
+                } : {
+                    id: existingActivity?.activity.id,
+                    access_token: '',
+                    user_id: existingActivity.user_id,
+                    activity: {
+                        logged_in: false,
+                        login_streak: 1,
+                        total_logins: existingActivity.activity.total_logins += 1,
+                        last_action_time: new Date().toISOString(),
+                        last_login_time: new Date().toISOString()
+                    }
+                }
+            const dbActivity = await updateActivity(updateActivityPayload)
+            if (dbActivity) {
+                setActivity({
+                    id: dbActivity.activity.id,
+                    logged_in: dbActivity.activity.logged_in,
+                    login_streak: dbActivity.activity.login_streak,
+                    total_logins: dbActivity.activity.total_logins,
+                    last_action_time: dbActivity.activity.last_action_time,
+                    last_login_time: dbActivity.activity.last_login_time,
+                    created_at: dbActivity.activity.created_at,
+                    updated_at: dbActivity.activity.updated_at,
+                    custom_logs: dbActivity.activity.custom_logs,
+                })
+            }
+        }
+
         setIsWaitingPoint(true)
+
         const existingPoint = await getPoint({
             access_token: '',
             user_id: account?.id,
@@ -379,39 +424,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
                 })
             }
         }
-        setIsWaitingActivity(true)
-        const existingActivity = await getActivity({
-            access_token: '',
-            user_id: account?.id,
-        })
-        if (existingActivity) {
-            const updateActivityPayload = {
-                id: existingActivity?.activity.id,
-                access_token: '',
-                user_id: existingActivity.user_id,
-                activity: {
-                    logged_in: false,
-                    login_streak: existingActivity.activity.login_streak += 1,
-                    total_logins: existingActivity.activity.total_logins += 1,
-                    last_action_time: new Date().toISOString(),
-                    last_login_time: new Date().toISOString()
-                }
-            }
-            const dbActivity = await updateActivity(updateActivityPayload)
-            if (dbActivity) {
-                setActivity({
-                    id: dbActivity.activity.id,
-                    logged_in: dbActivity.activity.logged_in,
-                    login_streak: dbActivity.activity.login_streak,
-                    total_logins: dbActivity.activity.total_logins,
-                    last_action_time: dbActivity.activity.last_action_time,
-                    last_login_time: dbActivity.activity.last_login_time,
-                    created_at: dbActivity.activity.created_at,
-                    updated_at: dbActivity.activity.updated_at,
-                    custom_logs: dbActivity.activity.custom_logs,
-                })
-            }
-        }
+
         // setDailyReward(false)
 
     }
