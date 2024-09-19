@@ -17,9 +17,28 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
             try {
                 const newUser = await createUser(userCreatePayload)
                 if (newUser !== undefined) {
-                    const dbPoint = await pointReward(userCreatePayload.telegram_info.start_param)
-                    console.log('update point for sender');
-                    console.log(dbPoint)
+                    const sender = await getUser({
+                        access_token: '',
+                        telegram_id: `${userCreatePayload.telegram_info.start_param}`
+                    })
+                    if (sender) {
+                        const senderPoint = await getPoint({
+                            access_token: '',
+                            user_id: sender.user_details.user_base.id
+                        })
+                        if (senderPoint) {
+                            const dbPoint = await updatePoint({
+                                access_token: '',
+                                id: senderPoint.point_base.point.id,
+                                type: 'add', // REVIEW: add / drop point
+                                point_payload: {
+                                    amount: 100
+                                }
+                            })
+                            console.log('update point for sender');
+                            console.log(dbPoint);
+                        }
+                    }
 
                     setAccount(newUser.user_details.user_base)
                     setIsWaitingUser(false)
@@ -44,21 +63,6 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
         const pointReward = async (webappStartParam) => {
             if (webappStartParam) {
 
-                const senderPoint = await getPoint({
-                    access_token: '',
-                    user_id: parseInt(webappStartParam)
-                })
-                if (senderPoint) {
-                    const dbPoint = await updatePoint({
-                        access_token: '',
-                        id: senderPoint.point_base.point.id,
-                        type: 'add', // REVIEW: add / drop point
-                        point_payload: {
-                            amount: 100
-                        }
-                    })
-                    return dbPoint
-                }
             }
         }
         if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
