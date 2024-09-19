@@ -356,33 +356,50 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
     const { account } = useUserContext()
     const { setActivity, activity, setIsWaitingActivity } = useActivityContext()
     const [allowed, setAllowed] = useState(true)
-
+    const [clicked, setIsClicked] = useState(false)
 
 
     useEffect(() => {
-        if (activity?.last_login_time) {
-            // const tar = new Date(format(activity?.last_login_time.split('T')[0], 'yyyy-MM-dd')) === new Date()
-            // const todayDateWithoutTZ = `${today.getFullYear()}-${today.getUTCMonth() + 1 < 10 ? `0${today.getUTCMonth() + 1}` : today.getUTCMonth() + 1}-${today.getDate()}T${today.getHours() < 10 ? `0${today.getHours()}` : today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`
-            // const d = new Date();
-            // const localTime = d.getTime();
-            // const localOffset = d.getTimezoneOffset() * 60000;
-            // const utc = localTime + localOffset;
-            // const offset = +8; // UTC of USA Eastern Time Zone is -05.00
-            // const singaporeTimeoffset = utc + (3600000 * offset);
-            // const sgTimeNow = new Date(singaporeTimeoffset)
-            // const sgTimeNowString = `${sgTimeNow.getFullYear()}-${sgTimeNow.getUTCMonth() + 1 < 10 ? `0${sgTimeNow.getMonth() + 1}` : sgTimeNow.getMonth() + 1}-${sgTimeNow.getDate()}T${sgTimeNow.getHours() < 10 ? `0${sgTimeNow.getHours()}` : sgTimeNow.getHours()}:${sgTimeNow.getMinutes()<10?`0${sgTimeNow.getMinutes()}`:sgTimeNow.getMinutes()}:${sgTimeNow.getSeconds()<10?`0${sgTimeNow.getSeconds()}`:sgTimeNow.getSeconds()}`
+        if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
             const sgTimeNowString = sgTimeNow()
-            console.log(sgTimeNowString);
+            console.log(activity?.last_login_time.split('T')[0]);
+            console.log(sgTimeNowString.split('T')[0]);
 
-            const activityCheck = activity?.last_login_time.split('T')[0] === sgTimeNowString.split('T')[0]
-            // const activityCheck = dayjs(new Date()).isSame(activity?.last_login_time)
-
-            console.log('activityCheck');
-            console.log('db: ', activity?.last_login_time);
-            console.log('today: ', sgTimeNow);
+            const activityCheck = activity?.last_login_time.split('T')[0] == sgTimeNowString.split('T')[0]
             console.log(activityCheck);
 
-            activityCheck == true ? setAllowed(false) : setAllowed(true)
+            if (activityCheck == true || clicked == true) {
+                setAllowed(false)
+            }
+        } else {
+
+            if (activity?.last_login_time) {
+                setIsClicked(true)
+                // const tar = new Date(format(activity?.last_login_time.split('T')[0], 'yyyy-MM-dd')) === new Date()
+                // const todayDateWithoutTZ = `${today.getFullYear()}-${today.getUTCMonth() + 1 < 10 ? `0${today.getUTCMonth() + 1}` : today.getUTCMonth() + 1}-${today.getDate()}T${today.getHours() < 10 ? `0${today.getHours()}` : today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`
+                // const d = new Date();
+                // const localTime = d.getTime();
+                // const localOffset = d.getTimezoneOffset() * 60000;
+                // const utc = localTime + localOffset;
+                // const offset = +8; // UTC of USA Eastern Time Zone is -05.00
+                // const singaporeTimeoffset = utc + (3600000 * offset);
+                // const sgTimeNow = new Date(singaporeTimeoffset)
+                // const sgTimeNowString = `${sgTimeNow.getFullYear()}-${sgTimeNow.getUTCMonth() + 1 < 10 ? `0${sgTimeNow.getMonth() + 1}` : sgTimeNow.getMonth() + 1}-${sgTimeNow.getDate()}T${sgTimeNow.getHours() < 10 ? `0${sgTimeNow.getHours()}` : sgTimeNow.getHours()}:${sgTimeNow.getMinutes()<10?`0${sgTimeNow.getMinutes()}`:sgTimeNow.getMinutes()}:${sgTimeNow.getSeconds()<10?`0${sgTimeNow.getSeconds()}`:sgTimeNow.getSeconds()}`
+                const sgTimeNowString = sgTimeNow()
+                console.log(sgTimeNowString);
+
+                const activityCheck = activity?.last_login_time.split('T')[0] === sgTimeNowString.split('T')[0]
+                // const activityCheck = dayjs(new Date()).isSame(activity?.last_login_time)
+
+                console.log('activityCheck');
+                console.log('db: ', activity?.last_login_time);
+                console.log('today: ', sgTimeNow);
+                console.log(activityCheck);
+
+                if (activityCheck == true || clicked == true) {
+                    setAllowed(false)
+                }
+            }
         }
     }, [activity?.last_action_time])
 
@@ -463,13 +480,38 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
         }
 
         // setDailyReward(false)
-
     }
+    console.log('allow ', allowed);
+
     return (
         <div className={`h-[100px] cursor-pointer ${allowed != true && 'pointer-events-none'}`}
             aria-disabled={allowed != true}
             onClick={() => { // FIXME: add daily check in boolean field on each day on backend table 
-                handleCheckInDailyReward()
+                if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
+                    setIsClicked(true)
+                    setIsWaitingActivity(true)
+                    setActivity({
+                        id: 1,
+                        logged_in: false,
+                        login_streak: 1,
+                        total_logins: 1,
+                        last_action_time: new Date().toISOString(),
+                        last_login_time: new Date().toISOString(),
+                        created_at: new Date().toISOString(),
+                        updated_at: new Date().toISOString(),
+                    })
+                    setIsWaitingPoint(true)
+                    setPoint({
+                        id: 1,
+                        amount: 2,
+                        extra_profit_per_hour: 0,
+                        created_at: new Date().toISOString(),
+                        updated_at: new Date().toISOString(),
+                    })
+                } else {
+                    setIsClicked(true)
+                    handleCheckInDailyReward()
+                }
                 setIsWaitingPoint(false)
                 setIsWaitingActivity(false)
             }}>
