@@ -1,4 +1,4 @@
-export function isYesterday(date) {
+export function isYesterday(date: string | string[] | undefined) {
     if (!(date instanceof Date)) {
         throw new Error('Invalid argument: you must provide a "date" instance')
     }

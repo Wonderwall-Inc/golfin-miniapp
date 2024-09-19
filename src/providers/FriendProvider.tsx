@@ -11,7 +11,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
     const [isWaitingFriend, setIsWaitingFriend] = useState(false)
     const [friendNumber, setFriendNumber] = useState(0)
     const [friendTrigger, setFriendTrigger] = useState(0)
-    let [notYetClaimRewardReferral, setNotYetClaimRewardReferral] = useState(0)
+    // let [notYetClaimRewardReferral, setNotYetClaimRewardReferral] = useState(0)
 
     const webappUser = WebApp.initDataUnsafe.user
     const webappStartParam = WebApp.initDataUnsafe.start_param
@@ -128,7 +128,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
         setIsWaitingFriend,
         friendNumber, setFriendNumber,
         friendTrigger, setFriendTrigger,
-        notYetClaimRewardReferral, setNotYetClaimRewardReferral
+        // notYetClaimRewardReferral, setNotYetClaimRewardReferral
     }}>
         {children}
     </FriendContext.Provider>

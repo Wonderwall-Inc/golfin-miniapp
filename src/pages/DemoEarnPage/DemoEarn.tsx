@@ -10,7 +10,6 @@ import { dailyCheckInPointReward, friendReferralPointReward, tenFriendsReferralP
 import { useActivityContext } from '@/contexts/ActivityContext'
 import { getActivity, updateActivity } from '@/apis/ActivityServices'
 import { useFriendContext } from '@/contexts/FriendContext'
-import { updateFriend } from '@/apis/FriendServices'
 import { isYesterday } from '@/utils'
 
 const MINI_APP_BOT_NAME = import.meta.env.VITE_MINI_APP_BOT_NAME
@@ -21,7 +20,7 @@ const DemoEarn = () => {
     const { account, setAccount } = useUserContext()
     const { point, setPoint, isWaitingPoint, setIsWaitingPoint } = usePointContext()
     const { activity, setActivity, isWaitingActivity, setIsWaitingActivity } = useActivityContext()
-    const { friend, friendTrigger, notYetClaimRewardReferral, setNotYetClaimRewardReferral } = useFriendContext()
+    const { friend, friendTrigger,/*  notYetClaimRewardReferral, setNotYetClaimRewardReferral */ } = useFriendContext()
 
     const [dailyReward, setDailyReward] = useState(true)
     const [timeLeft, setTimeLeft] = useState("")
@@ -109,7 +108,7 @@ const DemoEarn = () => {
 
     useEffect(() => {
         const handleReferralReward = async () => {
-            if (!referralCount || referralCount % 10 !== 0 || notYetClaimRewardReferral) return; // Early exit if not a multiple of 10 or already claimed
+            if (!referralCount || referralCount % 10 !== 0) return; // Early exit if not a multiple of 10 or already claimed
 
             setIsWaitingPoint(true);
 
@@ -312,7 +311,7 @@ const DemoEarn = () => {
             />
             <DemoBonusComponent
                 weeklyCount={activity?.login_streak} // using cont 7 day count
-                referralCount={notYetClaimRewardReferral} />
+                referralCount={friendTrigger} />
         </div>
     )
 }

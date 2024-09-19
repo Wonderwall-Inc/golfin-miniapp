@@ -4,7 +4,6 @@ import { ActivityContext } from "@/contexts/ActivityContext";
 import { useUserContext } from "@/contexts/UserContext";
 import { createActivity, getActivity, updateActivity } from "@/apis/ActivityServices";
 
-
 export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const [activity, setActivity] = useState<ActivityBaseType | undefined>();
     const [isWaitingActivity, setIsWaitingActivity] = useState(false)
