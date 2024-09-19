@@ -46,6 +46,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
         }
 
         const friendCreation = async (senderId: string, friendCreatePayload: FriendCreateRequestType) => {
+            // user has to be created before checking the friend
             const sender = await getUser({
                 access_token: '',
                 telegram_id: senderId
@@ -67,25 +68,10 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                         created_at: newFriend.friend_details.friend_base.created_at,
                     }]
                 })
-                const senderPoint = await getPoint({
-                    access_token: '',
-                    user_id: newFriend.friend_details.sender_id,
-                })
-                if (senderPoint) {
-                    setIsWaitingFriend(true)
-                    await updatePoint({
-                        access_token: '',
-                        id: senderPoint.point_base.point.id,
-                        type: 'add', // REVIEW: add / drop point
-                        point_payload: {
-                            amount: 100
-                        }
-                    })
-                    setFriendNumber(1)
-                    setIsWaitingFriend(false)
-                    setIsWaitingFriend(false)
-                    return newFriend
-                }
+                setFriendNumber(1)
+                setIsWaitingFriend(false)
+                return newFriend
+
             } else {
                 const existingFriend = await getFriend({ access_token: '', user_id: account?.id })
                 console.log('existingFriend');

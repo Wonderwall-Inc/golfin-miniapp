@@ -3,10 +3,12 @@ import WebApp from '@twa-dev/sdk';
 import { UserContext } from '../contexts/UserContext';
 import { UserCreateRequestType, UserType } from '../type';
 import { createUser, getUser } from '@/apis/UserSevices';
+import { getPoint, updatePoint } from '@/apis/PointServices';
 
 export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const [account, setAccount] = useState<UserType | undefined>();
     const [isWaitingUser, setIsWaitingUser] = useState(false)
+    
     const webappUser = WebApp.initDataUnsafe.user
     const webappStartParam = WebApp.initDataUnsafe.start_param
 
@@ -32,6 +34,27 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
             } catch (error) {
                 console.log(error);
                 return error
+            }
+        }
+
+        const pointReward = async (webappStartParam) => {
+            if (webappStartParam) {
+
+                const senderPoint = await getPoint({
+                    access_token: '',
+                    user_id: parseInt(webappStartParam)
+                })
+                if (senderPoint) {
+                    const dbPoint = await updatePoint({
+                        access_token: '',
+                        id: senderPoint.point_base.point.id,
+                        type: 'add', // REVIEW: add / drop point
+                        point_payload: {
+                            amount: 100
+                        }
+                    })
+                    return dbPoint
+                }
             }
         }
         if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
@@ -111,6 +134,7 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                     }
 
                     userCreation(payload)
+                    pointReward(webappStartParam)
                 }
             }
         }
