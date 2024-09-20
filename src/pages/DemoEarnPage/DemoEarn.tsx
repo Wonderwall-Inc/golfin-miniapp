@@ -119,48 +119,44 @@ const DemoEarn = () => {
 
     useEffect(() => {
 
+
         const handleReferralReward = async () => {
             console.log(friendTrigger);
             console.log("*****************");
-            if (!friendTrigger || friendTrigger % 10 !== 0) return; // Early exit if not a multiple of 10 or already claimed
+            // if (!friendTrigger || friendTrigger % 10 !== 0) return; // Early exit if not a multiple of 10 or already claimed
+
+
             setIsWaitingPoint(true);
             try {
-                if (canClaim) {
-                    console.log('canclaim:  ', canClaim);
 
-                    console.log('on try');
+                console.log('canclaim:  ', canClaim);
 
-                    // Fetch existing point and update if necessary
-                    const existingPoint = await getPoint({ access_token: '', user_id: account?.id });
+                console.log('on try');
 
-                    if (existingPoint) {
-                        const dbPointAction = existingPoint?.point_base?.point?.custom_logs?.action.split('claim')[1]
-                        if (dbPointAction) {
-                            if (friendTrigger / 10 != parseInt(dbPointAction)) {
-                                const updatePointPayload = {
-                                    id: existingPoint?.point_base.point.id,
-                                    type: 'add', // REVIEW: add / minus point
-                                    access_token: '',
-                                    point_payload: {
-                                        amount: 3000, // extra_profit_per_hour: optional
-                                    },
-                                };
-                                const updatedPoint = await updatePoint(updatePointPayload);
-                                if (updatedPoint && updatedPoint?.point_base.user_id) {
-                                    setPoint({
-                                        id: updatedPoint?.point_base.user_id,
-                                        amount: updatedPoint?.point_base.point.amount,
-                                        extra_profit_per_hour: updatedPoint?.point_base.point.extra_profit_per_hour,
-                                        created_at: updatedPoint?.point_base.point.created_at,
-                                        updated_at: updatedPoint?.point_base.point.updated_at,
-                                        custom_logs: {
-                                            action: `claim${friendTrigger / 10}`,
-                                            date: new Date().toISOString()
-                                        }
-                                    })
-                                }
+                const existingPoint = await getPoint({ access_token: '', user_id: account?.id });
+
+                if (existingPoint) {
+                    const updatedPoint = await updatePoint({
+                        id: existingPoint?.point_base.point.id,
+                        type: 'add', // REVIEW: add / minus point
+                        access_token: '',
+                        point_payload: {
+                            amount: 3000, // extra_profit_per_hour: optional
+                        },
+                    });
+                    if (updatedPoint && updatedPoint?.point_base.user_id) {
+                        setPoint({
+                            id: updatedPoint?.point_base.user_id,
+                            amount: updatedPoint?.point_base.point.amount,
+                            extra_profit_per_hour: updatedPoint?.point_base.point.extra_profit_per_hour,
+                            created_at: updatedPoint?.point_base.point.created_at,
+                            updated_at: updatedPoint?.point_base.point.updated_at,
+                            custom_logs: {
+                                action: `claim${friendTrigger / 10}`,
+                                date: new Date().toISOString()
                             }
-                        }
+                        })
+
                     }
                 }
 
