@@ -4,13 +4,10 @@ import { PointCreateRequestType, PointType, } from '../type';
 import { createPoint, getPoint } from '@/apis/PointServices';
 import { useUserContext } from '@/contexts/UserContext';
 import { PointContext } from '@/contexts/PointContext';
-import { useFriendContext } from '@/contexts/FriendContext';
 
 export const PointProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const [point, setPoint] = useState<PointType | undefined>();
     const [isWaitingPoint, setIsWaitingPoint] = useState(false)
-    const [canClaim, setCanClaim] = useState(false)
-    const { friendTrigger } = useFriendContext()
 
     const webappUser = WebApp.initDataUnsafe.user
     const webappStartParam = WebApp.initDataUnsafe.start_param
@@ -31,20 +28,6 @@ export const PointProvider: React.FC<React.PropsWithChildren> = ({ children }) =
                     })
                     if (existingpoint) {
                         setPoint(existingpoint.point_base.point)
-                      
-
-                        if (!point?.custom_logs?.action && friendTrigger % 10 == 0) {
-                            setCanClaim(true)
-                        } else {
-
-                            const dbPointAction = point?.custom_logs?.action.split('claim')[1]
-                            console.log(dbPointAction);
-                            
-                            if (friendTrigger / 10 != (dbPointAction && parseInt(dbPointAction))) {
-                                setCanClaim(true)
-                            }
-
-                        }
                         setIsWaitingPoint(false)
                         return existingpoint
                     }
@@ -56,9 +39,6 @@ export const PointProvider: React.FC<React.PropsWithChildren> = ({ children }) =
         }
         if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
             setIsWaitingPoint(true)
-            if (!point?.custom_logs?.action && friendTrigger % 10 == 0) {
-                setCanClaim(true)
-            } 
             setPoint({
                 id: 1,
                 amount: 0,
@@ -92,9 +72,7 @@ export const PointProvider: React.FC<React.PropsWithChildren> = ({ children }) =
             point,
             setPoint,
             isWaitingPoint,
-            setIsWaitingPoint,
-            canClaim,
-            setCanClaim,
+            setIsWaitingPoint
         }}>
             {children}
         </PointContext.Provider>

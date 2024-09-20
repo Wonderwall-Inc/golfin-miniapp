@@ -19,13 +19,13 @@ createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
       <KonstaProvider>
         <UserProvider>
-          <ActivityProvider>
-            <FriendProvider>
-              <PointProvider>
+          <PointProvider>
+            <ActivityProvider>
+              <FriendProvider>
                 <App />
-              </PointProvider>
-            </FriendProvider>
-          </ActivityProvider>
+              </FriendProvider>
+            </ActivityProvider>
+          </PointProvider>
         </UserProvider>
       </KonstaProvider>
     </BrowserRouter>

@@ -19,7 +19,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
     const webappStartParam = WebApp.initDataUnsafe.start_param
 
     const { account } = useUserContext()
-    // const { point, setPoint, setIsWaitingPoint } = usePointContext()
+    const { point, setPoint, setIsWaitingPoint } = usePointContext()
 
     useEffect(() => {
         const friendRetrieval = async (friendRetrievalPayload: FriendRetrievalRequestType) => {
