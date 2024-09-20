@@ -85,6 +85,7 @@ const DemoEarn = () => {
                             id: updatedPoint?.point_base.user_id,
                             amount: updatedPoint?.point_base.point.amount,
                             extra_profit_per_hour: updatedPoint?.point_base.point.extra_profit_per_hour,
+                            // referral_action:updatedPoint.point_base.point.referral_action,
                             created_at: updatedPoint?.point_base.point.created_at,
                             updated_at: updatedPoint?.point_base.point.updated_at,
                             custom_logs: updatedPoint?.point_base.point.custom_logs
@@ -151,6 +152,7 @@ const DemoEarn = () => {
                                         id: updatedPoint?.point_base.user_id,
                                         amount: updatedPoint?.point_base.point.amount,
                                         extra_profit_per_hour: updatedPoint?.point_base.point.extra_profit_per_hour,
+                                        // referral_action: `claim${friendTrigger / 10}:${new Date().toISOString()}`,
                                         created_at: updatedPoint?.point_base.point.created_at,
                                         updated_at: updatedPoint?.point_base.point.updated_at,
                                         custom_logs: {
@@ -189,6 +191,7 @@ const DemoEarn = () => {
                         id: point?.id,
                         amount: point.amount + 3000,
                         extra_profit_per_hour: point.extra_profit_per_hour,
+                        // referral_action: `claim${friendTrigger / 10}:${new Date().toISOString()}`,
                         created_at: point?.created_at,
                         updated_at: point?.updated_at,
                         custom_logs: {

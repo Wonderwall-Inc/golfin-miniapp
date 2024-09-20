@@ -326,6 +326,7 @@ export interface PointType {
     id: number
     amount: number
     extra_profit_per_hour: number
+    // referral_action: string
     created_at: string
     updated_at: string
     custom_logs?: {
