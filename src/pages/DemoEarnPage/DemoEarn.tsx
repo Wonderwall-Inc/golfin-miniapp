@@ -120,26 +120,20 @@ const DemoEarn = () => {
 
 
     useEffect(() => {
-
-
         const handleReferralReward = async () => {
             console.log(friendTrigger);
             console.log("*****************");
             // if (!friendTrigger || friendTrigger % 10 !== 0) return; // Early exit if not a multiple of 10 or already claimed
+            if (canClaim == true && point) {
+                setIsWaitingPoint(true);
+                try {
 
+                    console.log('canclaim:  ', canClaim);
 
-            setIsWaitingPoint(true);
-            try {
+                    console.log('on try');
 
-                console.log('canclaim:  ', canClaim);
-
-                console.log('on try');
-
-                const existingPoint = await getPoint({ access_token: '', user_id: account?.id });
-
-                if (existingPoint) {
                     const updatedPoint = await updatePoint({
-                        id: existingPoint?.point_base.point.id,
+                        id: point.id,
                         type: 'add', // REVIEW: add / minus point
                         access_token: '',
                         point_payload: {
@@ -148,24 +142,21 @@ const DemoEarn = () => {
                     });
                     if (updatedPoint && updatedPoint?.point_base.user_id) {
                         setPoint({
-                            id: updatedPoint?.point_base.user_id,
-                            amount: updatedPoint?.point_base.point.amount,
-                            extra_profit_per_hour: updatedPoint?.point_base.point.extra_profit_per_hour,
-                            created_at: updatedPoint?.point_base.point.created_at,
-                            updated_at: updatedPoint?.point_base.point.updated_at,
+                            ...point,
                             custom_logs: {
                                 action: `claim${friendTrigger / 10}`,
                                 date: new Date().toISOString()
                             }
                         })
+                        setCanClaim(false)
 
                     }
-                }
 
-            } catch (error) {
-                console.error('Error handling referral reward:', error);
-            } finally {
-                setIsWaitingPoint(false);
+                } catch (error) {
+                    console.error('Error handling referral reward:', error);
+                } finally {
+                    setIsWaitingPoint(false);
+                }
             }
 
         }
