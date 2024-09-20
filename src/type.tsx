@@ -29,6 +29,8 @@ export interface PointContextType {
     setPoint: Dispatch<SetStateAction<undefined | PointType>>
     isWaitingPoint: boolean
     setIsWaitingPoint: Dispatch<SetStateAction<boolean>>
+    canClaim:boolean
+    setCanClaim:Dispatch<SetStateAction<boolean>>
 }
 
 export interface ActivityContextType {

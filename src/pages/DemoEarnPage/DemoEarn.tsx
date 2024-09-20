@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import CoinIcon from '../../assets/images/02_earn_coin.png'
 import Countdown from '../../components/Countdown'
 import { useUserContext } from '../../contexts/UserContext'
@@ -27,9 +27,9 @@ const MINI_APP_APP = `https://t.me/${MINI_APP_BOT_NAME}/${MINI_APP_NAME}/start?s
 
 const DemoEarn = () => {
     const { account, setAccount } = useUserContext()
-    const { point, setPoint, isWaitingPoint, setIsWaitingPoint } = usePointContext()
+    const { point, setPoint, isWaitingPoint, setIsWaitingPoint, canClaim, setCanClaim } = usePointContext()
     const { activity, setActivity, isWaitingActivity, setIsWaitingActivity } = useActivityContext()
-    const { friend, friendTrigger,/*  notYetClaimRewardReferral, setNotYetClaimRewardReferral */ } = useFriendContext()
+    const { friend, friendTrigger } = useFriendContext()
 
     const [dailyReward, setDailyReward] = useState(true)
     const [timeLeft, setTimeLeft] = useState("")
@@ -39,11 +39,11 @@ const DemoEarn = () => {
     const [weeklyCount, setWeeklyCount] = useState(0)
     const [referralCount, setReferralCount] = useState(0)
 
-    const [canClaim, setCanClaim] = useState(false)
+    // const [canClaim, setCanClaim] = useState(false)
 
     console.log(weeklyCount);
     console.dir(account);
-    console.log(point);
+    console.log(point?.amount);
     console.log(friend);
 
     useEffect(() => {
@@ -117,262 +117,112 @@ const DemoEarn = () => {
         handleWeeklyReward(); // Call the function on component mount
     }, [activity?.login_streak]); // Only re-run when login_streak changes
 
+
+
     useEffect(() => {
+
+
         const handleReferralReward = async () => {
             console.log(friendTrigger);
             console.log("*****************");
-
-
-            if (!friendTrigger || friendTrigger % 10 !== 0) return; // Early exit if not a multiple of 10 or already claimed
+            // if (!friendTrigger || friendTrigger % 10 !== 0) return; // Early exit if not a multiple of 10 or already claimed
 
 
             setIsWaitingPoint(true);
-
             try {
-                if (canClaim) {
-                    console.log('canclaim:  ', canClaim);
 
+                console.log('canclaim:  ', canClaim);
 
-                    if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
-                        if (point) {
-                            setPoint({
-                                id: point?.id,
-                                amount: point?.amount,
-                                extra_profit_per_hour: point.extra_profit_per_hour,
-                                created_at: point?.created_at,
-                                updated_at: point?.updated_at,
-                                custom_logs: {
-                                    action: `claim${friendTrigger / 10}`,
-                                    date: new Date().toISOString()
-                                }
-                            })
-                            console.log(point);
-                        }
-                    }
-                    console.log('on try');
+                console.log('on try');
 
-                    // Fetch existing point and update if necessary
-                    const existingPoint = await getPoint({ access_token: '', user_id: account?.id });
+                const existingPoint = await getPoint({ access_token: '', user_id: account?.id });
 
-                    if (existingPoint) {
-                        const dbPointAction = existingPoint?.point_base?.point?.custom_logs?.action.split('claim')[1]
-                        if (dbPointAction) {
-                            if (friendTrigger / 10 != parseInt(dbPointAction)) {
-                                const updatePointPayload = {
-                                    id: existingPoint?.point_base.point.id,
-                                    type: 'add', // REVIEW: add / minus point
-                                    access_token: '',
-                                    point_payload: {
-                                        amount: 3000, // extra_profit_per_hour: optional
-                                    },
-                                };
-                                const updatedPoint = await updatePoint(updatePointPayload);
-                                if (updatedPoint && updatedPoint?.point_base.user_id) {
-                                    setPoint({
-                                        id: updatedPoint?.point_base.user_id,
-                                        amount: updatedPoint?.point_base.point.amount,
-                                        extra_profit_per_hour: updatedPoint?.point_base.point.extra_profit_per_hour,
-                                        created_at: updatedPoint?.point_base.point.created_at,
-                                        updated_at: updatedPoint?.point_base.point.updated_at,
-                                        custom_logs: {
-                                            action: `claim${friendTrigger / 10}`,
-                                            date: new Date().toISOString()
-                                        }
-                                    })
-                                }
+                if (existingPoint) {
+                    const updatedPoint = await updatePoint({
+                        id: existingPoint?.point_base.point.id,
+                        type: 'add', // REVIEW: add / minus point
+                        access_token: '',
+                        point_payload: {
+                            amount: 3000, // extra_profit_per_hour: optional
+                        },
+                    });
+                    if (updatedPoint && updatedPoint?.point_base.user_id) {
+                        setPoint({
+                            id: updatedPoint?.point_base.user_id,
+                            amount: updatedPoint?.point_base.point.amount,
+                            extra_profit_per_hour: updatedPoint?.point_base.point.extra_profit_per_hour,
+                            created_at: updatedPoint?.point_base.point.created_at,
+                            updated_at: updatedPoint?.point_base.point.updated_at,
+                            custom_logs: {
+                                action: `claim${friendTrigger / 10}`,
+                                date: new Date().toISOString()
                             }
-                        }
+                        })
+
                     }
                 }
 
-
-
-                // // Update friend data (assuming marking claimed reward) // FIXME
-                // const updatedFriend = friend?.sender?.map(async (s: any) => {
-                //     return await updateFriend({
-                //         id: s.id,
-                //         access_token: '',
-                //         friend_payload: {
-                //             status: s.status, // Update status if necessary
-                //             custom_logs: {
-                //                 action: 'claim reward',
-                //                 date: new Date().toISOString(),
-                //             },
-                //         },
-                //     })
-                // })
-
-
-                // if (updatedFriend !== undefined) {
-
-                //     let count = 0
-                //     // FIXME:
-                //     updatedFriend.forEach(s => {
-                //         if (!s.custom_logs?.action) {
-                //             count++
-                //         }
-                //     })
-                //     setNotYetClaimRewardReferral(count)
-                // }
-
-                // const results = await Promise.all(promises?.map((p) => p()) ?? []);
-                // Update local count for referral rewards claimed (optional)
-                // setNotYetClaimRewardReferral(referralCount); // Update claimed count (optional)
             } catch (error) {
                 console.error('Error handling referral reward:', error);
             } finally {
                 setIsWaitingPoint(false);
             }
-        };
 
-        handleReferralReward(); // Call the function on component mount
-    }, [friendTrigger])
+        }
 
-    // useEffect(() => {
-    //     const weeklyRewardHandler = async () => {
-    //         setIsWaitingPoint(true)
-    //         const existingPoint = await getPoint({
-    //             access_token: '',
-    //             user_id: account?.id,
-    //         })
-    //         if (existingPoint) {
-    //             const updatePointPayload = {
-    //                 id: existingPoint?.point_base.point.id,
-    //                 type: 'add', // REVIEW: add / minus point
-    //                 access_token: '',
-    //                 point_payload: {
-    //                     amount: 15, // extra_profit_per_hour: optional
-    //                 }
-    //             }
-    //             const dbPoint = await updatePoint(updatePointPayload)
-    //             if (dbPoint && dbPoint?.point_base.user_id) {
-    //                 setPoint({
-    //                     id: dbPoint?.point_base.user_id,
-    //                     amount: dbPoint?.point_base.point.amount,
-    //                     extra_profit_per_hour: dbPoint?.point_base.point.extra_profit_per_hour,
-    //                     created_at: dbPoint?.point_base.point.created_at,
-    //                     updated_at: dbPoint?.point_base.point.updated_at,
-    //                     custom_logs: dbPoint?.point_base.point.custom_logs
-    //                 })
-    //             }
-    //         }
-    //         setIsWaitingActivity(true)
-    //         const existingActivity = await getActivity({
-    //             access_token: '',
-    //             user_id: account?.id,
-    //         })
-    //         if (existingActivity) {
-    //             const updateActivityPayload = {
-    //                 id: existingActivity?.activity.id,
-    //                 access_token: '',
-    //                 user_id: existingActivity.user_id,
-    //                 activity: {
-    //                     logged_in: existingActivity.activity.logged_in,
-    //                     login_streak: 0,
-    //                     total_logins: existingActivity.activity.total_logins,
-    //                     last_action_time: new Date().toISOString(),
-    //                     last_login_time: existingActivity.activity.last_login_time,
-    //                 }
-    //             }
-    //             const dbActivity = await updateActivity(updateActivityPayload)
-    //             if (dbActivity) {
-    //                 setActivity({
-    //                     id: dbActivity.activity.id,
-    //                     logged_in: dbActivity.activity.logged_in,
-    //                     login_streak: dbActivity.activity.login_streak,
-    //                     total_logins: dbActivity.activity.total_logins,
-    //                     last_action_time: dbActivity.activity.last_action_time,
-    //                     last_login_time: dbActivity.activity.last_login_time,
-    //                     created_at: dbActivity.activity.created_at,
-    //                     updated_at: dbActivity.activity.updated_at,
-    //                     custom_logs: dbActivity.activity.custom_logs,
-    //                 })
-    //             }
-    //         }
-    //     }
-    //     if (activity?.login_streak && activity?.login_streak == 7) {
-    //         // update point + 15
-    //         // clean up activity streak
+        if (import.meta.env.VITE_MINI_APP_ENV !== 'test' && canClaim == true)
+            handleReferralReward(); // Call the function on component mount
+        else {
+            console.log("*****************test");
+            console.log(friendTrigger);
 
-    //         weeklyRewardHandler()
-    //         setIsWaitingPoint(false)
-    //         setIsWaitingActivity(false)
-    //     }
-    // }, [activity?.login_streak])
+            if (canClaim == true && point) {
+                console.log(point);
+                console.log('can claim');
+                console.log(canClaim)
 
-    // useEffect(() => {
-    //     const referralRewardHandler = async () => {
-    //         setIsWaitingPoint(true)
-    //         const existingPoint = await getPoint({
-    //             access_token: '',
-    //             user_id: account?.id,
-    //         })
-    //         if (existingPoint) {
-    //             const updatePointPayload = {
-    //                 id: existingPoint?.point_base.point.id,
-    //                 type: 'add', // REVIEW: add / minus point
-    //                 access_token: '',
-    //                 point_payload: {
-    //                     amount: 3000, // extra_profit_per_hour: optional
-    //                 }
-    //             }
-    //             const dbPoint = await updatePoint(updatePointPayload)
-    //             if (dbPoint && dbPoint?.point_base.user_id) {
-    //                 setPoint({
-    //                     id: dbPoint?.point_base.user_id,
-    //                     amount: dbPoint?.point_base.point.amount,
-    //                     extra_profit_per_hour: dbPoint?.point_base.point.extra_profit_per_hour,
-    //                     created_at: dbPoint?.point_base.point.created_at,
-    //                     updated_at: dbPoint?.point_base.point.updated_at,
-    //                     custom_logs: dbPoint?.point_base.point.custom_logs
-    //                 })
-    //             }
-    //         }
 
-    //         const dbFriend = await Promise.all(friend?.sender?.map(async (s) => {
-    //             await updateFriend({
-    //                 id: s.id,
-    //                 access_token: '',
-    //                 friend_payload: {
-    //                     status: s.status,
-    //                     custom_logs: {
-    //                         'action': 'claim reward',
-    //                         'date': new Date().toISOString()
-    //                     }
-    //                 }
-    //             })
-    //         }))
-    //     }
-    //     if (notYetClaimRewardReferral && notYetClaimRewardReferral % 10 == 0) {
-    //         //update point + 3000
-    //         referralRewardHandler()
-    //         setIsWaitingPoint(false)
-    //     }
-    // }, [friendTrigger])
-
-    useEffect(() => {
-        const checkActionOnPoint = () => {
-            if (point) {
-                if (point?.custom_logs?.action) {
-                    const dbPointAction = point.custom_logs?.action.split('claim')[1]
-                    if (dbPointAction) {
-                        if (referralCount / 10 != parseInt(dbPointAction))
-                            return true
+                setPoint({
+                    id: point?.id,
+                    amount: point.amount += 3000,
+                    extra_profit_per_hour: point.extra_profit_per_hour,
+                    created_at: point?.created_at,
+                    updated_at: point?.updated_at,
+                    custom_logs: {
+                        action: `claim${friendTrigger / 10}`,
+                        date: new Date().toISOString()
                     }
-                } else {
-                    return true
-                }
+                })
+                setCanClaim(false)
+
             }
         }
 
-        if (checkActionOnPoint() == true) {
-            setCanClaim(true)
-        }
-    }, [])
+
+    }, [point?.amount])
+
+
+    // useEffect(() => {
+
+
+    //     if (!point?.custom_logs?.action && friendTrigger % 10 == 0) {
+    //         setCanClaim(true)
+    //     } else {
+
+    //         const dbPointAction = point?.custom_logs?.action.split('claim')[1]
+    //         if (dbPointAction) {
+    //             if (friendTrigger / 10 != parseInt(dbPointAction))
+    //                 setCanClaim(true)
+    //         }
+
+    //     }
+
+
+    // }, [])
 
     // window.alert(canClaim)
 
-
+    window.alert(canClaim)
     return (
         <div className='w-[100%] h-[690px]'>
             <DemoEarnComponent
@@ -390,6 +240,7 @@ const DemoEarn = () => {
 }
 
 const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, MINI_APP_APP, point }) => {
+    console.log(point?.amount);
 
     return (
         <>
