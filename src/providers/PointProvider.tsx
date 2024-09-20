@@ -38,6 +38,8 @@ export const PointProvider: React.FC<React.PropsWithChildren> = ({ children }) =
                         } else {
 
                             const dbPointAction = point?.custom_logs?.action.split('claim')[1]
+                            console.log(dbPointAction);
+                            
                             if (friendTrigger / 10 != (dbPointAction && parseInt(dbPointAction))) {
                                 setCanClaim(true)
                             }
