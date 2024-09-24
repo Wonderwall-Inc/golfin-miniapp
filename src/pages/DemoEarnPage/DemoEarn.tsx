@@ -10,7 +10,7 @@ import { dailyCheckInPointReward, friendReferralPointReward, tenFriendsReferralP
 import { useActivityContext } from '@/contexts/ActivityContext'
 import { getActivity, updateActivity } from '@/apis/ActivityServices'
 import { useFriendContext } from '@/contexts/FriendContext'
-import { isYesterday, sgTimeNow } from '@/utils'
+import { isYesterday } from '@/utils'
 import { format } from 'date-fns'
 import { useSgTimeNowString } from '@/hooks/useSgTimeNowString'
 
@@ -25,6 +25,10 @@ const MINI_APP_BOT_NAME = import.meta.env.VITE_MINI_APP_BOT_NAME
 const MINI_APP_NAME = import.meta.env.VITE_MINI_APP_NAME
 const MINI_APP_APP = `https://t.me/${MINI_APP_BOT_NAME}/${MINI_APP_NAME}/start?startapp=${WebApp.initDataUnsafe.user?.id}`
 
+export const sgTimeNow = () => {
+    return dayjs().tz("Asia/Singapore").format('YYYY-MM-DDTHH:mm:ss');
+}
+
 const DemoEarn = () => {
     const { account, setAccount } = useUserContext()
     const { point, setPoint, isWaitingPoint, setIsWaitingPoint } = usePointContext()
@@ -38,6 +42,7 @@ const DemoEarn = () => {
 
     const [weeklyCount, setWeeklyCount] = useState(0)
     const [referralCount, setReferralCount] = useState(0)
+    
 
     const [canClaim, setCanClaim] = useState(false)
 
@@ -45,6 +50,16 @@ const DemoEarn = () => {
     console.dir(account);
     console.log(point);
     console.log(friend);
+
+    const [sgTime, setSgTime] = useState(sgTimeNow());
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setSgTime(sgTimeNow());
+        }, 1000);
+
+        return () => clearInterval(timer);
+    }, []);
 
     useEffect(() => {
         timeLeft == '' ? setIsHomeLoading(true) : setIsHomeLoading(false)
@@ -76,7 +91,7 @@ const DemoEarn = () => {
                         type: 'add', // REVIEW: add / minus point
                         access_token: '',
                         point_payload: {
-                            login_amount: 15, // extra_profit_per_hour: optional
+                            login_amount: weeklyCheckInPointReward, // extra_profit_per_hour: optional
                             referral_amount: existingPoint.point_base.point.referral_amount,
                         },
                     };
@@ -102,8 +117,8 @@ const DemoEarn = () => {
                         logged_in: true, // Update logged_in state
                         login_streak: 1, // Reset login streak
                         total_logins: activity?.total_logins + 1, // Increment total logins
-                        last_action_time: new Date().toISOString(),
-                        last_login_time: new Date().toISOString(), // Update last login time
+                        last_action_time: sgTimeNow(),
+                        //last_login_time: new Date().toISOString(), // Update last login time
                     },
                 };
                 const updatedActivity = await updateActivity(updateActivityPayload);
@@ -139,7 +154,7 @@ const DemoEarn = () => {
                             setPoint({
                                 id: point?.id,
                                 login_amount: 0,
-                                referral_amount: 3000,
+                                referral_amount: tenFriendsReferralPointReward,
                                 extra_profit_per_hour: point.extra_profit_per_hour,
                                 created_at: point?.created_at,
                                 updated_at: point?.updated_at,
@@ -379,6 +394,7 @@ const DemoEarn = () => {
 
     return (
         <div className='w-[100%] h-[690px]'>
+            <div>Current Singapore Time: {sgTime}</div>
             <DemoEarnComponent
                 timeLeft={timeLeft}
                 dailyReward={dailyReward}
@@ -428,7 +444,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
 
 
     useEffect(() => {
-        if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
+        if (import.meta.env.VITE_MINI_APP_ENV == 'test' && activity?.last_login_time) {
             const sgTimeNowString = sgTimeNow()
             console.log(activity?.last_login_time.split('T')[0]);
             console.log(sgTimeNowString.split('T')[0]);
@@ -531,7 +547,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
                 type: 'add', // REVIEW: add / minus point
                 access_token: '',
                 point_payload: {
-                    login_amount: 2,
+                    login_amount: dailyCheckInPointReward,
                     referral_amount: existingPoint.point_base.point.referral_amount, // extra_profit_per_hour: optional
                 }
             }
