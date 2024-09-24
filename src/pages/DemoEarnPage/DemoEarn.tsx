@@ -39,6 +39,7 @@ const DemoEarn = () => {
     const [timeLeft, setTimeLeft] = useState("")
 
     let [isHomeLoading, setIsHomeLoading] = useState(false)
+    const [totalPointAmount, setTotalPointAmount] = useState(0)
 
     // const [weeklyCount, setWeeklyCount] = useState(0)
     const [referralCount, setReferralCount] = useState(0)
@@ -72,6 +73,14 @@ const DemoEarn = () => {
         const todayYYMMDD = `${todayYY}-${preTodayMM}-${todayDD}T00:00:00`
         setTimeLeft(todayYYMMDD)
     }, [new Date()])
+
+
+    useEffect(() => {
+        if (point?.login_amount || point?.referral_amount) {
+            setTotalPointAmount(totalPointAmount + point?.login_amount + point?.referral_amount)
+            window.alert(totalPointAmount)
+        }
+    }, [point?.login_amount, point?.login_amount])
 
     useEffect(() => {
         const handleWeeklyReward = async () => {
@@ -386,17 +395,34 @@ const DemoEarn = () => {
 
     // window.alert(canClaim)
 
-
+ 
     return (
         <div className='w-[100%] h-[690px]'>
             <div>Current Singapore Time: {sgTime}</div>
-            <DemoEarnComponent
+            <>
+                <div className="w-[343px] h-[85px] sm:h-[95px] md:h-[105px] bg-[#ffffff33] rounded-lg flex justify-center content-center items-center mx-auto">
+                    <img className="w-[53px] h-[54px]" alt="Layer" src={CoinIcon} />
+                    <div className="w-[200px] text-white font-semibold [font-family:'Rubik-Medium',Helvetica]text-[#ffef2b] text-[28px] tracking-[0.38px]">
+                        {totalPointAmount ? totalPointAmount.toLocaleString() : 0}
+                    </div>
+                </div>
+                <div className='flex justify-center justify-items-center mx-5 sm:mx-5 md:mx-6 pt-3 sm:pt-3  space-x-5'>
+                    <DemoDailyRewardComponent
+                        timeLeft={timeLeft}
+                        dailyReward={dailyReward}
+                        setDailyReward={setDailyReward}
+                    />
+                    <DemoReferralComponent MINI_APP_APP={MINI_APP_APP} />
+                </div>
+            </>
+            {/* <DemoEarnComponent
                 timeLeft={timeLeft}
                 dailyReward={dailyReward}
                 setDailyReward={setDailyReward}
                 MINI_APP_APP={MINI_APP_APP}
                 point={point}
-            />
+                totalPointAmount={totalPointAmount}
+            /> */}
             <DemoBonusComponent
                 weeklyCount={activity?.login_streak} // using cont 7 day count
                 referralCount={canClaim ? friendTrigger : 0} />
@@ -404,27 +430,12 @@ const DemoEarn = () => {
     )
 }
 
-const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, MINI_APP_APP, point }) => {
+// const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, MINI_APP_APP, point, totalPointAmount }) => {
 
-    return (
-        <>
-            <div className="w-[343px] h-[85px] sm:h-[95px] md:h-[105px] bg-[#ffffff33] rounded-lg flex justify-center content-center items-center mx-auto">
-                <img className="w-[53px] h-[54px]" alt="Layer" src={CoinIcon} />
-                <div className="w-[200px] text-white font-semibold [font-family:'Rubik-Medium',Helvetica]text-[#ffef2b] text-[28px] tracking-[0.38px]">
-                    {point && point.login_amount && point.referral_amount ? (point.login_amount + point.referral_amount).toLocaleString() : 0}
-                </div>
-            </div>
-            <div className='flex justify-center justify-items-center mx-5 sm:mx-5 md:mx-6 pt-3 sm:pt-3  space-x-5'>
-                <DemoDailyRewardComponent
-                    timeLeft={timeLeft}
-                    dailyReward={dailyReward}
-                    setDailyReward={setDailyReward}
-                />
-                <DemoReferralComponent MINI_APP_APP={MINI_APP_APP} />
-            </div>
-        </>
-    )
-}
+//     return (
+       
+//     )
+// }
 
 
 const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) => {
