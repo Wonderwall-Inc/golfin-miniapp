@@ -407,8 +407,8 @@ export interface ActivityBaseType {
     logged_in: boolean
     login_streak: number
     total_logins: number
-    last_action_time: string
-    last_login_time: string
+    last_action_time?: string
+    last_login_time?: string
     created_at: string
     updated_at: string
     custom_logs?: object
@@ -418,8 +418,8 @@ export interface ActivityType {
     logged_in: boolean
     login_streak: number
     total_logins: number
-    last_action_time: string
-    last_login_time: string
+    last_action_time?: string
+    last_login_time?: string
     created_at: string
     updated_at: string
     custom_logs?: object

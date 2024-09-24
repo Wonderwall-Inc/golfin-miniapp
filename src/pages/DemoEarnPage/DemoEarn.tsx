@@ -440,8 +440,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
                 setAllowed(false)
             }
         } else {
-
-            if (activity?.last_login_time) {
+            if (activity?.last_login_time!==null && activity?.last_login_time!==undefined) {
                 setIsClicked(true)
                 // const tar = new Date(format(activity?.last_login_time.split('T')[0], 'yyyy-MM-dd')) === new Date()
                 // const todayDateWithoutTZ = `${today.getFullYear()}-${today.getUTCMonth() + 1 < 10 ? `0${today.getUTCMonth() + 1}` : today.getUTCMonth() + 1}-${today.getDate()}T${today.getHours() < 10 ? `0${today.getHours()}` : today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`
