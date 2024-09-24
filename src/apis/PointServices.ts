@@ -55,8 +55,13 @@ export async function getPoint(pointRetrieval: PointRetrievalRequestType): Promi
 // POINT UPDATING
 export async function updatePoint(pointUpdate: PointUpdateByIdRequestType): Promise<PointUpdateResponseType | undefined> {
     try {
+        console.log('api point update');
+        console.log(pointUpdate);
+        
+        
         const dbPoint = await api.put('/point/update', pointUpdate);
         const dbPointData = await dbPoint.data;
+        console.log(dbPointData);
         return dbPointData
     } catch (error) {
         console.error('Error updating point:', error);
