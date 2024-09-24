@@ -26,6 +26,11 @@ export const PointProvider: React.FC<React.PropsWithChildren> = ({ children }) =
                         access_token: '',
                         user_id: account?.id
                     })
+                    console.log('provider point');
+                    console.log('existing point, get ');
+                    console.log(existingpoint);
+                    
+                    
                     if (existingpoint) {
                         setPoint(existingpoint.point_base.point)
                         setIsWaitingPoint(false)
@@ -52,7 +57,7 @@ export const PointProvider: React.FC<React.PropsWithChildren> = ({ children }) =
         else {
             setIsWaitingPoint(true)
             if (account?.id !== undefined) {
-                console.log('provider point');
+               
 
                 const payload = {
                     user_id: account.id,

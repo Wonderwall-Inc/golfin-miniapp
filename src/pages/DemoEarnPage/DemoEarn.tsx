@@ -552,6 +552,9 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
                 }
             }
             const dbPoint = await updatePoint(updatePointPayload)
+            console.log('update point after check in');
+            console.log(dbPoint);
+            
             if (dbPoint && dbPoint?.point_base.user_id) {
                 setPoint({
                     id: dbPoint?.point_base.user_id,
