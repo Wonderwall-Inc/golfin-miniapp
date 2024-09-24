@@ -29,10 +29,18 @@ export const PointProvider: React.FC<React.PropsWithChildren> = ({ children }) =
                     console.log('provider point');
                     console.log('existing point, get ');
                     console.log(existingpoint);
-                    
-                    
+
+
                     if (existingpoint) {
-                        setPoint(existingpoint.point_base.point)
+                        setPoint({
+                            id: existingpoint.point_base.point.id,
+                            extra_profit_per_hour: existingpoint.point_base.point.extra_profit_per_hour,
+                            login_amount: existingpoint.point_base.point.login_amount,
+                            referral_amount: existingpoint.point_base.point.referral_amount,
+                            custom_logs: existingpoint.point_base.point.custom_logs,
+                            created_at: existingpoint.point_base.point.created_at,
+                            updated_at: existingpoint.point_base.point.updated_at,
+                        })
                         setIsWaitingPoint(false)
                         return existingpoint
                     }
@@ -57,7 +65,7 @@ export const PointProvider: React.FC<React.PropsWithChildren> = ({ children }) =
         else {
             setIsWaitingPoint(true)
             if (account?.id !== undefined) {
-               
+
 
                 const payload = {
                     user_id: account.id,

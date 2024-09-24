@@ -42,7 +42,7 @@ const DemoEarn = () => {
 
     // const [weeklyCount, setWeeklyCount] = useState(0)
     const [referralCount, setReferralCount] = useState(0)
-    
+
 
     const [canClaim, setCanClaim] = useState(false)
 
@@ -411,7 +411,7 @@ const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, MINI_APP_APP
             <div className="w-[343px] h-[85px] sm:h-[95px] md:h-[105px] bg-[#ffffff33] rounded-lg flex justify-center content-center items-center mx-auto">
                 <img className="w-[53px] h-[54px]" alt="Layer" src={CoinIcon} />
                 <div className="w-[200px] text-white font-semibold [font-family:'Rubik-Medium',Helvetica]text-[#ffef2b] text-[28px] tracking-[0.38px]">
-                    {point && point.amount > 0 ? point.amount.toLocaleString() : 0}
+                    {point && point.login_amount && point.referral_amount ? (point.login_amount + point.referral_amount).toLocaleString() : 0}
                 </div>
             </div>
             <div className='flex justify-center justify-items-center mx-5 sm:mx-5 md:mx-6 pt-3 sm:pt-3  space-x-5'>
@@ -451,7 +451,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
                 setAllowed(false)
             }
         } else {
-            if (activity?.last_login_time!==null && activity?.last_login_time!==undefined) {
+            if (activity?.last_login_time !== null && activity?.last_login_time !== undefined) {
                 setIsClicked(true)
                 const sgTimeNowString = sgTimeNow()
                 console.log(sgTimeNowString);
@@ -528,7 +528,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
         })
         console.log('*************************************existingPoint');
         console.log(existingPoint);
-        
+
         if (existingPoint) {
             const updatePointPayload = {
                 id: existingPoint?.point_base.point.id,
@@ -542,7 +542,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
             const dbPoint = await updatePoint(updatePointPayload)
             console.log('update point after check in');
             console.log(dbPoint);
-            
+
             if (dbPoint && dbPoint?.point_base.user_id) {
                 setPoint({
                     id: dbPoint?.point_base.user_id,
