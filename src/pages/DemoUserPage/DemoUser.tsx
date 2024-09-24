@@ -32,7 +32,8 @@ const DemoUser = () => {
                 <div>
                     <div className='font-extrabold'>point</div>
                     <div>id: {point?.id}</div>
-                    <div>amount: {point?.amount}</div>
+                    <div>login: {point?.login_amount}</div>
+                    <div>referral: {point?.referral_amount}</div>
                     <div>extra_profit_per_hour: {point?.extra_profit_per_hour}</div>
                 </div>
                 <div>
