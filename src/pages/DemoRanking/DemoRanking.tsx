@@ -77,12 +77,12 @@ const DemoRanking = () => {
             if (existingUsers && existingUsers.length > 0) {
                 const pointRanking: PointRankingItem[] = existingUsers.map((user, index) => {
                     // Handle potential nullish values for user.user_details.point and user.user_details.point[0]
-                    const pointValue = user.user_details.point?.[0]?.amount; // Use optional chaining and nullish coalescing for safety
+                    const pointValue = user.user_details.point?.[0]; // Use optional chaining and nullish coalescing for safety
                     if (pointValue !== undefined) { // Check if point value is actually defined
                         return {
                             rank: index,
                             name: user.user_details.user_base.telegram_info.username,
-                            point: pointValue,
+                            point: pointValue.login_amount + pointValue.referral_amount,
                         };
                     } else {
                         // Handle users with no points (optional)

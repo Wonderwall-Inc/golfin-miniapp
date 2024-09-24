@@ -32,13 +32,16 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                                 id: senderPoint.point_base.point.id,
                                 type: 'add', // REVIEW: add / drop point
                                 point_payload: {
-                                    amount: 100
+                                    login_amount: senderPoint.point_base.point.login_amount,
+                                    referral_amount: senderPoint.point_base.point.referral_amount += 100
                                 }
                             })
                             console.log('update point for sender');
                             console.log(dbPoint);
+
                         }
                     }
+
 
                     setAccount(newUser.user_details.user_base)
                     setIsWaitingUser(false)
@@ -57,12 +60,6 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
             } catch (error) {
                 console.log(error);
                 return error
-            }
-        }
-
-        const pointReward = async (webappStartParam) => {
-            if (webappStartParam) {
-
             }
         }
         if (import.meta.env.VITE_MINI_APP_ENV == 'test') {

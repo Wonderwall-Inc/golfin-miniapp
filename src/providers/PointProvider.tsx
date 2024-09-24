@@ -41,7 +41,8 @@ export const PointProvider: React.FC<React.PropsWithChildren> = ({ children }) =
             setIsWaitingPoint(true)
             setPoint({
                 id: 1,
-                amount: 0,
+                login_amount: 0,
+                referral_amount: 0,
                 extra_profit_per_hour: 1,
                 created_at: '2024-09-17T00:00:00',
                 updated_at: '2024-09-17T00:00:00',
@@ -57,7 +58,8 @@ export const PointProvider: React.FC<React.PropsWithChildren> = ({ children }) =
                     user_id: account.id,
                     access_token: '',
                     point_details: {
-                        amount: 0,
+                        login_amount: 0,
+                        referral_amount:0,
                         extra_profit_per_hour: 1,
                     }
                 }

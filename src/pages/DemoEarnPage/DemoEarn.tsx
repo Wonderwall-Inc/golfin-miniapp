@@ -76,14 +76,16 @@ const DemoEarn = () => {
                         type: 'add', // REVIEW: add / minus point
                         access_token: '',
                         point_payload: {
-                            amount: 15, // extra_profit_per_hour: optional
+                            login_amount: 15, // extra_profit_per_hour: optional
+                            referral_amount: existingPoint.point_base.point.referral_amount,
                         },
                     };
                     const updatedPoint = await updatePoint(updatePointPayload);
                     if (updatedPoint && updatedPoint?.point_base.user_id) {
                         setPoint({
                             id: updatedPoint?.point_base.user_id,
-                            amount: updatedPoint?.point_base.point.amount,
+                            login_amount: updatedPoint?.point_base.point.login_amount,
+                            referral_amount: updatedPoint?.point_base.point.referral_amount,
                             extra_profit_per_hour: updatedPoint?.point_base.point.extra_profit_per_hour,
                             created_at: updatedPoint?.point_base.point.created_at,
                             updated_at: updatedPoint?.point_base.point.updated_at,
@@ -132,12 +134,12 @@ const DemoEarn = () => {
                 if (canClaim) {
                     console.log('canclaim:  ', canClaim);
 
-
                     if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
                         if (point) {
                             setPoint({
                                 id: point?.id,
-                                amount: point?.amount,
+                                login_amount: 0,
+                                referral_amount: 3000,
                                 extra_profit_per_hour: point.extra_profit_per_hour,
                                 created_at: point?.created_at,
                                 updated_at: point?.updated_at,
@@ -163,14 +165,16 @@ const DemoEarn = () => {
                                     type: 'add', // REVIEW: add / minus point
                                     access_token: '',
                                     point_payload: {
-                                        amount: 3000, // extra_profit_per_hour: optional
+                                        login_amount: existingPoint.point_base.point.login_amount, // extra_profit_per_hour: optional
+                                        referral_amount: 3000, // extra_profit_per_hour: optional
                                     },
                                 };
                                 const updatedPoint = await updatePoint(updatePointPayload);
                                 if (updatedPoint && updatedPoint?.point_base.user_id) {
                                     setPoint({
                                         id: updatedPoint?.point_base.user_id,
-                                        amount: updatedPoint?.point_base.point.amount,
+                                        login_amount: updatedPoint?.point_base.point.login_amount,
+                                        referral_amount: updatedPoint?.point_base.point.referral_amount,
                                         extra_profit_per_hour: updatedPoint?.point_base.point.extra_profit_per_hour,
                                         created_at: updatedPoint?.point_base.point.created_at,
                                         updated_at: updatedPoint?.point_base.point.updated_at,
@@ -528,14 +532,16 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
                 type: 'add', // REVIEW: add / minus point
                 access_token: '',
                 point_payload: {
-                    amount: 2, // extra_profit_per_hour: optional
+                    login_amount: 2,
+                    referral_amount: existingPoint.point_base.point.referral_amount, // extra_profit_per_hour: optional
                 }
             }
             const dbPoint = await updatePoint(updatePointPayload)
             if (dbPoint && dbPoint?.point_base.user_id) {
                 setPoint({
                     id: dbPoint?.point_base.user_id,
-                    amount: dbPoint?.point_base.point.amount,
+                    login_amount: dbPoint?.point_base.point.login_amount,
+                    referral_amount: dbPoint?.point_base.point.referral_amount,
                     extra_profit_per_hour: dbPoint?.point_base.point.extra_profit_per_hour,
                     created_at: dbPoint?.point_base.point.created_at,
                     updated_at: dbPoint?.point_base.point.updated_at,
@@ -569,7 +575,8 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
                     setIsWaitingPoint(true)
                     setPoint({
                         id: 1,
-                        amount: 2,
+                        login_amount: 2,
+                        referral_amount: 0,
                         extra_profit_per_hour: 0,
                         created_at: new Date().toISOString(),
                         updated_at: new Date().toISOString(),

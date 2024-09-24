@@ -55,6 +55,12 @@ export interface FriendContextType {
     // setIsTodayCheckedIn: Dispatch<SetStateAction<boolean>>
 }
 
+export interface RecordContextType {
+    record: undefined | RecordType
+    setRecord: Dispatch<SetStateAction<undefined | RecordType>>
+    isWaitingRecord: boolean
+    setIsWaitingRecord: Dispatch<SetStateAction<boolean>>
+}
 
 // USER
 export interface UserBaseType {
@@ -322,7 +328,8 @@ export interface GameCharacterUpdateResponseType {
 // POINT
 export interface PointType {
     id: number
-    amount: number
+    login_amount: number
+    referral_amount: number
     extra_profit_per_hour: number
     // referral_action: string
     created_at: string
@@ -341,7 +348,8 @@ export interface PointDetailsType {
 
 
 export interface PointCreateDetailsType {
-    amount?: number
+    login_amount?: number
+    referral_amount?: number
     extra_profit_per_hour?: number
     custom_logs?: object
 }
@@ -738,4 +746,73 @@ export interface getFriendRequestType {
     access_token: string
     id?: number
     user_id?: number
+}
+
+
+// RECORD
+export enum RecordActionType {
+    create = "CREATE",
+    get = "GET",
+    list = "LIST",
+    update = 'UPDATE'
+}
+
+export enum RecordTableType {
+    user = "USER",
+    point = "POINT",
+    friend = "FRIEND",
+    gammeCharacter = 'GAME_CHARACTER',
+    social_media = 'SOCIAL_MEDIA',
+    activity = 'ACTIVITY',
+    record = 'RECORD'
+}
+
+export interface RecordType {
+    id: number
+    action: RecordActionType
+    table: RecordTableType
+    table_id: number
+    // referral_action: string
+    created_at: string
+    updated_at: string
+    custom_logs?: object
+}
+
+
+export interface RecordDetailsType {
+    record: RecordType
+    user_id?: number
+}
+
+
+export interface RecordCreateDetailsType {
+    login_amount?: number
+    referral_amount?: number
+    extra_profit_per_hour?: number
+    custom_logs?: object
+}
+
+
+export interface RecordCreateRequestType {
+    user_id: number
+    access_token: string
+    record_details: RecordCreateDetailsType
+}
+
+
+export interface RecordCreateResponseType {
+    record_base: RecordDetailsType
+}
+
+
+export interface RecordRetrievalRequestType {
+    id?: number
+    access_token: string
+    user_id?: number
+}
+
+
+
+export interface RecordRetrievalResponseType {
+    record_base: RecordDetailsType
 }
