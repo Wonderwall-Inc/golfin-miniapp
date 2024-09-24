@@ -13,8 +13,8 @@ import api from './api';
 export async function createActivity(activityCreate: ActivityCreateRequestType): Promise<ActivityCreateResponseType | undefined> {
     try {
         api.defaults.headers.put['Content-Type'] = 'application/json'
-        console.log('activityCreate');
-        console.log(activityCreate);
+        // console.log('activityCreate');
+        // console.log(activityCreate);
 
         const dbActivity = await api.post('/activity/create', activityCreate);
         if (dbActivity.status == 500 || dbActivity.status == 400) { // force user to the main page relogin again         

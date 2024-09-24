@@ -40,16 +40,14 @@ const DemoEarn = () => {
 
     let [isHomeLoading, setIsHomeLoading] = useState(false)
 
-    const [weeklyCount, setWeeklyCount] = useState(0)
+    // const [weeklyCount, setWeeklyCount] = useState(0)
     const [referralCount, setReferralCount] = useState(0)
     
 
     const [canClaim, setCanClaim] = useState(false)
 
-    console.log(weeklyCount);
-    console.dir(account);
     console.log(point);
-    console.log(friend);
+    // console.log(friend);
 
     const [sgTime, setSgTime] = useState(sgTimeNow());
 
@@ -136,8 +134,8 @@ const DemoEarn = () => {
 
     useEffect(() => {
         const handleReferralReward = async () => {
-            console.log(friendTrigger);
-            console.log("*****************");
+            // console.log(friendTrigger);
+            // console.log("*****************");
 
 
             if (!friendTrigger || friendTrigger % 10 !== 0) return; // Early exit if not a multiple of 10 or already claimed
@@ -147,7 +145,7 @@ const DemoEarn = () => {
 
             try {
                 if (canClaim) {
-                    console.log('canclaim:  ', canClaim);
+                    // console.log('canclaim:  ', canClaim);
 
                     if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
                         if (point) {
@@ -166,7 +164,7 @@ const DemoEarn = () => {
                             console.log(point);
                         }
                     }
-                    console.log('on try');
+                    // console.log('on try');
 
                     // Fetch existing point and update if necessary
                     const existingPoint = await getPoint({ access_token: '', user_id: account?.id });
@@ -443,11 +441,11 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
     useEffect(() => {
         if (import.meta.env.VITE_MINI_APP_ENV == 'test' && activity?.last_login_time) {
             const sgTimeNowString = sgTimeNow()
-            console.log(activity?.last_login_time.split('T')[0]);
-            console.log(sgTimeNowString.split('T')[0]);
+            // console.log(activity?.last_login_time.split('T')[0]);
+            // console.log(sgTimeNowString.split('T')[0]);
 
             const activityCheck = activity?.last_login_time.split('T')[0] == sgTimeNowString.split('T')[0]
-            console.log(activityCheck);
+            // console.log(activityCheck);
 
             if (activityCheck == true || clicked == true) {
                 setAllowed(false)
@@ -455,26 +453,16 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
         } else {
             if (activity?.last_login_time!==null && activity?.last_login_time!==undefined) {
                 setIsClicked(true)
-                // const tar = new Date(format(activity?.last_login_time.split('T')[0], 'yyyy-MM-dd')) === new Date()
-                // const todayDateWithoutTZ = `${today.getFullYear()}-${today.getUTCMonth() + 1 < 10 ? `0${today.getUTCMonth() + 1}` : today.getUTCMonth() + 1}-${today.getDate()}T${today.getHours() < 10 ? `0${today.getHours()}` : today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`
-                // const d = new Date();
-                // const localTime = d.getTime();
-                // const localOffset = d.getTimezoneOffset() * 60000;
-                // const utc = localTime + localOffset;
-                // const offset = +8; // UTC of USA Eastern Time Zone is -05.00
-                // const singaporeTimeoffset = utc + (3600000 * offset);
-                // const sgTimeNow = new Date(singaporeTimeoffset)
-                // const sgTimeNowString = `${sgTimeNow.getFullYear()}-${sgTimeNow.getUTCMonth() + 1 < 10 ? `0${sgTimeNow.getMonth() + 1}` : sgTimeNow.getMonth() + 1}-${sgTimeNow.getDate()}T${sgTimeNow.getHours() < 10 ? `0${sgTimeNow.getHours()}` : sgTimeNow.getHours()}:${sgTimeNow.getMinutes()<10?`0${sgTimeNow.getMinutes()}`:sgTimeNow.getMinutes()}:${sgTimeNow.getSeconds()<10?`0${sgTimeNow.getSeconds()}`:sgTimeNow.getSeconds()}`
                 const sgTimeNowString = sgTimeNow()
                 console.log(sgTimeNowString);
 
                 const activityCheck = activity?.last_login_time.split('T')[0] === sgTimeNowString.split('T')[0]
                 // const activityCheck = dayjs(new Date()).isSame(activity?.last_login_time)
 
-                console.log('activityCheck');
-                console.log('db: ', activity?.last_login_time);
-                console.log('today: ', sgTimeNow);
-                console.log(activityCheck);
+                // console.log('activityCheck');
+                // console.log('db: ', activity?.last_login_time);
+                // console.log('today: ', sgTimeNow);
+                // console.log(activityCheck);
 
                 if (activityCheck == true || clicked == true) {
                     setAllowed(false)
@@ -571,7 +559,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
 
         // setDailyReward(false)
     }
-    console.log('allow ', allowed);
+    // console.log('allow ', allowed);
 
     return (
         <div className={`h-[100px] cursor-pointer ${allowed != true && 'pointer-events-none'}`}

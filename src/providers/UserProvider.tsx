@@ -103,7 +103,6 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                     WebApp.close()
                 }
                 if (username !== undefined) {
-                    console.log('provider username');
                     const app_info = {
                         active: true,
                         admin: false,
@@ -128,9 +127,6 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                         chat_id: '123',
                         start_param: webappStartParam,
                     }
-
-                    console.log('telegram_info');
-                    console.log(telegram_info);
 
                     const payload = {
                         app_info: app_info,

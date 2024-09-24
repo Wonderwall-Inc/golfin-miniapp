@@ -19,13 +19,12 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
     const webappStartParam = WebApp.initDataUnsafe.start_param
 
     const { account } = useUserContext()
-    const { point, setPoint, setIsWaitingPoint } = usePointContext()
 
     useEffect(() => {
         const friendRetrieval = async (friendRetrievalPayload: FriendRetrievalRequestType) => {
             const existingFriend = await getFriend(friendRetrievalPayload)
-            console.log('existingFriend on retrieve friend');
-            console.log(existingFriend);
+            // console.log('existingFriend on retrieve friend');
+            // console.log(existingFriend);
 
             if (existingFriend && existingFriend.sender && existingFriend.receiver) {
                 setFriend({ sender: existingFriend.sender, receiver: existingFriend.receiver })
@@ -74,8 +73,8 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
 
             } else {
                 const existingFriend = await getFriend({ access_token: '', user_id: account?.id })
-                console.log('existingFriend');
-                console.log(existingFriend);
+                // console.log('existingFriend');
+                // console.log(existingFriend);
 
                 if (existingFriend && existingFriend.sender && existingFriend.receiver) {
                     setFriend({
@@ -109,7 +108,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
         } else {
             setIsWaitingFriend(true)
             if (account?.id !== undefined && webappStartParam !== undefined) {
-                console.log('provider friend');
+                // console.log('provider friend');
                 const friendPayload = {
                     access_token: '',
                     sender_id: 0,
@@ -119,7 +118,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                 /*  the one who make the friend request == sender */
                 friendCreation(webappStartParam, friendPayload)
             } else {
-                console.log('calling friend Retrieval');
+                // console.log('calling friend Retrieval');
 
                 friendRetrieval({ access_token: '', user_id: account?.id })
             }

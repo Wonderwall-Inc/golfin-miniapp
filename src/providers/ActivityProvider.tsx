@@ -51,8 +51,6 @@ export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }
         else {
             setIsWaitingActivity(true)
             if (account?.id !== undefined) {
-                console.log('provider point');
-
                 const payload = {
                     user_id: account.id,
                     access_token: '',

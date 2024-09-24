@@ -9,17 +9,17 @@ const DemoUser = () => {
     const { point, setPoint } = usePointContext()
     const { activity, setActivity } = useActivityContext()
     const { friend, setFriend, friendTrigger, friendNumber } = useFriendContext()
-    console.log('account');
-    console.log(account);
+    // console.log('account');
+    // console.log(account);
 
     console.log('point');
     console.log(point);
 
-    console.log('activity');
-    console.log(activity);
+    // console.log('activity');
+    // console.log(activity);
 
-    console.log('friend');
-    console.log(friend);
+    // console.log('friend');
+    // console.log(friend);
 
     return (
         <div>
