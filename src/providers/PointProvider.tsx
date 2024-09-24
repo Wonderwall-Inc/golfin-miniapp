@@ -64,7 +64,7 @@ export const PointProvider: React.FC<React.PropsWithChildren> = ({ children }) =
                     access_token: '',
                     point_details: {
                         login_amount: 0,
-                        referral_amount:0,
+                        referral_amount: 0,
                         extra_profit_per_hour: 1,
                     }
                 }

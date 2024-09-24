@@ -92,7 +92,7 @@ const DemoEarn = () => {
                         access_token: '',
                         point_payload: {
                             login_amount: weeklyCheckInPointReward, // extra_profit_per_hour: optional
-                            referral_amount: existingPoint.point_base.point.referral_amount,
+                            //referral_amount: existingPoint.point_base.point.referral_amount,
                         },
                     };
                     const updatedPoint = await updatePoint(updatePointPayload);
@@ -180,7 +180,7 @@ const DemoEarn = () => {
                                     type: 'add', // REVIEW: add / minus point
                                     access_token: '',
                                     point_payload: {
-                                        login_amount: existingPoint.point_base.point.login_amount, // extra_profit_per_hour: optional
+                                        //login_amount: existingPoint.point_base.point.login_amount, // extra_profit_per_hour: optional
                                         referral_amount: 3000, // extra_profit_per_hour: optional
                                     },
                                 };
@@ -193,10 +193,7 @@ const DemoEarn = () => {
                                         extra_profit_per_hour: updatedPoint?.point_base.point.extra_profit_per_hour,
                                         created_at: updatedPoint?.point_base.point.created_at,
                                         updated_at: updatedPoint?.point_base.point.updated_at,
-                                        custom_logs: {
-                                            action: `claim${friendTrigger / 10}`,
-                                            date: new Date().toISOString()
-                                        }
+                                        custom_logs: updatedPoint?.point_base.point.custom_logs
                                     })
                                 }
                             }
@@ -541,6 +538,9 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
             access_token: '',
             user_id: account?.id,
         })
+        console.log('*************************************existingPoint');
+        console.log(existingPoint);
+        
         if (existingPoint) {
             const updatePointPayload = {
                 id: existingPoint?.point_base.point.id,
@@ -548,7 +548,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
                 access_token: '',
                 point_payload: {
                     login_amount: dailyCheckInPointReward,
-                    referral_amount: existingPoint.point_base.point.referral_amount, // extra_profit_per_hour: optional
+                    // referral_amount: existingPoint.point_base.point.referral_amount, // extra_profit_per_hour: optional
                 }
             }
             const dbPoint = await updatePoint(updatePointPayload)
