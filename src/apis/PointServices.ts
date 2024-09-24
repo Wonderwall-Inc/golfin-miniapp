@@ -13,9 +13,6 @@ import api from './api';
 export async function createPoint(pointCreate: PointCreateRequestType): Promise<PointCreateResponseType | undefined> {
     try {
         api.defaults.headers.put['Content-Type'] = 'application/json'
-        console.log('pointCreate');
-        console.log(pointCreate);
-
         const dbPoint = await api.post('/point/create', pointCreate);
         if (dbPoint.status == 500 || dbPoint.status == 400) { // force user to the main page relogin again         
             return undefined
@@ -54,14 +51,9 @@ export async function getPoint(pointRetrieval: PointRetrievalRequestType): Promi
 
 // POINT UPDATING
 export async function updatePoint(pointUpdate: PointUpdateByIdRequestType): Promise<PointUpdateResponseType | undefined> {
-    try {
-        console.log('api point update');
-        console.log(pointUpdate);
-        
-        
+    try { 
         const dbPoint = await api.put('/point/update', pointUpdate);
         const dbPointData = await dbPoint.data;
-        console.log(dbPointData);
         return dbPointData
     } catch (error) {
         console.error('Error updating point:', error);

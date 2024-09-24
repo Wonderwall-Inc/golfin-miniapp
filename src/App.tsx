@@ -72,8 +72,6 @@ const App = () => {
     navigate('/');
   };
 
-  // console.log(WebApp.initDataUnsafe.user);
-
   console.log('isWaitingUser:', isWaitingUser);
   console.log('isWaitingPoint:', isWaitingPoint);
   console.log('isWaitingActivity:', isWaitingActivity);

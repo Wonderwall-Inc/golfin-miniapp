@@ -2,6 +2,8 @@ import { useUserContext } from '@/contexts/UserContext'
 import { usePointContext } from '@/contexts/PointContext'
 import { useActivityContext } from '@/contexts/ActivityContext'
 import { useFriendContext } from '@/contexts/FriendContext'
+import { sgTimeNowByDayJs } from '@/utils'
+import { useState } from 'react'
 
 
 const DemoUser = () => {
@@ -9,21 +11,23 @@ const DemoUser = () => {
     const { point, setPoint } = usePointContext()
     const { activity, setActivity } = useActivityContext()
     const { friend, setFriend, friendTrigger, friendNumber } = useFriendContext()
-    // console.log('account');
-    // console.log(account);
+    const [sgTime, setSgTime] = useState(sgTimeNowByDayJs());
+    console.log('account');
+    console.log(account);
 
     console.log('point');
     console.log(point);
 
-    // console.log('activity');
-    // console.log(activity);
+    console.log('activity');
+    console.log(activity);
 
-    // console.log('friend');
-    // console.log(friend);
+    console.log('friend');
+    console.log(friend);
 
     return (
         <div>
             <div className='text-white grid grid-cols-2 w-[100%]'>
+                <div>SG Time: {sgTime}</div>
                 <div>
                     <div className='font-extrabold'>user</div>
                     <div>id: {account?.id}</div>

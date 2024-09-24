@@ -38,7 +38,6 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                             })
                             console.log('update point for sender');
                             console.log(dbPoint);
-
                         }
                     }
 

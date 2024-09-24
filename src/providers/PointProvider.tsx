@@ -26,10 +26,6 @@ export const PointProvider: React.FC<React.PropsWithChildren> = ({ children }) =
                         access_token: '',
                         user_id: account?.id
                     })
-                    console.log('provider point');
-                    console.log('existing point, get ');
-                    console.log(existingpoint);
-
 
                     if (existingpoint) {
                         setPoint({
