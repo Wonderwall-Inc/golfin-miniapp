@@ -26,7 +26,7 @@ const DemoEarn = () => {
     const { friend, setFriend, friendTrigger, setFriendTrigger, setIsWaitingFriend } = useFriendContext()
     const [dailyReward, setDailyReward] = useState(true)
     const [timeLeft, setTimeLeft] = useState("")
-    const [totalPointAmount, setTotalPointAmount] = useState((point?.login_amount ?? 0) + (point?.referral_amount ?? 0))
+    const [totalPointAmount, setTotalPointAmount] = useState(0)
     const [referralCount, setReferralCount] = useState(0)
     const [canClaim, setCanClaim] = useState(false)
     const [sgTime, setSgTime] = useState(sgTimeNowByDayJs());
@@ -53,7 +53,7 @@ const DemoEarn = () => {
     useEffect(() => {
         if (point) {
             console.log('point updated');
-            setTotalPointAmount(prevTotal => prevTotal + point.login_amount + point.referral_amount)
+            setTotalPointAmount(totalPointAmount + point.login_amount + point.referral_amount)
         }
     }, [point])
 
@@ -106,7 +106,7 @@ const DemoEarn = () => {
 
     useEffect(() => {
         const handleReferralReward = async () => {
-            if (friendTrigger && friendTrigger % 10 !== 0 && friendTrigger > 0 && !isClaimedReferral) {
+            if (friendTrigger && friendTrigger % 10 === 0 && friendTrigger > 0 && !isClaimedReferral) {
 
                 // Early exit if not a multiple of 10 or already claimed
                 setIsWaitingPoint(true);
@@ -147,8 +147,8 @@ const DemoEarn = () => {
                             }
                         }
                     }
-                    setIsClaimedReferral(true);
-                    setFriendTrigger(0);
+                    // setIsClaimedReferral(true);
+                    // setFriendTrigger(0);
                 } catch (error) {
                     console.error('Error handling referral reward:', error);
                 } finally {
