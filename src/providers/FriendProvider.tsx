@@ -25,29 +25,23 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
             if (existingFriend && existingFriend.sender && existingFriend.receiver) {
                 setFriend({ sender: existingFriend.sender, receiver: existingFriend.receiver })
                 setFriendNumber(existingFriend.sender?.length + existingFriend.receiver?.length) // total friend with me
-                // setFriend({
-                //     sender: existingFriend.sender,
-                //     receiver: existingFriend.receiver
-                // })
-                // setFriendNumber(existingFriend.sender?.length + existingFriend.receiver?.length)
-                // if (existingFriend?.sender?.length % 10 == 0) {
-                //     friend?.sender?.forEach(f => {
-                //         f.has_claimed == false && setFriendTrigger(friendTrigger += 1)
-                //     })
-                // }
-                // setFriendTrigger(existingFriend.sender?.length)
-                // setIsWaitingFriend(false)
-                // return existingFriend
-
+                setFriend({
+                    sender: existingFriend.sender,
+                    receiver: existingFriend.receiver
+                })
+                setFriendNumber(existingFriend.sender?.length + existingFriend.receiver?.length)
                 if (existingFriend?.sender?.length % 10 == 0) {
-                    const unclaimedFriends = friend?.sender?.filter(f => !f.has_claimed)
-                    if(unclaimedFriends?.length){
-
-                        setFriendTrigger(unclaimedFriends?.length)
-                        setIsWaitingFriend(false)
-                        return existingFriend
-                    }
+                    friend?.sender?.forEach(f => {
+                        f.has_claimed == false && setFriendTrigger(friendTrigger += 1)
+                    })
                 }
+                
+                console.log('trigger get friend on provider');
+                console.log(friendTrigger);
+                
+                setFriendTrigger(existingFriend.sender?.length)
+                setIsWaitingFriend(false)
+                return existingFriend
                 // if (existingFriend.sender.length % 10 == 0) {
                 //     existingFriend.sender.forEach(f => {
 
