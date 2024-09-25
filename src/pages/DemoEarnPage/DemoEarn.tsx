@@ -55,7 +55,7 @@ const DemoEarn = () => {
             console.log('point updated');
             setTotalPointAmount(totalPointAmount + point?.login_amount + point?.referral_amount)
         }
-    }, [point?.login_amount, point?.referral_amount])
+    }, [point])
 
     useEffect(() => {
         const handleWeeklyReward = async () => {
@@ -113,12 +113,11 @@ const DemoEarn = () => {
             try {
                 if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
                     if (point) {
-                        setPoint(prevPoint => ({
-                            ...prevPoint,
-                            id: prevPoint?.id,
-                            referral_amount: (prevPoint?.referral_amount || 0) + 3000,
-                            updated_at: prevPoint?.updated_at
-                        }));
+                        setPoint({
+                            ...point,
+                            id: point?.id,
+                            referral_amount: point?.referral_amount + 3000,
+                        })
                         console.log(point);
                     }
                 } else {
@@ -133,10 +132,9 @@ const DemoEarn = () => {
                         });
 
                         if (updatedPoint && updatedPoint?.point_base.user_id) {
-                            const senderIds = friend?.sender?.map(fs => fs.sender_id)
+                            const senderIds = friend?.sender?.map(fs => fs.sender_id).filter((id): id is number => id !== undefined);
                             if (senderIds?.length) {
-                                const senderIdsString = senderIds.join(',');
-                                const updateFriendClaimed = await batchUpdateRewardClaimedBySenderIds(senderIdsString)
+                                const updateFriendClaimed = await batchUpdateRewardClaimedBySenderIds(senderIds)
                                 const updateFriendClaimedSenderIds = updateFriendClaimed?.map(f => f.friend_details.sender_id)
                                 if (updateFriendClaimedSenderIds?.length) {
                                     const dbFriends = await getFriends(updateFriendClaimedSenderIds)

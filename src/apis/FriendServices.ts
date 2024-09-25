@@ -82,9 +82,12 @@ export async function updateFriend(friendUpdate: FriendUpdateByIdRequestType): P
 }
 
 
-export async function batchUpdateRewardClaimedBySenderIds(senderIds: string): Promise<FriendDetailsResponseType[] | undefined> {
+export async function batchUpdateRewardClaimedBySenderIds(senderIds: number[]): Promise<FriendDetailsResponseType[] | undefined> {
     try {
-        const dbFriends = await api.put(`/friend/reward-update?sender_ids=${senderIds}`);
+        const params = new URLSearchParams()
+        senderIds.forEach(id => params.append('sender_ids', id.toString()));
+
+        const dbFriends = await api.patch(`/friend/reward-update?sender_ids`, null, { params });
         const dbFriendsData = await dbFriends.data;
         return dbFriendsData
     } catch (error) {
