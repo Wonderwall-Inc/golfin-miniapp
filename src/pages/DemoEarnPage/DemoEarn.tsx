@@ -12,8 +12,8 @@ import { updateActivity } from '@/apis/ActivityServices'
 import { useFriendContext } from '@/contexts/FriendContext'
 import { isYesterday, sgTimeNowByDayJs } from '@/utils'
 import { format } from 'date-fns'
-import { DemoBonusComponentProp, DemoDailyRewardComponentProp, DemoEarnComponentProp, DemoFriendReferralComponentProp, FriendBaseType, FriendType, FriendWithIdsRetrievalResponseType } from '@/type'
-import { batchUpdateRewardClaimedBySenderId, batchUpdateRewardClaimedBySenderIds, getFriends } from '@/apis/FriendServices'
+import { DemoBonusComponentProp, DemoDailyRewardComponentProp, DemoEarnComponentProp, DemoFriendReferralComponentProp } from '@/type'
+import { batchUpdateRewardClaimedBySenderId, getFriends } from '@/apis/FriendServices'
 
 const MINI_APP_BOT_NAME = import.meta.env.VITE_MINI_APP_BOT_NAME
 const MINI_APP_NAME = import.meta.env.VITE_MINI_APP_NAME
@@ -26,7 +26,7 @@ const DemoEarn = () => {
     const { friend, setFriend, friendTrigger, setFriendTrigger, setIsWaitingFriend } = useFriendContext()
     const [dailyReward, setDailyReward] = useState(true)
     const [timeLeft, setTimeLeft] = useState("")
-    const [totalPointAmount, setTotalPointAmount] = useState(0)
+    const [totalPointAmount, setTotalPointAmount] = useState((point?.login_amount ?? 0) + (point?.referral_amount ?? 0))
     const [referralCount, setReferralCount] = useState(0)
     const [canClaim, setCanClaim] = useState(false)
     const [sgTime, setSgTime] = useState(sgTimeNowByDayJs());
@@ -134,13 +134,13 @@ const DemoEarn = () => {
                         if (updatedPoint && updatedPoint?.point_base.user_id) {
                             //const senderIds = friend?.sender?.map(fs => fs.sender_id).filter((id): id is number => id !== undefined);
                             if (account) {
-                            const updateFriendClaimed = await batchUpdateRewardClaimedBySenderId(account?.id)
-                            const updateFriendClaimedSenderIds = updateFriendClaimed?.map(f => f.friend_details.sender_id)
-                            if (updateFriendClaimedSenderIds?.length) {
-                                const dbFriends = await getFriends(updateFriendClaimedSenderIds)
-                                setFriend(dbFriends)
-                                setPoint(updatedPoint.point_base.point)
-                            }
+                                const updateFriendClaimed = await batchUpdateRewardClaimedBySenderId(account?.id)
+                                const updateFriendClaimedSenderIds = updateFriendClaimed?.map(f => f.friend_details.sender_id)
+                                if (updateFriendClaimedSenderIds?.length) {
+                                    const dbFriends = await getFriends(updateFriendClaimedSenderIds)
+                                    setFriend(dbFriends)
+                                    setPoint(updatedPoint.point_base.point)
+                                }
                             }
                         }
                     }
