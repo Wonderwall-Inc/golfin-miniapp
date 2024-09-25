@@ -49,12 +49,12 @@ const DemoUser = () => {
                     <div>last_action: {activity?.last_action_time}</div>
                     <div>last_login: {activity?.last_login_time}</div>
                 </div>
-                <div className='h-[150px] overflow-y-scroll'>
+                <div className='h-[100px] overflow-y-scroll'>
                     <div className='font-extrabold'>friend</div>
                     {friend?.sender?.map((s) => {
                         return (
                             <div className=''>
-                                <div>sender_id: {s?.sender_id}</div>
+                                <div>sender_id: {s?.receiver_id}</div>
                             </div>
                         )
                     })}

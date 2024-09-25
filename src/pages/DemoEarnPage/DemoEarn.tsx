@@ -196,7 +196,7 @@ const DemoEarn = () => {
             />
             <DemoBonusComponent
                 weeklyCount={activity?.login_streak} // using cont 7 day count
-                referralCount={canClaim ? friendTrigger : 0} />
+                referralCount={friendTrigger} />
         </div>
     )
 }
