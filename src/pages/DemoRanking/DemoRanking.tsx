@@ -35,7 +35,7 @@ const DemoRanking = () => {
     useEffect(() => {
         const handleReferralRanking = async () => {
             // setIsWaitingUser(true)
-            const existingUsers = await getUsers();
+            const existingUsers = await getUsers(0, 200); //FIXME: do we need to know the user ranking by overfetching api, if the size is too large
             console.log(existingUsers);
             
             if (existingUsers && existingUsers.length > 0) {
