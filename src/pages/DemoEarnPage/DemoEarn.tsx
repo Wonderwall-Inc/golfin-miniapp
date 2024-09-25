@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { SetStateAction, useEffect, useState } from 'react'
 import CoinIcon from '../../assets/images/02_earn_coin.png'
 import Countdown from '../../components/Countdown'
 import { useUserContext } from '../../contexts/UserContext'
@@ -13,12 +13,18 @@ import { useFriendContext } from '@/contexts/FriendContext'
 import { isYesterday, sgTimeNowByDayJs } from '@/utils'
 import { format } from 'date-fns'
 
-
-
 const MINI_APP_BOT_NAME = import.meta.env.VITE_MINI_APP_BOT_NAME
 const MINI_APP_NAME = import.meta.env.VITE_MINI_APP_NAME
 const MINI_APP_APP = `https://t.me/${MINI_APP_BOT_NAME}/${MINI_APP_NAME}/start?startapp=${WebApp.initDataUnsafe.user?.id}`
 
+interface DemoEarnComponentProp {
+    timeLeft: string,
+    dailyReward: boolean,
+    setDailyReward: SetStateAction<boolean>,
+    point: number,
+    totalPointAmount: number,
+    sgTime: string,
+}
 
 const DemoEarn = () => {
     const { account, setAccount } = useUserContext()
@@ -97,7 +103,7 @@ const DemoEarn = () => {
                         logged_in: true, // Update logged_in state
                         login_streak: 1, // Reset login streak
                         total_logins: activity?.total_logins + 1, // Increment total logins
-                        last_action_time: sgTimeNowByDayJs(),
+                        last_action_time: sgTime /* sgTimeNowByDayJs(), */
                     },
                 };
                 const updatedActivity = await updateActivity(updateActivityPayload);
@@ -138,7 +144,7 @@ const DemoEarn = () => {
                             console.log(point);
                         }
                     }
-                
+
                     const existingPoint = await getPoint({ access_token: '', user_id: account?.id }); // Fetch existing point and update if necessary
 
                     if (existingPoint) {
@@ -216,7 +222,7 @@ const DemoEarn = () => {
     )
 }
 
-const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, MINI_APP_APP, point, totalPointAmount }) => {
+const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, /* MINI_APP_APP */ point, totalPointAmount, sgTime }: DemoEarnComponentProp) => {
     return (
         <>
             <div className="w-[343px] h-[85px] sm:h-[95px] md:h-[105px] bg-[#ffffff33] rounded-lg flex justify-center content-center items-center mx-auto">
@@ -230,24 +236,24 @@ const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, MINI_APP_APP
                     timeLeft={timeLeft}
                     dailyReward={dailyReward}
                     setDailyReward={setDailyReward}
+                    sgTime={sgTime}
                 />
-                <DemoReferralComponent MINI_APP_APP={MINI_APP_APP} />
+                <DemoReferralComponent /* MINI_APP_APP={MINI_APP_APP} */ />
             </div>
         </>
     )
 }
 
 
-const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) => {
+const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, sgTime }) => {
     // const sgTimeNowStr = sgTimeNow()
     // const [timeLeft, setTimeLeft] = useState(sgTimeNowStr)
 
-    const { setPoint, setIsWaitingPoint } = usePointContext()
+    const { setPoint, setIsWaitingPoint, point } = usePointContext()
     const { account } = useUserContext()
     const { setActivity, activity, setIsWaitingActivity } = useActivityContext()
     const [allowed, setAllowed] = useState(true)
     const [clicked, setIsClicked] = useState(false)
-
 
     useEffect(() => {
         if (import.meta.env.VITE_MINI_APP_ENV == 'test' && activity?.last_login_time) {
@@ -271,33 +277,30 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
 
     const handleCheckInDailyReward = async () => {
         setIsWaitingActivity(true)
-        const existingActivity = await getActivity({
-            access_token: '',
-            user_id: account?.id,
-        })
-        if (existingActivity) {     // check if last login date was just yesterday
+        // const existingActivity = await getActivity({ access_token: '', user_id: account?.id})
+        if (/* existingActivity */activity) {     // check if last login date was just yesterday
             const updateActivityPayload = activity?.last_login_time && isYesterday(new Date(format(activity?.last_login_time.split('T')[0], 'yyyy-MM-dd'))) ?
                 {
-                    id: existingActivity?.activity.id,
+                    id: /* existingActivity?.activity.id, */activity.id,
+                    user_id: account?.id,
                     access_token: '',
-                    user_id: existingActivity.user_id,
                     activity: {
                         logged_in: false,
-                        login_streak: existingActivity.activity.login_streak += 1,
-                        total_logins: existingActivity.activity.total_logins += 1,
-                        last_action_time: /* new Date().toISOString(), */sgTimeNowByDayJs(),
-                        last_login_time: /* new Date().toISOString() */sgTimeNowByDayJs()
+                        login_streak: activity.login_streak += 1,
+                        total_logins: activity.total_logins += 1,
+                        last_action_time: /* new Date().toISOString(), */sgTime,
+                        last_login_time: /* new Date().toISOString() */sgTime
                     }
                 } : {
-                    id: existingActivity?.activity.id,
+                    id: activity?.id,
                     access_token: '',
-                    user_id: existingActivity.user_id,
+                    user_id: account?.id,
                     activity: {
                         logged_in: false,
                         login_streak: 1,
-                        total_logins: existingActivity.activity.total_logins += 1,
-                        last_action_time: /* new Date().toISOString(), */sgTimeNowByDayJs(),
-                        last_login_time: /* new Date().toISOString() */sgTimeNowByDayJs()
+                        total_logins: activity.total_logins += 1,
+                        last_action_time: /* new Date().toISOString(), */sgTime,
+                        last_login_time: /* new Date().toISOString() */sgTime
                     }
                 }
             const dbActivity = await updateActivity(updateActivityPayload)
@@ -415,7 +418,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, }) =>
 
 }
 
-const DemoReferralComponent = ({ MINI_APP_APP }) => {
+const DemoReferralComponent = ({ /* MINI_APP_APP */ }) => {
     return (
 
         <div className={`h-[100px] cursor-pointer`}
