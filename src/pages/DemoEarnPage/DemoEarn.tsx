@@ -13,7 +13,7 @@ import { useFriendContext } from '@/contexts/FriendContext'
 import { isYesterday, sgTimeNowByDayJs } from '@/utils'
 import { format } from 'date-fns'
 import { DemoBonusComponentProp, DemoDailyRewardComponentProp, DemoEarnComponentProp, DemoFriendReferralComponentProp, FriendBaseType, FriendType, FriendWithIdsRetrievalResponseType } from '@/type'
-import { batchUpdateRewardClaimedBySenderIds, getFriends } from '@/apis/FriendServices'
+import { batchUpdateRewardClaimedBySenderId, batchUpdateRewardClaimedBySenderIds, getFriends } from '@/apis/FriendServices'
 
 const MINI_APP_BOT_NAME = import.meta.env.VITE_MINI_APP_BOT_NAME
 const MINI_APP_NAME = import.meta.env.VITE_MINI_APP_NAME
@@ -132,15 +132,15 @@ const DemoEarn = () => {
                         });
 
                         if (updatedPoint && updatedPoint?.point_base.user_id) {
-                            const senderIds = friend?.sender?.map(fs => fs.sender_id).filter((id): id is number => id !== undefined);
-                            if (senderIds?.length) {
-                                const updateFriendClaimed = await batchUpdateRewardClaimedBySenderIds(senderIds)
-                                const updateFriendClaimedSenderIds = updateFriendClaimed?.map(f => f.friend_details.sender_id)
-                                if (updateFriendClaimedSenderIds?.length) {
-                                    const dbFriends = await getFriends(updateFriendClaimedSenderIds)
-                                    setFriend(dbFriends)
-                                    setPoint(updatedPoint.point_base.point)
-                                }
+                            //const senderIds = friend?.sender?.map(fs => fs.sender_id).filter((id): id is number => id !== undefined);
+                            if (account) {
+                            const updateFriendClaimed = await batchUpdateRewardClaimedBySenderId(account?.id)
+                            const updateFriendClaimedSenderIds = updateFriendClaimed?.map(f => f.friend_details.sender_id)
+                            if (updateFriendClaimedSenderIds?.length) {
+                                const dbFriends = await getFriends(updateFriendClaimedSenderIds)
+                                setFriend(dbFriends)
+                                setPoint(updatedPoint.point_base.point)
+                            }
                             }
                         }
                     }
