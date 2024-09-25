@@ -35,7 +35,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                     //     f.has_claimed == false && setFriendTrigger(friendTrigger += 1)
                     // })
 
-                    const unclaimedFriends = friend?.sender?.filter(f => !f.has_claimed)
+                    const unclaimedFriends = friend?.sender?.filter(f => f.has_claimed==false)
                     if (unclaimedFriends?.length) {
                         console.log(unclaimedFriends);
                         console.log('trigger get friend on provider');
