@@ -13,7 +13,7 @@ import { useFriendContext } from '@/contexts/FriendContext'
 import { isYesterday, sgTimeNowByDayJs } from '@/utils'
 import { format } from 'date-fns'
 import { DemoBonusComponentProp, DemoDailyRewardComponentProp, DemoEarnComponentProp, DemoFriendReferralComponentProp } from '@/type'
-import { batchUpdateRewardClaimedBySenderId, getFriends } from '@/apis/FriendServices'
+import { batchUpdateRewardClaimedBySenderId, getFriend, getFriends } from '@/apis/FriendServices'
 
 const MINI_APP_BOT_NAME = import.meta.env.VITE_MINI_APP_BOT_NAME
 const MINI_APP_NAME = import.meta.env.VITE_MINI_APP_NAME
@@ -136,46 +136,47 @@ const DemoEarn = () => {
                             if (updatedPoint && updatedPoint?.point_base.user_id) {
                                 //const senderIds = friend?.sender?.map(fs => fs.sender_id).filter((id): id is number => id !== undefined);
                                 if (account) {
-                                    const updateFriendClaimed = await batchUpdateRewardClaimedBySenderId(account.id)
-                                    const updateFriendClaimedSenderIds = updateFriendClaimed?.map(f => f.friend_details.sender_id)
-                                    if (updateFriendClaimedSenderIds?.length) {
-                                        const dbFriends = await getFriends(updateFriendClaimedSenderIds)
-                                        setFriend(dbFriends)
-                                        setPoint(updatedPoint.point_base.point)
-                                    }
+                                    await batchUpdateRewardClaimedBySenderId(account.id)
+                                    const dbFriends = await getFriend({
+                                        user_id: account.id,
+                                        access_token: ''
+                                    })
+                                    setFriend(dbFriends)
+                                    setPoint(updatedPoint.point_base.point)
                                 }
                             }
                         }
                     }
+                }
                     // setIsClaimedReferral(true);
                     // setFriendTrigger(0);
                 } catch (error) {
-                    console.error('Error handling referral reward:', error);
-                } finally {
-                    setIsWaitingPoint(false);
-                    setIsWaitingFriend(false);
-                    setFriendTrigger(0)
-                }
-            };
+                console.error('Error handling referral reward:', error);
+            } finally {
+                setIsWaitingPoint(false);
+                setIsWaitingFriend(false);
+                setFriendTrigger(0)
+            }
         };
+    };
 
-        handleReferralReward();
-    }, [friendTrigger, isClaimedReferral, point, account])
+    handleReferralReward();
+}, [friendTrigger, isClaimedReferral, point, account])
 
-    return (
-        <div className='w-[100%] h-[690px]'>
-            <DemoEarnComponent
-                timeLeft={timeLeft}
-                dailyReward={dailyReward}
-                setDailyReward={setDailyReward}
-                totalPointAmount={totalPointAmount}
-                sgTime={sgTime}
-            />
-            <DemoBonusComponent
-                weeklyCount={activity?.login_streak} // using cont 7 day count
-                referralCount={friendTrigger} />
-        </div>
-    )
+return (
+    <div className='w-[100%] h-[690px]'>
+        <DemoEarnComponent
+            timeLeft={timeLeft}
+            dailyReward={dailyReward}
+            setDailyReward={setDailyReward}
+            totalPointAmount={totalPointAmount}
+            sgTime={sgTime}
+        />
+        <DemoBonusComponent
+            weeklyCount={activity?.login_streak} // using cont 7 day count
+            referralCount={friendTrigger} />
+    </div>
+)
 }
 
 const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, totalPointAmount, sgTime }: DemoEarnComponentProp) => {
