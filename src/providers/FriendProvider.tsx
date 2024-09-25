@@ -34,8 +34,11 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                     // friend?.sender?.forEach(f => {
                     //     f.has_claimed == false && setFriendTrigger(friendTrigger += 1)
                     // })
+                    console.log(friend?.sender);
 
-                    const unclaimedFriends = friend?.sender?.filter(f => f.has_claimed==false)
+                    const unclaimedFriends = friend?.sender?.filter(f => f.has_claimed == false)
+                    console.log(unclaimedFriends);
+
                     if (unclaimedFriends?.length) {
                         console.log(unclaimedFriends);
                         console.log('trigger get friend on provider');
@@ -45,7 +48,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                         setIsWaitingFriend(false)
                         return existingFriend
                     }
-                   
+
 
                     // setFriendTrigger(existingFriend.sender?.length)
                     // setIsWaitingFriend(false)
