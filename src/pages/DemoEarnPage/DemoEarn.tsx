@@ -59,7 +59,7 @@ const DemoEarn = () => {
 
     useEffect(() => {
         const handleWeeklyReward = async () => {
-            if (!activity?.login_streak || activity?.login_streak !== 7) return; // Early exit if not a streak of 7
+            if (!activity?.login_streak || activity?.login_streak == 0 || activity?.login_streak !== 7) return; // Early exit if not a streak of 7
 
             setIsWaitingPoint(true);
             setIsWaitingActivity(true);
@@ -107,7 +107,7 @@ const DemoEarn = () => {
 
     useEffect(() => {
         const handleReferralReward = async () => {
-            if (!friendTrigger || friendTrigger % 10 !== 0) return; // Early exit if not a multiple of 10 or already claimed
+            if (!friendTrigger || friendTrigger == 0 || friendTrigger % 10 !== 0) return; // Early exit if not a multiple of 10 or already claimed
             setIsWaitingPoint(true);
             setIsWaitingFriend(true);
             try {
@@ -166,24 +166,6 @@ const DemoEarn = () => {
         }
     }, [isClaimedReferral])
 
-    // useEffect(() => {
-    //     const checkActionOnPoint = () => {
-    //         if (point) {
-    //             if (point?.custom_logs?.action) {
-    //                 const dbPointAction = point.custom_logs?.action.split('claim')[1]
-    //                 if (dbPointAction) {
-    //                     if (referralCount / 10 != parseInt(dbPointAction))
-    //                         return true
-    //                 }
-    //             } else {
-    //                 return true
-    //             }
-    //         }
-    //     }
-    //     if (checkActionOnPoint() == true) {
-    //         setCanClaim(true)
-    //     }
-    // }, [])
 
     return (
         <div className='w-[100%] h-[690px]'>

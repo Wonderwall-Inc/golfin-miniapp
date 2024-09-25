@@ -727,6 +727,7 @@ export interface FriendCreateRequestType {
     sender_id: number
     receiver_id: number
     status: FriendStatusType
+    has_claimed: boolean
 }
 
 export interface FriendCreateResponseType {

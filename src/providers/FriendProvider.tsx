@@ -64,6 +64,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                     sender_id: sender?.user_details.user_base.id,
                     receiver_id: receiverId,
                     status: FriendStatusType.active,
+                    has_claimed: false
                 })
                 if (newFriend) {
                     // update the point for the sender, +100 == who made the invitation
