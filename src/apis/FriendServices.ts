@@ -1,9 +1,11 @@
 import {
     FriendCreateRequestType,
     FriendCreateResponseType,
+    FriendDetailsResponseType,
     FriendDetailsType,
     FriendRetrievalRequestType,
     FriendUpdateByIdRequestType,
+    FriendUpdateDetailsType,
     FriendWithIdsRetrievalResponseType,
     getFriendRequestType,
 } from '@/type';
@@ -68,11 +70,23 @@ export const getFriends = async (user_ids: number[], skip: number = 0, limit: nu
 
 
 // FRIEND UPDATING
-export async function updateFriend(friendUpdate: FriendUpdateByIdRequestType): Promise<FriendUpdateByIdRequestType | undefined> {
+export async function updateFriend(friendUpdate: FriendUpdateByIdRequestType): Promise<FriendUpdateDetailsType | undefined> {
     try {
         const dbFriend = await api.put('/friend/update', friendUpdate);
         const dbFriendData = await dbFriend.data;
         return dbFriendData
+    } catch (error) {
+        console.error('Error updating friend:', error);
+        return undefined
+    }
+}
+
+
+export async function batchUpdateRewardClaimedBySenderIds(senderIds: number[]): Promise<FriendDetailsResponseType[] | undefined> {
+    try {
+        const dbFriends = await api.put(`/friend/reward-update?sender_ids=${senderIds.join(',')}`);
+        const dbFriendsData = await dbFriends.data;
+        return dbFriendsData
     } catch (error) {
         console.error('Error updating friend:', error);
         return undefined

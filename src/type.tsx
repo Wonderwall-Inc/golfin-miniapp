@@ -15,6 +15,31 @@ export interface AccountType {
     custom_logs?: object
 }
 
+// PAGE
+export interface DemoEarnComponentProp {
+    timeLeft: string,
+    dailyReward: boolean,
+    setDailyReward: Dispatch<SetStateAction<boolean>>,
+    totalPointAmount: number,
+    sgTime: string,
+}
+
+export interface DemoDailyRewardComponentProp {
+    timeLeft: string
+    dailyReward: boolean,
+    setDailyReward: Dispatch<SetStateAction<boolean>>,
+    sgTime: string
+}
+
+export interface DemoBonusComponentProp {
+    weeklyCount?: number,
+    referralCount?: number,
+}
+
+export interface DemoFriendReferralComponentProp {
+    referralCount?: number
+}
+
 
 // CONTEXT 
 export interface UserContextType {
@@ -656,7 +681,8 @@ export interface FriendIds {
 
 export interface FriendBaseType {
     sender_id: number
-    status: FriendStatusType
+    status: FriendStatusType,
+    has_claimed: boolean
     id: number
     updated_at: string
     receiver_id: number
@@ -679,6 +705,7 @@ export interface FriendUpdateDetailsType {
 export interface FriendType {
     id: number
     status: FriendStatusType
+    has_claimed: boolean
     created_at: string
     updated_at: string
     custom_logs?: {

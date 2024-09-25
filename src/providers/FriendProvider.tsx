@@ -12,33 +12,28 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
     const [friend, setFriend] = useState<FriendWithIdsRetrievalResponseType | undefined>()
     const [isWaitingFriend, setIsWaitingFriend] = useState(false)
     const [friendNumber, setFriendNumber] = useState(0)
-    const [friendTrigger, setFriendTrigger] = useState(0)
-    // let [notYetClaimRewardReferral, setNotYetClaimRewardReferral] = useState(0)
+    let [friendTrigger, setFriendTrigger] = useState(0)
 
     const webappUser = WebApp.initDataUnsafe.user
     const webappStartParam = WebApp.initDataUnsafe.start_param
 
     const { account } = useUserContext()
+    const { point, setPoint } = usePointContext()
 
     useEffect(() => {
         const friendRetrieval = async (friendRetrievalPayload: FriendRetrievalRequestType) => {
             const existingFriend = await getFriend(friendRetrievalPayload)
-            // console.log('existingFriend on retrieve friend');
-            // console.log(existingFriend);
-
             if (existingFriend && existingFriend.sender && existingFriend.receiver) {
                 setFriend({ sender: existingFriend.sender, receiver: existingFriend.receiver })
                 setFriendNumber(existingFriend.sender?.length + existingFriend.receiver?.length) // total friend with me
-                setFriendTrigger(existingFriend.sender?.length) // total number of sender which made the friend request
+                if (existingFriend.sender.length % 10 == 0) {
+                    existingFriend.sender.forEach(f => {
 
-                // let count = 0
-                // // FIXME:
-                // existingFriend.sender.forEach(s => {
-                //     if (!s.custom_logs?.action) {
-                //         count++
-                //     }
-                // })
-                // setNotYetClaimRewardReferral(count)
+                    })
+                } else {
+                    setFriendTrigger(existingFriend.sender.length % 10) // total number of sender which made the friend request
+                }
+
                 setIsWaitingFriend(false)
                 return existingFriend
             }
@@ -56,32 +51,54 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
 
             const newFriend = await createFriend(friendCreatePayload)
             if (newFriend !== undefined) {
+                // sender_id: newFriend.friend_details.sender_id,
+                // receiver_id: newFriend.friend_details.receiver_id,
+                // status: newFriend.friend_details.friend_base.status,
+                // has_claimed: newFriend.friend_details.friend_base.has_claimed,
+                // id: newFriend.friend_details.friend_base.id,
+                // updated_at: newFriend.friend_details.friend_base.updated_at,
+                // created_at: newFriend.friend_details.friend_base.created_at,
+                const { friend_base, sender_id, receiver_id } = newFriend.friend_details
                 setFriend({
                     sender: [],
-                    receiver: [{
-                        sender_id: newFriend.friend_details.sender_id,
-                        receiver_id: newFriend.friend_details.receiver_id,
-                        status: newFriend.friend_details.friend_base.status,
-                        id: newFriend.friend_details.friend_base.id,
-                        updated_at: newFriend.friend_details.friend_base.updated_at,
-                        created_at: newFriend.friend_details.friend_base.created_at,
-                    }]
+                    receiver: [{ ...friend_base, sender_id, receiver_id }]
                 })
                 setFriendNumber(1)
+
+                // update the point for the sender, +100 == who made the invitation
+                const existingSenderPoint = await getPoint({
+                    access_token: '',
+                    user_id: sender?.user_details.user_base.id
+                })
+                if (existingSenderPoint) {
+                    const updatedPoint = await updatePoint({
+                        id: existingSenderPoint?.point_base.point.id,
+                        type: 'add',
+                        access_token: '',
+                        point_payload: {
+                            referral_amount: 100
+                        },
+                    });
+                    if (updatedPoint && updatedPoint?.point_base.user_id) {
+                        console.log(updatedPoint.point_base.point);
+                    }
+                }
                 setIsWaitingFriend(false)
                 return newFriend
 
-            } else {
+            } else {// check the friend from the current user
                 const existingFriend = await getFriend({ access_token: '', user_id: account?.id })
-                // console.log('existingFriend');
-                // console.log(existingFriend);
-
                 if (existingFriend && existingFriend.sender && existingFriend.receiver) {
                     setFriend({
                         sender: existingFriend.sender,
                         receiver: existingFriend.receiver
                     })
                     setFriendNumber(existingFriend.sender?.length + existingFriend.receiver?.length)
+                    if (existingFriend?.sender?.length % 10 == 0) {
+                        friend?.sender?.forEach(f => {
+                            f.has_claimed == false && setFriendTrigger(friendTrigger += 1)
+                        })
+                    }
                     setFriendTrigger(existingFriend.sender?.length)
                     setIsWaitingFriend(false)
                     return existingFriend
@@ -91,20 +108,57 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
 
         if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
             setIsWaitingFriend(true)
-            setFriend({
-                sender: [{
+            const mockFriends = []
+            for (let i = 30001; i < 30011; i++) {
+                mockFriends.push({
                     id: 1,
                     status: FriendStatusType.active,
+                    has_claimed: false,
                     sender_id: 60001,
-                    receiver_id: 30001,
+                    receiver_id: i,
                     updated_at: new Date().toISOString(),
                     created_at: new Date().toISOString(),
-                }],
+                })
+            }
+            setFriend({
+                sender: mockFriends,
                 receiver: []
             })
-            setFriendNumber(1)
-            setFriendTrigger(10)
-            setIsWaitingFriend(false)
+            console.log(friend);
+
+            if (friend?.sender && friend.receiver) {
+                setFriendNumber(friend?.sender?.length + friend.receiver?.length)
+                if (friend.sender.length % 10 == 0) {
+                    let count = 0
+                    friend.sender.forEach(f => {
+                        f.has_claimed == false && count++
+                    })
+                    if (count == 10) {
+                        // do the point update the point context update
+                        // if (point?.referral_amount) {
+                        //     setPoint({
+                        //         id: 1,
+                        //         login_amount: 0,
+                        //         referral_amount: point?.referral_amount + 3000,
+                        //         extra_profit_per_hour: 1,
+                        //         created_at: '2024-09-17T00:00:00',
+                        //         updated_at: '2024-09-17T00:00:00',
+                        //     })
+                        //     friend.sender.forEach(f => {
+                        //         f.has_claimed == true
+                        //     })
+                        //     window.alert('update friend sender')
+                        //     console.log(friend.sender);
+                        //     setFriendTrigger(0)
+                        // }
+                        setFriendTrigger(10)
+                    }
+                } else {
+                    window.alert(friend.sender.length % 10)
+                    setFriendTrigger(friend.sender.length % 10)
+                }
+                setIsWaitingFriend(false)
+            }
         } else {
             setIsWaitingFriend(true)
             if (account?.id !== undefined && webappStartParam !== undefined) {
