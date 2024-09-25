@@ -184,7 +184,7 @@ const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, totalPointAm
                 <img className="w-[53px] h-[54px]" alt="Layer" src={CoinIcon} />
                 <div className="w-[200px] text-white font-semibold [font-family:'Rubik-Medium',Helvetica]text-[#ffef2b] text-[28px] tracking-[0.38px]">
                     {totalPointAmount ? totalPointAmount.toLocaleString() : 0}
-                    {typeof (point) !== 'number' ? (point.login_amount + point.referral_amount).toLocaleString() : 0}
+                    {/* {typeof (point) !== 'number' ? (point.login_amount + point.referral_amount).toLocaleString() : 0} */}
                 </div>
             </div>
             <div className='flex justify-center justify-items-center mx-5 sm:mx-5 md:mx-6 pt-3 sm:pt-3  space-x-5'>
