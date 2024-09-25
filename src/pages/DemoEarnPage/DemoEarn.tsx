@@ -26,8 +26,7 @@ const DemoEarn = () => {
     const { friend, setFriend, friendTrigger, setFriendTrigger, setIsWaitingFriend } = useFriendContext()
     const [dailyReward, setDailyReward] = useState(true)
     const [timeLeft, setTimeLeft] = useState("")
-    // const [totalPointAmount, setTotalPointAmount] = useState((point?.login_amount ?? 0) + (point?.referral_amount ?? 0))
-    const [totalPointAmount, setTotalPointAmount] = useState(0)
+    const [totalPointAmount, setTotalPointAmount] = useState((point?.login_amount ?? 0) + (point?.referral_amount ?? 0))
     const [referralCount, setReferralCount] = useState(0)
     const [canClaim, setCanClaim] = useState(false)
     const [sgTime, setSgTime] = useState(sgTimeNowByDayJs());
@@ -64,7 +63,6 @@ const DemoEarn = () => {
 
             setIsWaitingPoint(true);
             setIsWaitingActivity(true);
-
             try {// Fetch existing point and update if necessary
                 if (point) {
                     const updatePointPayload = {
@@ -108,56 +106,61 @@ const DemoEarn = () => {
 
     useEffect(() => {
         const handleReferralReward = async () => {
-            if (!friendTrigger || friendTrigger == 0 || friendTrigger % 10 !== 0 || isClaimedReferral) return; // Early exit if not a multiple of 10 or already claimed
-            setIsWaitingPoint(true);
-            setIsWaitingFriend(true);
-            try {
-                if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
-                    if (point) {
-                        setPoint({
-                            ...point,
-                            id: point?.id,
-                            referral_amount: point?.referral_amount + 3000,
-                        })
-                        console.log(point);
-                    }
-                } else {
-                    if (point) {
-                        const updatedPoint = await updatePoint({
-                            id: point.id,
-                            type: 'add',
-                            access_token: '',
-                            point_payload: {
-                                referral_amount: 3000,
-                            },
-                        });
+            if (friendTrigger && friendTrigger % 10 !== 0 && friendTrigger > 0 && !isClaimedReferral) {
 
-                        if (updatedPoint && updatedPoint?.point_base.user_id) {
-                            //const senderIds = friend?.sender?.map(fs => fs.sender_id).filter((id): id is number => id !== undefined);
-                            if (account) {
-                                const updateFriendClaimed = await batchUpdateRewardClaimedBySenderId(account?.id)
-                                const updateFriendClaimedSenderIds = updateFriendClaimed?.map(f => f.friend_details.sender_id)
-                                if (updateFriendClaimedSenderIds?.length) {
-                                    const dbFriends = await getFriends(updateFriendClaimedSenderIds)
-                                    setFriend(dbFriends)
-                                    setPoint(updatedPoint.point_base.point)
+                // Early exit if not a multiple of 10 or already claimed
+                setIsWaitingPoint(true);
+                setIsWaitingFriend(true);
+                setIsClaimedReferral(true);
+                try {
+                    if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
+                        if (point) {
+                            setPoint({
+                                ...point,
+                                id: point?.id,
+                                referral_amount: point?.referral_amount + 3000,
+                            })
+                            console.log(point);
+                        }
+                    } else {
+                        if (point) {
+                            const updatedPoint = await updatePoint({
+                                id: point.id,
+                                type: 'add',
+                                access_token: '',
+                                point_payload: {
+                                    referral_amount: tenFriendsReferralPointReward,
+                                },
+                            });
+
+                            if (updatedPoint && updatedPoint?.point_base.user_id) {
+                                //const senderIds = friend?.sender?.map(fs => fs.sender_id).filter((id): id is number => id !== undefined);
+                                if (account) {
+                                    const updateFriendClaimed = await batchUpdateRewardClaimedBySenderId(account.id)
+                                    const updateFriendClaimedSenderIds = updateFriendClaimed?.map(f => f.friend_details.sender_id)
+                                    if (updateFriendClaimedSenderIds?.length) {
+                                        const dbFriends = await getFriends(updateFriendClaimedSenderIds)
+                                        setFriend(dbFriends)
+                                        setPoint(updatedPoint.point_base.point)
+                                    }
                                 }
                             }
                         }
                     }
+                    setIsClaimedReferral(true);
+                    setFriendTrigger(0);
+                } catch (error) {
+                    console.error('Error handling referral reward:', error);
+                } finally {
+                    setIsWaitingPoint(false);
+                    setIsWaitingFriend(false);
+                    setFriendTrigger(0)
                 }
-                setIsClaimedReferral(true);
-                setFriendTrigger(0);
-            } catch (error) {
-                console.error('Error handling referral reward:', error);
-            } finally {
-                setIsWaitingPoint(false);
-                setIsWaitingFriend(false);
-            }
+            };
         };
 
         handleReferralReward();
-    }, [friendTrigger, isClaimedReferral])
+    }, [friendTrigger, isClaimedReferral, point, account])
 
     return (
         <div className='w-[100%] h-[690px]'>
