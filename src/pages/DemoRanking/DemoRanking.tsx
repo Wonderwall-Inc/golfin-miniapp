@@ -31,7 +31,10 @@ const DemoRanking = () => {
 
     const [myReferralRecord, setMyReferralRecord] = useState<ReferralRankingItem>()
     const [myPointRecord, setMyPointRecord] = useState<PointRankingItem>()
+    const [existingUsers, setExistingUsers ]= useState([]) // TODO:
+    // useEffect(()=>{
 
+    // })
     useEffect(() => {
         const handleReferralRanking = async () => {
             // setIsWaitingUser(true)
@@ -77,7 +80,7 @@ const DemoRanking = () => {
 
         const handlePointRanking = async () => {
             // setIsWaitingUser(true)
-            const existingUsers = await getUsers();
+            const existingUsers = await getUsers(0, 200);
             console.log(existingUsers);
 
             if (existingUsers && existingUsers.length > 0) {
