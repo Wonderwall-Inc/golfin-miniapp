@@ -2,9 +2,8 @@ import { createFriend, getFriend, } from "@/apis/FriendServices"
 import { getPoint, updatePoint } from "@/apis/PointServices"
 import { getUser } from "@/apis/UserSevices"
 import { FriendContext } from "@/contexts/FriendContext"
-import { usePointContext } from "@/contexts/PointContext"
 import { useUserContext } from "@/contexts/UserContext"
-import { FriendCreateRequestType, FriendRetrievalRequestType, FriendStatusType, FriendWithIdsRetrievalResponseType, getFriendRequestType } from "@/type"
+import { FriendRetrievalRequestType, FriendStatusType, FriendWithIdsRetrievalResponseType } from "@/type"
 import WebApp from "@twa-dev/sdk"
 import { useEffect, useState } from "react"
 
@@ -36,7 +35,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                     // })
                     console.log(friend?.sender);
 
-                    const unclaimedFriends = existingFriend?.sender?.filter(f => f.has_claimed == false)
+                    const unclaimedFriends = existingFriend?.sender?.filter(f => !f.has_claimed)
                     console.log(unclaimedFriends);
 
                     if (unclaimedFriends?.length) {
@@ -48,22 +47,10 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                         setIsWaitingFriend(false)
                         return existingFriend
                     }
-
-
-                    // setFriendTrigger(existingFriend.sender?.length)
-                    // setIsWaitingFriend(false)
-                    // return existingFriend
                 }
-                // if (existingFriend.sender.length % 10 == 0) {
-                //     existingFriend.sender.forEach(f => {
 
-                //     })
-                // } else {
-                //     setFriendTrigger(existingFriend.sender.length % 10) // total number of sender which made the friend request
-                // }
-
-                setIsWaitingFriend(false)
-                return existingFriend
+                // setIsWaitingFriend(false)
+                // return existingFriend
             }
         }
 
