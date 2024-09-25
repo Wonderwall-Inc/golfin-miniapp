@@ -30,9 +30,6 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                 })
                 setFriendNumber(existingFriend.sender?.length + existingFriend.receiver?.length)
                 if (existingFriend?.sender?.length % 10 == 0) {
-                    // friend?.sender?.forEach(f => {
-                    //     f.has_claimed == false && setFriendTrigger(friendTrigger += 1)
-                    // })
                     console.log(friend?.sender);
 
                     const unclaimedFriends = existingFriend?.sender?.filter(f => !f.has_claimed)
@@ -49,8 +46,8 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                     }
                 }
 
-                // setIsWaitingFriend(false)
-                // return existingFriend
+                setIsWaitingFriend(false)
+                return existingFriend
             }
         }
 
