@@ -31,7 +31,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                 })
                 setFriendNumber(existingFriend.sender?.length + existingFriend.receiver?.length)
                 if (existingFriend?.sender?.length % 10 == 0) {
-                    friend?.sender?.forEach(f => {
+                friend?.sender?.forEach(f => {
                         f.has_claimed == false && setFriendTrigger(friendTrigger += 1)
                     })
                 }

@@ -17,29 +17,29 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
             try {
                 const newUser = await createUser(userCreatePayload)
                 if (newUser !== undefined) {
-                    const sender = await getUser({
-                        access_token: '',
-                        telegram_id: `${userCreatePayload.telegram_info.start_param}`
-                    })
-                    if (sender) {
-                        const senderPoint = await getPoint({
-                            access_token: '',
-                            user_id: sender.user_details.user_base.id
-                        })
-                        if (senderPoint) {
-                            const dbPoint = await updatePoint({
-                                access_token: '',
-                                id: senderPoint.point_base.point.id,
-                                type: 'add', // REVIEW: add / drop point
-                                point_payload: {
-                                    login_amount: senderPoint.point_base.point.login_amount,
-                                    referral_amount: senderPoint.point_base.point.referral_amount += 100
-                                }
-                            })
-                            console.log('update point for sender');
-                            console.log(dbPoint);
-                        }
-                    }
+                    // const sender = await getUser({
+                    //     access_token: '',
+                    //     telegram_id: `${userCreatePayload.telegram_info.start_param}`
+                    // })
+                    // if (sender) {
+                    //     const senderPoint = await getPoint({
+                    //         access_token: '',
+                    //         user_id: sender.user_details.user_base.id
+                    //     })
+                    //     if (senderPoint) {
+                    //         const dbPoint = await updatePoint({
+                    //             access_token: '',
+                    //             id: senderPoint.point_base.point.id,
+                    //             type: 'add', // REVIEW: add / drop point
+                    //             point_payload: {
+                    //                 login_amount: senderPoint.point_base.point.login_amount,
+                    //                 referral_amount: senderPoint.point_base.point.referral_amount += 100
+                    //             }
+                    //         })
+                    //         console.log('update point for sender');
+                    //         console.log(dbPoint);
+                    //     }
+                    // }
 
 
                     setAccount(newUser.user_details.user_base)
