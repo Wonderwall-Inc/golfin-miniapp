@@ -51,9 +51,9 @@ const DemoEarn = () => {
 
 
     useEffect(() => {
-        if (point?.login_amount || point?.referral_amount) {
+        if (point) {
             console.log('point updated');
-            setTotalPointAmount(totalPointAmount + point?.login_amount + point?.referral_amount)
+            setTotalPointAmount(prevTotal => prevTotal + point.login_amount + point.referral_amount)
         }
     }, [point])
 
