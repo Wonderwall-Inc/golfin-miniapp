@@ -36,7 +36,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                     // })
                     console.log(friend?.sender);
 
-                    const unclaimedFriends = friend?.sender?.filter(f => f.has_claimed == false)
+                    const unclaimedFriends = existingFriend?.sender?.filter(f => f.has_claimed == false)
                     console.log(unclaimedFriends);
 
                     if (unclaimedFriends?.length) {
