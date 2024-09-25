@@ -135,7 +135,8 @@ const DemoEarn = () => {
                         if (updatedPoint && updatedPoint?.point_base.user_id) {
                             const senderIds = friend?.sender?.map(fs => fs.sender_id)
                             if (senderIds?.length) {
-                                const updateFriendClaimed = await batchUpdateRewardClaimedBySenderIds(senderIds)
+                                const senderIdsString = senderIds.join(',');
+                                const updateFriendClaimed = await batchUpdateRewardClaimedBySenderIds(senderIdsString)
                                 const updateFriendClaimedSenderIds = updateFriendClaimed?.map(f => f.friend_details.sender_id)
                                 if (updateFriendClaimedSenderIds?.length) {
                                     const dbFriends = await getFriends(updateFriendClaimedSenderIds)
