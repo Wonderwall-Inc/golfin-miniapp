@@ -31,17 +31,26 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                 })
                 setFriendNumber(existingFriend.sender?.length + existingFriend.receiver?.length)
                 if (existingFriend?.sender?.length % 10 == 0) {
-                    friend?.sender?.forEach(f => {
-                        f.has_claimed == false && setFriendTrigger(friendTrigger += 1)
-                    })
+                    // friend?.sender?.forEach(f => {
+                    //     f.has_claimed == false && setFriendTrigger(friendTrigger += 1)
+                    // })
+
+                    const unclaimedFriends = friend?.sender?.filter(f => !f.has_claimed)
+                    if (unclaimedFriends?.length) {
+                        console.log(unclaimedFriends);
+                        console.log('trigger get friend on provider');
+                        console.log(friendTrigger);
+
+                        setFriendTrigger(unclaimedFriends?.length)
+                        setIsWaitingFriend(false)
+                        return existingFriend
+                    }
+                   
+
+                    // setFriendTrigger(existingFriend.sender?.length)
+                    // setIsWaitingFriend(false)
+                    // return existingFriend
                 }
-                
-                console.log('trigger get friend on provider');
-                console.log(friendTrigger);
-                
-                setFriendTrigger(existingFriend.sender?.length)
-                setIsWaitingFriend(false)
-                return existingFriend
                 // if (existingFriend.sender.length % 10 == 0) {
                 //     existingFriend.sender.forEach(f => {
 
@@ -114,7 +123,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                         setFriendNumber(existingFriend.sender?.length + existingFriend.receiver?.length)
                         if (existingFriend?.sender?.length % 10 == 0) {
                             const unclaimedFriends = friend?.sender?.filter(f => !f.has_claimed)
-                            if(unclaimedFriends?.length){
+                            if (unclaimedFriends?.length) {
 
                                 setFriendTrigger(unclaimedFriends?.length)
                                 setIsWaitingFriend(false)
