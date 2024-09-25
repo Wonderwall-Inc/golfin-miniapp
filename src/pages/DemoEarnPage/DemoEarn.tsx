@@ -26,7 +26,8 @@ const DemoEarn = () => {
     const { friend, setFriend, friendTrigger, setFriendTrigger, setIsWaitingFriend } = useFriendContext()
     const [dailyReward, setDailyReward] = useState(true)
     const [timeLeft, setTimeLeft] = useState("")
-    const [totalPointAmount, setTotalPointAmount] = useState((point?.login_amount ?? 0) + (point?.referral_amount ?? 0))
+    // const [totalPointAmount, setTotalPointAmount] = useState((point?.login_amount ?? 0) + (point?.referral_amount ?? 0))
+    const [totalPointAmount, setTotalPointAmount] = useState(0)
     const [referralCount, setReferralCount] = useState(0)
     const [canClaim, setCanClaim] = useState(false)
     const [sgTime, setSgTime] = useState(sgTimeNowByDayJs());
