@@ -27,9 +27,9 @@ interface DemoEarnComponentProp {
 }
 
 const DemoEarn = () => {
-    const { account, setAccount } = useUserContext()
-    const { point, setPoint, isWaitingPoint, setIsWaitingPoint } = usePointContext()
-    const { activity, setActivity, isWaitingActivity, setIsWaitingActivity } = useActivityContext()
+    const { account } = useUserContext()
+    const { point, setPoint, setIsWaitingPoint } = usePointContext()
+    const { activity, setActivity, setIsWaitingActivity } = useActivityContext()
     const { friend, friendTrigger } = useFriendContext()
     const [dailyReward, setDailyReward] = useState(true)
     const [timeLeft, setTimeLeft] = useState("")
@@ -246,9 +246,6 @@ const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, /* MINI_APP_
 
 
 const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, sgTime }) => {
-    // const sgTimeNowStr = sgTimeNow()
-    // const [timeLeft, setTimeLeft] = useState(sgTimeNowStr)
-
     const { setPoint, setIsWaitingPoint, point } = usePointContext()
     const { account } = useUserContext()
     const { setActivity, activity, setIsWaitingActivity } = useActivityContext()
@@ -257,16 +254,16 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, sgTim
 
     useEffect(() => {
         if (import.meta.env.VITE_MINI_APP_ENV == 'test' && activity?.last_login_time) {
-            const sgTimeNowString = sgTimeNowByDayJs()
-            const activityCheck = activity?.last_login_time.split('T')[0] == sgTimeNowString.split('T')[0]
+            // const sgTimeNowString = sgTimeNowByDayJs()
+            const activityCheck = activity?.last_login_time.split('T')[0] == sgTime.split('T')[0]
             if (activityCheck == true || clicked == true) {
                 setAllowed(false)
             }
         } else {
             if (activity?.last_login_time !== null && activity?.last_login_time !== undefined) {
                 setIsClicked(true)
-                const sgTimeNowString = sgTimeNowByDayJs()
-                const activityCheck = activity?.last_login_time.split('T')[0] === sgTimeNowString.split('T')[0]
+                // const sgTimeNowString = sgTimeNowByDayJs()
+                const activityCheck = activity?.last_login_time.split('T')[0] === sgTime.split('T')[0]
 
                 if (activityCheck == true || clicked == true) {
                     setAllowed(false)
@@ -277,19 +274,18 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, sgTim
 
     const handleCheckInDailyReward = async () => {
         setIsWaitingActivity(true)
-        // const existingActivity = await getActivity({ access_token: '', user_id: account?.id})
-        if (/* existingActivity */activity) {     // check if last login date was just yesterday
+        if (activity) {     // check if last login date was just yesterday
             const updateActivityPayload = activity?.last_login_time && isYesterday(new Date(format(activity?.last_login_time.split('T')[0], 'yyyy-MM-dd'))) ?
                 {
-                    id: /* existingActivity?.activity.id, */activity.id,
+                    id: activity.id,
                     user_id: account?.id,
                     access_token: '',
                     activity: {
                         logged_in: false,
                         login_streak: activity.login_streak += 1,
                         total_logins: activity.total_logins += 1,
-                        last_action_time: /* new Date().toISOString(), */sgTime,
-                        last_login_time: /* new Date().toISOString() */sgTime
+                        last_action_time: sgTime,
+                        last_login_time: sgTime
                     }
                 } : {
                     id: activity?.id,
@@ -299,8 +295,8 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, sgTim
                         logged_in: false,
                         login_streak: 1,
                         total_logins: activity.total_logins += 1,
-                        last_action_time: /* new Date().toISOString(), */sgTime,
-                        last_login_time: /* new Date().toISOString() */sgTime
+                        last_action_time: sgTime,
+                        last_login_time: sgTime
                     }
                 }
             const dbActivity = await updateActivity(updateActivityPayload)
@@ -322,13 +318,13 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, sgTim
 
         setIsWaitingPoint(true)
 
-        const existingPoint = await getPoint({
-            access_token: '',
-            user_id: account?.id,
-        })
-        if (existingPoint) {
+        // const existingPoint = await getPoint({
+        //     access_token: '',
+        //     user_id: account?.id,
+        // })
+        if (point) {
             const updatePointPayload = {
-                id: existingPoint?.point_base.point.id,
+                id: point.id,
                 type: 'add', // REVIEW: add / minus point
                 access_token: '',
                 point_payload: {
