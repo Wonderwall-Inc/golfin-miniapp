@@ -32,8 +32,8 @@ const DemoEarn = () => {
     const [sgTime, setSgTime] = useState(sgTimeNowByDayJs());
     const [isClaimedReferral, setIsClaimedReferral] = useState(false)
 
-    window.alert(friendTrigger)
-    
+
+
     useEffect(() => {
         const timer = setInterval(() => {
             setSgTime(sgTimeNowByDayJs());
