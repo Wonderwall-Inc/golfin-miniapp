@@ -51,8 +51,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
             }
         }
 
-        const friendCreation = async (senderId: string, receiverId: number) => {
-            // user has to be created before checking the friend
+        const friendCreation = async (senderId: string, receiverId: number) => {// user has to be created before checking the friend
             const sender = await getUser({
                 access_token: '',
                 telegram_id: senderId
@@ -66,8 +65,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                     status: FriendStatusType.active,
                     has_claimed: false
                 })
-                if (newFriend) {
-                    // update the point for the sender, +100 == who made the invitation
+                if (newFriend) {// update the point for the sender, +100 == who made the invitation
                     const existingSenderPoint = await getPoint({
                         access_token: '',
                         user_id: sender?.user_details.user_base.id
@@ -150,23 +148,6 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                         f.has_claimed == false && count++
                     })
                     if (count == 10) {
-                        // do the point update the point context update
-                        // if (point?.referral_amount) {
-                        //     setPoint({
-                        //         id: 1,
-                        //         login_amount: 0,
-                        //         referral_amount: point?.referral_amount + 3000,
-                        //         extra_profit_per_hour: 1,
-                        //         created_at: '2024-09-17T00:00:00',
-                        //         updated_at: '2024-09-17T00:00:00',
-                        //     })
-                        //     friend.sender.forEach(f => {
-                        //         f.has_claimed == true
-                        //     })
-                        //     window.alert('update friend sender')
-                        //     console.log(friend.sender);
-                        //     setFriendTrigger(0)
-                        // }
                         setFriendTrigger(10)
                     }
                 } else {
@@ -178,19 +159,9 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
         } else {
             setIsWaitingFriend(true)
             if (account?.id !== undefined && webappStartParam !== undefined) {
-                // console.log('provider friend');
-                const friendPayload = {
-                    access_token: '',
-                    sender_id: 0,
-                    receiver_id: account?.id,
-                    status: FriendStatusType.active
-                }
                 /*  the one who make the friend request == sender */
-                // friendCreation(webappStartParam, friendPayload)
                 friendCreation(webappStartParam, account?.id)
             } else {
-                // console.log('calling friend Retrieval');
-
                 friendRetrieval({ access_token: '', user_id: account?.id })
             }
         }
@@ -201,9 +172,10 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
         setFriend,
         isWaitingFriend,
         setIsWaitingFriend,
-        friendNumber, setFriendNumber,
-        friendTrigger, setFriendTrigger,
-        // notYetClaimRewardReferral, setNotYetClaimRewardReferral
+        friendNumber,
+        setFriendNumber,
+        friendTrigger,
+        setFriendTrigger,
     }}>
         {children}
     </FriendContext.Provider>

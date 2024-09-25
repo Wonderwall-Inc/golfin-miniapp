@@ -21,8 +21,7 @@ export interface DemoEarnComponentProp {
     dailyReward: boolean,
     setDailyReward: Dispatch<SetStateAction<boolean>>,
     totalPointAmount: number,
-    sgTime: string,
-    point: PointType | number
+    sgTime: string
 }
 
 export interface DemoDailyRewardComponentProp {

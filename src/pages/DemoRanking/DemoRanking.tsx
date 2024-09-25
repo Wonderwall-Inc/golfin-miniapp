@@ -36,6 +36,8 @@ const DemoRanking = () => {
         const handleReferralRanking = async () => {
             // setIsWaitingUser(true)
             const existingUsers = await getUsers();
+            console.log(existingUsers);
+            
             if (existingUsers && existingUsers.length > 0) {
                 const referralRanking: ReferralRankingItem[] = existingUsers.map((user, index) => {
                     const senderCount = user.user_details.sender?.length || 0; // Handle potential nullish value
@@ -45,13 +47,13 @@ const DemoRanking = () => {
                         referral: senderCount,
                     };
                 });
+                console.log('referralRanking');
+                console.log(referralRanking);
                 // setIsWaitingFriend(true)
                 referralRanking.sort((a, b) => b.referral - a.referral).map((item, index) => ({
                     ...item,
                     rank: index + 1, // Assign the ranking position
                 }));
-                console.log('referralRanking');
-                console.log(referralRanking);
                 referralRanking.map((r, sortIndex) => {
                     if (r.name == account?.telegram_info.username) {
                         setMyReferralRecord({
@@ -65,6 +67,9 @@ const DemoRanking = () => {
                     }
                 })
                 setReferrakRanking(referralRanking);
+                console.log('myReferralRecord');
+                console.log(myReferralRecord);
+
             } else {
                 console.log('No users found for referral ranking.'); // Informative logging
             }
@@ -73,6 +78,7 @@ const DemoRanking = () => {
         const handlePointRanking = async () => {
             // setIsWaitingUser(true)
             const existingUsers = await getUsers();
+            console.log(existingUsers);
 
             if (existingUsers && existingUsers.length > 0) {
                 const pointRanking: PointRankingItem[] = existingUsers.map((user, index) => {
@@ -93,13 +99,14 @@ const DemoRanking = () => {
                         };
                     }
                 });
+                console.log('pointRanking');
+                console.log(pointRanking);
                 // setIsWaitingPoint(true)
                 pointRanking.sort((a, b) => b.point - a.point).map((item, index) => ({
                     ...item,
                     rank: index + 1, // Assign the ranking position
                 }));
-                console.log('pointRanking');
-                console.log(pointRanking);
+         
                 pointRanking.map((p, sortIndex) => {
                     if (p.name == account?.telegram_info.username) {
                         setMyPointRecord({
@@ -113,6 +120,8 @@ const DemoRanking = () => {
                     }
                 })
                 setPointRanking(pointRanking);
+                console.log('MyPointRecord');
+                console.log(myPointRecord);
             } else {
                 console.log('No users found for point ranking.'); // Informative logging
             }

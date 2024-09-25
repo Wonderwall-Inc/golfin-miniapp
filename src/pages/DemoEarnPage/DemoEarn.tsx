@@ -5,7 +5,7 @@ import { useUserContext } from '../../contexts/UserContext'
 import WebApp from '@twa-dev/sdk'
 import { Progress } from "@/components/ui/progress"
 import { usePointContext } from '@/contexts/PointContext'
-import { getPoint, updatePoint } from '@/apis/PointServices'
+import { updatePoint } from '@/apis/PointServices'
 import { dailyCheckInPointReward, friendReferralPointReward, tenFriendsReferralPointReward, weeklyCheckInPointReward } from '@/constants'
 import { useActivityContext } from '@/contexts/ActivityContext'
 import { updateActivity } from '@/apis/ActivityServices'
@@ -13,7 +13,7 @@ import { useFriendContext } from '@/contexts/FriendContext'
 import { isYesterday, sgTimeNowByDayJs } from '@/utils'
 import { format } from 'date-fns'
 import { DemoBonusComponentProp, DemoDailyRewardComponentProp, DemoEarnComponentProp, DemoFriendReferralComponentProp } from '@/type'
-import { batchUpdateRewardClaimedBySenderId, getFriend, getFriends } from '@/apis/FriendServices'
+import { batchUpdateRewardClaimedBySenderId, getFriend } from '@/apis/FriendServices'
 
 const MINI_APP_BOT_NAME = import.meta.env.VITE_MINI_APP_BOT_NAME
 const MINI_APP_NAME = import.meta.env.VITE_MINI_APP_NAME
@@ -27,12 +27,8 @@ const DemoEarn = () => {
     const [dailyReward, setDailyReward] = useState(true)
     const [timeLeft, setTimeLeft] = useState("")
     const [totalPointAmount, setTotalPointAmount] = useState(0)
-    const [referralCount, setReferralCount] = useState(0)
-    const [canClaim, setCanClaim] = useState(false)
     const [sgTime, setSgTime] = useState(sgTimeNowByDayJs());
     const [isClaimedReferral, setIsClaimedReferral] = useState(false)
-
-
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -108,9 +104,7 @@ const DemoEarn = () => {
 
     useEffect(() => {
         const handleReferralReward = async () => {
-            if (friendTrigger && friendTrigger % 10 === 0 && friendTrigger > 0 && !isClaimedReferral) {
-
-                // Early exit if not a multiple of 10 or already claimed
+            if (friendTrigger && friendTrigger % 10 === 0 && friendTrigger > 0 && !isClaimedReferral) {// Early exit if not a multiple of 10 or already claimed
                 setIsWaitingPoint(true);
                 setIsWaitingFriend(true);
                 setIsClaimedReferral(true);
@@ -136,7 +130,6 @@ const DemoEarn = () => {
                             });
 
                             if (updatedPoint && updatedPoint?.point_base.user_id) {
-                                //const senderIds = friend?.sender?.map(fs => fs.sender_id).filter((id): id is number => id !== undefined);
                                 if (account) {
                                     await batchUpdateRewardClaimedBySenderId(account.id)
                                     const dbFriends = await getFriend({
@@ -170,7 +163,6 @@ const DemoEarn = () => {
                 setDailyReward={setDailyReward}
                 totalPointAmount={totalPointAmount}
                 sgTime={sgTime}
-                point={point ?? 0}
             />
             <DemoBonusComponent
                 weeklyCount={activity?.login_streak} // using cont 7 day count
@@ -179,7 +171,7 @@ const DemoEarn = () => {
     )
 }
 
-const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, totalPointAmount, sgTime, point }: DemoEarnComponentProp) => {
+const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, totalPointAmount, sgTime }: DemoEarnComponentProp) => {
     return (
         <>
             <div className="w-[343px] h-[85px] sm:h-[95px] md:h-[105px] bg-[#ffffff33] rounded-lg flex justify-center content-center items-center mx-auto">
@@ -232,7 +224,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, sgTim
 
     const handleCheckInDailyReward = async () => {
         setIsWaitingActivity(true)
-        if (activity) {     // check if last login date was just yesterday
+        if (activity) { // check if last login date was just yesterday
             const updateActivityPayload = activity?.last_login_time && isYesterday(new Date(format(activity?.last_login_time.split('T')[0], 'yyyy-MM-dd'))) ?
                 {
                     id: activity.id,
@@ -281,10 +273,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, sgTim
                 setIsWaitingPoint(false)
             }
         }
-
-        // setDailyReward(false)
     }
-    // console.log('allow ', allowed);
 
     return (
         <div className={`h-[100px] cursor-pointer ${allowed != true && 'pointer-events-none'}`}
@@ -351,11 +340,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, sgTim
 
 const DemoReferralComponent = ({ }) => {
     return (
-
-        <div className={`h-[100px] cursor-pointer`}
-            onClick={() => {
-                WebApp.openTelegramLink(`https://t.me/share/url?url=${MINI_APP_APP}`)
-            }}>
+        <div className={`h-[100px] cursor-pointer`} onClick={() => { WebApp.openTelegramLink(`https://t.me/share/url?url=${MINI_APP_APP}`) }}>
             <div className='text-center w-[100%] h-[80px]'>
                 <div className="relative w-[160px] h-14 rounded-[6px_6px_0px_0px] [background:linear-gradient(180deg,rgb(169,231,29)_0%,rgb(94.04,196.56,89.27)_100%)]">
                     <div className="absolute w-[77px] top-[7px] left-[46px] [font-family:'Roboto-Medium',Helvetica] font-medium text-[#ffffff] text-xl text-center tracking-[0] leading-[22px]">
