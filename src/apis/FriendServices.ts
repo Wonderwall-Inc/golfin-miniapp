@@ -82,7 +82,7 @@ export async function updateFriend(friendUpdate: FriendUpdateByIdRequestType): P
 }
 
 
-export async function batchUpdateRewardClaimedBySenderI(senderId: number): Promise<FriendDetailsResponseType[] | undefined> {
+export async function batchUpdateRewardClaimedBySenderId(senderId: number): Promise<FriendDetailsResponseType[] | undefined> {
     try {
         const dbFriends = await api.patch(`/friend/reward-update?sender_id=${senderId}`, senderId);
         
