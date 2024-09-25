@@ -107,20 +107,19 @@ const DemoEarn = () => {
 
     useEffect(() => {
         const handleReferralReward = async () => {
-            if (!friendTrigger || friendTrigger == 0 || friendTrigger % 10 !== 0) return; // Early exit if not a multiple of 10 or already claimed
+            if (!friendTrigger || friendTrigger == 0 || friendTrigger % 10 !== 0 || isClaimedReferral) return; // Early exit if not a multiple of 10 or already claimed
             setIsWaitingPoint(true);
             setIsWaitingFriend(true);
             try {
                 if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
                     if (point) {
-                        setPoint({
-                            ...point,
-                            id: point?.id,
-                            referral_amount: 3000,
-                            updated_at: point?.updated_at
-                        })
+                        setPoint(prevPoint => ({
+                            ...prevPoint,
+                            id: prevPoint?.id,
+                            referral_amount: (prevPoint?.referral_amount || 0) + 3000,
+                            updated_at: prevPoint?.updated_at
+                        }));
                         console.log(point);
-                        setIsClaimedReferral(true)
                     }
                 } else {
                     if (point) {
@@ -129,43 +128,36 @@ const DemoEarn = () => {
                             type: 'add',
                             access_token: '',
                             point_payload: {
-                                referral_amount: 3000, // extra_profit_per_hour: optional
+                                referral_amount: 3000,
                             },
                         });
 
                         if (updatedPoint && updatedPoint?.point_base.user_id) {
                             const senderIds = friend?.sender?.map(fs => fs.sender_id)
                             if (senderIds?.length) {
-                                const updateFriendClaimed = await batchUpdateRewardClaimedBySenderIds(senderIds) // update the has_claimed state on db by multiple sender ids
+                                const updateFriendClaimed = await batchUpdateRewardClaimedBySenderIds(senderIds)
                                 const updateFriendClaimedSenderIds = updateFriendClaimed?.map(f => f.friend_details.sender_id)
                                 if (updateFriendClaimedSenderIds?.length) {
                                     const dbFriends = await getFriends(updateFriendClaimedSenderIds)
                                     setFriend(dbFriends)
                                     setPoint(updatedPoint.point_base.point)
-                                    setIsClaimedReferral(true)
                                 }
                             }
                         }
                     }
                 }
+                setIsClaimedReferral(true);
+                setFriendTrigger(0);
             } catch (error) {
                 console.error('Error handling referral reward:', error);
             } finally {
                 setIsWaitingPoint(false);
-                setIsWaitingFriend(false)
+                setIsWaitingFriend(false);
             }
         };
 
-        handleReferralReward(); // Call the function on component mount
-    }, [friendTrigger])
-
-
-    useEffect(() => {
-        if (isClaimedReferral == true) {
-            setFriendTrigger(0)
-        }
-    }, [isClaimedReferral])
-
+        handleReferralReward();
+    }, [friendTrigger, isClaimedReferral])
 
     return (
         <div className='w-[100%] h-[690px]'>

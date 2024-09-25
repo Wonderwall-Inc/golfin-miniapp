@@ -54,7 +54,7 @@ const DemoUser = () => {
                     {friend?.sender?.map((s) => {
                         return (
                             <div className=''>
-                                <div>sender_id: {s?.receiver_id}</div>
+                                <div>receiver_id: {s?.receiver_id}</div>
                             </div>
                         )
                     })}
