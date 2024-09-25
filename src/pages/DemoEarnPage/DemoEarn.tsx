@@ -1,4 +1,4 @@
-import { SetStateAction, useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import CoinIcon from '../../assets/images/02_earn_coin.png'
 import Countdown from '../../components/Countdown'
 import { useUserContext } from '../../contexts/UserContext'
@@ -12,6 +12,7 @@ import { getActivity, updateActivity } from '@/apis/ActivityServices'
 import { useFriendContext } from '@/contexts/FriendContext'
 import { isYesterday, sgTimeNowByDayJs } from '@/utils'
 import { format } from 'date-fns'
+import { PointType } from '@/type'
 
 const MINI_APP_BOT_NAME = import.meta.env.VITE_MINI_APP_BOT_NAME
 const MINI_APP_NAME = import.meta.env.VITE_MINI_APP_NAME
@@ -20,11 +21,29 @@ const MINI_APP_APP = `https://t.me/${MINI_APP_BOT_NAME}/${MINI_APP_NAME}/start?s
 interface DemoEarnComponentProp {
     timeLeft: string,
     dailyReward: boolean,
-    setDailyReward: SetStateAction<boolean>,
-    point: number,
+    setDailyReward: Dispatch<SetStateAction<boolean>>,
+    // point?: PointType,
     totalPointAmount: number,
     sgTime: string,
 }
+
+
+interface DemoDailyRewardComponentProp {
+    timeLeft: string
+    dailyReward: boolean,
+    setDailyReward: Dispatch<SetStateAction<boolean>>,
+    sgTime: string
+}
+
+interface DemoBonusComponentProp {
+    weeklyCount?: number,
+    referralCount?: number,
+}
+
+interface DemoFriendReferralComponentProp {
+    referralCount?: number
+}
+
 
 const DemoEarn = () => {
     const { account } = useUserContext()
@@ -211,9 +230,10 @@ const DemoEarn = () => {
                 timeLeft={timeLeft}
                 dailyReward={dailyReward}
                 setDailyReward={setDailyReward}
-                MINI_APP_APP={MINI_APP_APP}
-                point={point}
+                // MINI_APP_APP={MINI_APP_APP}
+                // point={point}
                 totalPointAmount={totalPointAmount}
+                sgTime={sgTime}
             />
             <DemoBonusComponent
                 weeklyCount={activity?.login_streak} // using cont 7 day count
@@ -222,7 +242,7 @@ const DemoEarn = () => {
     )
 }
 
-const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, /* MINI_APP_APP */ point, totalPointAmount, sgTime }: DemoEarnComponentProp) => {
+const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, /* MINI_APP_APP */ totalPointAmount, sgTime }: DemoEarnComponentProp) => {
     return (
         <>
             <div className="w-[343px] h-[85px] sm:h-[95px] md:h-[105px] bg-[#ffffff33] rounded-lg flex justify-center content-center items-center mx-auto">
@@ -245,7 +265,7 @@ const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, /* MINI_APP_
 }
 
 
-const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, sgTime }) => {
+const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, sgTime }: DemoDailyRewardComponentProp) => {
     const { setPoint, setIsWaitingPoint, point } = usePointContext()
     const { account } = useUserContext()
     const { setActivity, activity, setIsWaitingActivity } = useActivityContext()
@@ -255,6 +275,9 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, sgTim
     useEffect(() => {
         if (import.meta.env.VITE_MINI_APP_ENV == 'test' && activity?.last_login_time) {
             // const sgTimeNowString = sgTimeNowByDayJs()
+            // console.log(sgTimeNowString);
+            console.log(sgTime);
+
             const activityCheck = activity?.last_login_time.split('T')[0] == sgTime.split('T')[0]
             if (activityCheck == true || clicked == true) {
                 setAllowed(false)
@@ -363,10 +386,10 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, sgTim
                         logged_in: false,
                         login_streak: 1,
                         total_logins: 1,
-                        last_action_time: new Date().toISOString(),
-                        last_login_time: new Date().toISOString(),
-                        created_at: new Date().toISOString(),
-                        updated_at: new Date().toISOString(),
+                        last_action_time: sgTime,
+                        last_login_time: sgTime,
+                        created_at: sgTime,
+                        updated_at: sgTime,
                     })
                     setIsWaitingPoint(true)
                     setPoint({
@@ -374,8 +397,8 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, sgTim
                         login_amount: 2,
                         referral_amount: 0,
                         extra_profit_per_hour: 0,
-                        created_at: new Date().toISOString(),
-                        updated_at: new Date().toISOString(),
+                        created_at: sgTime,
+                        updated_at: sgTime,
                     })
                 } else {
                     setIsClicked(true)
@@ -440,10 +463,9 @@ const DemoReferralComponent = ({ /* MINI_APP_APP */ }) => {
 }
 
 
-const DemoBonusComponent = ({ weeklyCount, referralCount }) => {
+const DemoBonusComponent = ({ weeklyCount, referralCount }: DemoBonusComponentProp) => {
     return (
         <div className='relative'>
-
             <div className='grid grid-rows-1 justify-items-center'>
                 <div className="[font-family:'Rubik-Regular',Helvetica]
                 font-normal
@@ -460,9 +482,8 @@ const DemoBonusComponent = ({ weeklyCount, referralCount }) => {
                 text-xl">Bonus</div>
                 <div className="w-[342px] h-14 bg-[rgba(255,255,255,1.0)] rounded-md overflow-hidden [background:radial-gradient(50%_50%_at_50%_50%,rgb(112.62,108.57,77.9)_0%,rgb(119,102.27,78.84)_100%)] relative mb-5">
                     <Progress className="[&>*]:[background:radial-gradient(50%_50%_at_50%_50%,rgb(255,225.25,0)_0%,rgb(255,148.75,0)_100%)]
-                    h-14
-                    rounded-[6px_0px_0px_0px]"
-                        value={weeklyCount / 7 * 100}
+                    h-14 rounded-[6px_0px_0px_0px]"
+                        value={weeklyCount && weeklyCount / 7 * 100}
                         max={7} />
                     <div className="relative w-[342px] h-14">
                         <div className="absolute h-14 top-0 left-0 rounded-[6px_0px_0px_0px] [background:radial-gradient(50%_50%_at_50%_50%,rgb(255,225.25,0)_0%,rgb(255,148.75,0)_100%)]" />
@@ -485,14 +506,11 @@ const DemoBonusComponent = ({ weeklyCount, referralCount }) => {
     )
 }
 
-const DemoFriendReferralComponent = ({ referralCount }) => {
+const DemoFriendReferralComponent = ({ referralCount }: DemoFriendReferralComponentProp) => {
     return (
         <div className="w-[342px] h-14 bg-[rgba(255,255,255,1.0)] rounded-md overflow-hidden [background:radial-gradient(50%_50%_at_50%_50%,rgb(112.62,108.57,77.9)_0%,rgb(119,102.27,78.84)_100%)] relative mb-5">
-            <Progress className="[&>*]:[background:radial-gradient(50%_50%_at_50%_50%,rgb(255,225.25,0)_0%,rgb(255,148.75,0)_100%)]
-            h-14
-            rounded-[6px_0px_0px_0px] 
-            "
-                value={referralCount / 10 * 100}
+            <Progress className="[&>*]:[background:radial-gradient(50%_50%_at_50%_50%,rgb(255,225.25,0)_0%,rgb(255,148.75,0)_100%)]h-14 rounded-[6px_0px_0px_0px]"
+                value={referralCount && referralCount / 10 * 100}
                 max={10} />
             <div className="relative w-[342px] h-14">
                 <div className="absolute h-14 top-0 left-0 rounded-[6px_0px_0px_0px] [background:radial-gradient(50%_50%_at_50%_50%,rgb(255,225.25,0)_0%,rgb(255,148.75,0)_100%)]" />
@@ -501,7 +519,7 @@ const DemoFriendReferralComponent = ({ referralCount }) => {
                 </div>
             </div>
             <p className="absolute w-[269px] top-[18px] left-9 [font-family:'Roboto-Black',Helvetica] font-normal text-[#ffffff] text-base text-center tracking-[0] leading-[normal]">
-                <span className="font-black">+ {`${tenFriendsReferralPointReward}`} </span>
+                <span className="font-black">+ {`${tenFriendsReferralPointReward}`}</span>
                 <span className="[font-family:'Roboto-Medium',Helvetica] font-medium">
                     points for every 10 people
                 </span>
