@@ -147,45 +147,44 @@ const DemoEarn = () => {
                             }
                         }
                     }
-                }
-                    // setIsClaimedReferral(true);
-                    // setFriendTrigger(0);
                 } catch (error) {
-                console.error('Error handling referral reward:', error);
-            } finally {
-                setIsWaitingPoint(false);
-                setIsWaitingFriend(false);
-                setFriendTrigger(0)
-            }
+                    console.error('Error handling referral reward:', error);
+                } finally {
+                    setIsWaitingPoint(false);
+                    setIsWaitingFriend(false);
+                    setFriendTrigger(0)
+                }
+            };
         };
-    };
 
-    handleReferralReward();
-}, [friendTrigger, isClaimedReferral, point, account])
+        handleReferralReward();
+    }, [friendTrigger, isClaimedReferral, point, account])
 
-return (
-    <div className='w-[100%] h-[690px]'>
-        <DemoEarnComponent
-            timeLeft={timeLeft}
-            dailyReward={dailyReward}
-            setDailyReward={setDailyReward}
-            totalPointAmount={totalPointAmount}
-            sgTime={sgTime}
-        />
-        <DemoBonusComponent
-            weeklyCount={activity?.login_streak} // using cont 7 day count
-            referralCount={friendTrigger} />
-    </div>
-)
+    return (
+        <div className='w-[100%] h-[690px]'>
+            <DemoEarnComponent
+                timeLeft={timeLeft}
+                dailyReward={dailyReward}
+                setDailyReward={setDailyReward}
+                totalPointAmount={totalPointAmount}
+                sgTime={sgTime}
+                point={point ?? 0}
+            />
+            <DemoBonusComponent
+                weeklyCount={activity?.login_streak} // using cont 7 day count
+                referralCount={friendTrigger} />
+        </div>
+    )
 }
 
-const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, totalPointAmount, sgTime }: DemoEarnComponentProp) => {
+const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, totalPointAmount, sgTime, point }: DemoEarnComponentProp) => {
     return (
         <>
             <div className="w-[343px] h-[85px] sm:h-[95px] md:h-[105px] bg-[#ffffff33] rounded-lg flex justify-center content-center items-center mx-auto">
                 <img className="w-[53px] h-[54px]" alt="Layer" src={CoinIcon} />
                 <div className="w-[200px] text-white font-semibold [font-family:'Rubik-Medium',Helvetica]text-[#ffef2b] text-[28px] tracking-[0.38px]">
                     {totalPointAmount ? totalPointAmount.toLocaleString() : 0}
+                    {typeof (point) !== 'number' ? (point.login_amount + point.referral_amount).toLocaleString() : 0}
                 </div>
             </div>
             <div className='flex justify-center justify-items-center mx-5 sm:mx-5 md:mx-6 pt-3 sm:pt-3  space-x-5'>
