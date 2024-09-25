@@ -12,7 +12,6 @@ import { getActivity, updateActivity } from '@/apis/ActivityServices'
 import { useFriendContext } from '@/contexts/FriendContext'
 import { isYesterday, sgTimeNowByDayJs } from '@/utils'
 import { format } from 'date-fns'
-import { PointType } from '@/type'
 
 const MINI_APP_BOT_NAME = import.meta.env.VITE_MINI_APP_BOT_NAME
 const MINI_APP_NAME = import.meta.env.VITE_MINI_APP_NAME
@@ -22,7 +21,6 @@ interface DemoEarnComponentProp {
     timeLeft: string,
     dailyReward: boolean,
     setDailyReward: Dispatch<SetStateAction<boolean>>,
-    // point?: PointType,
     totalPointAmount: number,
     sgTime: string,
 }
@@ -61,7 +59,6 @@ const DemoEarn = () => {
         const timer = setInterval(() => {
             setSgTime(sgTimeNowByDayJs());
         }, 1000);
-
         return () => clearInterval(timer);
     }, []);
 
@@ -90,10 +87,10 @@ const DemoEarn = () => {
             setIsWaitingActivity(true);
 
             try {// Fetch existing point and update if necessary
-                const existingPoint = await getPoint({ access_token: '', user_id: account?.id });
-                if (existingPoint) {
+                // const existingPoint = await getPoint({ access_token: '', user_id: account?.id });
+                if (point) {
                     const updatePointPayload = {
-                        id: existingPoint?.point_base.point.id,
+                        id: point.id,
                         type: 'add', // REVIEW: add / minus point
                         access_token: '',
                         point_payload: {
@@ -102,7 +99,8 @@ const DemoEarn = () => {
                     };
                     const updatedPoint = await updatePoint(updatePointPayload);
                     if (updatedPoint && updatedPoint?.point_base.user_id) {
-                        setPoint({
+                        setPoint(updatedPoint.point_base.point)
+                        /* {
                             id: updatedPoint?.point_base.user_id,
                             login_amount: updatedPoint?.point_base.point.login_amount,
                             referral_amount: updatedPoint?.point_base.point.referral_amount,
@@ -110,23 +108,24 @@ const DemoEarn = () => {
                             created_at: updatedPoint?.point_base.point.created_at,
                             updated_at: updatedPoint?.point_base.point.updated_at,
                             custom_logs: updatedPoint?.point_base.point.custom_logs
-                        })
+                        } */
                     }
                 }
-                // Update activity data (assuming login streak reset)
-                const updateActivityPayload = {
-                    id: activity?.id,
-                    access_token: '',
-                    user_id: account?.id,
-                    activity: {
-                        logged_in: true, // Update logged_in state
-                        login_streak: 1, // Reset login streak
-                        total_logins: activity?.total_logins + 1, // Increment total logins
-                        last_action_time: sgTime /* sgTimeNowByDayJs(), */
-                    },
-                };
-                const updatedActivity = await updateActivity(updateActivityPayload);
-                setActivity(updatedActivity?.activity);
+                if (activity) {
+                    const updateActivityPayload = { // Update activity data (assuming login streak reset)
+                        id: activity?.id,
+                        access_token: '',
+                        user_id: account?.id,
+                        activity: {
+                            logged_in: true, // Update logged_in state
+                            login_streak: 1, // Reset login streak
+                            total_logins: activity?.total_logins + 1, // Increment total logins
+                            last_action_time: sgTime /* sgTimeNowByDayJs(), */
+                        },
+                    };
+                    const updatedActivity = await updateActivity(updateActivityPayload);
+                    setActivity(updatedActivity?.activity);
+                }
             } catch (error) {
                 console.error('Error handling weekly reward:', error);
             } finally {
@@ -166,7 +165,7 @@ const DemoEarn = () => {
 
                     const existingPoint = await getPoint({ access_token: '', user_id: account?.id }); // Fetch existing point and update if necessary
 
-                    if (existingPoint) {
+                    if (point) {
                         const dbPointAction = existingPoint?.point_base?.point?.custom_logs?.action.split('claim')[1]
                         if (dbPointAction) {
                             if (friendTrigger / 10 != parseInt(dbPointAction)) {
@@ -324,17 +323,18 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, sgTim
                 }
             const dbActivity = await updateActivity(updateActivityPayload)
             if (dbActivity) {
-                setActivity({
-                    id: dbActivity.activity.id,
-                    logged_in: dbActivity.activity.logged_in,
-                    login_streak: dbActivity.activity.login_streak,
-                    total_logins: dbActivity.activity.total_logins,
-                    last_action_time: dbActivity.activity.last_action_time,
-                    last_login_time: dbActivity.activity.last_login_time,
-                    created_at: dbActivity.activity.created_at,
-                    updated_at: dbActivity.activity.updated_at,
-                    custom_logs: dbActivity.activity.custom_logs,
-                })
+                setActivity(dbActivity.activity)
+                /*  {
+                     id: dbActivity.activity.id,
+                     logged_in: dbActivity.activity.logged_in,
+                     login_streak: dbActivity.activity.login_streak,
+                     total_logins: dbActivity.activity.total_logins,
+                     last_action_time: dbActivity.activity.last_action_time,
+                     last_login_time: dbActivity.activity.last_login_time,
+                     created_at: dbActivity.activity.created_at,
+                     updated_at: dbActivity.activity.updated_at,
+                     custom_logs: dbActivity.activity.custom_logs,
+                 } */
                 setIsWaitingActivity(false)
             }
         }
@@ -348,7 +348,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, sgTim
         if (point) {
             const updatePointPayload = {
                 id: point.id,
-                type: 'add', // REVIEW: add / minus point
+                type: 'add',
                 access_token: '',
                 point_payload: {
                     login_amount: dailyCheckInPointReward,
@@ -357,15 +357,16 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, sgTim
             const dbPoint = await updatePoint(updatePointPayload)
 
             if (dbPoint && dbPoint?.point_base.user_id) {
-                setPoint({
-                    id: dbPoint?.point_base.user_id,
-                    login_amount: dbPoint?.point_base.point.login_amount,
-                    referral_amount: dbPoint?.point_base.point.referral_amount,
-                    extra_profit_per_hour: dbPoint?.point_base.point.extra_profit_per_hour,
-                    created_at: dbPoint?.point_base.point.created_at,
-                    updated_at: dbPoint?.point_base.point.updated_at,
-                    custom_logs: dbPoint?.point_base.point.custom_logs
-                })
+                setPoint(dbPoint.point_base.point)
+                // {
+                //     id: dbPoint?.point_base.user_id,
+                //     login_amount: dbPoint?.point_base.point.login_amount,
+                //     referral_amount: dbPoint?.point_base.point.referral_amount,
+                //     extra_profit_per_hour: dbPoint?.point_base.point.extra_profit_per_hour,
+                //     created_at: dbPoint?.point_base.point.created_at,
+                //     updated_at: dbPoint?.point_base.point.updated_at,
+                //     custom_logs: dbPoint?.point_base.point.custom_logs
+                // }
                 setIsWaitingPoint(false)
             }
         }
@@ -482,7 +483,8 @@ const DemoBonusComponent = ({ weeklyCount, referralCount }: DemoBonusComponentPr
                 text-xl">Bonus</div>
                 <div className="w-[342px] h-14 bg-[rgba(255,255,255,1.0)] rounded-md overflow-hidden [background:radial-gradient(50%_50%_at_50%_50%,rgb(112.62,108.57,77.9)_0%,rgb(119,102.27,78.84)_100%)] relative mb-5">
                     <Progress className="[&>*]:[background:radial-gradient(50%_50%_at_50%_50%,rgb(255,225.25,0)_0%,rgb(255,148.75,0)_100%)]
-                    h-14 rounded-[6px_0px_0px_0px]"
+                    h-14
+                    rounded-[6px_0px_0px_0px]"
                         value={weeklyCount && weeklyCount / 7 * 100}
                         max={7} />
                     <div className="relative w-[342px] h-14">
@@ -509,7 +511,7 @@ const DemoBonusComponent = ({ weeklyCount, referralCount }: DemoBonusComponentPr
 const DemoFriendReferralComponent = ({ referralCount }: DemoFriendReferralComponentProp) => {
     return (
         <div className="w-[342px] h-14 bg-[rgba(255,255,255,1.0)] rounded-md overflow-hidden [background:radial-gradient(50%_50%_at_50%_50%,rgb(112.62,108.57,77.9)_0%,rgb(119,102.27,78.84)_100%)] relative mb-5">
-            <Progress className="[&>*]:[background:radial-gradient(50%_50%_at_50%_50%,rgb(255,225.25,0)_0%,rgb(255,148.75,0)_100%)]h-14 rounded-[6px_0px_0px_0px]"
+            <Progress className="[&>*]:[background:radial-gradient(50%_50%_at_50%_50%,rgb(255,225.25,0)_0%,rgb(255,148.75,0)_100%)] h-14 rounded-[6px_0px_0px_0px]"
                 value={referralCount && referralCount / 10 * 100}
                 max={10} />
             <div className="relative w-[342px] h-14">
@@ -519,7 +521,7 @@ const DemoFriendReferralComponent = ({ referralCount }: DemoFriendReferralCompon
                 </div>
             </div>
             <p className="absolute w-[269px] top-[18px] left-9 [font-family:'Roboto-Black',Helvetica] font-normal text-[#ffffff] text-base text-center tracking-[0] leading-[normal]">
-                <span className="font-black">+ {`${tenFriendsReferralPointReward}`}</span>
+                <span className="font-black">+ {`${tenFriendsReferralPointReward}`} </span>
                 <span className="[font-family:'Roboto-Medium',Helvetica] font-medium">
                     points for every 10 people
                 </span>
