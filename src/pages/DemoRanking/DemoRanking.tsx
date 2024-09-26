@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { TabbarLink } from 'konsta/react'
 
 import { mockPointRankingData, mockReferralRankingData } from '@/constants'
@@ -34,10 +34,29 @@ const DemoRanking = () => {
     const [myReferralRecord, setMyReferralRecord] = useState<ReferralRankingItem>()
     const [myPointRecord, setMyPointRecord] = useState<PointRankingItem>()
     const [existingUsers, setExistingUsers] = useState([]) // TODO:
-    // useEffect(()=>{
+    const hasRankingBeenFetched = useRef(false)
 
     // })
-    const handlePointRanking = useCallback(async () => {
+    useEffect(() => {
+        const fetchRankings = async () => {
+            if (hasRankingBeenFetched.current || import.meta.env.VITE_MINI_APP_ENV === 'test') return;
+
+            setIsWaitingPoint(true);
+            try {
+                await handleReferralRanking();
+                await handlePointRanking();
+                hasRankingBeenFetched.current = true;
+            } catch (error) {
+                console.error('Error fetching rankings:', error);
+            } finally {
+                setIsWaitingPoint(false);
+            }
+        };
+
+        fetchRankings();
+    }, [account]);
+
+    const handlePointRanking = async () => {
         setIsWaitingUser(true)
         const myPointRankingFromServer = await getPointRanking({
             access_token: '',
@@ -74,9 +93,9 @@ const DemoRanking = () => {
         } else {
             console.log('No users found for point ranking.'); // Informative logging
         }
-    }, [account, setIsWaitingPoint, setMyPointRecord, setPointRanking]);
+    }
 
-    const handleReferralRanking = useCallback(async () => {
+    const handleReferralRanking = async () => {
         // setIsWaitingUser(true)
         const myReferralRankingFromServer = await getReferralRanking({
             access_token: '',
@@ -130,16 +149,32 @@ const DemoRanking = () => {
         } else {
             console.log('No users found for referral ranking.'); // Informative logging
         }
-    }, [account, setIsWaitingFriend, setMyReferralRecord, setReferrakRanking])
+    }
 
+
+    //useEffect(() => {
+    //    if (import.meta.env.VITE_MINI_APP_ENV !== 'test') {
+    //        handleReferralRanking()
+    //        handlePointRanking()
+    //        // setIsWaitingUser(false)
+    //        // setIsWaitingFriend(false)
+    //        // setIsWaitingPoint(false)
+    //    } else {
+    //        // setIsWaitingUser(true)
+    //        setReferrakRanking(mockReferralRankingData)
+    //        setMyReferralRecord({ name: 'nextInnovationDev25', rank: 1, referral: 25 })
+    //        // setIsWaitingFriend(true)
+    //        setPointRanking(mockPointRankingData)
+    //        setMyPointRecord({ name: 'nextInnovationDev25', rank: 25, point: 250 })
+    //        // setIsWaitingPoint(true)
+    //        // setIsWaitingUser(false)
+    //        // setIsWaitingFriend(false)
+    //        // setIsWaitingPoint(false)
+    //    }
+    //
+    //}, [])
     useEffect(() => {
-        if (import.meta.env.VITE_MINI_APP_ENV !== 'test') {
-            handleReferralRanking()
-            handlePointRanking()
-            // setIsWaitingUser(false)
-            // setIsWaitingFriend(false)
-            // setIsWaitingPoint(false)
-        } else {
+        if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
             // setIsWaitingUser(true)
             setReferrakRanking(mockReferralRankingData)
             setMyReferralRecord({ name: 'nextInnovationDev25', rank: 1, referral: 25 })
@@ -152,7 +187,7 @@ const DemoRanking = () => {
             // setIsWaitingPoint(false)
         }
 
-    }, [account, handlePointRanking, handleReferralRanking])
+    }, [])
     return (
         <div className='w-[100%] h-[690px]'>
             <div className='flex justify-center'>
