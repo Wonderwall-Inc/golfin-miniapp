@@ -163,7 +163,7 @@ const DemoEarn = () => {
                 dailyReward={dailyReward}
                 setDailyReward={setDailyReward}
                 totalPointAmount={totalPointAmount}
-                sgTime={sgTime}
+                sgTime={sgTime.split('T')[0]}
             />
             <DemoBonusComponent
                 weeklyCount={activity?.login_streak} // using cont 7 day count
@@ -196,12 +196,21 @@ const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, totalPointAm
 }
 
 
-const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, sgTime }: DemoDailyRewardComponentProp) => {
+const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, /* sgTime */ }: DemoDailyRewardComponentProp) => {
     const { setPoint, setIsWaitingPoint, point } = usePointContext()
     const { account } = useUserContext()
     const { setActivity, activity, setIsWaitingActivity } = useActivityContext()
     const [allowed, setAllowed] = useState(true)
     const [clicked, setIsClicked] = useState(false)
+
+    const [sgTime, setSgTime] = useState(sgTimeNowByDayJs());
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setSgTime(sgTimeNowByDayJs());
+        }, 1000);
+        return () => clearInterval(timer);
+    }, []);
 
     useEffect(() => {
         if (import.meta.env.VITE_MINI_APP_ENV == 'test' && activity?.last_login_time) {
@@ -322,7 +331,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, sgTim
                         >
                             Daily Reward
                             <br />
-                            <Countdown targetDate={sgTime}  /* dailyReward={dailyReward} setDailyReward={setDailyReward} */ />
+                            <Countdown targetDate={sgTime.split('T')[0]}  /* dailyReward={dailyReward} setDailyReward={setDailyReward} */ />
                         </div>
                     }
 
