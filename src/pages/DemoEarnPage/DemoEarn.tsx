@@ -29,6 +29,7 @@ const DemoEarn = () => {
     const [totalPointAmount, setTotalPointAmount] = useState(0)
     const [sgTime, setSgTime] = useState(sgTimeNowByDayJs());
     const [isClaimedReferral, setIsClaimedReferral] = useState(false)
+    const [isClicked, setIsClicked] = useState(false)
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -38,14 +39,19 @@ const DemoEarn = () => {
     }, []);
 
     useEffect(() => {
-        const todayDay = new Date()
-        const todayYY = todayDay.getFullYear()
-        const todayMM = todayDay.getUTCMonth() + 1
-        const preTodayMM = todayMM < 10 ? `0${todayMM}` : todayMM
-        const todayDD = todayDay.getDate() + 1
-        const todayYYMMDD = `${todayYY}-${preTodayMM}-${todayDD}T00:00:00`
-        setTimeLeft(todayYYMMDD)
-    }, [new Date()])
+        // const todayDay = new Date()
+        // const todayYY = todayDay.getFullYear()
+        // const todayMM = todayDay.getUTCMonth() + 1
+        // const preTodayMM = todayMM < 10 ? `0${todayMM}` : todayMM
+        // const todayDD = todayDay.getDate() + 1
+        // const todayYYMMDD = `${todayYY}-${preTodayMM}-${todayDD}T00:00:00`
+        // setTimeLeft(todayYYMMDD)
+        if (isClicked == true) {
+            const dateTimeNow = sgTime
+            const todayYYMMDD = `${dateTimeNow.split('T')[0]}T00:00:00`
+            setTimeLeft(todayYYMMDD)
+        }
+    }, [isClicked])
 
 
     useEffect(() => {
@@ -164,6 +170,8 @@ const DemoEarn = () => {
                 setDailyReward={setDailyReward}
                 totalPointAmount={totalPointAmount}
                 sgTime={sgTime.split('T')[0]}
+                isClicked={isClicked}
+                setIsClicked={setIsClicked}
             />
             <DemoBonusComponent
                 weeklyCount={activity?.login_streak} // using cont 7 day count
@@ -172,7 +180,7 @@ const DemoEarn = () => {
     )
 }
 
-const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, totalPointAmount, sgTime }: DemoEarnComponentProp) => {
+const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, totalPointAmount, sgTime, isClicked, setIsClicked }: DemoEarnComponentProp) => {
     return (
         <>
             <div className="w-[343px] h-[85px] sm:h-[95px] md:h-[105px] bg-[#ffffff33] rounded-lg flex justify-center content-center items-center mx-auto">
@@ -188,6 +196,8 @@ const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, totalPointAm
                     dailyReward={dailyReward}
                     setDailyReward={setDailyReward}
                     sgTime={sgTime}
+                    isClicked={isClicked}
+                    setIsClicked={setIsClicked}
                 />
                 <DemoReferralComponent />
             </div>
@@ -196,28 +206,28 @@ const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, totalPointAm
 }
 
 
-const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, /* sgTime */ }: DemoDailyRewardComponentProp) => {
+const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, sgTime, isClicked, setIsClicked }: DemoDailyRewardComponentProp) => {
     const { setPoint, setIsWaitingPoint, point } = usePointContext()
     const { account } = useUserContext()
     const { setActivity, activity, setIsWaitingActivity } = useActivityContext()
     const [allowed, setAllowed] = useState(true)
-    const [clicked, setIsClicked] = useState(false)
 
-    const [sgTime, setSgTime] = useState(sgTimeNowByDayJs());
 
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setSgTime(sgTimeNowByDayJs());
-        }, 1000);
-        return () => clearInterval(timer);
-    }, []);
+    // const [sgTime, setSgTime] = useState(sgTimeNowByDayJs());
+
+    // useEffect(() => {
+    //     const timer = setInterval(() => {
+    //         setSgTime(sgTimeNowByDayJs());
+    //     }, 1000);
+    //     return () => clearInterval(timer);
+    // }, []);
 
     useEffect(() => {
         if (import.meta.env.VITE_MINI_APP_ENV == 'test' && activity?.last_login_time) {
             console.log(sgTime);
 
             const activityCheck = activity?.last_login_time.split('T')[0] == sgTime.split('T')[0]
-            if (activityCheck == true || clicked == true) {
+            if (activityCheck == true || isClicked == true) {
                 setAllowed(false)
             }
         } else {
@@ -225,7 +235,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, /* sg
                 setIsClicked(true)
                 const activityCheck = activity?.last_login_time.split('T')[0] === sgTime.split('T')[0]
 
-                if (activityCheck == true || clicked == true) {
+                if (activityCheck == true || isClicked == true) {
                     setAllowed(false)
                 }
             }
@@ -332,7 +342,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, /* sg
                         >
                             Daily Reward
                             <br />
-                            <Countdown targetDate={`${sgTime.split('T')[0]}T00:00:00`}  /* dailyReward={dailyReward} setDailyReward={setDailyReward} */ />
+                            <Countdown targetDate={timeLeft}  /* dailyReward={dailyReward} setDailyReward={setDailyReward} */ />
                         </div>
                     }
 

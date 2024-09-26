@@ -21,7 +21,9 @@ export interface DemoEarnComponentProp {
     dailyReward: boolean,
     setDailyReward: Dispatch<SetStateAction<boolean>>,
     totalPointAmount: number,
-    sgTime: string
+    sgTime: string,
+    isClicked: boolean,
+    setIsClicked: Dispatch<SetStateAction<boolean>>,
 }
 
 export interface DemoDailyRewardComponentProp {
@@ -29,6 +31,8 @@ export interface DemoDailyRewardComponentProp {
     dailyReward: boolean,
     setDailyReward: Dispatch<SetStateAction<boolean>>,
     sgTime: string
+    isClicked: boolean,
+    setIsClicked: Dispatch<SetStateAction<boolean>>,
 }
 
 export interface DemoBonusComponentProp {
