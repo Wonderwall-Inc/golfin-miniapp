@@ -152,7 +152,7 @@ const DemoRanking = () => {
             // setIsWaitingPoint(false)
         }
 
-    }, [])
+    }, [account])
     return (
         <div className='w-[100%] h-[690px]'>
             <div className='flex justify-center'>
