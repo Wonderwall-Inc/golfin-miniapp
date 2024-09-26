@@ -321,7 +321,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, sgTim
                         >
                             Daily Reward
                             <br />
-                            <Countdown targetDate={timeLeft}  /* dailyReward={dailyReward} setDailyReward={setDailyReward} */ />
+                            <Countdown targetDate={sgTime}  /* dailyReward={dailyReward} setDailyReward={setDailyReward} */ />
                         </div>
                     }
 
