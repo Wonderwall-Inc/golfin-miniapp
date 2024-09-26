@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { TabbarLink } from 'konsta/react'
 
 import { mockPointRankingData, mockReferralRankingData } from '@/constants'
@@ -37,102 +37,102 @@ const DemoRanking = () => {
     // useEffect(()=>{
 
     // })
-    useEffect(() => {
-        const handleReferralRanking = async () => {
-            // setIsWaitingUser(true)
-            const myReferralRankingFromServer = await getReferralRanking({
-                access_token: '',
-                user_id: account?.id
+    const handlePointRanking = useCallback(async () => {
+        setIsWaitingUser(true)
+        const myPointRankingFromServer = await getPointRanking({
+            access_token: '',
+            user_id: account?.id
+        })
+        console.log('my ranking from server: ', myPointRankingFromServer);
+        if (myPointRankingFromServer && account?.telegram_info.username) {
+            setMyPointRecord({
+                rank: myPointRankingFromServer.rank,
+                name: account?.telegram_info.username,
+                point: myPointRankingFromServer?.total_points
             })
-            console.log('my referral ranking from server: ', myReferralRankingFromServer);
-            if (myReferralRankingFromServer && account?.telegram_info.username) {
-                setMyReferralRecord({
-                    rank: myReferralRankingFromServer.rank,
-                    name: account?.telegram_info.username,
-                    referral: myReferralRankingFromServer?.referral_count
+        }
+        const existingUsers = await getPointRankingList();
+
+        console.log(existingUsers);
+
+        if (existingUsers && existingUsers.length > 0) {
+            const pointRanking = await Promise.all(existingUsers.map(async (user) => {
+                const dbUser = await getUser({
+                    access_token: '',
+                    id: user.user_id.toString()
                 })
-            }
+                return {
+                    rank: user.rank,
+                    name: dbUser?.user_details.user_base.telegram_info.username,
+                    point: user?.total_points
+                }
+            }));
+            console.log('pointRanking');
+            console.log(pointRanking);
+            setPointRanking(pointRanking);
+            setIsWaitingUser(false)
+        } else {
+            console.log('No users found for point ranking.'); // Informative logging
+        }
+    }, [account, setIsWaitingPoint, setMyPointRecord, setPointRanking]);
 
-            const existingUsers = await getUsers(0, 10);
-
-            console.log(existingUsers);
-
-            if (existingUsers && existingUsers.length > 0) {
-                const referralRanking: ReferralRankingItem[] = existingUsers.map((user, index) => {
-                    const senderCount = user.user_details.sender?.length || 0; // Handle potential nullish value
-                    return {
-                        rank: index,
-                        name: user.user_details.user_base.telegram_info.username,
-                        referral: senderCount,
-                    };
-                });
-                console.log('referralRanking');
-                console.log(referralRanking);
-                // setIsWaitingFriend(true)
-                referralRanking.sort((a, b) => b.referral - a.referral).map((item, index) => ({
-                    ...item,
-                    rank: index + 1, // Assign the ranking position
-                }));
-                referralRanking.map((r, sortIndex) => {
-                    // if (r.name == account?.telegram_info.username) {
-                    //     setMyReferralRecord({
-                    //         rank: sortIndex,
-                    //         name: account?.telegram_info.username,
-                    //         referral: r.referral
-                    //     })
-                    // }
-                    return {
-                        ...r, rank: sortIndex
-                    }
-                })
-                setReferrakRanking(referralRanking);
-                // console.log('myReferralRecord');
-                // console.log(myReferralRecord);
-
-            } else {
-                console.log('No users found for referral ranking.'); // Informative logging
-            }
+    const handleReferralRanking = useCallback(async () => {
+        // setIsWaitingUser(true)
+        const myReferralRankingFromServer = await getReferralRanking({
+            access_token: '',
+            user_id: account?.id
+        })
+        console.log('my referral ranking from server: ', myReferralRankingFromServer);
+        if (myReferralRankingFromServer && account?.telegram_info.username) {
+            setMyReferralRecord({
+                rank: myReferralRankingFromServer.rank,
+                name: account?.telegram_info.username,
+                referral: myReferralRankingFromServer?.referral_count
+            })
         }
 
-        const handlePointRanking = async () => {
-            setIsWaitingUser(true)
-            const myPointRankingFromServer = await getPointRanking({
-                access_token: '',
-                user_id: account?.id
+        const existingUsers = await getUsers(0, 10);
+
+        console.log(existingUsers);
+
+        if (existingUsers && existingUsers.length > 0) {
+            const referralRanking: ReferralRankingItem[] = existingUsers.map((user, index) => {
+                const senderCount = user.user_details.sender?.length || 0; // Handle potential nullish value
+                return {
+                    rank: index,
+                    name: user.user_details.user_base.telegram_info.username,
+                    referral: senderCount,
+                };
+            });
+            console.log('referralRanking');
+            console.log(referralRanking);
+            // setIsWaitingFriend(true)
+            referralRanking.sort((a, b) => b.referral - a.referral).map((item, index) => ({
+                ...item,
+                rank: index + 1, // Assign the ranking position
+            }));
+            referralRanking.map((r, sortIndex) => {
+                // if (r.name == account?.telegram_info.username) {
+                //     setMyReferralRecord({
+                //         rank: sortIndex,
+                //         name: account?.telegram_info.username,
+                //         referral: r.referral
+                //     })
+                // }
+                return {
+                    ...r, rank: sortIndex
+                }
             })
-            console.log('my ranking from server: ', myPointRankingFromServer);
-            if (myPointRankingFromServer && account?.telegram_info.username) {
-                setMyPointRecord({
-                    rank: myPointRankingFromServer.rank,
-                    name: account?.telegram_info.username,
-                    point: myPointRankingFromServer?.total_points
-                })
-            }
-            const existingUsers = await getPointRankingList();
+            setReferrakRanking(referralRanking);
+            // console.log('myReferralRecord');
+            // console.log(myReferralRecord);
 
-            console.log(existingUsers);
+        } else {
+            console.log('No users found for referral ranking.'); // Informative logging
+        }
+    }, [account, setIsWaitingFriend, setMyReferralRecord, setReferrakRanking])
 
-            if (existingUsers && existingUsers.length > 0) {
-                const pointRanking = await Promise.all(existingUsers.map(async (user, index) => {
-                    const dbUser = await getUser({
-                        access_token: '',
-                        id: user.user_id.toString()
-                    })
-                    return {
-                        rank: user.rank,
-                        name: dbUser?.user_details.user_base.telegram_info.username,
-                        point: user?.total_points
-                    }
-                }));
-                console.log('pointRanking');
-                console.log(pointRanking);
-                setPointRanking(pointRanking);
-                setIsWaitingUser(false)
-            } else {
-                console.log('No users found for point ranking.'); // Informative logging
-            }
-        };
-
+    useEffect(() => {
         if (import.meta.env.VITE_MINI_APP_ENV !== 'test') {
             handleReferralRanking()
             handlePointRanking()
@@ -152,7 +152,7 @@ const DemoRanking = () => {
             // setIsWaitingPoint(false)
         }
 
-    }, [account])
+    }, [account, handlePointRanking, handleReferralRanking])
     return (
         <div className='w-[100%] h-[690px]'>
             <div className='flex justify-center'>
