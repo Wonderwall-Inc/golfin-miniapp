@@ -284,7 +284,6 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, /* sg
             }
         }
     }
-    console.log(sgTime.split('T'));
 
     return (
         <div className={`h-[100px] cursor-pointer ${allowed != true && 'pointer-events-none'}`}
@@ -333,7 +332,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, /* sg
                         >
                             Daily Reward
                             <br />
-                            <Countdown targetDate={sgTime.split('T')[0]}  /* dailyReward={dailyReward} setDailyReward={setDailyReward} */ />
+                            <Countdown targetDate={`${sgTime.split('T')[0]}T00:00:00`}  /* dailyReward={dailyReward} setDailyReward={setDailyReward} */ />
                         </div>
                     }
 
