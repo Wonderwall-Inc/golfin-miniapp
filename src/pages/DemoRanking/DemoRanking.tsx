@@ -24,7 +24,6 @@ const DemoRanking = () => {
     const { account, setIsWaitingUser } = useUserContext()
     const { setIsWaitingFriend } = useFriendContext()
     const { setIsWaitingPoint } = usePointContext()
-    const [dailyReward, setDailyReward] = useState(true)
     const [activeTab, setActiveTab] = useState('tab-1');
     const [isTabbarLabels, setIsTabbarLabels] = useState(true);
 
@@ -33,7 +32,6 @@ const DemoRanking = () => {
 
     const [myReferralRecord, setMyReferralRecord] = useState<ReferralRankingItem>()
     const [myPointRecord, setMyPointRecord] = useState<PointRankingItem>()
-    const [existingUsers, setExistingUsers] = useState([]) // TODO:
     const [isLoading, setIsLoading] = useState(false)
 
     // })
@@ -70,7 +68,7 @@ const DemoRanking = () => {
 
 
     const handlePointRanking = async () => {
-        setIsWaitingUser(true)
+        //setIsWaitingUser(true)
         const myPointRankingFromServer = await getPointRanking({
             access_token: '',
             user_id: account?.id
@@ -102,7 +100,7 @@ const DemoRanking = () => {
             console.log('pointRanking');
             console.log(pointRanking);
             setPointRanking(pointRanking);
-            setIsWaitingUser(false)
+            //setIsWaitingUser(false)
         } else {
             console.log('No users found for point ranking.'); // Informative logging
         }
