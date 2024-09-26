@@ -157,6 +157,7 @@ const DemoEarn = () => {
 
     return (
         <div className='w-[100%] h-[690px]'>
+            <div>sg: {sgTime}</div>
             <DemoEarnComponent
                 timeLeft={timeLeft}
                 dailyReward={dailyReward}
