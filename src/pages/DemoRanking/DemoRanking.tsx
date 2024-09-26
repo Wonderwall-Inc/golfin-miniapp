@@ -95,7 +95,7 @@ const DemoRanking = () => {
         }
 
         const handlePointRanking = async () => {
-            // setIsWaitingUser(true)
+            setIsWaitingUser(true)
             const myPointRankingFromServer = await getPointRanking({
                 access_token: '',
                 user_id: account?.id
@@ -127,6 +127,7 @@ const DemoRanking = () => {
                 console.log('pointRanking');
                 console.log(pointRanking);
                 setPointRanking(pointRanking);
+                setIsWaitingUser(false)
             } else {
                 console.log('No users found for point ranking.'); // Informative logging
             }
