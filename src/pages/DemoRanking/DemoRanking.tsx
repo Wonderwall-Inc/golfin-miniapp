@@ -38,7 +38,6 @@ const DemoRanking = () => {
     useEffect(() => {
         const fetchRankings = async () => {
             if (isLoading==false || !account) return;
-            setIsLoading(true);
             setIsWaitingPoint(true);
             setIsWaitingFriend(true);
 
@@ -68,6 +67,7 @@ const DemoRanking = () => {
 
     const handlePointRanking = async () => {
         //setIsWaitingUser(true)
+        setIsLoading(true);
         const myPointRankingFromServer = await getPointRanking({
             access_token: '',
             user_id: account?.id
@@ -108,6 +108,7 @@ const DemoRanking = () => {
 
     const handleReferralRanking = async () => {
         // setIsWaitingUser(true)
+        setIsLoading(true);
         const myReferralRankingFromServer = await getReferralRanking({
             access_token: '',
             user_id: account?.id
