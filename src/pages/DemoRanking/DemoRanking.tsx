@@ -46,13 +46,13 @@ const DemoRanking = () => {
             })
             console.log('my referral ranking from server: ', myReferralRankingFromServer);
             if (myReferralRankingFromServer && account?.telegram_info.username) {
-                setMyPointRecord({
+                setMyReferralRecord({
                     rank: myReferralRankingFromServer.rank,
                     name: account?.telegram_info.username,
-                    point: myReferralRankingFromServer?.total_points
+                    referral: myReferralRankingFromServer?.referral_count
                 })
             }
-            
+
             const existingUsers = await getUsers(0, 10);
 
             console.log(existingUsers);
@@ -86,8 +86,8 @@ const DemoRanking = () => {
                     }
                 })
                 setReferrakRanking(referralRanking);
-                console.log('myReferralRecord');
-                console.log(myReferralRecord);
+                // console.log('myReferralRecord');
+                // console.log(myReferralRecord);
 
             } else {
                 console.log('No users found for referral ranking.'); // Informative logging
@@ -150,9 +150,7 @@ const DemoRanking = () => {
                         ...p, rank: sortIndex
                     }
                 })
-                // setPointRanking(pointRanking);
-                // console.log('MyPointRecord');
-                // console.log(myPointRecord);
+                setPointRanking(pointRanking);
             } else {
                 console.log('No users found for point ranking.'); // Informative logging
             }

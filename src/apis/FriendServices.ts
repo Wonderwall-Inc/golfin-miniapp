@@ -95,7 +95,7 @@ export async function batchUpdateRewardClaimedBySenderId(senderId: number): Prom
 
 interface ReferralRankingType {
     rank: number
-    total_points: number
+    referral_count: number
     user_id: number
     id: number | undefined
 }
