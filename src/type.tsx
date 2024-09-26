@@ -428,6 +428,12 @@ export interface PointUpdateResponseType {
     point_base: PointDetailsType
 }
 
+export interface PointRankingType {
+    rank: number
+    total_points: number
+    user_id: number
+    id: number | undefined
+}
 
 // ACTIVITY
 

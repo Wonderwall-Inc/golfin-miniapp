@@ -7,7 +7,7 @@ import { getUser, getUsers } from '@/apis/UserSevices'
 import { useUserContext } from '@/contexts/UserContext'
 import { useFriendContext } from '@/contexts/FriendContext'
 import { usePointContext } from '@/contexts/PointContext'
-import { getPointRanking, getPointRankingList, PointRankingType } from '@/apis/PointServices'
+import { getPointRanking, getPointRankingList } from '@/apis/PointServices'
 import { getReferralRanking } from '@/apis/FriendServices'
 
 interface ReferralRankingItem {
@@ -118,50 +118,14 @@ const DemoRanking = () => {
                         access_token: '',
                         id: user.user_id.toString()
                     })
-                    if (dbUser?.user_details.user_base.telegram_info.username) {
-                        // Handle potential nullish values for user.user_details.point and user.user_details.point[0]
-                        return {
-                            rank: user.rank,
-                            name: dbUser?.user_details.user_base.telegram_info.username,
-                            point: user?.total_points
-                        }
+                    return {
+                        rank: user.rank,
+                        name: dbUser?.user_details.user_base.telegram_info.username,
+                        point: user?.total_points
                     }
-                    // Use optional chaining and nullish coalescing for safety
-                    // if (pointValue !== undefined) { // Check if point value is actually defined
-                    //     return {
-                    //         rank: index,
-                    //         name: user.user_details.user_base.telegram_info.username,
-                    //         point: pointValue.login_amount + pointValue.referral_amount,
-                    //     };
-                    // } else {
-                    //     // Handle users with no points (optional)
-                    //     return {
-                    //         rank: index,
-                    //         name: user.user_details.user_base.telegram_info.username,
-                    //         point: 0, // Set default value for users with no points (optional)
-                    //     };
-                    // }
                 }));
                 console.log('pointRanking');
                 console.log(pointRanking);
-                // setIsWaitingPoint(true)
-                // pointRanking.sort((a, b) => b.point - a.point).map((item, index) => ({
-                //     ...item,
-                //     rank: index + 1, // Assign the ranking position
-                // }));
-
-                // pointRanking.map((p, sortIndex) => {
-                //     // if (p.name == account?.telegram_info.username) {
-                //     //     setMyPointRecord({
-                //     //         rank: sortIndex,
-                //     //         name: account?.telegram_info.username,
-                //     //         point: p.point
-                //     //     })
-                //     // }
-                //     return {
-                //         ...p, rank: sortIndex
-                //     }
-                // })
                 setPointRanking(pointRanking);
             } else {
                 console.log('No users found for point ranking.'); // Informative logging

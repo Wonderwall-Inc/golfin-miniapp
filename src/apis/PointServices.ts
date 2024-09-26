@@ -1,6 +1,7 @@
 import {
     PointCreateRequestType,
     PointCreateResponseType,
+    PointRankingType,
     PointRetrievalRequestType,
     PointRetrievalResponseType,
     PointUpdateByIdRequestType,
@@ -62,13 +63,6 @@ export async function updatePoint(pointUpdate: PointUpdateByIdRequestType): Prom
 }
 
 
-
-export interface PointRankingType {
-    rank: number
-    total_points: number
-    user_id: number
-    id: number | undefined
-}
 // GET TOTAL POINT RANKING
 export async function getPointRanking(pointRankingRetrival: PointRetrievalRequestType): Promise<PointRankingType | undefined> {
     try {
@@ -88,7 +82,9 @@ export async function getPointRanking(pointRankingRetrival: PointRetrievalReques
         return undefined
     }
 }
-// GET TOTAL POINT RANKING
+
+
+// GET TOTAL POINT RANKING LIST
 export async function getPointRankingList(): Promise<[PointRankingType] | undefined> {
     try {
         const dbPointRanking = await api.get(`/point/ranking/`)
