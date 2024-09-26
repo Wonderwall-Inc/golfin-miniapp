@@ -32,7 +32,7 @@ const DemoRanking = () => {
 
     const [myReferralRecord, setMyReferralRecord] = useState<ReferralRankingItem>()
     const [myPointRecord, setMyPointRecord] = useState<PointRankingItem>()
-    const [existingUsers, setExistingUsers ]= useState([]) // TODO:
+    const [existingUsers, setExistingUsers] = useState([]) // TODO:
     // useEffect(()=>{
 
     // })
@@ -41,7 +41,7 @@ const DemoRanking = () => {
             // setIsWaitingUser(true)
             const existingUsers = await getUsers(0, 200); //FIXME: do we need to know the user ranking by overfetching api, if the size is too large
             console.log(existingUsers);
-            
+
             if (existingUsers && existingUsers.length > 0) {
                 const referralRanking: ReferralRankingItem[] = existingUsers.map((user, index) => {
                     const senderCount = user.user_details.sender?.length || 0; // Handle potential nullish value
@@ -82,12 +82,18 @@ const DemoRanking = () => {
         const handlePointRanking = async () => {
             // setIsWaitingUser(true)
             const myPointRankingFromServer = await getPointRanking({
-                access_token:'',
+                access_token: '',
                 user_id: account?.id
             })
             console.log('my ranking from server: ', myPointRankingFromServer);
-            
-            const existingUsers = await getUsers(0, 200);
+            if (myPointRankingFromServer.rank && account?.telegram_info.username) {
+                setMyPointRecord({
+                    rank: myPointRankingFromServer.rank,
+                    name: account?.telegram_info.username,
+                    point: myPointRankingFromServer.total_points
+                })
+            }
+            const existingUsers = await getUsers(0, 10);
             console.log(existingUsers);
 
             if (existingUsers && existingUsers.length > 0) {
@@ -116,22 +122,22 @@ const DemoRanking = () => {
                     ...item,
                     rank: index + 1, // Assign the ranking position
                 }));
-         
-                pointRanking.map((p, sortIndex) => {
-                    if (p.name == account?.telegram_info.username) {
-                        setMyPointRecord({
-                            rank: sortIndex,
-                            name: account?.telegram_info.username,
-                            point: p.point
-                        })
-                    }
-                    return {
-                        ...p, rank: sortIndex
-                    }
-                })
-                setPointRanking(pointRanking);
-                console.log('MyPointRecord');
-                console.log(myPointRecord);
+
+                // pointRanking.map((p, sortIndex) => {
+                //     if (p.name == account?.telegram_info.username) {
+                //         setMyPointRecord({
+                //             rank: sortIndex,
+                //             name: account?.telegram_info.username,
+                //             point: p.point
+                //         })
+                //     }
+                //     return {
+                //         ...p, rank: sortIndex
+                //     }
+                // })
+                // setPointRanking(pointRanking);
+                // console.log('MyPointRecord');
+                // console.log(myPointRecord);
             } else {
                 console.log('No users found for point ranking.'); // Informative logging
             }
