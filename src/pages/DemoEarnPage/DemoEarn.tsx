@@ -45,17 +45,11 @@ const DemoEarn = () => {
         const preTodayMM = todayMM < 10 ? `0${todayMM}` : todayMM
         const todayDD = todayDay.getDate() + 1
         const todayYYMMDD = `${todayYY}-${preTodayMM}-${todayDD}T00:00:00`
-        console.log('time: ', todayYYMMDD);
-        console.log('sgTime: ', sgTime);
-        console.log('sgTime[0]: ',`${sgTime.split('T')[0]}T00:00:00`);
-        
-        
+        // FIXME
+        // console.log('time: ', todayYYMMDD);
+        // console.log('sgTime: ', sgTime);
+        // console.log('sgTime[0]: ',`${sgTime.split('T')[0]}T00:00:00`);
         setTimeLeft(todayYYMMDD)
-    //    if(isClicked){
-    //     const dateTimeNow = sgTime
-    //     const todayYYMMDD = `${dateTimeNow.split('T')[0]}T00:00:00`
-    //     setTimeLeft(todayYYMMDD)
-    //    }
     }, [new Date()])
 
 
@@ -168,7 +162,7 @@ const DemoEarn = () => {
 
     return (
         <div className='w-[100%] h-[690px]'>
-            <div>sg: {sgTime}</div>
+            {/* <div>sg: {sgTime}</div> */}
             <DemoEarnComponent
                 timeLeft={timeLeft}
                 dailyReward={dailyReward}
@@ -330,8 +324,6 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, sgTim
                     setIsClicked(true)
                     handleCheckInDailyReward()
                 }
-
-
             }}>
 
             <div className='text-center w-[100%] h-[80px]'>

@@ -51,7 +51,7 @@ export async function getPoint(pointRetrieval: PointRetrievalRequestType): Promi
 
 // POINT UPDATING
 export async function updatePoint(pointUpdate: PointUpdateByIdRequestType): Promise<PointUpdateResponseType | undefined> {
-    try { 
+    try {
         const dbPoint = await api.put('/point/update', pointUpdate);
         const dbPointData = await dbPoint.data;
         return dbPointData
@@ -61,3 +61,24 @@ export async function updatePoint(pointUpdate: PointUpdateByIdRequestType): Prom
     }
 }
 
+
+
+// GET TOTAL POINT RANKING
+export async function getPointRanking(pointRankingRetrival: PointRetrievalRequestType): Promise<int | undefined> {
+    try {
+        const qs = []
+        for (const [key, val] of Object.entries(pointRankingRetrival)) {
+            if (val !== undefined && val !== null) {
+                qs.push(`${key}=${encodeURIComponent(val)}`)
+            }
+        }
+        const queryString = qs.length > 0 ? `?${qs.join('&')}` : '';
+
+        const dbPointRanking = await api.get(`/point/ranking/${queryString}`)
+        const dbPointRankingData = await dbPointRanking.data
+        return dbPointRankingData
+    } catch (error) {
+        console.log(error)
+        return undefined
+    }
+}

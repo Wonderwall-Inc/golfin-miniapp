@@ -7,6 +7,7 @@ import { getUsers } from '@/apis/UserSevices'
 import { useUserContext } from '@/contexts/UserContext'
 import { useFriendContext } from '@/contexts/FriendContext'
 import { usePointContext } from '@/contexts/PointContext'
+import { getPointRanking } from '@/apis/PointServices'
 
 interface ReferralRankingItem {
     rank: number,
@@ -80,6 +81,12 @@ const DemoRanking = () => {
 
         const handlePointRanking = async () => {
             // setIsWaitingUser(true)
+            const myPointRankingFromServer = await getPointRanking({
+                access_token:'',
+                user_id: account?.id
+            })
+            console.log('my ranking from server: ', myPointRankingFromServer);
+            
             const existingUsers = await getUsers(0, 200);
             console.log(existingUsers);
 
