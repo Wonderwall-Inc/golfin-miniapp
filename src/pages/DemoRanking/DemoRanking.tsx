@@ -37,10 +37,9 @@ const DemoRanking = () => {
     // })
     useEffect(() => {
         const fetchRankings = async () => {
-            if (isLoading || !account) return;
+            if (isLoading==false || !account) return;
             setIsLoading(true);
             setIsWaitingPoint(true);
-            setIsWaitingUser(true);
             setIsWaitingFriend(true);
 
             try {
@@ -100,6 +99,7 @@ const DemoRanking = () => {
             console.log('pointRanking');
             console.log(pointRanking);
             setPointRanking(pointRanking);
+            setIsLoading(false)
             //setIsWaitingUser(false)
         } else {
             console.log('No users found for point ranking.'); // Informative logging
@@ -154,6 +154,7 @@ const DemoRanking = () => {
                 }
             })
             setReferrakRanking(referralRanking);
+            setIsLoading(false)
             // console.log('myReferralRecord');
             // console.log(myReferralRecord);
 
