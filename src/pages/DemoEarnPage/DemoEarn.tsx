@@ -284,6 +284,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, /* sg
             }
         }
     }
+    console.log(sgTime.split('T'));
 
     return (
         <div className={`h-[100px] cursor-pointer ${allowed != true && 'pointer-events-none'}`}
@@ -318,6 +319,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, /* sg
 
 
             }}>
+
             <div className='text-center w-[100%] h-[80px]'>
                 <div className={`relative w-[160px] h-14 rounded-[6px_6px_0px_0px] 
                 ${allowed == true ? "[background:linear-gradient(180deg,rgb(169,231,29)_0%,rgb(94.04,196.56,89.27)_100%)]" :
