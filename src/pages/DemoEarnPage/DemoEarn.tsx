@@ -39,19 +39,24 @@ const DemoEarn = () => {
     }, []);
 
     useEffect(() => {
-        // const todayDay = new Date()
-        // const todayYY = todayDay.getFullYear()
-        // const todayMM = todayDay.getUTCMonth() + 1
-        // const preTodayMM = todayMM < 10 ? `0${todayMM}` : todayMM
-        // const todayDD = todayDay.getDate() + 1
-        // const todayYYMMDD = `${todayYY}-${preTodayMM}-${todayDD}T00:00:00`
-        // setTimeLeft(todayYYMMDD)
-        if (isClicked == true) {
-            const dateTimeNow = sgTime
-            const todayYYMMDD = `${dateTimeNow.split('T')[0]}T00:00:00`
-            setTimeLeft(todayYYMMDD)
-        }
-    }, [isClicked])
+        const todayDay = new Date()
+        const todayYY = todayDay.getFullYear()
+        const todayMM = todayDay.getUTCMonth() + 1
+        const preTodayMM = todayMM < 10 ? `0${todayMM}` : todayMM
+        const todayDD = todayDay.getDate() + 1
+        const todayYYMMDD = `${todayYY}-${preTodayMM}-${todayDD}T00:00:00`
+        console.log('time: ', todayYYMMDD);
+        console.log('sgTime: ', sgTime);
+        console.log('sgTime[0]: ',`${sgTime.split('T')[0]}T00:00:00`);
+        
+        
+        setTimeLeft(todayYYMMDD)
+    //    if(isClicked){
+    //     const dateTimeNow = sgTime
+    //     const todayYYMMDD = `${dateTimeNow.split('T')[0]}T00:00:00`
+    //     setTimeLeft(todayYYMMDD)
+    //    }
+    }, [new Date()])
 
 
     useEffect(() => {
@@ -169,7 +174,7 @@ const DemoEarn = () => {
                 dailyReward={dailyReward}
                 setDailyReward={setDailyReward}
                 totalPointAmount={totalPointAmount}
-                sgTime={sgTime.split('T')[0]}
+                sgTime={sgTime}
                 isClicked={isClicked}
                 setIsClicked={setIsClicked}
             />
