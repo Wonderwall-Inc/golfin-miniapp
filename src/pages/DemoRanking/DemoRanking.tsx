@@ -8,6 +8,7 @@ import { useUserContext } from '@/contexts/UserContext'
 import { useFriendContext } from '@/contexts/FriendContext'
 import { usePointContext } from '@/contexts/PointContext'
 import { getPointRanking } from '@/apis/PointServices'
+import { getReferralRanking } from '@/apis/FriendServices'
 
 interface ReferralRankingItem {
     rank: number,
@@ -39,7 +40,21 @@ const DemoRanking = () => {
     useEffect(() => {
         const handleReferralRanking = async () => {
             // setIsWaitingUser(true)
-            const existingUsers = await getUsers(0, 200); //FIXME: do we need to know the user ranking by overfetching api, if the size is too large
+            const myReferralRankingFromServer = await getReferralRanking({
+                access_token: '',
+                user_id: account?.id
+            })
+            console.log('my referral ranking from server: ', myReferralRankingFromServer);
+            if (myReferralRankingFromServer && account?.telegram_info.username) {
+                setMyPointRecord({
+                    rank: myReferralRankingFromServer.rank,
+                    name: account?.telegram_info.username,
+                    point: myReferralRankingFromServer?.total_points
+                })
+            }
+            
+            const existingUsers = await getUsers(0, 10);
+
             console.log(existingUsers);
 
             if (existingUsers && existingUsers.length > 0) {
@@ -59,13 +74,13 @@ const DemoRanking = () => {
                     rank: index + 1, // Assign the ranking position
                 }));
                 referralRanking.map((r, sortIndex) => {
-                    if (r.name == account?.telegram_info.username) {
-                        setMyReferralRecord({
-                            rank: sortIndex,
-                            name: account?.telegram_info.username,
-                            referral: r.referral
-                        })
-                    }
+                    // if (r.name == account?.telegram_info.username) {
+                    //     setMyReferralRecord({
+                    //         rank: sortIndex,
+                    //         name: account?.telegram_info.username,
+                    //         referral: r.referral
+                    //     })
+                    // }
                     return {
                         ...r, rank: sortIndex
                     }
@@ -86,11 +101,11 @@ const DemoRanking = () => {
                 user_id: account?.id
             })
             console.log('my ranking from server: ', myPointRankingFromServer);
-            if (myPointRankingFromServer.rank && account?.telegram_info.username) {
+            if (myPointRankingFromServer && account?.telegram_info.username) {
                 setMyPointRecord({
                     rank: myPointRankingFromServer.rank,
                     name: account?.telegram_info.username,
-                    point: myPointRankingFromServer.total_points
+                    point: myPointRankingFromServer?.total_points
                 })
             }
             const existingUsers = await getUsers(0, 10);
@@ -123,18 +138,18 @@ const DemoRanking = () => {
                     rank: index + 1, // Assign the ranking position
                 }));
 
-                // pointRanking.map((p, sortIndex) => {
-                //     if (p.name == account?.telegram_info.username) {
-                //         setMyPointRecord({
-                //             rank: sortIndex,
-                //             name: account?.telegram_info.username,
-                //             point: p.point
-                //         })
-                //     }
-                //     return {
-                //         ...p, rank: sortIndex
-                //     }
-                // })
+                pointRanking.map((p, sortIndex) => {
+                    // if (p.name == account?.telegram_info.username) {
+                    //     setMyPointRecord({
+                    //         rank: sortIndex,
+                    //         name: account?.telegram_info.username,
+                    //         point: p.point
+                    //     })
+                    // }
+                    return {
+                        ...p, rank: sortIndex
+                    }
+                })
                 // setPointRanking(pointRanking);
                 // console.log('MyPointRecord');
                 // console.log(myPointRecord);
@@ -189,7 +204,7 @@ const DemoRanking = () => {
                         <div className='h-[300px] w-[343px] overflow-y-scroll sm:h-[400px] md:h-[460px] pt-2'>
                             <div className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between border-4 border-[#8cc73e]`}>
                                 <div className='flex font-rubik font-[400] text-xl pr-10 py-1 content-start place-content-start mx-[-1px]'>
-                                    <div className='text-center mx-2 text-[17px]'>{myReferralRecord !== undefined && myReferralRecord.rank > 100 ? '100+' : (myReferralRecord?.rank !== undefined && myReferralRecord?.rank + 1)}</div>
+                                    <div className='text-center mx-2 text-[17px]'>{myReferralRecord !== undefined && myReferralRecord.rank > 100 ? '100+' : (myReferralRecord?.rank !== undefined && myReferralRecord?.rank)}</div>
                                     <div className='text-center content-center justify-center text-[17px]'>{myReferralRecord !== undefined && myReferralRecord.name}</div>
                                 </div>
                                 <div className='flex flex-row justify-between pr-2 py-1'>
@@ -224,7 +239,7 @@ const DemoRanking = () => {
                         <div className='h-[300px] w-[343px] overflow-y-scroll sm:h-[400px] md:h-[460px] pt-2'>
                             <div className={`text-white bg-[#ffffff33] flex flex-row leading-[89px] justify-between border-4 border-[#8cc73e]`}>
                                 <div className='flex font-rubik font-[400] text-xl pr-10 py-1 content-start place-content-start mx-[-1px]'>
-                                    <div className='text-center mx-2 text-[17px]'>{myPointRecord !== undefined && myPointRecord.rank > 100 ? '100+' : (myPointRecord?.rank !== undefined && myPointRecord?.rank + 1)}</div>
+                                    <div className='text-center mx-2 text-[17px]'>{myPointRecord !== undefined && myPointRecord.rank > 100 ? '100+' : (myPointRecord?.rank !== undefined && myPointRecord?.rank)}</div>
                                     <div className='text-center content-center justify-center text-[17px]'>{myPointRecord !== undefined && myPointRecord.name}</div>
                                 </div>
                                 <div className='flex flex-row justify-start pr-2 py-1'>

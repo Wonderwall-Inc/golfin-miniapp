@@ -63,8 +63,14 @@ export async function updatePoint(pointUpdate: PointUpdateByIdRequestType): Prom
 
 
 
+interface PointRankingType {
+    rank: number
+    total_points: number
+    user_id: number
+    id: number | undefined
+}
 // GET TOTAL POINT RANKING
-export async function getPointRanking(pointRankingRetrival: PointRetrievalRequestType): Promise<int | undefined> {
+export async function getPointRanking(pointRankingRetrival: PointRetrievalRequestType): Promise<PointRankingType | undefined> {
     try {
         const qs = []
         for (const [key, val] of Object.entries(pointRankingRetrival)) {

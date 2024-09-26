@@ -92,3 +92,29 @@ export async function batchUpdateRewardClaimedBySenderId(senderId: number): Prom
     }
 }
 
+
+interface ReferralRankingType {
+    rank: number
+    total_points: number
+    user_id: number
+    id: number | undefined
+}
+// GET TOTAL REFERRAL RANKING
+export async function getReferralRanking(referralRankingRetrival: FriendRetrievalRequestType): Promise<ReferralRankingType | undefined> {
+    try {
+        const qs = []
+        for (const [key, val] of Object.entries(referralRankingRetrival)) {
+            if (val !== undefined && val !== null) {
+                qs.push(`${key}=${encodeURIComponent(val)}`)
+            }
+        }
+        const queryString = qs.length > 0 ? `?${qs.join('&')}` : '';
+
+        const dbPointRanking = await api.get(`/friend/ranking/${queryString}`)
+        const dbPointRankingData = await dbPointRanking.data
+        return dbPointRankingData
+    } catch (error) {
+        console.log(error)
+        return undefined
+    }
+}
