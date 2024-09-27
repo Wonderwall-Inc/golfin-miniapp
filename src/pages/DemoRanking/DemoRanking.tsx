@@ -101,7 +101,7 @@ const DemoRanking = () => {
     useEffect(() => {
         const handlePointRanking = async () => {
             // setIsWaitingUser(true)
-            setIsWaitingPoint(true)
+            // setIsWaitingPoint(true)
             try {
                 if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
                     setPointRanking(mockPointRankingData)
@@ -207,7 +207,7 @@ const DemoRanking = () => {
 
 
         handlePointRanking()
-    }, [account])
+    }, [])
     return (
         <div className='w-[100%] h-[690px]'>
             <div className='flex justify-center'>
