@@ -48,7 +48,7 @@ const DemoRanking = () => {
     // }
 
     const handleReferralRanking = useCallback(async () => {
-        setIsWaitingFriend(true)
+        // setIsWaitingFriend(true)
         try {
             if (import.meta.env.VITE_MINI_APP_ENV === 'test') {
                 setReferrakRanking(mockReferralRankingData)
@@ -83,7 +83,7 @@ const DemoRanking = () => {
             console.error('Error handling referral reward:', error);
 
         } finally {
-            setIsWaitingFriend(false)
+            // setIsWaitingFriend(false)
         }
 
     }, [account?.telegram_info.username,/*  setIsWaitingFriend, setReferrakRanking, setMyReferralRecord */])
