@@ -33,14 +33,9 @@ const DemoRanking = () => {
 
     const [myReferralRecord, setMyReferralRecord] = useState<ReferralRankingItem>()
     const [myPointRecord, setMyPointRecord] = useState<PointRankingItem>()
-    const [existingUsers, setExistingUsers] = useState([]) // TODO:
-    // useEffect(()=>{
-
-    // })
 
     useEffect(() => {
         const handleReferralRanking = async () => {
-            // setIsWaitingFriend(true)
             // FIXME
             // const myReferralRankingFromServer = await getReferralRanking({
             //     access_token: '',
@@ -57,10 +52,12 @@ const DemoRanking = () => {
 
             try {
                 if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
+                    setIsWaitingFriend(true)
                     setReferrakRanking(mockReferralRankingData)
                     setMyReferralRecord({ name: 'nextInnovationDev25', rank: 1, referral: 25 })
                 } else {
                     // setIsWaitingFriend(true)
+                    setIsWaitingFriend(true)
                     const existingUsers = await getUsers(0, 20); // FIXME
 
                     console.log(existingUsers);
@@ -74,14 +71,12 @@ const DemoRanking = () => {
                                 referral: senderCount,
                             };
                         });
-                        console.log('referralRanking');
-                        console.log(referralRanking);
                         // setIsWaitingFriend(true)
                         referralRanking.sort((a, b) => b.referral - a.referral).map((item, index) => ({
                             ...item,
                             rank: index + 1, // Assign the ranking position
                         }));
-                        referralRanking.map((r, sortIndex) => {
+                        const referralRankingRes = referralRanking.map((r, sortIndex) => {
                             if (r.name == account?.telegram_info.username) {
                                 setMyReferralRecord({
                                     rank: sortIndex,
@@ -93,7 +88,7 @@ const DemoRanking = () => {
                                 ...r, rank: sortIndex
                             }
                         })
-                        setReferrakRanking(referralRanking);
+                        setReferrakRanking(referralRankingRes);
                     }
                 }
             } catch (error) {
@@ -102,10 +97,6 @@ const DemoRanking = () => {
             } finally {
                 setIsWaitingFriend(false)
             }
-
-
-            // console.log('myReferralRecord');
-            // console.log(myReferralRecord);
 
         }
         handleReferralRanking()
