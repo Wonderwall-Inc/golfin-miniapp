@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { TabbarLink } from 'konsta/react'
 
 import { mockPointRankingData, mockReferralRankingData } from '@/constants'
@@ -33,68 +33,64 @@ const DemoRanking = () => {
 
     const [myReferralRecord, setMyReferralRecord] = useState<ReferralRankingItem>()
     const [myPointRecord, setMyPointRecord] = useState<PointRankingItem>()
+    // FIXME
+    // const myReferralRankingFromServer = await getReferralRanking({
+    //     access_token: '',
+    //     user_id: account?.id
+    // })
+    // console.log('my referral ranking from server: ', myReferralRankingFromServer);
+    // if (myReferralRankingFromServer && account?.telegram_info.username) {
+    //     setMyReferralRecord({
+    //         rank: myReferralRankingFromServer.rank,
+    //         name: account?.telegram_info.username,
+    //         referral: myReferralRankingFromServer?.referral_count
+    //     })
+    // }
 
-    useEffect(() => {
-        const handleReferralRanking = async () => {
-            // FIXME
-            // const myReferralRankingFromServer = await getReferralRanking({
-            //     access_token: '',
-            //     user_id: account?.id
-            // })
-            // console.log('my referral ranking from server: ', myReferralRankingFromServer);
-            // if (myReferralRankingFromServer && account?.telegram_info.username) {
-            //     setMyReferralRecord({
-            //         rank: myReferralRankingFromServer.rank,
-            //         name: account?.telegram_info.username,
-            //         referral: myReferralRankingFromServer?.referral_count
-            //     })
-            // }
-            setIsWaitingFriend(true)
-            try {
-                if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
-                    setReferrakRanking(mockReferralRankingData)
-                    setMyReferralRecord({ name: 'nextInnovationDev25', rank: 1, referral: 25 })
-                } else {
-                    const existingUsers = await getUsers(0, 20); // FIXME
+    const handleReferralRanking = useCallback(async () => {
+        setIsWaitingFriend(true)
+        try {
+            if (import.meta.env.VITE_MINI_APP_ENV === 'test') {
+                setReferrakRanking(mockReferralRankingData)
+                setMyReferralRecord({ name: 'nextInnovationDev25', rank: 1, referral: 25 })
+            } else {
+                const existingUsers = await getUsers(0, 20); // FIXME
 
-                    console.log(existingUsers);
+                console.log(existingUsers);
 
-                    if (existingUsers && existingUsers.length > 0) {
-                        const referralRanking: ReferralRankingItem[] = existingUsers.map((user, /* index */) => {
-                            const senderCount = user.user_details.sender?.length || 0; // Handle potential nullish value
-                            return {
-                                rank: 0,
-                                name: user.user_details.user_base.telegram_info.username,
-                                referral: senderCount,
-                            };
-                        })
-                            .sort((a, b) => b.referral - a.referral)
-                            .map((item, index) => ({ ...item, rank: index + 1 }));;
-                        // setIsWaitingFriend(true)
-                        //referralRanking.sort((a, b) => b.referral - a.referral).map((item, index) => ({
-                        //    ...item,
-                        //    rank: index + 1, // Assign the ranking position
-                        //}));
+                if (existingUsers && existingUsers.length > 0) {
+                    const referralRanking: ReferralRankingItem[] = existingUsers.map((user, /* index */) => {
+                        const senderCount = user.user_details.sender?.length || 0; // Handle potential nullish value
+                        return {
+                            rank: 0,
+                            name: user.user_details.user_base.telegram_info.username,
+                            referral: senderCount,
+                        };
+                    })
+                        .sort((a, b) => b.referral - a.referral)
+                        .map((item, index) => ({ ...item, rank: index + 1 }));
 
-                        const myReferralRecord = referralRanking.find(r => r.name == account?.telegram_info.username)
-                        if (myReferralRecord) {
-                            setMyReferralRecord(myReferralRecord)
-                        }
-
-                        setReferrakRanking(referralRanking);
+                    const myReferralRecord = referralRanking.find(r => r.name == account?.telegram_info.username)
+                    if (myReferralRecord) {
+                        setMyReferralRecord(myReferralRecord)
                     }
+
+                    setReferrakRanking(referralRanking);
                 }
-
-            } catch (error) {
-                console.error('Error handling referral reward:', error);
-
-            } finally {
-                setIsWaitingFriend(false)
             }
 
+        } catch (error) {
+            console.error('Error handling referral reward:', error);
+
+        } finally {
+            setIsWaitingFriend(false)
         }
+
+    }, [account?.telegram_info.username, setIsWaitingFriend, setReferrakRanking, setMyReferralRecord])
+
+    useEffect(() => {
         handleReferralRanking()
-    }, [account?.telegram_info.username])
+    }, [handleReferralRanking])
 
     useEffect(() => {
         const handlePointRanking = async () => {
