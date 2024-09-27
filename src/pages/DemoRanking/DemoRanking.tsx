@@ -164,6 +164,7 @@ const DemoRanking = () => {
                 //     }
                 // })
                 setPointRanking(pointRanking);
+                setIsWaitingPoint(false)
             } else {
                 console.log('No users found for point ranking.'); // Informative logging
             }
@@ -174,7 +175,7 @@ const DemoRanking = () => {
             handlePointRanking()
             // setIsWaitingUser(false)
             // setIsWaitingFriend(false)
-            setIsWaitingPoint(false)
+            
         } else {
             // setIsWaitingUser(true)
             setReferrakRanking(mockReferralRankingData)
