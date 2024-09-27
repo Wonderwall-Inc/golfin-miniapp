@@ -86,7 +86,7 @@ const DemoRanking = () => {
             setIsWaitingFriend(false)
         }
 
-    }, [account?.telegram_info.username, setIsWaitingFriend, setReferrakRanking, setMyReferralRecord])
+    }, [account?.telegram_info.username,/*  setIsWaitingFriend, setReferrakRanking, setMyReferralRecord */])
 
     useEffect(() => {
         handleReferralRanking()
