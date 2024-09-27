@@ -182,14 +182,14 @@ const DemoEarn = () => {
 const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, totalPointAmount, sgTime, isClicked, setIsClicked }: DemoEarnComponentProp) => {
     return (
         <>
-            <div className="w-[343px] h-[85px] sm:h-[95px] md:h-[105px] bg-[#ffffff33] rounded-lg flex justify-center content-center items-center mx-auto my-[15px]">
+            <div className="w-[343px] h-[85px] sm:h-[95px] md:h-[105px] bg-[#ffffff33] rounded-lg flex justify-center content-center items-center mx-auto my-[12px]">
                 <img className="" alt="Layer" src={CoinIcon} width={53} height={54} />
                 <div className="w-[200px] font-semibold [font-family:'Rubik-Medium',Helvetica]text-[#ffef2b] text-[28px] tracking-[0.38px] text-[#FFEF2B]">
                     {totalPointAmount ? totalPointAmount.toLocaleString() : 0}
                     {/* {typeof (point) !== 'number' ? (point.login_amount + point.referral_amount).toLocaleString() : 0} */}
                 </div>
             </div>
-            <div className='flex justify-center justify-items-center mx-5 sm:mx-5 md:mx-6 pt-3 sm:pt-3  space-x-5'>
+            <div className='flex justify-center justify-items-center mx-5 sm:mx-5 md:mx-6 pt-1 sm:pt-1  space-x-5'>
                 <DemoDailyRewardComponent
                     timeLeft={timeLeft}
                     dailyReward={dailyReward}
@@ -393,9 +393,9 @@ const DemoBonusComponent = ({ weeklyCount, referralCount }: DemoBonusComponentPr
                 whitespace-nowrap
                 content-start
                 pr-[285px]
-                pb-2 
+                pb-1
                 text-xl">Bonus</div>
-                <div className="w-[342px] h-14 bg-[rgba(255,255,255,1.0)] rounded-[6px_6px_6px_6px]  overflow-hidden [background:radial-gradient(170.72%_76.05%_at_87.88%_12.5%,rgb(112.62,108.57,77.9)_0%,rgb(119,102.27,78.84)_100%)] relative mb-5">
+                <div className="w-[342px] h-14 bg-[rgba(255,255,255,1.0)] rounded-[6px_6px_6px_6px]  overflow-hidden [background:radial-gradient(170.72%_76.05%_at_87.88%_12.5%,rgb(112.62,108.57,77.9)_0%,rgb(119,102.27,78.84)_100%)] relative mb-3">
                     <Progress className="[&>*]:[background:radial-gradient(170.72%_76.05%_at_87.88%_12.5%,rgb(255,225.25,0)_0%,rgb(255,148.75,0)_100%)]
                     h-14
                     rounded-[6px_0px_0px_0px]"
@@ -425,7 +425,7 @@ const DemoBonusComponent = ({ weeklyCount, referralCount }: DemoBonusComponentPr
 //background: radial-gradient(170.72% 76.05% at 87.88% 12.5%, #FFE100 0%, #FF9500 100%);
 const DemoFriendReferralComponent = ({ referralCount }: DemoFriendReferralComponentProp) => {
     return (
-        <div className="w-[342px] h-14 bg-[rgba(255,255,255,1.0)] rounded-[6px_6px_6px_6px]  overflow-hidden [background:radial-gradient(170.72%_76.05%_at_87.88%_12.5%,rgb(112.62,108.57,77.9)_0%,rgb(119,102.27,78.84)_100%)] relative mb-5">
+        <div className="w-[342px] h-14 bg-[rgba(255,255,255,1.0)] rounded-[6px_6px_6px_6px]  overflow-hidden [background:radial-gradient(170.72%_76.05%_at_87.88%_12.5%,rgb(112.62,108.57,77.9)_0%,rgb(119,102.27,78.84)_100%)] relative">
             <Progress className="[&>*]:[background:radial-gradient(170.72%_76.05%_at_87.88%_12.5%,rgb(255,225.25,0)_0%,rgb(255,148.75,0)_100%)] h-14 rounded-[6px_0px_0px_0px]"
                 value={referralCount && referralCount / 10 * 100}
                 max={10} />
