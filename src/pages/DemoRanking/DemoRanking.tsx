@@ -96,6 +96,7 @@ const DemoRanking = () => {
 
         const handlePointRanking = async () => {
             // setIsWaitingUser(true)
+            setIsWaitingPoint(true)
             const myPointRankingFromServer = await getPointRanking({
                 access_token: '',
                 user_id: account?.id
@@ -144,7 +145,7 @@ const DemoRanking = () => {
                 }));
                 console.log('pointRanking');
                 console.log(pointRanking);
-                // setIsWaitingPoint(true)
+               
                 // pointRanking.sort((a, b) => b.point - a.point).map((item, index) => ({
                 //     ...item,
                 //     rank: index + 1, // Assign the ranking position
@@ -173,7 +174,7 @@ const DemoRanking = () => {
             handlePointRanking()
             // setIsWaitingUser(false)
             // setIsWaitingFriend(false)
-            // setIsWaitingPoint(false)
+            setIsWaitingPoint(false)
         } else {
             // setIsWaitingUser(true)
             setReferrakRanking(mockReferralRankingData)
