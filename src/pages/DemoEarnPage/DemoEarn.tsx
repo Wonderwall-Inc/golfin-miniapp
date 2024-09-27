@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import CoinIcon from '../../assets/images/02_earn_coin.png'
+import CoinIcon from '../../assets/images/02_earn_coin_new.png'
 import Countdown from '../../components/Countdown'
 import { useUserContext } from '../../contexts/UserContext'
 import WebApp from '@twa-dev/sdk'
@@ -23,7 +23,7 @@ const DemoEarn = () => {
     const { account } = useUserContext()
     const { point, setPoint, setIsWaitingPoint } = usePointContext()
     const { activity, setActivity, setIsWaitingActivity } = useActivityContext()
-    const { friend, setFriend, friendTrigger, setFriendTrigger, setIsWaitingFriend } = useFriendContext()
+    const { setFriend, friendTrigger, setFriendTrigger, setIsWaitingFriend } = useFriendContext()
     const [dailyReward, setDailyReward] = useState(true)
     const [timeLeft, setTimeLeft] = useState("")
     const [totalPointAmount, setTotalPointAmount] = useState(0)
@@ -182,9 +182,9 @@ const DemoEarn = () => {
 const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, totalPointAmount, sgTime, isClicked, setIsClicked }: DemoEarnComponentProp) => {
     return (
         <>
-            <div className="w-[343px] h-[85px] sm:h-[95px] md:h-[105px] bg-[#ffffff33] rounded-lg flex justify-center content-center items-center mx-auto">
-                <img className="w-[53px] h-[54px]" alt="Layer" src={CoinIcon} />
-                <div className="w-[200px] text-white font-semibold [font-family:'Rubik-Medium',Helvetica]text-[#ffef2b] text-[28px] tracking-[0.38px]">
+            <div className="w-[343px] h-[85px] sm:h-[95px] md:h-[105px] bg-[#ffffff33] rounded-lg flex justify-center content-center items-center mx-auto my-[15px]">
+                <img className="" alt="Layer" src={CoinIcon} width={53} height={54} />
+                <div className="w-[200px] text-white font-semibold [font-family:'Rubik-Medium',Helvetica]text-[#ffef2b] text-[28px] tracking-[0.38px] text-[#FFEF2B]">
                     {totalPointAmount ? totalPointAmount.toLocaleString() : 0}
                     {/* {typeof (point) !== 'number' ? (point.login_amount + point.referral_amount).toLocaleString() : 0} */}
                 </div>
@@ -345,7 +345,7 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, sgTim
 
                 </div>
 
-                <div className='bg-white text-black-400 rounded-b-sm border-white h-[50%] content-center text-center items-center w-[160px]'>
+                <div className='bg-white text-black-400 border-white h-[50%] content-center text-center items-center w-[160px] rounded-[0px_0px_6px_6px]'>
                     + {`${dailyCheckInPointReward}`}
                 </div>
             </div>
@@ -367,7 +367,7 @@ const DemoReferralComponent = ({ }) => {
                         a Friend
                     </div>
                 </div>
-                <div className='bg-white text-black-400 rounded-b-sm border-white h-[50%] content-center text-center items-center w-[160px]'>
+                <div className='bg-white text-black-400 border-white h-[50%] content-center text-center items-center w-[160px] rounded-[0px_0px_6px_6px]'>
                     + {`${friendReferralPointReward}`}
                 </div>
             </div>
@@ -395,14 +395,14 @@ const DemoBonusComponent = ({ weeklyCount, referralCount }: DemoBonusComponentPr
                 pr-[285px]
                 pb-2 
                 text-xl">Bonus</div>
-                <div className="w-[342px] h-14 bg-[rgba(255,255,255,1.0)] rounded-md overflow-hidden [background:radial-gradient(50%_50%_at_50%_50%,rgb(112.62,108.57,77.9)_0%,rgb(119,102.27,78.84)_100%)] relative mb-5">
-                    <Progress className="[&>*]:[background:radial-gradient(50%_50%_at_50%_50%,rgb(255,225.25,0)_0%,rgb(255,148.75,0)_100%)]
+                <div className="w-[342px] h-14 bg-[rgba(255,255,255,1.0)] rounded-[6px_6px_6px_6px]  overflow-hidden [background:radial-gradient(170.72%_76.05%_at_87.88%_12.5%,rgb(112.62,108.57,77.9)_0%,rgb(119,102.27,78.84)_100%)] relative mb-5">
+                    <Progress className="[&>*]:[background:radial-gradient(170.72%_76.05%_at_87.88%_12.5%,rgb(255,225.25,0)_0%,rgb(255,148.75,0)_100%)]
                     h-14
                     rounded-[6px_0px_0px_0px]"
                         value={weeklyCount && weeklyCount / 7 * 100}
                         max={7} />
                     <div className="relative w-[342px] h-14">
-                        <div className="absolute h-14 top-0 left-0 rounded-[6px_0px_0px_0px] [background:radial-gradient(50%_50%_at_50%_50%,rgb(255,225.25,0)_0%,rgb(255,148.75,0)_100%)]" />
+                        <div className="absolute h-14 top-0 left-0 rounded-[6px_6px_6px_6px] [background:radial-gradient(170.72%_76.05%_at_87.88%_12.5%,rgb(255,225.25,0)_0%,rgb(255,148.75,0)_100%)]" />
                         <div className="absolute w-[295px] top-[18px] left-[23px] [font-family:'Roboto-Black',Helvetica] font-normal text-[#ffffff] text-base text-center tracking-[0] leading-[normal]">
                             <div className="absolute w-[98px] h-14 top-0 left-0 " />
                         </div>
@@ -421,15 +421,16 @@ const DemoBonusComponent = ({ weeklyCount, referralCount }: DemoBonusComponentPr
 
     )
 }
-
+//border-radius: 6px 0px 0px 0px;
+//background: radial-gradient(170.72% 76.05% at 87.88% 12.5%, #FFE100 0%, #FF9500 100%);
 const DemoFriendReferralComponent = ({ referralCount }: DemoFriendReferralComponentProp) => {
     return (
-        <div className="w-[342px] h-14 bg-[rgba(255,255,255,1.0)] rounded-md overflow-hidden [background:radial-gradient(50%_50%_at_50%_50%,rgb(112.62,108.57,77.9)_0%,rgb(119,102.27,78.84)_100%)] relative mb-5">
-            <Progress className="[&>*]:[background:radial-gradient(50%_50%_at_50%_50%,rgb(255,225.25,0)_0%,rgb(255,148.75,0)_100%)] h-14 rounded-[6px_0px_0px_0px]"
+        <div className="w-[342px] h-14 bg-[rgba(255,255,255,1.0)] rounded-[6px_6px_6px_6px]  overflow-hidden [background:radial-gradient(170.72%_76.05%_at_87.88%_12.5%,rgb(112.62,108.57,77.9)_0%,rgb(119,102.27,78.84)_100%)] relative mb-5">
+            <Progress className="[&>*]:[background:radial-gradient(170.72%_76.05%_at_87.88%_12.5%,rgb(255,225.25,0)_0%,rgb(255,148.75,0)_100%)] h-14 rounded-[6px_0px_0px_0px]"
                 value={referralCount && referralCount / 10 * 100}
                 max={10} />
             <div className="relative w-[342px] h-14">
-                <div className="absolute h-14 top-0 left-0 rounded-[6px_0px_0px_0px] [background:radial-gradient(50%_50%_at_50%_50%,rgb(255,225.25,0)_0%,rgb(255,148.75,0)_100%)]" />
+                <div className="absolute h-14 top-0 left-0 rounded-[6px_6px_6px_6px] [background:radial-gradient(170.72%_76.05%_at_87.88%_12.5%,rgb(255,225.25,0)_0%,rgb(255,148.75,0)_100%)]" />
                 <div className="absolute w-[295px] top-[18px] left-[23px] [font-family:'Roboto-Black',Helvetica] font-normal text-[#ffffff] text-base text-center tracking-[0] leading-[normal]">
                     <div className="absolute w-[98px] h-14 top-0 left-0 " />
                 </div>

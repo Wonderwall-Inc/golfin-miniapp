@@ -16,12 +16,12 @@ const Footer = () => {
                         <div key={index} className='link'>
                             <Link to={nav.url}>
                                 {/* {nav.label == 'Home' && <EarnIcon color={`${location.pathname == nav.url ? '#8cc73e' : 'white'}`} />} */}
-                                {nav.label == 'Demo Home' && <EarnIcon color={`${location.pathname == nav.url ? '#8cc73e' : 'white'}`} />}
+                                {nav.label == 'Demo Home' && <EarnIcon color={`${location.pathname == nav.url ? '#8ADD5D' : 'white'}`} />}
                                 {/* {nav.label == 'Ranking' && <RankingIcon color={`${location.pathname == nav.url ? '#8cc73e' : 'white'}`} />} */}
-                                {nav.label == 'Demo Ranking' && <RankingIcon color={`${location.pathname == nav.url ? '#8cc73e' : 'white'}`} />}
+                                {nav.label == 'Demo Ranking' && <RankingIcon color={`${location.pathname == nav.url ? '#8ADD5D' : 'white'}`} />}
                                 {/* {nav.label == 'Links' && <LinkIcon color={`${location.pathname == nav.url ? '#8cc73e' : 'white'}`} />} */}
-                                {nav.label == 'Demo Links' && <LinkIcon color={`${location.pathname == nav.url ? '#8cc73e' : 'white'}`} />}
-                                {nav.label == 'Personal' && <LinkIcon color={`${location.pathname == nav.url ? '#8cc73e' : 'grey'}`} />}
+                                {nav.label == 'Demo Links' && <LinkIcon color={`${location.pathname == nav.url ? '#8ADD5D' : 'white'}`} />}
+                                {nav.label == 'Personal' && <LinkIcon color={`${location.pathname == nav.url ? '#8ADD5D' : 'grey'}`} />}
                             </Link>
                         </div>
                     )

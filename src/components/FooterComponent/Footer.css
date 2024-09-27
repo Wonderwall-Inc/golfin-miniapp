@@ -1,6 +1,10 @@
 .footer-navs {
     gap: 67px;
     width: 390px;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 
@@ -11,7 +15,7 @@
     width: 100%;
     justify-content: space-around;
     display: flex;
-    position: absolute;
+    position: relative;
     bottom: 0;
     right: 0;
     border-top-left-radius: 20px;

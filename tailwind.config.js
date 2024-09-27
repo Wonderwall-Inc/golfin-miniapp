@@ -6,8 +6,11 @@ module.exports = konstaConfig({
 	content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
 	theme: {
 		extend: {
+			textColor: {
+				black: 'rgba(255,255,255,0.4)',
+			},
 			link:{
-				default: colors.red
+				default: colors.white
 			},
 			colors: {
 				primary: {

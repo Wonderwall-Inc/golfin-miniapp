@@ -101,9 +101,7 @@ const App = () => {
               </Routes>
             </Background>
             <Footer />
-
           </div >
-
       }
 
     </>

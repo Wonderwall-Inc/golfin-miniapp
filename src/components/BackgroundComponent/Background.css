@@ -1,6 +1,8 @@
 .ellipse_172 {
+    opacity: 0.5;
+    background: radial-gradient(49.87% 49.87% at 50% 50.13%, rgba(26, 173, 161, 0.70) 0%, rgba(0, 66, 83, 0.00) 100%);
     filter: blur(2px);
-  }
+}
   
   .ellipse_171 {
     filter: blur(2px);
