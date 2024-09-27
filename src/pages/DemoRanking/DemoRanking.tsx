@@ -55,70 +55,70 @@ const DemoRanking = () => {
             //     })
             // }
 
-            const existingUsers = await getUsers(0, 20); // FIXME
+            try {
+                if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
+                    setReferrakRanking(mockReferralRankingData)
+                    setMyReferralRecord({ name: 'nextInnovationDev25', rank: 1, referral: 25 })
+                } else {
+                    // setIsWaitingFriend(true)
+                    const existingUsers = await getUsers(0, 20); // FIXME
 
-            console.log(existingUsers);
+                    console.log(existingUsers);
 
-            if (existingUsers && existingUsers.length > 0) {
-                const referralRanking: ReferralRankingItem[] = existingUsers.map((user, index) => {
-                    const senderCount = user.user_details.sender?.length || 0; // Handle potential nullish value
-                    return {
-                        rank: index,
-                        name: user.user_details.user_base.telegram_info.username,
-                        referral: senderCount,
-                    };
-                });
-                console.log('referralRanking');
-                console.log(referralRanking);
-                // setIsWaitingFriend(true)
-                referralRanking.sort((a, b) => b.referral - a.referral).map((item, index) => ({
-                    ...item,
-                    rank: index + 1, // Assign the ranking position
-                }));
-                referralRanking.map((r, sortIndex) => {
-                    if (r.name == account?.telegram_info.username) {
-                        setMyReferralRecord({
-                            rank: sortIndex,
-                            name: account?.telegram_info.username,
-                            referral: r.referral
+                    if (existingUsers && existingUsers.length > 0) {
+                        const referralRanking: ReferralRankingItem[] = existingUsers.map((user, index) => {
+                            const senderCount = user.user_details.sender?.length || 0; // Handle potential nullish value
+                            return {
+                                rank: index,
+                                name: user.user_details.user_base.telegram_info.username,
+                                referral: senderCount,
+                            };
+                        });
+                        console.log('referralRanking');
+                        console.log(referralRanking);
+                        // setIsWaitingFriend(true)
+                        referralRanking.sort((a, b) => b.referral - a.referral).map((item, index) => ({
+                            ...item,
+                            rank: index + 1, // Assign the ranking position
+                        }));
+                        referralRanking.map((r, sortIndex) => {
+                            if (r.name == account?.telegram_info.username) {
+                                setMyReferralRecord({
+                                    rank: sortIndex,
+                                    name: account?.telegram_info.username,
+                                    referral: r.referral
+                                })
+                            }
+                            return {
+                                ...r, rank: sortIndex
+                            }
                         })
+                        setReferrakRanking(referralRanking);
                     }
-                    return {
-                        ...r, rank: sortIndex
-                    }
-                })
-                setReferrakRanking(referralRanking);
-                // console.log('myReferralRecord');
-                // console.log(myReferralRecord);
+                }
+            } catch (error) {
+                console.error('Error handling referral reward:', error);
 
-            } else {
-                console.log('No users found for referral ranking.'); // Informative logging
+            } finally {
+                setIsWaitingFriend(false)
             }
+
+
+            // console.log('myReferralRecord');
+            // console.log(myReferralRecord);
+
         }
         handleReferralRanking()
-    },[account])
+    }, [])
 
     useEffect(() => {
         const handlePointRanking = async () => {
-            // setIsWaitingUser(true)
             // setIsWaitingPoint(true)
             try {
                 if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
                     setPointRanking(mockPointRankingData)
                     setMyPointRecord({ name: 'nextInnovationDev25', rank: 25, point: 250 })
-
-                    // setIsWaitingUser(false)
-                    // setIsWaitingFriend(false)
-
                 } else {
-                    // setIsWaitingUser(true)
-                    // setReferrakRanking(mockReferralRankingData)
-                    // setMyReferralRecord({ name: 'nextInnovationDev25', rank: 1, referral: 25 })
-                    // setIsWaitingFriend(true)
-                    // setIsWaitingPoint(true)
-                    // setIsWaitingUser(false)
-                    // setIsWaitingFriend(false)
-                    // setIsWaitingPoint(false)
                     const myPointRankingFromServer = await getPointRanking({
                         access_token: '',
                         user_id: account?.id
@@ -151,63 +151,13 @@ const DemoRanking = () => {
                 }
             } catch (error) {
                 console.error('Error handling referral reward:', error);
-
             } finally {
                 setIsWaitingPoint(false)
             }
-
         }
-
-        // console.log(existingUsers);
-
-        // if (existingUsers && existingUsers.length > 0) {
-
-        // Use optional chaining and nullish coalescing for safety
-        // if (pointValue !== undefined) { // Check if point value is actually defined
-        //     return {
-        //         rank: index,
-        //         name: user.user_details.user_base.telegram_info.username,
-        //         point: pointValue.login_amount + pointValue.referral_amount,
-        //     };
-        // } else {
-        //     // Handle users with no points (optional)
-        //     return {
-        //         rank: index,
-        //         name: user.user_details.user_base.telegram_info.username,
-        //         point: 0, // Set default value for users with no points (optional)
-        //     };
-        //                 // }
-        //     console.log('pointRanking');
-        //     console.log(pointRanking);
-
-        //     // pointRanking.sort((a, b) => b.point - a.point).map((item, index) => ({
-        //     //     ...item,
-        //     //     rank: index + 1, // Assign the ranking position
-        //     // }));
-
-        //     // pointRanking.map((p, sortIndex) => {
-        //     //     // if (p.name == account?.telegram_info.username) {
-        //     //     //     setMyPointRecord({
-        //     //     //         rank: sortIndex,
-        //     //     //         name: account?.telegram_info.username,
-        //     //     //         point: p.point
-        //     //     //     })
-        //     //     // }
-        //     //     return {
-        //     //         ...p, rank: sortIndex
-        //     //     }
-        //     // })
-        //     setPointRanking(pointRanking);
-        //     setIsWaitingPoint(false)
-        // } else {
-        //     console.log('No users found for point ranking.'); // Informative logging
-        //             }
-        //         };
-
-
-
         handlePointRanking()
     }, [])
+
     return (
         <div className='w-[100%] h-[690px]'>
             <div className='flex justify-center'>
