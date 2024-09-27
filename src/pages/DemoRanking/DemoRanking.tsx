@@ -40,7 +40,7 @@ const DemoRanking = () => {
 
     useEffect(() => {
         const handleReferralRanking = async () => {
-            setIsWaitingFriend(true)
+            // setIsWaitingFriend(true)
             // FIXME
             // const myReferralRankingFromServer = await getReferralRanking({
             //     access_token: '',
