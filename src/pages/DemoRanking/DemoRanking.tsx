@@ -40,19 +40,20 @@ const DemoRanking = () => {
 
     useEffect(() => {
         const handleReferralRanking = async () => {
-            // setIsWaitingUser(true)
-            const myReferralRankingFromServer = await getReferralRanking({
-                access_token: '',
-                user_id: account?.id
-            })
-            console.log('my referral ranking from server: ', myReferralRankingFromServer);
-            if (myReferralRankingFromServer && account?.telegram_info.username) {
-                setMyReferralRecord({
-                    rank: myReferralRankingFromServer.rank,
-                    name: account?.telegram_info.username,
-                    referral: myReferralRankingFromServer?.referral_count
-                })
-            }
+            setIsWaitingFriend(true)
+            // FIXME
+            // const myReferralRankingFromServer = await getReferralRanking({
+            //     access_token: '',
+            //     user_id: account?.id
+            // })
+            // console.log('my referral ranking from server: ', myReferralRankingFromServer);
+            // if (myReferralRankingFromServer && account?.telegram_info.username) {
+            //     setMyReferralRecord({
+            //         rank: myReferralRankingFromServer.rank,
+            //         name: account?.telegram_info.username,
+            //         referral: myReferralRankingFromServer?.referral_count
+            //     })
+            // }
 
             const existingUsers = await getUsers(0, 20); // FIXME
 
@@ -75,13 +76,13 @@ const DemoRanking = () => {
                     rank: index + 1, // Assign the ranking position
                 }));
                 referralRanking.map((r, sortIndex) => {
-                    // if (r.name == account?.telegram_info.username) {
-                    //     setMyReferralRecord({
-                    //         rank: sortIndex,
-                    //         name: account?.telegram_info.username,
-                    //         referral: r.referral
-                    //     })
-                    // }
+                    if (r.name == account?.telegram_info.username) {
+                        setMyReferralRecord({
+                            rank: sortIndex,
+                            name: account?.telegram_info.username,
+                            referral: r.referral
+                        })
+                    }
                     return {
                         ...r, rank: sortIndex
                     }
@@ -95,10 +96,9 @@ const DemoRanking = () => {
             }
         }
         handleReferralRanking()
-    })
+    },[account])
+
     useEffect(() => {
-
-
         const handlePointRanking = async () => {
             // setIsWaitingUser(true)
             setIsWaitingPoint(true)
