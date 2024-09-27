@@ -92,52 +92,54 @@ const DemoRanking = () => {
         handleReferralRanking()
     }, [handleReferralRanking])
 
-    // useEffect(() => {
-    //     const handlePointRanking = async () => {
-    //         // setIsWaitingPoint(true)
-    //         try {
-    //             if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
-    //                 setPointRanking(mockPointRankingData)
-    //                 setMyPointRecord({ name: 'nextInnovationDev25', rank: 25, point: 250 })
-    //             } else {
-    //                 const myPointRankingFromServer = await getPointRanking({
-    //                     access_token: '',
-    //                     user_id: account?.id
-    //                 })
-    //                 console.log('my ranking from server: ', myPointRankingFromServer);
-    //                 const existingUsers = await getPointRankingList();
-    //                 const pointRanking = existingUsers && await Promise.all(existingUsers.map(async (user, index) => {
-    //                     const dbUser = await getUser({
-    //                         access_token: '',
-    //                         id: user.user_id.toString()
-    //                     })
-    //                     if (dbUser?.user_details.user_base.telegram_info.username) {
-    //                         // Handle potential nullish values for user.user_details.point and user.user_details.point[0]
-    //                         return {
-    //                             rank: user.rank,
-    //                             name: dbUser?.user_details.user_base.telegram_info.username,
-    //                             point: user?.total_points
-    //                         }
-    //                     }
-    //                 }))
+    const handlePointRanking = useCallback(async () => {
+        // setIsWaitingPoint(true)
+        try {
+            if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
+                setPointRanking(mockPointRankingData)
+                setMyPointRecord({ name: 'nextInnovationDev25', rank: 25, point: 250 })
+            } else {
+                const myPointRankingFromServer = await getPointRanking({
+                    access_token: '',
+                    user_id: account?.id
+                })
+                console.log('my ranking from server: ', myPointRankingFromServer);
+                const existingUsers = await getPointRankingList();
+                const pointRanking = existingUsers && await Promise.all(existingUsers.map(async (user, index) => {
+                    const dbUser = await getUser({
+                        access_token: '',
+                        id: user.user_id.toString()
+                    })
+                    if (dbUser?.user_details.user_base.telegram_info.username) {
+                        // Handle potential nullish values for user.user_details.point and user.user_details.point[0]
+                        return {
+                            rank: user.rank,
+                            name: dbUser?.user_details.user_base.telegram_info.username,
+                            point: user?.total_points
+                        }
+                    }
+                }))
 
-    //                 if (myPointRankingFromServer && account?.telegram_info.username && pointRanking) {
-    //                     setMyPointRecord({
-    //                         rank: myPointRankingFromServer.rank,
-    //                         name: account?.telegram_info.username,
-    //                         point: myPointRankingFromServer?.total_points
-    //                     })
-    //                     setPointRanking(pointRanking)
-    //                 }
-    //             }
-    //         } catch (error) {
-    //             console.error('Error handling referral reward:', error);
-    //         } finally {
-    //             setIsWaitingPoint(false)
-    //         }
-    //     }
-    //     handlePointRanking()
-    // }, [])
+                if (myPointRankingFromServer && account?.telegram_info.username && pointRanking) {
+                    setMyPointRecord({
+                        rank: myPointRankingFromServer.rank,
+                        name: account?.telegram_info.username,
+                        point: myPointRankingFromServer?.total_points
+                    })
+                    setPointRanking(pointRanking)
+                }
+            }
+        } catch (error) {
+            console.error('Error handling referral reward:', error);
+        } finally {
+            // setIsWaitingPoint(false)
+        }
+    }, [account])
+
+
+    useEffect(() => {
+        handlePointRanking()
+    }, [handlePointRanking])
 
     return (
         <div className='w-[100%] h-[690px]'>
