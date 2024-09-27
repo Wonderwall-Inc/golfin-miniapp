@@ -207,7 +207,7 @@ const DemoRanking = () => {
 
 
         handlePointRanking()
-    }, [account, pointRanking])
+    }, [account])
     return (
         <div className='w-[100%] h-[690px]'>
             <div className='flex justify-center'>
