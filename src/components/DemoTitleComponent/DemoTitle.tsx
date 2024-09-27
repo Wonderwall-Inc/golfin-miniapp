@@ -14,7 +14,7 @@ const DemoTitle = ({ titlename, style }: DemoTitleProps) => {
     const nav = useNavigate()
     return (
         <>
-            <div onClick={() => nav('/user')} className='md:px-[95px] md:pt-[52px] pb-[10px] sm:pt-[34.32px]'>
+            <div onClick={() => nav('/user')} className='md:px-[95px] md:pt-[52px] pb-[10px] sm:pt-[25.32px]'>
                 <img src={GolfinTitle} width="203px" height="67px" className='mx-auto py-10 sm:py-10 md:py-15' />
             </div>
            
