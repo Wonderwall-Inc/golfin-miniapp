@@ -191,7 +191,7 @@ const DemoRanking = () => {
                                 {referralRanking.map((referralRank, index) => {
                                     if (index < 10) {
                                         return (
-                                            <div key={referralRank.name} className='text-white flex items-center justify-between p-1 pr-20'>
+                                            <div key={referralRank.name} className='text-white flex items-center justify-between p-1 pr-10'>
                                                 <div className='flex items-center space-x-3 flex-1'>
                                                     <div className='w-6 text-right text-[17px]'>{index + 1}</div>
                                                     <div className='text-[17px] truncate'>{rankingNameDisplayer(referralRank.name)}</div>
@@ -215,7 +215,7 @@ const DemoRanking = () => {
                                     <div className='text-center mx-4 text-[17px]'>{myPointRecord !== undefined && myPointRecord.rank > 100 ? '100+' : (myPointRecord?.rank !== undefined && myPointRecord.rank)}</div>
                                     <div className='text-center text-[17px]'>{myPointRecord !== undefined && rankingNameDisplayer(myPointRecord.name)}</div>
                                 </div>
-                                <div className='flex items-center pr-1'>
+                                <div className='flex items-center'>
                                     <img src={CoinImage} width='20' height='20' className='mr-2' alt="Coin" />
                                     <div className='text-xl text-[17px]'>{myPointRecord !== undefined && myPointRecord.point}</div>
                                 </div>
