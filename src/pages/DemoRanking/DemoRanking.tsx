@@ -76,7 +76,8 @@ const DemoRanking = () => {
                             ...item,
                             rank: index + 1, // Assign the ranking position
                         }));
-                        const referralRankingRes = referralRanking.map((r, sortIndex) => {
+
+                        referralRanking.forEach((r, sortIndex) => {
                             if (r.name == account?.telegram_info.username) {
                                 setMyReferralRecord({
                                     rank: sortIndex,
@@ -84,6 +85,9 @@ const DemoRanking = () => {
                                     referral: r.referral
                                 })
                             }
+                        })
+
+                        const referralRankingRes = referralRanking.map((r, sortIndex) => {
                             return {
                                 ...r, rank: sortIndex
                             }
