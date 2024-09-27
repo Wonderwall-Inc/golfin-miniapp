@@ -47,50 +47,50 @@ const DemoRanking = () => {
     //     })
     // }
 
-    const handleReferralRanking = useCallback(async () => {
-        // setIsWaitingFriend(true)
-        try {
-            if (import.meta.env.VITE_MINI_APP_ENV === 'test') {
-                setReferrakRanking(mockReferralRankingData)
-                setMyReferralRecord({ name: 'nextInnovationDev25', rank: 1, referral: 25 })
-            } else {
-                const existingUsers = await getUsers(0, 20); // FIXME
+    useEffect(() => {
+        const handleReferralRanking = async () => {
+            setIsWaitingFriend(true)
+            try {
+                if (import.meta.env.VITE_MINI_APP_ENV === 'test') {
+                    setReferrakRanking(mockReferralRankingData)
+                    setMyReferralRecord({ name: 'nextInnovationDev25', rank: 1, referral: 25 })
+                } else {
+                    const existingUsers = await getUsers(0, 20); // FIXME
 
-                console.log(existingUsers);
+                    console.log(existingUsers);
 
-                if (existingUsers && existingUsers.length > 0) {
-                    const referralRanking: ReferralRankingItem[] = existingUsers.map((user, /* index */) => {
-                        const senderCount = user.user_details.sender?.length || 0; // Handle potential nullish value
-                        return {
-                            rank: 0,
-                            name: user.user_details.user_base.telegram_info.username,
-                            referral: senderCount,
-                        };
-                    })
-                        .sort((a, b) => b.referral - a.referral)
-                        .map((item, index) => ({ ...item, rank: index + 1 }));
+                    if (existingUsers && existingUsers.length > 0) {
+                        const referralRanking: ReferralRankingItem[] = existingUsers.map((user, /* index */) => {
+                            const senderCount = user.user_details.sender?.length || 0; // Handle potential nullish value
+                            return {
+                                rank: 0,
+                                name: user.user_details.user_base.telegram_info.username,
+                                referral: senderCount,
+                            };
+                        })
+                            .sort((a, b) => b.referral - a.referral)
+                            .map((item, index) => ({ ...item, rank: index + 1 }));
 
-                    const myReferralRecord = referralRanking.find(r => r.name == account?.telegram_info.username)
-                    if (myReferralRecord) {
-                        setMyReferralRecord(myReferralRecord)
+                        const myReferralRecord = referralRanking.find(r => r.name == account?.telegram_info.username)
+                        if (myReferralRecord) {
+                            setMyReferralRecord(myReferralRecord)
+                        }
+
+                        setReferrakRanking(referralRanking);
                     }
-
-                    setReferrakRanking(referralRanking);
                 }
+
+            } catch (error) {
+                console.error('Error handling referral reward:', error);
+
+            } finally {
+                setIsWaitingFriend(false)
             }
 
-        } catch (error) {
-            console.error('Error handling referral reward:', error);
-
-        } finally {
-            // setIsWaitingFriend(false)
         }
 
-    }, [account?.telegram_info.username,/*  setIsWaitingFriend, setReferrakRanking, setMyReferralRecord */])
-
-    useEffect(() => {
         handleReferralRanking()
-    }, [handleReferralRanking])
+    }, [[setIsWaitingFriend, setReferrakRanking, setMyReferralRecord]])
 
     const handlePointRanking = useCallback(async () => {
         // setIsWaitingPoint(true)
@@ -234,28 +234,8 @@ const DemoRanking = () => {
                     }
                 </div>
             </div>
-
-
-            {/* <DemoEarnComponent
-                dailyReward={dailyReward}
-                setDailyReward={setDailyReward}
-                MINI_APP_APP={MINI_APP_APP}
-                activeTab={activeTab}
-                setActiveTab={setActiveTab}
-                isTabbarLabels={isTabbarLabels}
-                account={account}
-            /> */}
         </div>
     )
 }
-
-
-// const DemoEarnComponent = ({ dailyReward, setDailyReward, MINI_APP_APP, activeTab, setActiveTab, isTabbarLabels, account }) => {
-//     return (
-//         <>
-
-//         </>
-//     )
-// }
 
 export default DemoRanking
