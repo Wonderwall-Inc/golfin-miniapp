@@ -49,52 +49,42 @@ const DemoRanking = () => {
             //         referral: myReferralRankingFromServer?.referral_count
             //     })
             // }
-
+            setIsWaitingFriend(true)
             try {
                 if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
-                    setIsWaitingFriend(true)
                     setReferrakRanking(mockReferralRankingData)
                     setMyReferralRecord({ name: 'nextInnovationDev25', rank: 1, referral: 25 })
                 } else {
-                    // setIsWaitingFriend(true)
-                    setIsWaitingFriend(true)
                     const existingUsers = await getUsers(0, 20); // FIXME
 
                     console.log(existingUsers);
 
                     if (existingUsers && existingUsers.length > 0) {
-                        const referralRanking: ReferralRankingItem[] = existingUsers.map((user, index) => {
+                        const referralRanking: ReferralRankingItem[] = existingUsers.map((user, /* index */) => {
                             const senderCount = user.user_details.sender?.length || 0; // Handle potential nullish value
                             return {
-                                rank: index,
+                                rank: 0,
                                 name: user.user_details.user_base.telegram_info.username,
                                 referral: senderCount,
                             };
-                        });
+                        })
+                            .sort((a, b) => b.referral - a.referral)
+                            .map((item, index) => ({ ...item, rank: index + 1 }));;
                         // setIsWaitingFriend(true)
-                        referralRanking.sort((a, b) => b.referral - a.referral).map((item, index) => ({
-                            ...item,
-                            rank: index + 1, // Assign the ranking position
-                        }));
+                        //referralRanking.sort((a, b) => b.referral - a.referral).map((item, index) => ({
+                        //    ...item,
+                        //    rank: index + 1, // Assign the ranking position
+                        //}));
 
-                        referralRanking.forEach((r, sortIndex) => {
-                            if (r.name == account?.telegram_info.username) {
-                                setMyReferralRecord({
-                                    rank: sortIndex,
-                                    name: account?.telegram_info.username,
-                                    referral: r.referral
-                                })
-                            }
-                        })
+                        const myReferralRecord = referralRanking.find(r => r.name == account?.telegram_info.username)
+                        if (myReferralRecord) {
+                            setMyReferralRecord(myReferralRecord)
+                        }
 
-                        const referralRankingRes = referralRanking.map((r, sortIndex) => {
-                            return {
-                                ...r, rank: sortIndex
-                            }
-                        })
-                        setReferrakRanking(referralRankingRes);
+                        setReferrakRanking(referralRanking);
                     }
                 }
+
             } catch (error) {
                 console.error('Error handling referral reward:', error);
 
@@ -104,7 +94,7 @@ const DemoRanking = () => {
 
         }
         handleReferralRanking()
-    }, [])
+    }, [account?.telegram_info.username])
 
     useEffect(() => {
         const handlePointRanking = async () => {
