@@ -40,7 +40,7 @@ const DemoLinkPageComponent = ({ utils }: LinkPageProp) => {
             {socialMediaLinks.map((socialMediaLink, index) => {
                 return (
                     <div key={index}
-                        className="w-[21.4375rem] h-[6.25rem] rounded-lg bg-white/[.20] content-center cursor-pointer"
+                        className="w-[21.4375rem] h-[4.25rem] rounded-lg bg-white/[.20] content-center cursor-pointer"
                         onClick={() => {
                             if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
                                 window.open(socialMediaLink.url, '_blank')
