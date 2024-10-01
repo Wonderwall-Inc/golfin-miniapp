@@ -116,11 +116,11 @@ const DemoRanking = () => {
                     }
                 }))
 
-                if (myPointRankingFromServer && account?.telegram_info.username && pointRanking) {
+                if (myPointRankingFromServer && pointRanking) {
                     setMyPointRecord({
                         rank: myPointRankingFromServer.rank,
-                        name: account?.telegram_info.username == "" ? account?.telegram_info.telegram_id : account?.telegram_info.username,
-                        point: myPointRankingFromServer?.total_points
+                        name: account?.telegram_info.username || account?.telegram_info.telegram_id || '',
+                        point: myPointRankingFromServer.total_points
                     })
                     setPointRanking(pointRanking)
                 }
