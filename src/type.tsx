@@ -1,11 +1,20 @@
 import { CSSProperties, Dispatch, SetStateAction } from "react"
-
+// COMPONENTS
 export interface TitleComponentProps {
     titlename: string
     style?: CSSProperties
 }
 
-export interface AccountType {
+
+export interface CountdownProps {
+    targetDate: string
+}
+
+export interface DemoTitleProps {
+    titlename: string,
+    style?: string
+}
+/* export interface AccountType {
     id: number
     app_info?: UserAppInfoType
     personal_info?: UserPersonalInfoType
@@ -14,25 +23,27 @@ export interface AccountType {
     updated_at?: string
     custom_logs?: object
 }
+ */
+
 
 // PAGE
 export interface DemoEarnComponentProp {
     timeLeft: string,
-    dailyReward: boolean,
-    setDailyReward: Dispatch<SetStateAction<boolean>>,
     totalPointAmount: number,
     sgTime: string,
     isClicked: boolean,
     setIsClicked: Dispatch<SetStateAction<boolean>>,
+    /*     dailyReward: boolean,
+        setDailyReward: Dispatch<SetStateAction<boolean>>, */
 }
 
 export interface DemoDailyRewardComponentProp {
     timeLeft: string
-    dailyReward: boolean,
-    setDailyReward: Dispatch<SetStateAction<boolean>>,
     sgTime: string
     isClicked: boolean,
     setIsClicked: Dispatch<SetStateAction<boolean>>,
+    /*   dailyReward: boolean,
+      setDailyReward: Dispatch<SetStateAction<boolean>>, */
 }
 
 export interface DemoBonusComponentProp {
