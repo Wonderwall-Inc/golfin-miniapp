@@ -1,14 +1,11 @@
 import { useCallback, useEffect, useState } from 'react'
 import { TabbarLink } from 'konsta/react'
-
 import { mockPointRankingData, mockReferralRankingData } from '@/constants'
 import CoinImage from '../../assets/images/02_earn_coin.png'
 import { getUser, getUsers } from '@/apis/UserSevices'
 import { useUserContext } from '@/contexts/UserContext'
 import { useFriendContext } from '@/contexts/FriendContext'
-import { usePointContext } from '@/contexts/PointContext'
 import { getPointRanking, getPointRankingList } from '@/apis/PointServices'
-import { getReferralRanking } from '@/apis/FriendServices'
 
 interface ReferralRankingItem {
     rank: number,
@@ -21,12 +18,9 @@ interface PointRankingItem {
     point: number;
 }
 const DemoRanking = () => {
-    const { account, setIsWaitingUser } = useUserContext()
+    const { account } = useUserContext()
     const { setIsWaitingFriend } = useFriendContext()
-    const { setIsWaitingPoint } = usePointContext()
-    const [dailyReward, setDailyReward] = useState(true)
     const [activeTab, setActiveTab] = useState('tab-1');
-    const [isTabbarLabels, setIsTabbarLabels] = useState(true);
 
     const [referralRanking, setReferrakRanking] = useState<ReferralRankingItem[]>([])
     const [pointRanking, setPointRanking] = useState<any[]>([])
@@ -105,7 +99,7 @@ const DemoRanking = () => {
                 })
                 console.log('my ranking from server: ', myPointRankingFromServer);
                 const existingUsers = await getPointRankingList();
-                const pointRanking = existingUsers && await Promise.all(existingUsers.map(async (user, index) => {
+                const pointRanking = existingUsers && await Promise.all(existingUsers.map(async (user) => {
                     const dbUser = await getUser({
                         access_token: '',
                         id: user.user_id.toString()
@@ -157,7 +151,7 @@ const DemoRanking = () => {
                         <TabbarLink
                             active={activeTab === 'tab-1'}
                             onClick={() => setActiveTab('tab-1')}
-                            label={isTabbarLabels && 'Referral'}
+                            label='Referral'
                             style={{}}
                             className={`${activeTab === 'tab-1' ?
                                 'text-[rgba(255,255,255,0.4)] font-[700] rounxded-t-lg border-b-2 border-white' :
@@ -166,7 +160,7 @@ const DemoRanking = () => {
                         <TabbarLink
                             active={activeTab === 'tab-2'}
                             onClick={() => setActiveTab('tab-2')}
-                            label={isTabbarLabels && 'Total Points'}
+                            label='Total Points'
                             className={`${activeTab === 'tab-2' ?
                                 'text-[rgba(255,255,255,0.4)] font-[700] rounded-t-lg border-b-2 border-white' :
                                 'text-[rgba(255,255,255,0.4)] font-[700] border-b-2 border-gray-500'}`}

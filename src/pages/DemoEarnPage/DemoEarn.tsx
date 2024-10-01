@@ -24,7 +24,6 @@ const DemoEarn = () => {
     const { point, setPoint, setIsWaitingPoint } = usePointContext()
     const { activity, setActivity, setIsWaitingActivity } = useActivityContext()
     const { setFriend, friendTrigger, setFriendTrigger, setIsWaitingFriend } = useFriendContext()
-    const [dailyReward, setDailyReward] = useState(true)
     const [timeLeft, setTimeLeft] = useState("")
     const [totalPointAmount, setTotalPointAmount] = useState(0)
     const [sgTime, setSgTime] = useState(sgTimeNowByDayJs());
@@ -43,19 +42,14 @@ const DemoEarn = () => {
         const todayYY = todayDay.getFullYear()
         const todayMM = todayDay.getUTCMonth() + 1
         const preTodayMM = todayMM < 10 ? `0${todayMM}` : todayMM
-        const todayDD = todayDay.getDate() + 1
+        const todayDD = todayDay.getDate() + 1 < 10 ? `0${todayDay.getDate() + 1}` : todayDay.getDate() + 1
         const todayYYMMDD = `${todayYY}-${preTodayMM}-${todayDD}T00:00:00`
-        // FIXME
-        // console.log('time: ', todayYYMMDD);
-        // console.log('sgTime: ', sgTime);
-        // console.log('sgTime[0]: ',`${sgTime.split('T')[0]}T00:00:00`);
         setTimeLeft(todayYYMMDD)
     }, [new Date()])
 
 
     useEffect(() => {
         if (point) {
-            console.log('point updated');
             setTotalPointAmount(totalPointAmount + point.login_amount + point.referral_amount)
         }
     }, [point])
@@ -121,7 +115,6 @@ const DemoEarn = () => {
                                 id: point?.id,
                                 referral_amount: point?.referral_amount + 3000,
                             })
-                            console.log(point);
                         }
                     } else {
                         if (point) {
@@ -165,8 +158,6 @@ const DemoEarn = () => {
             {/* <div>sg: {sgTime}</div> */}
             <DemoEarnComponent
                 timeLeft={timeLeft}
-                dailyReward={dailyReward}
-                setDailyReward={setDailyReward}
                 totalPointAmount={totalPointAmount}
                 sgTime={sgTime}
                 isClicked={isClicked}
@@ -179,7 +170,7 @@ const DemoEarn = () => {
     )
 }
 
-const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, totalPointAmount, sgTime, isClicked, setIsClicked }: DemoEarnComponentProp) => {
+const DemoEarnComponent = ({ timeLeft, totalPointAmount, sgTime, isClicked, setIsClicked }: DemoEarnComponentProp) => {
     return (
         <>
             <div className="w-[343px] h-[85px] sm:h-[95px] md:h-[105px] bg-[#ffffff33] rounded-lg flex justify-center content-center items-center mx-auto my-[12px]">
@@ -192,8 +183,6 @@ const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, totalPointAm
             <div className='flex justify-center justify-items-center mx-5 sm:mx-5 md:mx-6 pt-1 sm:pt-1  space-x-5'>
                 <DemoDailyRewardComponent
                     timeLeft={timeLeft}
-                    dailyReward={dailyReward}
-                    setDailyReward={setDailyReward}
                     sgTime={sgTime}
                     isClicked={isClicked}
                     setIsClicked={setIsClicked}
@@ -205,26 +194,14 @@ const DemoEarnComponent = ({ timeLeft, dailyReward, setDailyReward, totalPointAm
 }
 
 
-const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, sgTime, isClicked, setIsClicked }: DemoDailyRewardComponentProp) => {
+const DemoDailyRewardComponent = ({ timeLeft, sgTime, isClicked, setIsClicked }: DemoDailyRewardComponentProp) => {
     const { setPoint, setIsWaitingPoint, point } = usePointContext()
     const { account } = useUserContext()
     const { setActivity, activity, setIsWaitingActivity } = useActivityContext()
     const [allowed, setAllowed] = useState(true)
 
-
-    // const [sgTime, setSgTime] = useState(sgTimeNowByDayJs());
-
-    // useEffect(() => {
-    //     const timer = setInterval(() => {
-    //         setSgTime(sgTimeNowByDayJs());
-    //     }, 1000);
-    //     return () => clearInterval(timer);
-    // }, []);
-
     useEffect(() => {
         if (import.meta.env.VITE_MINI_APP_ENV == 'test' && activity?.last_login_time) {
-            console.log(sgTime);
-
             const activityCheck = activity?.last_login_time.split('T')[0] == sgTime.split('T')[0]
             if (activityCheck == true || isClicked == true) {
                 setAllowed(false)

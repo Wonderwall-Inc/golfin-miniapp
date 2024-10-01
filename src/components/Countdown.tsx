@@ -1,20 +1,13 @@
 import { useActivityContext } from '@/contexts/ActivityContext';
 import { useUserContext } from '@/contexts/UserContext';
-import { sgTimeNow } from '@/utils';
-import { useState, useEffect, SetStateAction } from 'react';
+import { CountdownProps } from '@/type';
+import { useState, useEffect } from 'react';
 
-
-// FIXME: interface
-// interface CountdownProps {
-//     targetDate: string
-//     dailyReward: boolean
-//     setDailyReward: SetStateAction<boolean>
-// }
-const Countdown = ({  targetDate  /* dailyReward, setDailyReward */ }) => {
+const Countdown = ({ targetDate }: CountdownProps) => {
     const { activity, setActivity } = useActivityContext()
+    console.log('targetDate: ', targetDate);
     const { account } = useUserContext()
     const calculateTimeLeft = () => {
-
         const difference = +new Date(targetDate) - +new Date();
         let timeLeft = {};
         if (difference > 0) {
@@ -24,8 +17,8 @@ const Countdown = ({  targetDate  /* dailyReward, setDailyReward */ }) => {
             const s = Math.floor((difference / 1000) % 60)
 
             timeLeft = {
-                // d: d,
-                h: h+1,
+                // d:d,
+                h: h + 1,
                 m: m,
                 s: s
             };
@@ -61,25 +54,41 @@ const Countdown = ({  targetDate  /* dailyReward, setDailyReward */ }) => {
 
 
 
-    Object.keys(timeLeft).forEach((interval: any) => {
-        if (!timeLeft[interval]) {
-            if (interval == 'd') {
-                return
-            } else {
-                timerComponents.push(interval == 's' ?
-                    <span key={`${interval}-zero`}>00</span> :
-                    <span key={`${interval}-zero`}>00:</span>)
-            }
+    /*  Object.keys(timeLeft).forEach((interval: any) => {
+         if (!timeLeft[interval]) {
+             if (interval == 'd') {
+                 return
+             } else {
+                 timerComponents.push(interval == 's' ?
+                     <span key={`${interval}-zero`}>00</span> :
+                     <span key={`${interval}-zero`}>00:</span>)
+             }
+         } else {
+             interval == 's' ?
+                 timerComponents.push(timeLeft[interval] < 10 ?
+                     <span key={interval}>0{timeLeft[interval]}</span> :
+                     <span key={interval}>{timeLeft[interval]}</span>) :
+                 timerComponents.push(timeLeft[interval] < 10 ?
+                     <span key={interval}>0{timeLeft[interval]}:</span> :
+                     <span key={interval}>{timeLeft[interval]}:</span>)
+         }
+     }); */
+    Object.keys(timeLeft).forEach((interval) => {
+        const value = timeLeft[interval as keyof typeof timeLeft];
+        if (!value) {
+            timerComponents.push(
+                <span key={`${interval}-zero`}>{interval === 's' ? '00' : '00:'}</span>
+            );
         } else {
-            interval == 's' ?
-                timerComponents.push(timeLeft[interval] < 10 ?
-                    <span key={interval}>0{timeLeft[interval]}</span> :
-                    <span key={interval}>{timeLeft[interval]}</span>) :
-                timerComponents.push(timeLeft[interval] < 10 ?
-                    <span key={interval}>0{timeLeft[interval]}:</span> :
-                    <span key={interval}>{timeLeft[interval]}:</span>)
+            timerComponents.push(
+                <span key={interval}>
+                    {value < 10 ? `0${value}` : value}
+                    {interval !== 's' ? ':' : ''}
+                </span>
+            );
         }
     });
+
     return (
         <div>
             {timerComponents.length && timerComponents}
