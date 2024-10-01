@@ -85,25 +85,29 @@ const App = () => {
   import.meta.env.VITE_MINI_APP_ENV !== 'test' && WebApp.BackButton.onClick(navigateToHome)
 
   return (
-    <>
+    <div>
+
       {
         isWaiting == true ?
-          /*    1 == 1 ? */
-          < div className="bg-[#00161c] w-[600px] h-[900px] absolute left-[-50px] top-0">
-            <ClipLoader
-              color='gray'
-              /*    loading={1 == 1} */
-              loading={isWaiting}
-              size={150}
-              className='opacity-80 absolute top-[40%] left-[40%] translate-x-[-50%] translate-y-[-50%]'
-            >
-              <img className="absolute left-[50%] w-[100%] translate-x-[-50%]" alt="Ellipse171" src={ellipseImage1} />
-
-            </ClipLoader>
-          </div >
+          <div>
+            <div className="bg-[#00161c] justify-center w-full">
+              <div className="bg-[#00161c] overflow-hidden w-[393px] h-[852px] relative">
+                <ClipLoader
+                  color='gray'
+                  /*        loading={1 == 1} */
+                  loading={isWaiting}
+                  size={150}
+                  className='opacity-80 absolute top-[40%] left-[30%] translate-x-[-50%] translate-y-[-50%]'
+                >
+                </ClipLoader>
+                <img className="absolute left-[50%] w-[100%] translate-x-[-50%]" alt="Ellipse171" src={ellipseImage1} />
+              </div>
+            </div>
+          </div>
           :
           <div className='app-container'>
             <Background>
+
               <DemoTitle titlename={`${location.pathname == '/' ? 'EARN' : location.pathname.split('/')[1].toUpperCase()}`} />
               <Routes>
                 <Route path='/' element={<DemoEarn />} />
@@ -118,7 +122,8 @@ const App = () => {
           </div >
       }
 
-    </>
+    </div >
+
   )
 }
 
