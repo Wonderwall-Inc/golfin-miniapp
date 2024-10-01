@@ -57,7 +57,7 @@ const DemoRanking = () => {
                         const senderCount = user.user_details.sender?.length || 0; // Handle potential nullish value
                         return {
                             rank: 0,
-                            name: user.user_details.user_base.telegram_info.username == '' ? user.user_details.user_base.telegram_info.telegram_id : user.user_details.user_base.telegram_info.username,
+                            name: user.user_details.user_base.telegram_info.username == "" ? user.user_details.user_base.telegram_info.telegram_id : user.user_details.user_base.telegram_info.username,
                             referral: senderCount,
                         };
                     })
@@ -108,7 +108,7 @@ const DemoRanking = () => {
                         // Handle potential nullish values for user.user_details.point and user.user_details.point[0]
                         return {
                             rank: user.rank,
-                            name: dbUser?.user_details.user_base.telegram_info.username == '' ? dbUser?.user_details.user_base.telegram_info.telegram_id : dbUser?.user_details.user_base.telegram_info.username,
+                            name: dbUser?.user_details.user_base.telegram_info.username == "" ? dbUser?.user_details.user_base.telegram_info.telegram_id : dbUser?.user_details.user_base.telegram_info.username,
                             point: user?.total_points
                         }
                     }
@@ -117,7 +117,7 @@ const DemoRanking = () => {
                 if (myPointRankingFromServer && account?.telegram_info.username && pointRanking) {
                     setMyPointRecord({
                         rank: myPointRankingFromServer.rank,
-                        name: account?.telegram_info.username == '' ? account?.telegram_info.telegram_id : account?.telegram_info.username,
+                        name: account?.telegram_info.username == "" ? account?.telegram_info.telegram_id : account?.telegram_info.username,
                         point: myPointRankingFromServer?.total_points
                     })
                     setPointRanking(pointRanking)
