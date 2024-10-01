@@ -24,8 +24,8 @@ const navLinks = [
     { label: 'Demo Ranking', url: '/ranking' },
     { label: 'Demo Links', url: '/links' },
     { label: 'Demo Profile', url: '/profile' },
-    { label: 'Demo Dev', url: '/dev' },
-]
+/*     { label: 'Demo Dev', url: '/dev' },
+ */]
 
 const socialMediaLinks = [
     { label: 'Instagram', url: 'https://www.instagram.com/golfin_official/', icon: <img src={InstagramImage} width='50px' height='50px' />, cto: 'Follow us on Instagram' },
