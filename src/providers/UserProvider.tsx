@@ -110,14 +110,14 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                     nationality: "Japanese"
                 }
                 const telegram_info = is_premium !== undefined && is_premium ? {
-                    username: username || '',
+                    username: username == undefined ? '' : username,
                     telegram_id: id.toString(),
                     token_balance: 0,
                     premium: true,
                     chat_id: '123',
                     start_param: webappStartParam,
                 } : {
-                    username: username || '',
+                    username: username == undefined ? '' : username,
                     telegram_id: id.toString(),
                     token_balance: 0,
                     premium: false,
