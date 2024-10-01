@@ -322,6 +322,9 @@ const DemoDailyRewardComponent = ({ timeLeft, dailyReward, setDailyReward, sgTim
                         updated_at: sgTime,
                     })
                 } else {
+                    console.log('button clicked');
+                    console.log('timeLeft: ', timeLeft);
+                    console.log('sgTime: ', sgTime);
                     setIsClicked(true)
                     handleCheckInDailyReward()
                 }
