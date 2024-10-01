@@ -46,14 +46,14 @@ const DemoLinkPageComponent = ({ utils }: LinkPageProp) => {
                                 window.open(socialMediaLink.url, '_blank')
                             } else {
                                 if (socialMediaLink.label == 'Forward Link') {
-                                    toast({
-                                        className: cn(
-                                            'bg-[#FFFAE6] rounded-[10px]'
-                                        ),
+                                    copytoClipboard(MINI_APP_APP)
+                                    isCopied && toast({
+                                        className: cn('bg-[#FFFAE6] rounded-[10px]'),
                                         description: 'Invitation link copied to clipboard',
                                     })
+                                } else {
+                                    utils !== undefined ? utils.openLink(socialMediaLink.url, { tryInstantView: true }) : window.open(socialMediaLink.url, '_blank')
                                 }
-                                utils !== undefined ? utils.openLink(socialMediaLink.url, { tryInstantView: true }) : window.open(socialMediaLink.url, '_blank')
                             }
                         }}>
                         <div className='flex justify-start mx-3 cursor-pointer'>
