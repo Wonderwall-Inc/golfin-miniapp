@@ -94,10 +94,9 @@ const App = () => {
               <div className="bg-[#00161c] overflow-hidden w-[393px] h-[852px] relative">
                 <ClipLoader
                   color='gray'
-                  /*        loading={1 == 1} */
                   loading={isWaiting}
                   size={150}
-                  className='opacity-80 absolute top-[40%] left-[30%] translate-x-[-50%] translate-y-[-50%]'
+                  className='opacity-80 absolute top-[30%] left-[30%] translate-x-[-50%] translate-y-[-50%]'
                 >
                 </ClipLoader>
                 <img className="absolute left-[50%] w-[100%] translate-x-[-50%]" alt="Ellipse171" src={ellipseImage1} />
