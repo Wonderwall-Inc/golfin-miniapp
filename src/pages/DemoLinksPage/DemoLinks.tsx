@@ -20,7 +20,7 @@ const socialMediaLinks = [
     { label: 'Golfin Instagram', url: 'https://www.instagram.com/golfin_official/', icon: <div className='scale-150 mx-3'><DemoIgSvg /></div>, cto: 'Follow us on Instagram' },
     { label: 'Golfin X', url: 'https://x.com/GOLFIN_GL', icon: <div className='scale-150 mx-3'><DemoXSvg /></div>, cto: 'Follow us on X' },
     { label: 'Golfin Website', url: 'https://golfin.io/en/', icon: <div className='scale-150 mx-3'><DemoGolfinWebSvg /></div>, cto: 'Visit Golfin Website' },
-    { label: 'Golfin Discord', url: 'https://discord.com/invite/9jHYM5zYnv', icon: <div className='scale-150 mx-3'><DemoGolfinWebSvg /></div>, cto: 'Join our Channel' },
+    { label: 'Golfin Discord', url: 'https://discord.com/invite/9jHYM5zYnv', icon: <div className='scale-150 mx-3'><DemoGolfinWebSvg /></div>, cto: 'Join Golfin Discord' },
 ]
 
 const DemoLinks = ({ utils }: LinkPageProp) => {
@@ -39,7 +39,7 @@ const DemoLinkPageComponent = ({ utils }: LinkPageProp) => {
             {socialMediaLinks.map((socialMediaLink, index) => {
                 return (
                     <div key={index}
-                        className="w-[21.4375rem] h-[3.25rem] rounded-lg bg-white/[.20] content-center cursor-pointer"
+                        className="w-[21.4375rem] h-[2.5rem] rounded-lg bg-white/[.20] content-center cursor-pointer"
                         onClick={() => {
                             if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
                                 window.open(socialMediaLink.url, '_blank')
