@@ -1,4 +1,4 @@
-import { UserCreateRequestType, UserCreateResponseType, UserRetrievalRequestType, UserRetrievalResponseType } from '@/type';
+import { UserCreateRequestType, UserCreateResponseType, UserRetrievalRequestType, UserRetrievalResponseType, UserUpdateDetailsType, UserUpdateRequestType, UserUpdateResponseType } from '@/type';
 import api from './api';
 
 // USER CREATION
@@ -44,12 +44,20 @@ export async function getUser(userRetrieval: UserRetrievalRequestType): Promise<
 // FRIENDS RETRIEVAL
 export const getUsers = async (skip: number = 0, limit: number = 15): Promise<[UserRetrievalResponseType] | undefined> => {
     try {
-        const response = await api.get(
-            `/user/details?skip=${skip}&limit=${limit}`
-        );
+        const response = await api.get(`/user/details?skip=${skip}&limit=${limit}`);
         return response.data;
     } catch (error) {
         console.error('Error retrieving friends:', error);
+        throw error; // Re-throw for error handling
+    }
+};
+
+export const updateUser = async (userUpdate: UserUpdateRequestType): Promise<UserUpdateResponseType | undefined> => {
+    try {
+        const response = await api.put('/user/update', userUpdate);
+        return response.data;
+    } catch (error) {
+        console.error('Error updating user:', error);
         throw error; // Re-throw for error handling
     }
 };

@@ -3,7 +3,6 @@ import WebApp from '@twa-dev/sdk';
 import { UserContext } from '../contexts/UserContext';
 import { UserCreateRequestType, UserType } from '../type';
 import { createUser, getUser } from '@/apis/UserSevices';
-import { getPoint, updatePoint } from '@/apis/PointServices';
 
 export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const [account, setAccount] = useState<UserType | undefined>();
@@ -101,40 +100,38 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                 if (is_bot) {
                     WebApp.close()
                 }
-                if (username !== undefined) {
-                    const app_info = {
-                        active: true,
-                        admin: false,
-                        skin: ['']
-                    }
-                    const personal_info = {
-                        location: "Japan",
-                        nationality: "Japanese"
-                    }
-                    const telegram_info = is_premium !== undefined && is_premium ? {
-                        username: username,
-                        telegram_id: id.toString(),
-                        token_balance: 0,
-                        premium: true,
-                        chat_id: '123',
-                        start_param: webappStartParam,
-                    } : {
-                        username: username,
-                        telegram_id: id.toString(),
-                        token_balance: 0,
-                        premium: false,
-                        chat_id: '123',
-                        start_param: webappStartParam,
-                    }
-
-                    const payload = {
-                        app_info: app_info,
-                        personal_info: personal_info,
-                        telegram_info: telegram_info
-                    }
-
-                    userCreation(payload)
+                const app_info = {
+                    active: true,
+                    admin: false,
+                    skin: ['']
                 }
+                const personal_info = {
+                    location: "Japan",
+                    nationality: "Japanese"
+                }
+                const telegram_info = is_premium !== undefined && is_premium ? {
+                    username: username == undefined ? id.toString() : username,
+                    telegram_id: id.toString(),
+                    token_balance: 0,
+                    premium: true,
+                    chat_id: '123',
+                    start_param: webappStartParam,
+                } : {
+                    username: username == undefined ? id.toString() : username,
+                    telegram_id: id.toString(),
+                    token_balance: 0,
+                    premium: false,
+                    chat_id: '123',
+                    start_param: webappStartParam,
+                }
+
+                const payload = {
+                    app_info: app_info,
+                    personal_info: personal_info,
+                    telegram_info: telegram_info
+                }
+
+                userCreation(payload)
             }
         }
     }, [webappUser, webappStartParam])

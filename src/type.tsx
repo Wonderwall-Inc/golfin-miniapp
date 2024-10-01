@@ -149,6 +149,7 @@ export interface UserUpdateDetailsType {
     skin?: string[]
     location?: string
     age?: number
+    username?: string
     custom_logs?: object
 }
 

@@ -9,7 +9,7 @@ module.exports = konstaConfig({
 			textColor: {
 				black: 'rgba(255,255,255,0.4)',
 			},
-			link:{
+			link: {
 				default: colors.white
 			},
 			colors: {
@@ -59,6 +59,9 @@ module.exports = konstaConfig({
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
+			},
+			animation: {
+				'toast-slide-up': 'toast-slide-up 0.3s ease-out forwards',
 			},
 		}
 	},

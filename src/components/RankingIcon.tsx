@@ -1,9 +1,4 @@
-import React from 'react'
-import RankingPlain from '../assets/icons/ranking-plain.svg'
-import styled, { css } from 'styled-components'
-import { twMerge } from 'tailwind-merge';
-
-// import './EarnIcon.css'
+import { twMerge } from "tailwind-merge"
 
 interface NavIconProps {
     className?: string
@@ -13,7 +8,7 @@ interface NavIconProps {
 
 const RankingIcon = ({ className, color }: NavIconProps) => {
     return (
-        <svg width="50" height="50" viewBox="0 0 68 68" fill={color} xmlns="http://www.w3.org/2000/svg">
+        <svg width="50" height="50" viewBox="0 0 68 68" fill={color} xmlns="http://www.w3.org/2000/svg" className={twMerge(className)}>
             <g id="Clip path group">
                 <g mask="url(#mask0_203_32)">
                     <g id="Group">
