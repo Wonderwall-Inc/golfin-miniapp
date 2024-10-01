@@ -3,8 +3,6 @@ import DemoIgSvg from '../../assets/icons/DemoIg.svg'
 import DemoXSvg from '../../assets/icons/DemoX.svg'
 import DemoGolfinWebSvg from '../../assets/icons/DemoGolfinWeb.svg'
 import ForwardTgLinkSvg from '../../assets/icons/ForwardTgLink.svg'
-import { useState } from 'react'
-import { Toast } from '@/components/ui/toast'
 import { cn } from '@/lib/utils'
 import { useToast } from '@/hooks/use-toast'
 import useCopyToClipboard from '@/hooks/useCopyToClipboard'
@@ -18,10 +16,11 @@ interface LinkPageProp {
 }
 
 const socialMediaLinks = [
-    { label: 'Forward Link', url: MINI_APP_APP, icon: <div className='scale-120 mx-3'><ForwardTgLinkSvg /></div>, cto: 'Copy invitation link' },
-    { label: 'Instagram', url: 'https://www.instagram.com/golfin_official/', icon: <div className='scale-150 mx-3'><DemoIgSvg /></div>, cto: 'Follow us on Instagram' },
-    { label: 'X', url: 'https://x.com/GOLFIN_GL', icon: <div className='scale-150 mx-3'><DemoXSvg /></div>, cto: 'Follow us on X' },
+    { label: 'Golfin Forward Link', url: MINI_APP_APP, icon: <div className='scale-120 mx-3'><ForwardTgLinkSvg /></div>, cto: 'Copy invitation link' },
+    { label: 'Golfin Instagram', url: 'https://www.instagram.com/golfin_official/', icon: <div className='scale-150 mx-3'><DemoIgSvg /></div>, cto: 'Follow us on Instagram' },
+    { label: 'Golfin X', url: 'https://x.com/GOLFIN_GL', icon: <div className='scale-150 mx-3'><DemoXSvg /></div>, cto: 'Follow us on X' },
     { label: 'Golfin Website', url: 'https://golfin.io/en/', icon: <div className='scale-150 mx-3'><DemoGolfinWebSvg /></div>, cto: 'Visit Golfin Website' },
+    { label: 'Golfin Discord', url: 'https://discord.com/invite/9jHYM5zYnv', icon: <div className='scale-150 mx-3'><DemoGolfinWebSvg /></div>, cto: 'Join our Channel' },
 ]
 
 const DemoLinks = ({ utils }: LinkPageProp) => {
@@ -40,12 +39,12 @@ const DemoLinkPageComponent = ({ utils }: LinkPageProp) => {
             {socialMediaLinks.map((socialMediaLink, index) => {
                 return (
                     <div key={index}
-                        className="w-[21.4375rem] h-[4.25rem] rounded-lg bg-white/[.20] content-center cursor-pointer"
+                        className="w-[21.4375rem] h-[3.25rem] rounded-lg bg-white/[.20] content-center cursor-pointer"
                         onClick={() => {
                             if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
                                 window.open(socialMediaLink.url, '_blank')
                             } else {
-                                if (socialMediaLink.label == 'Forward Link') {
+                                if (socialMediaLink.label == 'Golfin Forward Link') {
                                     copytoClipboard(MINI_APP_APP)
                                     isCopied && toast({
                                         className: cn('bg-[#FFFAE6] rounded-[10px]'),
