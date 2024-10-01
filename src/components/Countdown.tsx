@@ -1,7 +1,7 @@
 import { useActivityContext } from '@/contexts/ActivityContext';
 import { useUserContext } from '@/contexts/UserContext';
 import { sgTimeNow } from '@/utils';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, SetStateAction } from 'react';
 
 
 // FIXME: interface
@@ -10,14 +10,13 @@ import { useState, useEffect } from 'react';
 //     dailyReward: boolean
 //     setDailyReward: SetStateAction<boolean>
 // }
-const Countdown = ({ targetDate }) => {
+const Countdown = ({ targetDate  /* dailyReward, setDailyReward */ }) => {
     const { activity, setActivity } = useActivityContext()
     console.log('targetDate: ', targetDate);
     const { account } = useUserContext()
     const calculateTimeLeft = () => {
 
-        //const difference = +new Date(targetDate) - +new Date();
-        const difference = +new Date(targetDate) - sgTimeNow();
+        const difference = +new Date(targetDate) - +new Date();
         let timeLeft = {};
         if (difference > 0) {
             // const day = Math.floor(difference / (1000 * 60 * 60 * 24))
@@ -27,8 +26,8 @@ const Countdown = ({ targetDate }) => {
 
             timeLeft = {
                 // d: d,
-                // h: h+1,
-                h: h,
+                // h: h,
+                h: h + 1,
                 m: m,
                 s: s
             };
