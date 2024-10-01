@@ -20,6 +20,8 @@ import { useFriendContext } from './contexts/FriendContext'
 import DemoDev from './pages/DemoDevPage/DemoDev'
 import { Toaster } from './components/ui/toaster'
 
+import ellipseImage1 from './assets/images/ellipse-171.png';
+
 const App = () => {
   if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
     const initDataRaw = new URLSearchParams(testInitDataRaw).toString();
@@ -85,13 +87,17 @@ const App = () => {
   return (
     <>
       {
-        isWaiting == true ? //FIXME: flat waiting state
-          <div className='bg-gray-500 opacity-40 w-[400px] h-[700px] relative'>
+        isWaiting == true ?
+          < div className="bg-[#00161c] w-[700px] h-[1000px] absolute left-[-50px] top-0">
+            <img className="absolute left-[50%] w-[100%] translate-x-[-50%]" alt="Ellipse171" src={ellipseImage1} />
             <ClipLoader
-              loading={isWaiting}
+              color='gray'
+              loading={1 == 1}
               size={150}
-              className='w-[100%] absolute top-[35%] left-[30%] translate-x-[-50%]' />
-          </div> :
+              className='opacity-80 absolute top-[40%] left-[40%] translate-x-[-50%] translate-y-[-50%]'
+            />
+          </div >
+          :
           <div className='app-container'>
             <Background>
               <DemoTitle titlename={`${location.pathname == '/' ? 'EARN' : location.pathname.split('/')[1].toUpperCase()}`} />
