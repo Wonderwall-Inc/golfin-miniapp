@@ -46,10 +46,11 @@ const DemoEarn = () => {
         const todayDD = todayDay.getDate() + 1
         const todayYYMMDD = `${todayYY}-${preTodayMM}-${todayDD}T00:00:00`
         // FIXME
-        // console.log('time: ', todayYYMMDD);
-        // console.log('sgTime: ', sgTime);
-        // console.log('sgTime[0]: ',`${sgTime.split('T')[0]}T00:00:00`);
-        setTimeLeft(todayYYMMDD)
+        console.log('time: ', todayYYMMDD);
+        console.log('sgTime: ', sgTime);
+        console.log('sgTime[0]: ', `${sgTime.split('T')[0]}T00:00:00`);
+        //setTimeLeft(todayYYMMDD)
+        setTimeLeft(`${sgTime.split('T')[0]}T00:00:00`)
     }, [new Date()])
 
 
