@@ -116,14 +116,15 @@ const DemoRanking = () => {
                     }
                 }))
 
-                if (myPointRankingFromServer && pointRanking) {
-                    setMyPointRecord({
-                        rank: myPointRankingFromServer.rank,
-                        name: account?.telegram_info.username || account?.telegram_info.telegram_id || '',
-                        point: myPointRankingFromServer.total_points
-                    })
-                    setPointRanking(pointRanking)
-                }
+                    if (myPointRankingFromServer && pointRanking) {
+                        setMyPointRecord({
+                            rank: myPointRankingFromServer.rank,
+                            name: account?.telegram_info?.username || account?.telegram_info?.telegram_id || '',
+                            point: myPointRankingFromServer.total_points
+                        });
+                        setPointRanking(pointRanking);
+                    }
+
             }
         } catch (error) {
             console.error('Error handling referral reward:', error);
