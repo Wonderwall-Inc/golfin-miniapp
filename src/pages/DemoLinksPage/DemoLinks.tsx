@@ -2,15 +2,26 @@ import { Utils } from '@telegram-apps/sdk'
 import DemoIgSvg from '../../assets/icons/DemoIg.svg'
 import DemoXSvg from '../../assets/icons/DemoX.svg'
 import DemoGolfinWebSvg from '../../assets/icons/DemoGolfinWeb.svg'
+import ForwardTgLinkSvg from '../../assets/icons/ForwardTgLink.svg'
+import { useState } from 'react'
+import { Toast } from '@/components/ui/toast'
+import { cn } from '@/lib/utils'
+import { useToast } from '@/hooks/use-toast'
+import useCopyToClipboard from '@/hooks/useCopyToClipboard'
+const MINI_APP_BOT_NAME = import.meta.env.VITE_MINI_APP_BOT_NAME
+const MINI_APP_NAME = import.meta.env.VITE_MINI_APP_NAME
+const MINI_APP_APP = `https://t.me/${MINI_APP_BOT_NAME}/${MINI_APP_NAME}/start`
+
 
 interface LinkPageProp {
     utils: Utils
 }
 
 const socialMediaLinks = [
-    { label: 'Instagram', url: 'https://www.instagram.com/golfin_official/', icon: <div className='scale-150 mx-2'><DemoIgSvg /></div>, cto: 'Follow us on Instagram' },
-    { label: 'X', url: 'https://x.com/GOLFIN_GL', icon: <div className='scale-150 mx-2'><DemoXSvg /></div>, cto: 'Follow us on X' },
-    { label: 'Golfin Website', url: 'https://golfin.io/en/', icon: <div className='scale-150 mx-2'><DemoGolfinWebSvg /></div>, cto: 'Visit Golfin Website' },
+    { label: 'Forward Link', url: MINI_APP_APP, icon: <div className='scale-120 mx-3'><ForwardTgLinkSvg /></div>, cto: 'Copy invitation link' },
+    { label: 'Instagram', url: 'https://www.instagram.com/golfin_official/', icon: <div className='scale-150 mx-3'><DemoIgSvg /></div>, cto: 'Follow us on Instagram' },
+    { label: 'X', url: 'https://x.com/GOLFIN_GL', icon: <div className='scale-150 mx-3'><DemoXSvg /></div>, cto: 'Follow us on X' },
+    { label: 'Golfin Website', url: 'https://golfin.io/en/', icon: <div className='scale-150 mx-3'><DemoGolfinWebSvg /></div>, cto: 'Visit Golfin Website' },
 ]
 
 const DemoLinks = ({ utils }: LinkPageProp) => {
@@ -22,6 +33,8 @@ const DemoLinks = ({ utils }: LinkPageProp) => {
 }
 
 const DemoLinkPageComponent = ({ utils }: LinkPageProp) => {
+    const { isCopied, copytoClipboard } = useCopyToClipboard()
+    const { toast } = useToast()
     return (
         <div className='grid space-y-5 mx-auto justify-items-center cursor-pointer mt-5'>
             {socialMediaLinks.map((socialMediaLink, index) => {
@@ -31,8 +44,15 @@ const DemoLinkPageComponent = ({ utils }: LinkPageProp) => {
                         onClick={() => {
                             if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
                                 window.open(socialMediaLink.url, '_blank')
-                            }
-                            else {
+                            } else {
+                                if (socialMediaLink.label == 'Forward Link') {
+                                    toast({
+                                        className: cn(
+                                            'bg-[#FFFAE6] rounded-[10px]'
+                                        ),
+                                        description: 'Invitation link copied to clipboard',
+                                    })
+                                }
                                 utils !== undefined ? utils.openLink(socialMediaLink.url, { tryInstantView: true }) : window.open(socialMediaLink.url, '_blank')
                             }
                         }}>

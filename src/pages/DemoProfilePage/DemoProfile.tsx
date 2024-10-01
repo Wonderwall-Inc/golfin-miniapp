@@ -64,7 +64,7 @@ const DemoProfile = () => {
                     font-bold
                     [background:linear-gradient(158deg,rgba(169,231,29,1)_-7.35%,rgba(94,197,89,1)_84.4%)]'
                         type='submit'
-                        onClick={() => {
+                        onClick={async () => {
                             if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
                                 toast(username == account?.telegram_info.username ? {
                                     className: cn(
@@ -86,12 +86,30 @@ const DemoProfile = () => {
                                 })
 
                             } else {
-                                updateUser({
+                                const updatedUser = await updateUser({
                                     access_token: '',
                                     id: account?.id || 0,
                                     user_payload: {
                                         username: username,
                                     }
+                                })
+                                toast(updatedUser?.user_details.user_base.telegram_info.username == account?.telegram_info.username ? {
+                                    className: cn(
+                                        'fixed left-1/2 transform -translate-x-1/2 max-w-[300px] animate-toast-slide-up'
+                                    ),
+                                    title: 'no change',
+                                    description: 'Username is not changed',
+                                    action: <ToastAction altText="Try again">Try again</ToastAction>,
+
+                                } : {
+                                    className: cn(
+                                        'fixed left-1/2 transform -translate-x-1/2 max-w-[220px] animate-toast-slide-up'
+                                    ),
+                                    description:
+                                        <div className=''>
+                                            Username is changed to { }
+                                            <span className='font-semibold'>{username}</span>
+                                        </div>,
                                 })
                             }
                         }}
