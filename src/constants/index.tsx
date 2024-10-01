@@ -23,7 +23,8 @@ const navLinks = [
     { label: 'Demo Home', url: '/' },
     { label: 'Demo Ranking', url: '/ranking' },
     { label: 'Demo Links', url: '/links' },
-    { label: 'Personal', url: '/user' },
+    { label: 'Demo Profile', url: '/profile' },
+    { label: 'Demo Dev', url: '/dev' },
 ]
 
 const socialMediaLinks = [

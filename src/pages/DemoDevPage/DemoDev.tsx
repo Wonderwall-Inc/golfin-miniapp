@@ -6,7 +6,7 @@ import { sgTimeNowByDayJs } from '@/utils'
 import { useState } from 'react'
 
 
-const DemoUser = () => {
+const DemoDev = () => {
     const { account, setAccount } = useUserContext()
     const { point, setPoint } = usePointContext()
     const { activity, setActivity } = useActivityContext()
@@ -73,4 +73,4 @@ const DemoUser = () => {
     )
 }
 
-export default DemoUser
+export default DemoDev

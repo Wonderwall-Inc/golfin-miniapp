@@ -12,11 +12,13 @@ import { testInitDataRaw } from './constants'
 import Background from './components/BackgroundComponent/Background'
 import DemoEarn from './pages/DemoEarnPage/DemoEarn'
 import DemoTitle from './components/DemoTitleComponent/DemoTitle'
-import DemoUser from './pages/DemoUserPage/DemoUser'
+import DemoProfile from './pages/DemoProfilePage/DemoProfile'
 import { useUserContext } from './contexts/UserContext'
 import { usePointContext } from './contexts/PointContext'
 import { useActivityContext } from './contexts/ActivityContext'
 import { useFriendContext } from './contexts/FriendContext'
+import DemoDev from './pages/DemoDevPage/DemoDev'
+import { Toaster } from './components/ui/toaster'
 
 const App = () => {
   if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
@@ -97,10 +99,12 @@ const App = () => {
                 <Route path='/' element={<DemoEarn />} />
                 <Route path='/ranking' element={<DemoRanking />} />
                 <Route path='/links' element={<DemoLinks utils={utils} />} />
-                <Route path='/user' element={<DemoUser />} />
+                <Route path='/profile' element={<DemoProfile />} />
+                <Route path='/dev' element={<DemoDev />} />
               </Routes>
             </Background>
             <Footer />
+            <Toaster /> {/* shadcn-ui */}
           </div >
       }
 

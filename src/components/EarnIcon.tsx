@@ -1,8 +1,3 @@
-import React from 'react'
-import EarnPlain from '../assets/icons/earn-plain.svg'
-import LinkPlain from '../assets/icons/link-plain.svg'
-import RankingPlain from '../assets/icons/ranking-plain.svg'
-import styled, { css } from 'styled-components'
 import { twMerge } from 'tailwind-merge';
 
 // import './EarnIcon.css'
