@@ -93,6 +93,9 @@ const DemoProfile = () => {
                                         username: username,
                                     }
                                 })
+                                if (updatedUser !== undefined) {
+                                    setAccount(updatedUser.user_details.user_base)
+                                }
                                 toast(updatedUser?.user_details.user_base.telegram_info.username == account?.telegram_info.username ? {
                                     className: cn(
                                         'fixed left-1/2 transform -translate-x-1/2 max-w-[300px] animate-toast-slide-up'

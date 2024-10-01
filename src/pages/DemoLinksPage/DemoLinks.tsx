@@ -6,6 +6,7 @@ import ForwardTgLinkSvg from '../../assets/icons/ForwardTgLink.svg'
 import { cn } from '@/lib/utils'
 import { useToast } from '@/hooks/use-toast'
 import useCopyToClipboard from '@/hooks/useCopyToClipboard'
+
 const MINI_APP_BOT_NAME = import.meta.env.VITE_MINI_APP_BOT_NAME
 const MINI_APP_NAME = import.meta.env.VITE_MINI_APP_NAME
 const MINI_APP_APP = `https://t.me/${MINI_APP_BOT_NAME}/${MINI_APP_NAME}/start`
