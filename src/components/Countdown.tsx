@@ -1,7 +1,7 @@
 import { useActivityContext } from '@/contexts/ActivityContext';
 import { useUserContext } from '@/contexts/UserContext';
 import { sgTimeNow } from '@/utils';
-import { useState, useEffect, SetStateAction } from 'react';
+import { useState, useEffect } from 'react';
 
 
 // FIXME: interface
@@ -10,7 +10,7 @@ import { useState, useEffect, SetStateAction } from 'react';
 //     dailyReward: boolean
 //     setDailyReward: SetStateAction<boolean>
 // }
-const Countdown = ({ targetDate  /* dailyReward, setDailyReward */ }) => {
+const Countdown = ({ targetDate }) => {
     const { activity, setActivity } = useActivityContext()
     console.log('targetDate: ', targetDate);
     const { account } = useUserContext()
