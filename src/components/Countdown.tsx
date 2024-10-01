@@ -12,6 +12,7 @@ import { useState, useEffect, SetStateAction } from 'react';
 // }
 const Countdown = ({  targetDate  /* dailyReward, setDailyReward */ }) => {
     const { activity, setActivity } = useActivityContext()
+    console.log('targetDate: ', targetDate);
     const { account } = useUserContext()
     const calculateTimeLeft = () => {
 
