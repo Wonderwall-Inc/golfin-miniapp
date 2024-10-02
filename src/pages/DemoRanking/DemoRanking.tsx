@@ -170,7 +170,7 @@ const DemoRanking = () => {
             setIsWaitingFriend(false)
             setIsWaitingPoint(false)
         }
-    }, [isLoadingRanking])
+    }, [isLoadingRanking, handleReferralRanking, handlePointRanking])
 
 
     const rankingNameDisplayer = (name: string) => {
