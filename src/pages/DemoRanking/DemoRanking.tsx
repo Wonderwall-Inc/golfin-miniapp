@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { TabbarLink } from 'konsta/react'
 import { mockPointRankingData, mockReferralRankingData } from '@/constants'
 import CoinImage from '../../assets/images/02_earn_coin.png'
-import { getUser, getUsers } from '@/apis/UserSevices'
+import { getUser, getUserFriendRanking, getUsers } from '@/apis/UserSevices'
 import { useUserContext } from '@/contexts/UserContext'
 import { useFriendContext } from '@/contexts/FriendContext'
 import { getPointRanking, getPointRankingList } from '@/apis/PointServices'
@@ -58,29 +58,38 @@ const DemoRanking = () => {
                 setReferrakRanking(mockReferralRankingData)
                 setMyReferralRecord({ name: 'nextInnovationDev25', rank: 1, referral: 5999999999 })
             } else {
-                const existingUsers = await getUsers(0, 100); // FIXME
-                console.log(existingUsers);
+                if (account?.id) {
+                    const userFriendRanking = await getUserFriendRanking(account?.id)
+                    console.log(userFriendRanking);
+                    /*                     const existingUsers = await getUsers(0, 100); // FIXME */
+                    /*  console.log(existingUsers); */
 
-                if (existingUsers && existingUsers.length > 0) {
-                    const referralRanking: ReferralRankingItem[] = existingUsers.map((user, /* index */) => {
-                        const senderCount = user.user_details.sender?.length || 0; // Handle potential nullish value
-                        return {
-                            rank: 0,
-                            name: user.user_details.user_base.telegram_info.username == "" ?
-                                user.user_details.user_base.telegram_info.telegram_id :
-                                user.user_details.user_base.telegram_info.username,
-                            referral: senderCount,
-                        };
-                    })
-                        .sort((a, b) => b.referral - a.referral)
-                        .map((item, index) => ({ ...item, rank: index + 1 }));
+                    if (userFriendRanking && userFriendRanking.top_10.length > 0) {
+                        const referralRanking: ReferralRankingItem[] = userFriendRanking.top_10.map((ranking, /* index */) => {
+                            /*     const senderCount = user.user_details.sender?.length || 0; */ // Handle potential nullish value
+                            return {
+                                rank: ranking.rank,
+                                name: ranking.username == "" ? ranking.telegram_id : ranking.username,
+                                referral: ranking.sender_count,
+                            };
+                        })
+                        /*                             .sort((a, b) => b.referral - a.referral)
+                                                    .map((item, index) => ({ ...item, rank: index + 1 })); */
 
-                    const myReferralRecord = referralRanking.find(r => r.name == account?.telegram_info.username || r.name == account?.telegram_info.telegram_id)
-                    if (myReferralRecord) {
-                        setMyReferralRecord(myReferralRecord)
+                        /*                         const myReferralRecord = referralRanking.find(r => r.name == account?.telegram_info.username || r.name == account?.telegram_info.telegram_id)
+                         
+                        */
+                       const myReferralRecord = userFriendRanking.sender_info
+                        if (myReferralRecord) {
+                            setMyReferralRecord({
+                                rank: myReferralRecord.rank,
+                                name: myReferralRecord.username == "" ? myReferralRecord.telegram_id : myReferralRecord.username,
+                                referral: myReferralRecord.sender_count,
+                            })
+                        }
+
+                        setReferrakRanking(referralRanking);
                     }
-
-                    setReferrakRanking(referralRanking);
                 }
             }
 

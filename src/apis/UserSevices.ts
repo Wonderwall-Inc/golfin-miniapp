@@ -1,4 +1,4 @@
-import { UserCreateRequestType, UserCreateResponseType, UserRetrievalRequestType, UserRetrievalResponseType, UserUpdateDetailsType, UserUpdateRequestType, UserUpdateResponseType } from '@/type';
+import { UserCreateRequestType, UserCreateResponseType, UserFriendRankingListType, UserRetrievalRequestType, UserRetrievalResponseType, UserUpdateDetailsType, UserUpdateRequestType, UserUpdateResponseType } from '@/type';
 import api from './api';
 
 // USER CREATION
@@ -58,6 +58,16 @@ export const updateUser = async (userUpdate: UserUpdateRequestType): Promise<Use
         return response.data;
     } catch (error) {
         console.error('Error updating user:', error);
+        throw error; // Re-throw for error handling
+    }
+};
+
+export const getUserFriendRanking = async (sender_id: number): Promise<UserFriendRankingListType | undefined> => {
+    try {
+        const response = await api.get(`/user/referral-ranking?sender_id=${sender_id}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error retrieving user friend ranking:', error);
         throw error; // Re-throw for error handling
     }
 };

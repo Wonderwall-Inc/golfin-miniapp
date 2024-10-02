@@ -3,7 +3,6 @@ import WebApp from '@twa-dev/sdk';
 import { UserContext } from '../contexts/UserContext';
 import { UserCreateRequestType, UserType } from '../type';
 import { createUser, getUser } from '@/apis/UserSevices';
-import api from '@/apis/api';
 
 export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const [account, setAccount] = useState<UserType | undefined>();

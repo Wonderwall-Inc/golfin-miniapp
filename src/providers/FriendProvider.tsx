@@ -1,4 +1,4 @@
-import { createFriend, getFriend, } from "@/apis/FriendServices"
+import { createFriend, getFriend, updateFriend, } from "@/apis/FriendServices"
 import { getPoint, updatePoint } from "@/apis/PointServices"
 import { getUser } from "@/apis/UserSevices"
 import { FriendContext } from "@/contexts/FriendContext"
@@ -23,10 +23,6 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
             const existingFriend = await getFriend(friendRetrievalPayload)
             if (existingFriend && existingFriend.sender && existingFriend.receiver) {
                 setFriend({ sender: existingFriend.sender, receiver: existingFriend.receiver })
-                setFriend({
-                    sender: existingFriend.sender,
-                    receiver: existingFriend.receiver
-                })
                 setFriendNumber(existingFriend.sender?.length + existingFriend.receiver?.length) // total friend with me
                 if (existingFriend?.sender?.length % 10 == 0) {
                     console.log("friend?.sender");
@@ -92,10 +88,10 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                                     has_claimed: newFriend.friend_details.friend_base.has_claimed,
                                     id: newFriend.friend_details.friend_base.id,
                                     updated_at: newFriend.friend_details.friend_base.updated_at,
-                                    created_at: newFriend.friend_details.friend_base.created_at,
+                                    created_at: newFriend.friend_details.friend_base.created_at
                                 }]
                             })
-                            setFriendNumber(1)
+                            setFriendNumber(1) // friend number = sender + receiver, not only from receiver
                             setIsWaitingFriend(false)
                             return newFriend
                         }
@@ -132,7 +128,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                     sender_id: 60001,
                     receiver_id: i,
                     updated_at: new Date().toISOString(),
-                    created_at: new Date().toISOString(),
+                    created_at: new Date().toISOString()
                 })
             }
             setFriend({

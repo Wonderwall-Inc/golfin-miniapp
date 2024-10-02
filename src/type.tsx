@@ -221,6 +221,20 @@ export interface UserDetailsResponseType {
     user_details: UserDetailsType
 }
 
+export interface UserFriendRankingType {
+    rank: number
+    sender_count: number
+    user_id: number
+    telegram_id: string
+    username: string
+}
+
+export interface UserFriendRankingListType {
+    top_10: UserFriendRankingType[]
+    sender_info: UserFriendRankingType
+    sender_in_top_10: boolean
+}
+
 // GAME CHARACTER
 export interface GameCharacterBaseType {
     id: number
@@ -717,7 +731,8 @@ export interface FriendBaseType {
 }
 
 export interface FriendUpdateDetailsType {
-    status: FriendStatusType
+    status?: FriendStatusType
+    has_claimed?: boolean
     custom_logs?: {
         action: string,
         date: string
@@ -792,6 +807,7 @@ export interface FriendUpdateByReceiverIdRequestType {
 export interface FriendDetailsResponseType {
     friend_details: FriendDetailsType
 }
+
 export interface getFriendRequestType {
     access_token: string
     id?: number
