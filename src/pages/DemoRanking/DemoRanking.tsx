@@ -19,7 +19,7 @@ interface ReferralRankingItem {
 interface PointRankingItem {
     rank: number,
     name: string;
-    point: number;
+    total_points: number;
     id?: number;
 }
 const DemoRanking = () => {
@@ -130,10 +130,8 @@ const DemoRanking = () => {
 
                 if (myPointRankingFromServer && pointRanking && account?.id) {
                     setMyPointRecord({
-                        rank: myPointRankingFromServer.rank,
+                        ...myPointRankingFromServer,
                         name: account?.telegram_info?.username || account?.telegram_info?.telegram_id || '',
-                        point: myPointRankingFromServer.total_points ?? 0,
-                        id: account?.id
                     });
                     setPointRanking(pointRanking);
                 }
@@ -156,6 +154,12 @@ const DemoRanking = () => {
         handlePointRanking()
     }, [handlePointRanking])
 
+    console.log('myPointRecord');
+    console.log(myPointRecord);
+    
+    console.log('pointRanking');
+    console.log(pointRanking);
+    
     /*  useEffect(() => { */
     /*      setIsWaitingFriend(isLoadingRanking); */
     /*      setIsWaitingPoint(isLoadingRanking); */
@@ -198,19 +202,15 @@ const DemoRanking = () => {
                                         style={{}}
                                         className={`${activeTab === 'tab-1' ?
                                             'text-[rgba(255,255,255,0.4)] font-[700] rounxded-t-lg border-b-2 border-white' :
-                                            'text-[rgba(255,255,255,0.4)] border-b-2 border-gray-500'}`}
-                                    />
+                                            'text-[rgba(255,255,255,0.4)] border-b-2 border-gray-500'}`} />
                                     <TabbarLink
                                         active={activeTab === 'tab-2'}
                                         onClick={() => setActiveTab('tab-2')}
                                         label='Total Points'
                                         className={`${activeTab === 'tab-2' ?
                                             'text-[rgba(255,255,255,0.4)] font-[700] rounded-t-lg border-b-2 border-white' :
-                                            'text-[rgba(255,255,255,0.4)] font-[700] border-b-2 border-gray-500'}`}
-                                    />
+                                            'text-[rgba(255,255,255,0.4)] font-[700] border-b-2 border-gray-500'}`} />
                                 </div>
-
-
                                 {activeTab === 'tab-1' && <>
                                     <div className='h-[300px] w-[343px] overflow-y-scroll sm:h-[400px] md:h-[460px] pt-3'>
                                         <div className={`text-white bg-[#ffffff33] flex items-center justify-between border-4 rounded-md border-[#8ADD5D] p-1`}>
