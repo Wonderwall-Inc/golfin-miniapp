@@ -157,19 +157,8 @@ const DemoRanking = () => {
     }, [handlePointRanking])
 
     useEffect(() => {
-        if (isLoadingRanking == true) {
-            console.log('true isLoadingRanking');
-            console.log('isLoadingRanking: ', isLoadingRanking);
-
-            setIsWaitingFriend(true)
-            setIsWaitingPoint(true)
-        }
-        if (isLoadingRanking == false) {
-            console.log('false isLoadingRanking');
-            console.log('isLoadingRanking: ', isLoadingRanking);
-            setIsWaitingFriend(false)
-            setIsWaitingPoint(false)
-        }
+        setIsWaitingFriend(isLoadingRanking);
+        setIsWaitingPoint(isLoadingRanking);
     }, [isLoadingRanking, handleReferralRanking, handlePointRanking])
 
 
