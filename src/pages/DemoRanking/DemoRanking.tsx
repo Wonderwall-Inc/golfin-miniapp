@@ -84,9 +84,6 @@ const DemoRanking = () => {
 
     }, [setIsWaitingFriend, setReferrakRanking, setMyReferralRecord])
 
-    useEffect(() => {
-        handleReferralRanking()
-    }, [handleReferralRanking])
 
     const handlePointRanking = useCallback(async () => {
         // setIsWaitingPoint(true)
@@ -116,14 +113,14 @@ const DemoRanking = () => {
                     }
                 }))
 
-                    if (myPointRankingFromServer && pointRanking) {
-                        setMyPointRecord({
-                            rank: myPointRankingFromServer.rank,
-                            name: account?.telegram_info?.username || account?.telegram_info?.telegram_id || '',
-                            point: myPointRankingFromServer.total_points
-                        });
-                        setPointRanking(pointRanking);
-                    }
+                if (myPointRankingFromServer && pointRanking) {
+                    setMyPointRecord({
+                        rank: myPointRankingFromServer.rank,
+                        name: account?.telegram_info?.username || account?.telegram_info?.telegram_id || '',
+                        point: myPointRankingFromServer.total_points
+                    });
+                    setPointRanking(pointRanking);
+                }
 
             }
         } catch (error) {
@@ -135,8 +132,25 @@ const DemoRanking = () => {
 
 
     useEffect(() => {
+        handleReferralRanking()
+    }, [handleReferralRanking])
+
+    useEffect(() => {
         handlePointRanking()
     }, [handlePointRanking])
+
+    console.log('myReferralRecord');
+    console.log(myReferralRecord);
+
+    console.log('referranRanking');
+    console.log(referralRanking);
+
+
+    console.log('myPointRecord');
+    console.log(myPointRecord);
+
+    console.log('pointRanking');
+    console.log(pointRanking);
 
 
     const rankingNameDisplayer = (name: string) => {
