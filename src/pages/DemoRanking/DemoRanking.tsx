@@ -92,8 +92,8 @@ const DemoRanking = () => {
 
         } finally {
             console.log('finally set false isLoadingRanking on referral ranking');
-/*             setIsLoadingReferral(false);
- */        }
+            setIsLoadingReferral(false);
+        }
 
     }, [setIsWaitingFriend, setReferrakRanking, setMyReferralRecord, account])
 
@@ -143,8 +143,8 @@ const DemoRanking = () => {
             console.error('Error handling referral reward:', error);
         } finally {
             console.log('finally set false isLoadingRanking on point ranking');
-/*             setIsLoadingPoint(false);
- */        }
+            setIsLoadingPoint(false);
+        }
     }, [setIsWaitingPoint, setMyPointRecord, setPointRanking, account])
 
 
@@ -180,13 +180,14 @@ const DemoRanking = () => {
                                     color='gray'
                                     loading={isLoadingReferral || isLoadingPoint}
                                     size={150}
-                                    className='opacity-80 absolute top-[30%] left-[30%] translate-x-[-50%] translate-y-[-50%]'
+                                    className='opacity-80 absolute top-[12%] left-[30%] translate-x-[-50%] translate-y-[-50%]'
                                 >
                                 </ClipLoader>
                                 <img className="absolute left-[50%] w-[100%] translate-x-[-50%]" alt="Ellipse171" src={ellipseImage1} />
                             </div>
                         </div>
-                    </div> : <div className='w-[100%] h-[690px]'>
+                    </div> :
+                    <div className='w-[100%] h-[690px]'>
                         <div className='flex justify-center'>
                             <div className='mx-10 mt-5 sm:mt-[5px] md:mt-[12px] lg:mt-[15px]'>
                                 <div className='flex'>
