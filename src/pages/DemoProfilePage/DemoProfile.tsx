@@ -25,14 +25,14 @@ const DemoProfile = () => {
         })
         if (updatedUser !== undefined) {
             setAccount(updatedUser.user_details.user_base)
-            setIsLoading(false)
+          /*   setIsLoading(false) */
         }
     }
 
     return (
         <ToastProvider swipeDirection='up'>
             <div>
-                {isLoading == true && <Loader isLoading={isLoading} wrapperHeight='690px' spinnerTopPosition='12%' />}
+               {/*  {isLoading == true && <Loader isLoading={isLoading} wrapperHeight='690px' spinnerTopPosition='12%' />} */}
                 <div className='text-white grid grid-cols-1'>
                     <input
                         placeholder='username'
