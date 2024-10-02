@@ -16,33 +16,20 @@ const DemoProfile = () => {
     console.log(username);
 
     const handleUsernameChange = async (username: string) => {
-        if (account?.telegram_info.telegram_id) {
 
-            const dbUser = await getUser({
-                access_token: '',
-                telegram_id: account.id.toString()
-            })
-            if (dbUser?.user_details.user_base.telegram_info.username !== username) {
-                const updatedUser = await updateUser({
-                    access_token: '',
-                    id: account?.id || 0,
-                    user_payload: {
-                        username: username,
-                    }
-                })
-                if (updatedUser !== undefined) {
-                    setAccount(updatedUser.user_details.user_base)
-                    /*   setIsLoading(false) */
-                }
-            } else {
-                return toast({
-                    className: cn('bg-[#FFFAE6] rounded-[10px]'),
-                    title: 'no change',
-                    description: 'Username Duplication',
-                    action: <ToastAction altText="Try again">Try again</ToastAction>,
-                })
+        const updatedUser = await updateUser({
+            access_token: '',
+            id: account?.id || 0,
+            user_payload: {
+                username: username,
             }
+        })
+        if (updatedUser !== undefined) {
+            setAccount(updatedUser.user_details.user_base)
+            /*   setIsLoading(false) */
         }
+
+
     }
 
     return (
@@ -120,15 +107,30 @@ const DemoProfile = () => {
                                     })
                                 }
                                 else {
-                                    await handleUsernameChange(username)
-                                    return toast({
-                                        className: cn('bg-[#FFFAE6] rounded-[10px]'),
-                                        description:
-                                            <div className=''>
-                                                Username is changed to { }
-                                                <span className='font-semibold'>{username}</span>
-                                            </div>
+                                    const dbUser = await getUser({
+                                        access_token: '',
+                                        telegram_id: account?.id?.toString() ?? ''
                                     })
+                                    if (dbUser?.user_details.user_base.telegram_info.username == username) {
+                                        setIsLoading(false)
+                                        return toast({
+                                            className: cn('bg-[#FFFAE6] rounded-[10px]'),
+                                            title: 'no change',
+                                            description: 'Username Duplication',
+                                            action: <ToastAction altText="Try again">Try again</ToastAction>,
+                                        })
+                                    } else {
+                                        await handleUsernameChange(username)
+                                        setIsLoading(false)
+                                        return toast({
+                                            className: cn('bg-[#FFFAE6] rounded-[10px]'),
+                                            description:
+                                                <div className=''>
+                                                    Username is changed to { }
+                                                    <span className='font-semibold'>{username}</span>
+                                                </div>
+                                        })
+                                    }
                                 }
                             }
                         }}>
