@@ -96,17 +96,6 @@ const DemoRanking = () => {
     }, [setIsWaitingFriend, setReferrakRanking, setMyReferralRecord])
 
     useEffect(() => {
-        if (isLoadingRanking == true) {
-            setIsWaitingFriend(true)
-            setIsWaitingPoint(true)
-        }
-        if (isLoadingRanking == false) {
-            setIsWaitingFriend(false)
-            setIsWaitingPoint(false)
-        }
-    }, [isLoadingRanking])
-
-    useEffect(() => {
         handleReferralRanking()
     }, [handleReferralRanking])
 
@@ -162,6 +151,22 @@ const DemoRanking = () => {
     useEffect(() => {
         handlePointRanking()
     }, [handlePointRanking])
+
+    useEffect(() => {
+        if (isLoadingRanking == true) {
+            console.log('true isLoadingRanking');
+            console.log('isLoadingRanking: ', isLoadingRanking);
+
+            setIsWaitingFriend(true)
+            setIsWaitingPoint(true)
+        }
+        if (isLoadingRanking == false) {
+            console.log('false isLoadingRanking');
+            console.log('isLoadingRanking: ', isLoadingRanking);
+            setIsWaitingFriend(false)
+            setIsWaitingPoint(false)
+        }
+    }, [isLoadingRanking])
 
 
     const rankingNameDisplayer = (name: string) => {
