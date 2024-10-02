@@ -176,10 +176,10 @@ const DemoRanking = () => {
         handlePointRanking()
     }, [handlePointRanking])
 
-    useEffect(() => {
-        setIsWaitingFriend(isLoadingRanking);
-        setIsWaitingPoint(isLoadingRanking);
-    }, [isLoadingRanking, setIsWaitingFriend, setIsWaitingPoint])
+   /*  useEffect(() => { */
+   /*      setIsWaitingFriend(isLoadingRanking); */
+   /*      setIsWaitingPoint(isLoadingRanking); */
+   /*  }, [isLoadingRanking, setIsWaitingFriend, setIsWaitingPoint]) */
 
 
     const rankingNameDisplayer = (name: string) => {
