@@ -15,6 +15,20 @@ const DemoProfile = () => {
 
     console.log(username);
 
+    const handleUsernameChange = async (username: string) => {
+        const updatedUser = await updateUser({
+            access_token: '',
+            id: account?.id || 0,
+            user_payload: {
+                username: username,
+            }
+        })
+        if (updatedUser !== undefined) {
+            setAccount(updatedUser.user_details.user_base)
+            setIsLoading(false)
+        }
+    }
+
     return (
         <ToastProvider swipeDirection='up'>
             <div>
@@ -56,57 +70,59 @@ const DemoProfile = () => {
                             onClick={async () => {
                                 if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
                                     setIsLoading(true)
-                                    toast(username == account?.telegram_info.username ? {
-                                        className: cn('bg-[#FFFAE6] rounded-[10px]'),
-                                        title: 'no change',
-                                        description: 'Username is not changed',
-                                        action: <ToastAction altText="Try again">Try again</ToastAction>,
+                                    if (username == account?.telegram_info.username) {
+                                        setIsLoading(false)
+                                        toast({
+                                            className: cn('bg-[#FFFAE6] rounded-[10px]'),
+                                            title: 'no change',
+                                            description: 'Username is not changed',
+                                            action: <ToastAction altText="Try again">Try again</ToastAction>,
 
-                                    } : {
-                                        className: cn('bg-[#FFFAE6] rounded-[10px]'),
-                                        description:
-                                            <div className=''>
-                                                Username is changed to { }
-                                                <span className='font-semibold'>{username}</span>
-                                            </div>,
-                                    })
-                                    setIsLoading(false)
+                                        })
+                                    }
+
+                                    else {
+                                        setIsLoading(false)
+                                        toast({
+                                            className: cn('bg-[#FFFAE6] rounded-[10px]'),
+                                            description:
+                                                <div className=''>
+                                                    Username is changed to { }
+                                                    <span className='font-semibold'>{username}</span>
+                                                </div>
+                                        })
+
+                                    }
                                 } else {
                                     setIsLoading(true)
-                                    const updatedUser = await updateUser({
-                                        access_token: '',
-                                        id: account?.id || 0,
-                                        user_payload: {
-                                            username: username,
-                                        }
-                                    })
-                                    if (updatedUser !== undefined) {
-                                        setAccount(updatedUser.user_details.user_base)
+                                    if (username == account?.telegram_info.username) {
+                                        setIsLoading(false)
+                                        toast({
+                                            className: cn('bg-[#FFFAE6] rounded-[10px]'),
+                                            title: 'no change',
+                                            description: 'Username is not changed',
+                                            action: <ToastAction altText="Try again">Try again</ToastAction>,
+                                        })
                                     }
-                                    toast(updatedUser?.user_details.user_base.telegram_info.username == account?.telegram_info.username ? {
-                                        className: cn('bg-[#FFFAE6] rounded-[10px]'),
-                                        title: 'no change',
-                                        description: 'Username is not changed',
-                                        action: <ToastAction altText="Try again">Try again</ToastAction>,
-
-                                    } : {
-                                        className: cn('bg-[#FFFAE6] rounded-[10px]'),
-                                        description:
-                                            <div className=''>
-                                                Username is changed to { }
-                                                <span className='font-semibold'>{username}</span>
-                                            </div>,
-                                    })
-                                    setIsLoading(false)
+                                    else {
+                                        await handleUsernameChange(username)
+                                        toast({
+                                            className: cn('bg-[#FFFAE6] rounded-[10px]'),
+                                            description:
+                                                <div className=''>
+                                                    Username is changed to { }
+                                                    <span className='font-semibold'>{username}</span>
+                                                </div>
+                                        })
+                                    }
                                 }
-                            }}
-                        >
+                            }}>
                             <span className='text-white text-[20px] font-bold text-center'>SAVE</span>
                         </Button>
                     </div >
                 }
             </div >
-        </ToastProvider>
+        </ToastProvider >
     )
 }
 
