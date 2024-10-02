@@ -53,16 +53,9 @@ const DemoRanking = () => {
 
     const isMounted = useRef(true)
 
-    useEffect(() => {
-        return () => {
-            isMounted.current = false
-        }
-    }, [])
 
     const handleReferralRanking = useCallback(async () => {
-        //setIsWaitingFriend(true)
         try {
-            /*  setIsLoadingRanking(true) */
             setIsLoadingReferral(true);
             setIsWaitingFriend(true);
             if (import.meta.env.VITE_MINI_APP_ENV === 'test') {
@@ -70,7 +63,6 @@ const DemoRanking = () => {
                 setMyReferralRecord({ name: 'nextInnovationDev25', rank: 1, referral: 5999999999, id: 1 })
             } else {
                 const existingUsers = await getUsers(0, 20); // FIXME
-
                 console.log(existingUsers);
 
                 if (existingUsers && existingUsers.length > 0) {
@@ -102,20 +94,16 @@ const DemoRanking = () => {
 
         } finally {
             console.log('finally set false isLoadingRanking on referral ranking');
-            if (isMounted.current) {
-                setIsLoadingReferral(false);
-                setIsWaitingFriend(false);
-            }
+            setIsLoadingReferral(false);
+            setIsWaitingFriend(false);
         }
 
-    }, [setIsWaitingFriend, setReferrakRanking, setMyReferralRecord])
+    }, [setIsWaitingFriend, setReferrakRanking, setMyReferralRecord, account])
 
 
 
     const handlePointRanking = useCallback(async () => {
-        // setIsWaitingPoint(true)
         try {
-            /*             setIsLoadingRanking(true) */
             setIsLoadingPoint(true);
             setIsWaitingPoint(true);
             if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
@@ -159,13 +147,10 @@ const DemoRanking = () => {
             console.error('Error handling referral reward:', error);
         } finally {
             console.log('finally set false isLoadingRanking on point ranking');
-
-            if (isMounted.current) {
-                setIsLoadingPoint(false);
-                setIsWaitingPoint(false);
-            }
+            setIsLoadingPoint(false);
+            setIsWaitingPoint(false);
         }
-    }, [setIsWaitingPoint, setMyPointRecord, setPointRanking])
+    }, [setIsWaitingPoint, setMyPointRecord, setPointRanking, account])
 
 
     useEffect(() => {
@@ -176,10 +161,10 @@ const DemoRanking = () => {
         handlePointRanking()
     }, [handlePointRanking])
 
-   /*  useEffect(() => { */
-   /*      setIsWaitingFriend(isLoadingRanking); */
-   /*      setIsWaitingPoint(isLoadingRanking); */
-   /*  }, [isLoadingRanking, setIsWaitingFriend, setIsWaitingPoint]) */
+    /*  useEffect(() => { */
+    /*      setIsWaitingFriend(isLoadingRanking); */
+    /*      setIsWaitingPoint(isLoadingRanking); */
+    /*  }, [isLoadingRanking, setIsWaitingFriend, setIsWaitingPoint]) */
 
 
     const rankingNameDisplayer = (name: string) => {
