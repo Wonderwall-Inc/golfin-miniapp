@@ -14,13 +14,11 @@ interface ReferralRankingItem {
     rank: number,
     name: string;
     referral: number;
-    id?: number;
 }
 interface PointRankingItem {
     rank: number,
     name: string;
-    total_points: number;
-    id?: number;
+    point: number;
 }
 const DemoRanking = () => {
     const { account } = useUserContext()
@@ -58,7 +56,7 @@ const DemoRanking = () => {
             setIsLoadingReferral(true);
             if (import.meta.env.VITE_MINI_APP_ENV === 'test') {
                 setReferrakRanking(mockReferralRankingData)
-                setMyReferralRecord({ name: 'nextInnovationDev25', rank: 1, referral: 5999999999, id: 1 })
+                setMyReferralRecord({ name: 'nextInnovationDev25', rank: 1, referral: 5999999999 })
             } else {
                 const existingUsers = await getUsers(0, 20); // FIXME
                 console.log(existingUsers);
@@ -72,7 +70,6 @@ const DemoRanking = () => {
                                 user.user_details.user_base.telegram_info.telegram_id :
                                 user.user_details.user_base.telegram_info.username,
                             referral: senderCount,
-                            id: user.user_details.user_base.id
                         };
                     })
                         .sort((a, b) => b.referral - a.referral)
@@ -104,7 +101,7 @@ const DemoRanking = () => {
             setIsLoadingPoint(true);
             if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
                 setPointRanking(mockPointRankingData)
-                setMyPointRecord({ name: 'nextInnovationDev25', rank: 1000, total_points: 250, id: 1 })
+                setMyPointRecord({ name: 'nextInnovationDev25', rank: 1000, point: 250 })
             } else {
                 const myPointRankingFromServer = await getPointRanking({
                     access_token: '',
@@ -122,13 +119,13 @@ const DemoRanking = () => {
                         rank: user.rank,
                         name: dbUser?.user_details.user_base.telegram_info.username == "" ? dbUser?.user_details.user_base.telegram_info.telegram_id : dbUser?.user_details.user_base.telegram_info.username,
                         point: user?.total_points,
-                        id: dbUser?.user_details.user_base.id
                     }
                 }))
 
                 if (myPointRankingFromServer && pointRanking && account?.id) {
                     setMyPointRecord({
-                        ...myPointRankingFromServer,
+                        rank: myPointRankingFromServer.rank,
+                        point: myPointRankingFromServer.total_points,
                         name: account?.telegram_info?.username || account?.telegram_info?.telegram_id || '',
                     });
                     setPointRanking(pointRanking);
@@ -252,7 +249,7 @@ const DemoRanking = () => {
                                             </div>
                                             <div className='flex items-center'>
                                                 <img src={CoinImage} width='20' height='20' className='mr-2' alt="Coin" />
-                                                <div className='text-xl text-[17px]'>{myPointRecord !== undefined && myPointRecord.total_points}</div>
+                                                <div className='text-xl text-[17px]'>{myPointRecord !== undefined && myPointRecord.point}</div>
                                             </div>
                                         </div>
 
