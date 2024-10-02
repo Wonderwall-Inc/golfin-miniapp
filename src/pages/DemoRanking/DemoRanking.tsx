@@ -149,6 +149,14 @@ const DemoRanking = () => {
         handlePointRanking()
     }, [handlePointRanking])
 
+
+    console.log('myReferralRecord');
+    console.log(myReferralRecord);
+
+    console.log('referranRanking');
+    console.log(referralRanking);
+
+
     console.log('myPointRecord');
     console.log(myPointRecord);
 
