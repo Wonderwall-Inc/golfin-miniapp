@@ -61,7 +61,13 @@ const DemoProfile = () => {
                     <Button
                         variant='default'
                         className='mx-auto text-white font-bold
-                        [background:linear-gradient(158deg,rgba(169,231,29,1)_-7.35%,rgba(94,197,89,1)_84.4%)]'
+                        [background:linear-gradient(158deg,rgba(169,231,29,1)_-7.35%,rgba(94,197,89,1)_84.4%)]
+                        w-[343px]
+                        h-[56px]
+                        gap-[10px]
+                        justify-center
+                        items-center
+                        rounded-[6px]'
                         type='submit'
                         onClick={async () => {
                             if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
@@ -107,7 +113,9 @@ const DemoProfile = () => {
                                 })
                             }
                         }}
-                    >Save</Button>
+                    >
+                        <span className='text-white text-[20px] font-bold text-center'>SAVE</span>
+                    </Button>
                 </div >
             </div >
         </ToastProvider>
