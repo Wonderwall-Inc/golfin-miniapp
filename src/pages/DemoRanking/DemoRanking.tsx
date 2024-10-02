@@ -99,7 +99,8 @@ const DemoRanking = () => {
         if (isLoadingRanking == true) {
             setIsWaitingFriend(true)
             setIsWaitingPoint(true)
-        } else {
+        }
+        if (isLoadingRanking == false) {
             setIsWaitingFriend(false)
             setIsWaitingPoint(false)
         }
