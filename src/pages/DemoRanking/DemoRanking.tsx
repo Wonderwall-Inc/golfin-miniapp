@@ -11,11 +11,13 @@ interface ReferralRankingItem {
     rank: number,
     name: string;
     referral: number;
+    id?: number;
 }
 interface PointRankingItem {
     rank: number,
     name: string;
     point: number;
+    id?: number;
 }
 const DemoRanking = () => {
     const { account } = useUserContext()
@@ -46,7 +48,7 @@ const DemoRanking = () => {
         try {
             if (import.meta.env.VITE_MINI_APP_ENV === 'test') {
                 setReferrakRanking(mockReferralRankingData)
-                setMyReferralRecord({ name: 'nextInnovationDev25', rank: 1, referral: 5999999999 })
+                setMyReferralRecord({ name: 'nextInnovationDev25', rank: 1, referral: 5999999999, id: 1 })
             } else {
                 const existingUsers = await getUsers(0, 20); // FIXME
 
@@ -61,6 +63,7 @@ const DemoRanking = () => {
                                 user.user_details.user_base.telegram_info.telegram_id :
                                 user.user_details.user_base.telegram_info.username,
                             referral: senderCount,
+                            id: user.user_details.user_base.id
                         };
                     })
                         .sort((a, b) => b.referral - a.referral)
@@ -93,7 +96,7 @@ const DemoRanking = () => {
         try {
             if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
                 setPointRanking(mockPointRankingData)
-                setMyPointRecord({ name: 'nextInnovationDev25', rank: 1000, point: 250 })
+                setMyPointRecord({ name: 'nextInnovationDev25', rank: 1000, point: 250, id: 1 })
             } else {
                 const myPointRankingFromServer = await getPointRanking({
                     access_token: '',
@@ -112,18 +115,20 @@ const DemoRanking = () => {
                         name: dbUser?.user_details.user_base.telegram_info.username == "" ?
                             dbUser?.user_details.user_base.telegram_info.telegram_id :
                             dbUser?.user_details.user_base.telegram_info.username,
-                        point: user?.total_points
+                        point: user?.total_points,
+                        id: dbUser?.user_details.user_base.id
                     }
                 }))
 
-                    if (myPointRankingFromServer && pointRanking) {
-                        setMyPointRecord({
-                            rank: myPointRankingFromServer.rank,
-                            name: account?.telegram_info?.username || account?.telegram_info?.telegram_id || '',
-                            point: myPointRankingFromServer.total_points
-                        });
-                        setPointRanking(pointRanking);
-                    }
+                if (myPointRankingFromServer && pointRanking && account?.id) {
+                    setMyPointRecord({
+                        rank: myPointRankingFromServer.rank,
+                        name: account?.telegram_info?.username || account?.telegram_info?.telegram_id || '',
+                        point: myPointRankingFromServer.total_points ?? 0,
+                        id: account?.id
+                    });
+                    setPointRanking(pointRanking);
+                }
 
             }
         } catch (error) {
@@ -132,7 +137,6 @@ const DemoRanking = () => {
             // setIsWaitingPoint(false)
         }
     }, [account])
-
 
     useEffect(() => {
         handlePointRanking()

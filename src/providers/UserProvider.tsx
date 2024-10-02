@@ -74,7 +74,7 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                     nationality: "Japanese" // FIXME: change it by form later, with ENUM
                 },
                 telegram_info: {
-                    username: 'dev',
+                    username: 'nextInnovationDev25',
                     telegram_id: '11111111',
                     token_balance: 0,
                     premium: true,
