@@ -52,12 +52,11 @@ const DemoRanking = () => {
     const handleReferralRanking = useCallback(async () => {
         //setIsWaitingFriend(true)
         try {
+            setIsLoadingRanking(true)
             if (import.meta.env.VITE_MINI_APP_ENV === 'test') {
-                setIsLoadingRanking(true)
                 setReferrakRanking(mockReferralRankingData)
                 setMyReferralRecord({ name: 'nextInnovationDev25', rank: 1, referral: 5999999999, id: 1 })
             } else {
-                setIsLoadingRanking(true)
                 const existingUsers = await getUsers(0, 20); // FIXME
 
                 console.log(existingUsers);
@@ -93,21 +92,18 @@ const DemoRanking = () => {
             setIsLoadingRanking(false)
         }
 
-    }, [setIsWaitingFriend, setReferrakRanking, setMyReferralRecord])
+    }, [setIsLoadingRanking, setReferrakRanking, setMyReferralRecord])
 
-    useEffect(() => {
-        handleReferralRanking()
-    }, [handleReferralRanking])
+
 
     const handlePointRanking = useCallback(async () => {
         // setIsWaitingPoint(true)
         try {
+            setIsLoadingRanking(true)
             if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
-                setIsLoadingRanking(true)
                 setPointRanking(mockPointRankingData)
                 setMyPointRecord({ name: 'nextInnovationDev25', rank: 1000, point: 250, id: 1 })
             } else {
-                setIsLoadingRanking(true)
                 const myPointRankingFromServer = await getPointRanking({
                     access_token: '',
                     user_id: account?.id
@@ -146,7 +142,12 @@ const DemoRanking = () => {
         } finally {
             setIsLoadingRanking(false)
         }
-    }, [account])
+    }, [setIsLoadingRanking, setMyPointRecord, setPointRanking])
+
+
+    useEffect(() => {
+        handleReferralRanking()
+    }, [handleReferralRanking])
 
     useEffect(() => {
         handlePointRanking()
