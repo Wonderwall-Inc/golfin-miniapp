@@ -33,7 +33,20 @@ const DemoLinks = ({ utils }: LinkPageProp) => {
 }
 
 const DemoLinkPageComponent = ({ utils }: LinkPageProp) => {
-    const { isCopied, copytoClipboard } = useCopyToClipboard()
+    const handleClick = (socialMediaLink: typeof socialMediaLinks[0]) => {
+        if (socialMediaLink.label == 'Golfin Forward Link') {
+            copytoClipboard(MINI_APP_APP)
+            toast({
+                className: cn('bg-[#FFFAE6] rounded-[10px]'),
+                description: 'Invitation link copied to clipboard',
+            })
+        } else if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
+            window.open(socialMediaLink.url, '_blank')
+        } else {
+            utils?.openLink(socialMediaLink.url, { tryInstantView: true })
+        }
+    }
+    const { copytoClipboard } = useCopyToClipboard()
     const { toast } = useToast()
     return (
         <div className='grid space-y-5 mx-auto justify-items-center cursor-pointer mt-5'>
@@ -41,21 +54,7 @@ const DemoLinkPageComponent = ({ utils }: LinkPageProp) => {
                 return (
                     <div key={index}
                         className="w-[21.4375rem] h-[2.5rem] rounded-lg bg-white/[.20] content-center cursor-pointer"
-                        onClick={() => {
-                            if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
-                                window.open(socialMediaLink.url, '_blank')
-                            } else {
-                                if (socialMediaLink.label == 'Golfin Forward Link') {
-                                    copytoClipboard(MINI_APP_APP)
-                                    isCopied && toast({
-                                        className: cn('bg-[#FFFAE6] rounded-[10px]'),
-                                        description: 'Invitation link copied to clipboard',
-                                    })
-                                } else {
-                                    utils !== undefined ? utils.openLink(socialMediaLink.url, { tryInstantView: true }) : window.open(socialMediaLink.url, '_blank')
-                                }
-                            }
-                        }}>
+                        onClick={() => { handleClick(socialMediaLink) }}>
                         <div className='flex justify-start mx-3 cursor-pointer'>
                             {socialMediaLink.icon}
                             <div className={`${socialMediaLink.label} cursor-pointertext-white text-xl font-medium leading-[2.125rem] text-center font-['Rubik'] content-center text-white`}>{socialMediaLink.cto}</div>

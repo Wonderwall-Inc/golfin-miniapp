@@ -25,14 +25,14 @@ const DemoProfile = () => {
         })
         if (updatedUser !== undefined) {
             setAccount(updatedUser.user_details.user_base)
-          /*   setIsLoading(false) */
+            /*   setIsLoading(false) */
         }
     }
 
     return (
         <ToastProvider swipeDirection='up'>
             <div>
-               {/*  {isLoading == true && <Loader isLoading={isLoading} wrapperHeight='690px' spinnerTopPosition='12%' />} */}
+                {/*  {isLoading == true && <Loader isLoading={isLoading} wrapperHeight='690px' spinnerTopPosition='12%' />} */}
                 <div className='text-white grid grid-cols-1'>
                     <input
                         placeholder='username'
@@ -71,7 +71,7 @@ const DemoProfile = () => {
                                 setIsLoading(true)
                                 if (username == account?.telegram_info.username) {
                                     setIsLoading(false)
-                                    toast({
+                                    return toast({
                                         className: cn('bg-[#FFFAE6] rounded-[10px]'),
                                         title: 'no change',
                                         description: 'Username is not changed',
@@ -82,7 +82,7 @@ const DemoProfile = () => {
 
                                 else {
                                     setIsLoading(false)
-                                    toast({
+                                    return toast({
                                         className: cn('bg-[#FFFAE6] rounded-[10px]'),
                                         description:
                                             <div className=''>
@@ -96,7 +96,7 @@ const DemoProfile = () => {
                                 setIsLoading(true)
                                 if (username == account?.telegram_info.username) {
                                     setIsLoading(false)
-                                    toast({
+                                    return toast({
                                         className: cn('bg-[#FFFAE6] rounded-[10px]'),
                                         title: 'no change',
                                         description: 'Username is not changed',
@@ -105,7 +105,7 @@ const DemoProfile = () => {
                                 }
                                 else {
                                     await handleUsernameChange(username)
-                                    toast({
+                                    return toast({
                                         className: cn('bg-[#FFFAE6] rounded-[10px]'),
                                         description:
                                             <div className=''>
