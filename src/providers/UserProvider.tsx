@@ -173,7 +173,8 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
         }
     }, [webappUser, webappStartParam])
 
-    console.log('chat_id: ', account?.telegram_info.chat_id);
+    console.log('chat_id from db: ', account?.telegram_info.chat_id);
+    console.log('chat_id from tg: ', WebApp.initDataUnsafe.chat?.id.toString());
     return (
         <UserContext.Provider value={{
             account,
