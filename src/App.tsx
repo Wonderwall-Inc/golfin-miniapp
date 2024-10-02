@@ -21,6 +21,7 @@ import DemoDev from './pages/DemoDevPage/DemoDev'
 import { Toaster } from './components/ui/toaster'
 
 import ellipseImage1 from './assets/images/ellipse-171.png';
+import Loader from './components/LoaderComponent/Loader'
 
 const App = () => {
   if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
@@ -83,13 +84,7 @@ const App = () => {
 
 
   import.meta.env.VITE_MINI_APP_ENV !== 'test' && WebApp.BackButton.onClick(navigateToHome)
-
-  return (
-    <div>
-
-      {
-        isWaiting == true ?
-          <div>
+  {/* <div>
             <div className="bg-[#00161c] justify-center w-full">
               <div className="bg-[#00161c] overflow-hidden w-[393px] h-[852px] relative">
                 <ClipLoader
@@ -102,8 +97,13 @@ const App = () => {
                 <img className="absolute left-[50%] w-[100%] translate-x-[-50%]" alt="Ellipse171" src={ellipseImage1} />
               </div>
             </div>
-          </div>
-          :
+          </div> */}
+  return (
+    <div>
+
+      {
+        isWaiting == true ?
+          <Loader isLoading={isWaiting} />:
           <div className='app-container'>
             <Background>
 
