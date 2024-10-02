@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { TabbarLink } from 'konsta/react'
 import { mockPointRankingData, mockReferralRankingData } from '@/constants'
 import CoinImage from '../../assets/images/02_earn_coin.png'
