@@ -68,7 +68,9 @@ const DemoRanking = () => {
                         const senderCount = user.user_details.sender?.length || 0; // Handle potential nullish value
                         return {
                             rank: 0,
-                            name: user.user_details.user_base.telegram_info.telegram_id || user.user_details.user_base.telegram_info.username,
+                            name: user.user_details.user_base.telegram_info.username == "" ?
+                                user.user_details.user_base.telegram_info.telegram_id :
+                                user.user_details.user_base.telegram_info.username,
                             referral: senderCount,
                             id: user.user_details.user_base.id
                         };
@@ -118,7 +120,7 @@ const DemoRanking = () => {
                     // Handle potential nullish values for user.user_details.point and user.user_details.point[0]
                     return {
                         rank: user.rank,
-                        name: dbUser?.user_details.user_base.telegram_info.telegram_id || dbUser?.user_details.user_base.telegram_info.username,
+                        name: dbUser?.user_details.user_base.telegram_info.username == "" ? dbUser?.user_details.user_base.telegram_info.telegram_id : dbUser?.user_details.user_base.telegram_info.username,
                         point: user?.total_points,
                         id: dbUser?.user_details.user_base.id
                     }
@@ -265,7 +267,7 @@ const DemoRanking = () => {
                                                             </div>
                                                             <div className='flex items-center space-x-2 flex-shrink-0'>
                                                                 <img src={CoinImage} width='20' height='20' alt="Coin" />
-                                                                <div className='text-[17px] w-12 text-left'>{pointRank.total_points}</div>
+                                                                <div className='text-[17px] w-12 text-left'>{pointRank.point}</div>
                                                             </div>
                                                         </div>
                                                     )
