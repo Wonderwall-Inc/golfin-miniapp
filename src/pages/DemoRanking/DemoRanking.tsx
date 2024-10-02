@@ -58,7 +58,7 @@ const DemoRanking = () => {
                 setReferrakRanking(mockReferralRankingData)
                 setMyReferralRecord({ name: 'nextInnovationDev25', rank: 1, referral: 5999999999 })
             } else {
-                const existingUsers = await getUsers(0, 20); // FIXME
+                const existingUsers = await getUsers(0, 100); // FIXME
                 console.log(existingUsers);
 
                 if (existingUsers && existingUsers.length > 0) {
