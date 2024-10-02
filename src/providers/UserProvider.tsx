@@ -3,6 +3,7 @@ import WebApp from '@twa-dev/sdk';
 import { UserContext } from '../contexts/UserContext';
 import { UserCreateRequestType, UserType } from '../type';
 import { createUser, getUser } from '@/apis/UserSevices';
+import api from '@/apis/api';
 
 export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const [account, setAccount] = useState<UserType | undefined>();
@@ -11,7 +12,41 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
     const webappUser = WebApp.initDataUnsafe.user
     const webappStartParam = WebApp.initDataUnsafe.start_param
 
+/*     const [lat, setLat] = useState('')
+    const [long, setLong] = useState('')
+    const [currentLocation, setCurrentLocation] = useState('') */
+
+/*     console.log('lat: ', lat);
+    console.log('long: ', long);
+
+    const OPEN_WEATHER_API_KEY = import.meta.env.VITE_OPEN_WEATHER_API_KEY
+    const OPEN_WEATHER_API_URL = `https://api.openweathermap.org/data/2.5/onecall?`
+    window.alert(OPEN_WEATHER_API_KEY)
+
     useEffect(() => {
+
+        const getCurrentLatLong = async () => {
+            navigator.geolocation.getCurrentPosition((position) => {
+                setLat(position.coords.latitude.toString());
+                setLong(position.coords.longitude.toString());
+            });
+        }
+
+        getCurrentLatLong()
+    }, [])
+
+    useEffect(() => {
+        const getCurrentLocation = async () => {
+            const res = await api.get(`${OPEN_WEATHER_API_URL}lat=${lat}&lon=${long}&exclude=hourly,daily&appid=${OPEN_WEATHER_API_KEY}`)
+            console.log('res: ', res);
+            setCurrentLocation(res.data.name)
+        }
+        getCurrentLocation()
+    }, [lat, long]) */
+
+    useEffect(() => {
+
+
         const userCreation = async (userCreatePayload: UserCreateRequestType) => {
             try {
                 const newUser = await createUser(userCreatePayload)
@@ -70,7 +105,7 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                     skin: []
                 },
                 personal_info: {
-                    location: "Japan", // FIXME: change it by form later, with ENUM
+                    location: 'Japan', // FIXME: change it by form later, with ENUM
                     nationality: "Japanese" // FIXME: change it by form later, with ENUM
                 },
                 telegram_info: {
@@ -78,7 +113,7 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                     telegram_id: '11111111',
                     token_balance: 0,
                     premium: true,
-                    chat_id: '123' // FIXME: change it by getting the chat id from tg bot later on
+                    chat_id: WebApp.initDataUnsafe.chat?.id.toString() ?? '' // Using nullish coalescing to provide a default empty string
                 },
                 created_at: '20240917',
                 updated_at: '20240917',
@@ -94,7 +129,7 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                     WebApp.close()
                 }
 
-                const { id, username, first_name, last_name, language_code, is_bot, is_premium } = webappUser
+                const { id, username, first_name, last_name, language_code, is_bot, is_premium, photo_url } = webappUser
 
                 // CHECK IF THE ACC IS BOT >>> BAN
                 if (is_bot) {
@@ -114,14 +149,14 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                     telegram_id: id.toString(),
                     token_balance: 0,
                     premium: true,
-                    chat_id: '123',
+                    chat_id: WebApp.initDataUnsafe.chat?.id.toString() ?? '',
                     start_param: webappStartParam,
                 } : {
                     username: username == undefined ? id.toString() : username,
                     telegram_id: id.toString(),
                     token_balance: 0,
                     premium: false,
-                    chat_id: '123',
+                    chat_id: WebApp.initDataUnsafe.chat?.id.toString() ?? '',
                     start_param: webappStartParam,
                 }
 
@@ -131,11 +166,14 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                     telegram_info: telegram_info
                 }
 
+
+
                 userCreation(payload)
             }
         }
     }, [webappUser, webappStartParam])
 
+    console.log('chat_id: ', account?.telegram_info.chat_id);
     return (
         <UserContext.Provider value={{
             account,
