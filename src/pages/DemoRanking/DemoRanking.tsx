@@ -92,8 +92,8 @@ const DemoRanking = () => {
 
         } finally {
             console.log('finally set false isLoadingRanking on referral ranking');
-            setIsLoadingReferral(false);
-        }
+/*             setIsLoadingReferral(false);
+ */        }
 
     }, [setIsWaitingFriend, setReferrakRanking, setMyReferralRecord, account])
 
@@ -143,8 +143,8 @@ const DemoRanking = () => {
             console.error('Error handling referral reward:', error);
         } finally {
             console.log('finally set false isLoadingRanking on point ranking');
-            setIsLoadingPoint(false);
-        }
+/*             setIsLoadingPoint(false);
+ */        }
     }, [setIsWaitingPoint, setMyPointRecord, setPointRanking, account])
 
 
@@ -175,7 +175,7 @@ const DemoRanking = () => {
                 isLoadingReferral == true || isLoadingPoint == true ?
                     <div>
                         <div className="bg-[#00161c] justify-center w-full">
-                            <div className="bg-[#00161c] overflow-hidden w-[393px] h-[852px] relative">
+                            <div className="bg-[#00161c] overflow-hidden w-[393px] h-[690px] relative">
                                 <ClipLoader
                                     color='gray'
                                     loading={isLoadingReferral || isLoadingPoint}
