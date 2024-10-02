@@ -6,6 +6,9 @@ import { getUser, getUsers } from '@/apis/UserSevices'
 import { useUserContext } from '@/contexts/UserContext'
 import { useFriendContext } from '@/contexts/FriendContext'
 import { getPointRanking, getPointRankingList } from '@/apis/PointServices'
+import { ClipLoader } from 'react-spinners'
+import ellipseImage1 from '../../assets/images/ellipse-171.png'
+import { usePointContext } from '@/contexts/PointContext'
 
 interface ReferralRankingItem {
     rank: number,
@@ -22,6 +25,7 @@ interface PointRankingItem {
 const DemoRanking = () => {
     const { account } = useUserContext()
     const { setIsWaitingFriend } = useFriendContext()
+    const { setIsWaitingPoint } = usePointContext()
     const [activeTab, setActiveTab] = useState('tab-1');
 
     const [referralRanking, setReferrakRanking] = useState<ReferralRankingItem[]>([])
@@ -29,6 +33,8 @@ const DemoRanking = () => {
 
     const [myReferralRecord, setMyReferralRecord] = useState<ReferralRankingItem>()
     const [myPointRecord, setMyPointRecord] = useState<PointRankingItem>()
+    const [isLoadingRanking, setIsLoadingRanking] = useState<boolean>(false)
+
     // FIXME
     // const myReferralRankingFromServer = await getReferralRanking({
     //     access_token: '',
@@ -47,9 +53,11 @@ const DemoRanking = () => {
         //setIsWaitingFriend(true)
         try {
             if (import.meta.env.VITE_MINI_APP_ENV === 'test') {
+                setIsLoadingRanking(true)
                 setReferrakRanking(mockReferralRankingData)
                 setMyReferralRecord({ name: 'nextInnovationDev25', rank: 1, referral: 5999999999, id: 1 })
             } else {
+                setIsLoadingRanking(true)
                 const existingUsers = await getUsers(0, 20); // FIXME
 
                 console.log(existingUsers);
@@ -82,10 +90,20 @@ const DemoRanking = () => {
             console.error('Error handling referral reward:', error);
 
         } finally {
-            //setIsWaitingFriend(false)
+            setIsLoadingRanking(false)
         }
 
     }, [setIsWaitingFriend, setReferrakRanking, setMyReferralRecord])
+
+    useEffect(() => {
+        if (isLoadingRanking == true) {
+            setIsWaitingFriend(true)
+            setIsWaitingPoint(true)
+        } else {
+            setIsWaitingFriend(false)
+            setIsWaitingPoint(false)
+        }
+    }, [isLoadingRanking])
 
     useEffect(() => {
         handleReferralRanking()
@@ -95,9 +113,11 @@ const DemoRanking = () => {
         // setIsWaitingPoint(true)
         try {
             if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
+                setIsLoadingRanking(true)
                 setPointRanking(mockPointRankingData)
                 setMyPointRecord({ name: 'nextInnovationDev25', rank: 1000, point: 250, id: 1 })
             } else {
+                setIsLoadingRanking(true)
                 const myPointRankingFromServer = await getPointRanking({
                     access_token: '',
                     user_id: account?.id
@@ -134,7 +154,7 @@ const DemoRanking = () => {
         } catch (error) {
             console.error('Error handling referral reward:', error);
         } finally {
-            // setIsWaitingPoint(false)
+            setIsLoadingRanking(false)
         }
     }, [account])
 
@@ -245,6 +265,7 @@ const DemoRanking = () => {
                 </div>
             </div>
         </div>
+
     )
 }
 
