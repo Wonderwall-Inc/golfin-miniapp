@@ -1,6 +1,6 @@
 import { useUserContext } from '@/contexts/UserContext'
 import { useState } from 'react'
-import { updateUser } from '@/apis/UserSevices'
+import { getUser, updateUser } from '@/apis/UserSevices'
 import { Button } from "@/components/ui/button"
 import { ToastAction, ToastProvider } from "@/components/ui/toast"
 import { useToast } from '@/hooks/use-toast'
@@ -16,16 +16,32 @@ const DemoProfile = () => {
     console.log(username);
 
     const handleUsernameChange = async (username: string) => {
-        const updatedUser = await updateUser({
-            access_token: '',
-            id: account?.id || 0,
-            user_payload: {
-                username: username,
+        if (account?.telegram_info.telegram_id) {
+
+            const dbUser = await getUser({
+                access_token: '',
+                telegram_id: account.id.toString()
+            })
+            if (dbUser?.user_details.user_base.telegram_info.username !== username) {
+                const updatedUser = await updateUser({
+                    access_token: '',
+                    id: account?.id || 0,
+                    user_payload: {
+                        username: username,
+                    }
+                })
+                if (updatedUser !== undefined) {
+                    setAccount(updatedUser.user_details.user_base)
+                    /*   setIsLoading(false) */
+                }
+            } else {
+                return toast({
+                    className: cn('bg-[#FFFAE6] rounded-[10px]'),
+                    title: 'no change',
+                    description: 'Username Duplication',
+                    action: <ToastAction altText="Try again">Try again</ToastAction>,
+                })
             }
-        })
-        if (updatedUser !== undefined) {
-            setAccount(updatedUser.user_details.user_base)
-            /*   setIsLoading(false) */
         }
     }
 

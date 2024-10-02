@@ -1,4 +1,4 @@
-import { createFriend, getFriend, updateFriend, } from "@/apis/FriendServices"
+import { createFriend, getFriend, } from "@/apis/FriendServices"
 import { getPoint, updatePoint } from "@/apis/PointServices"
 import { getUser } from "@/apis/UserSevices"
 import { FriendContext } from "@/contexts/FriendContext"
