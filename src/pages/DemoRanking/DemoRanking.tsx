@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { TabbarLink } from 'konsta/react'
 import { mockPointRankingData, mockReferralRankingData } from '@/constants'
 import CoinImage from '../../assets/images/02_earn_coin.png'
@@ -33,8 +33,10 @@ const DemoRanking = () => {
 
     const [myReferralRecord, setMyReferralRecord] = useState<ReferralRankingItem>()
     const [myPointRecord, setMyPointRecord] = useState<PointRankingItem>()
-    const [isLoadingRanking, setIsLoadingRanking] = useState<boolean>(false)
-
+    /*     const [isLoadingRanking, setIsLoadingRanking] = useState<boolean>(false)
+     */
+    const [isLoadingReferral, setIsLoadingReferral] = useState<boolean>(false);
+    const [isLoadingPoint, setIsLoadingPoint] = useState<boolean>(false);
     // FIXME
     // const myReferralRankingFromServer = await getReferralRanking({
     //     access_token: '',
@@ -49,10 +51,20 @@ const DemoRanking = () => {
     //     })
     // }
 
+    const isMounted = useRef(true)
+
+    useEffect(() => {
+        return () => {
+            isMounted.current = false
+        }
+    }, [])
+
     const handleReferralRanking = useCallback(async () => {
         //setIsWaitingFriend(true)
         try {
-            setIsLoadingRanking(true)
+            /*  setIsLoadingRanking(true) */
+            setIsLoadingReferral(true);
+            setIsWaitingFriend(true);
             if (import.meta.env.VITE_MINI_APP_ENV === 'test') {
                 setReferrakRanking(mockReferralRankingData)
                 setMyReferralRecord({ name: 'nextInnovationDev25', rank: 1, referral: 5999999999, id: 1 })
@@ -90,17 +102,22 @@ const DemoRanking = () => {
 
         } finally {
             console.log('finally set false isLoadingRanking on referral ranking');
-            setIsLoadingRanking(false)
+            if (isMounted.current) {
+                setIsLoadingReferral(false);
+                setIsWaitingFriend(false);
+            }
         }
 
-    }, [setIsLoadingRanking, setReferrakRanking, setMyReferralRecord])
+    }, [setIsWaitingFriend, setReferrakRanking, setMyReferralRecord])
 
 
 
     const handlePointRanking = useCallback(async () => {
         // setIsWaitingPoint(true)
         try {
-            setIsLoadingRanking(true)
+            /*             setIsLoadingRanking(true) */
+            setIsLoadingPoint(true);
+            setIsWaitingPoint(true);
             if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
                 setPointRanking(mockPointRankingData)
                 setMyPointRecord({ name: 'nextInnovationDev25', rank: 1000, point: 250, id: 1 })
@@ -142,10 +159,13 @@ const DemoRanking = () => {
             console.error('Error handling referral reward:', error);
         } finally {
             console.log('finally set false isLoadingRanking on point ranking');
-            
-            setIsLoadingRanking(false)
+
+            if (isMounted.current) {
+                setIsLoadingPoint(false);
+                setIsWaitingPoint(false);
+            }
         }
-    }, [setIsLoadingRanking, setMyPointRecord, setPointRanking])
+    }, [setIsWaitingPoint, setMyPointRecord, setPointRanking])
 
 
     useEffect(() => {
