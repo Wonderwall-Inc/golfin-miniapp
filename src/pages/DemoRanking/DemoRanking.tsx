@@ -68,9 +68,7 @@ const DemoRanking = () => {
                         const senderCount = user.user_details.sender?.length || 0; // Handle potential nullish value
                         return {
                             rank: 0,
-                            name: user.user_details.user_base.telegram_info.username == "" ?
-                                user.user_details.user_base.telegram_info.telegram_id :
-                                user.user_details.user_base.telegram_info.username,
+                            name: user.user_details.user_base.telegram_info.telegram_id || user.user_details.user_base.telegram_info.username,
                             referral: senderCount,
                             id: user.user_details.user_base.id
                         };
@@ -104,7 +102,7 @@ const DemoRanking = () => {
             setIsLoadingPoint(true);
             if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
                 setPointRanking(mockPointRankingData)
-                setMyPointRecord({ name: 'nextInnovationDev25', rank: 1000, point: 250, id: 1 })
+                setMyPointRecord({ name: 'nextInnovationDev25', rank: 1000, total_points: 250, id: 1 })
             } else {
                 const myPointRankingFromServer = await getPointRanking({
                     access_token: '',
@@ -120,9 +118,7 @@ const DemoRanking = () => {
                     // Handle potential nullish values for user.user_details.point and user.user_details.point[0]
                     return {
                         rank: user.rank,
-                        name: dbUser?.user_details.user_base.telegram_info.username == "" ?
-                            dbUser?.user_details.user_base.telegram_info.telegram_id :
-                            dbUser?.user_details.user_base.telegram_info.username,
+                        name: dbUser?.user_details.user_base.telegram_info.telegram_id || dbUser?.user_details.user_base.telegram_info.username,
                         point: user?.total_points,
                         id: dbUser?.user_details.user_base.id
                     }
@@ -156,10 +152,10 @@ const DemoRanking = () => {
 
     console.log('myPointRecord');
     console.log(myPointRecord);
-    
+
     console.log('pointRanking');
     console.log(pointRanking);
-    
+
     /*  useEffect(() => { */
     /*      setIsWaitingFriend(isLoadingRanking); */
     /*      setIsWaitingPoint(isLoadingRanking); */
@@ -254,7 +250,7 @@ const DemoRanking = () => {
                                             </div>
                                             <div className='flex items-center'>
                                                 <img src={CoinImage} width='20' height='20' className='mr-2' alt="Coin" />
-                                                <div className='text-xl text-[17px]'>{myPointRecord !== undefined && myPointRecord.point}</div>
+                                                <div className='text-xl text-[17px]'>{myPointRecord !== undefined && myPointRecord.total_points}</div>
                                             </div>
                                         </div>
 
@@ -269,7 +265,7 @@ const DemoRanking = () => {
                                                             </div>
                                                             <div className='flex items-center space-x-2 flex-shrink-0'>
                                                                 <img src={CoinImage} width='20' height='20' alt="Coin" />
-                                                                <div className='text-[17px] w-12 text-left'>{pointRank.point}</div>
+                                                                <div className='text-[17px] w-12 text-left'>{pointRank.total_points}</div>
                                                             </div>
                                                         </div>
                                                     )
