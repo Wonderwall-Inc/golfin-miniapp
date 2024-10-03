@@ -19,7 +19,7 @@ const Loader = ({ isLoading, wrapperHeight = '852px', wrapperWidth = '393', type
                             color='gray'
                             loading={isLoading}
                             size={150}
-                            className={`opacity-80 absolute top-[40%] left-[30%] translate-x-[-50%] translate-y-[-50%]`}
+                            className={`opacity-80 absolute top-[30%] left-[30%] translate-x-[-50%] translate-y-[-50%]`}
                         >
                         </ClipLoader>
                         <img className="absolute left-[50%] w-[100%] translate-x-[-50%]" alt="Ellipse171" src={ellipseImage1} />
@@ -33,7 +33,7 @@ const Loader = ({ isLoading, wrapperHeight = '852px', wrapperWidth = '393', type
                             color='gray'
                             loading={isLoading}
                             size={150}
-                            className={`opacity-80 absolute top-[23%] left-[30%] translate-x-[-50%] translate-y-[-50%]`}
+                            className={`opacity-80 absolute top-[13%] left-[30%] translate-x-[-50%] translate-y-[-50%]`}
                         >
                         </ClipLoader>
                         <img className="absolute left-[50%] w-[100%] translate-x-[-50%]" alt="Ellipse171" src={ellipseImage1} />
