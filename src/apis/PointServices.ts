@@ -1,7 +1,7 @@
 import {
     PointCreateRequestType,
     PointCreateResponseType,
-    PointRankingType,
+    PointRankingListType,
     PointRetrievalRequestType,
     PointRetrievalResponseType,
     PointUpdateByIdRequestType,
@@ -64,7 +64,7 @@ export async function updatePoint(pointUpdate: PointUpdateByIdRequestType): Prom
 
 
 // GET TOTAL POINT RANKING
-export async function getPointRanking(pointRankingRetrival: PointRetrievalRequestType): Promise<PointRankingType | undefined> {
+/* export async function getPointRanking(pointRankingRetrival: PointRetrievalRequestType): Promise<PointRankingType | undefined> {
     try {
         const qs = []
         for (const [key, val] of Object.entries(pointRankingRetrival)) {
@@ -81,13 +81,13 @@ export async function getPointRanking(pointRankingRetrival: PointRetrievalReques
         console.log(error)
         return undefined
     }
-}
+} */
 
 
 // GET TOTAL POINT RANKING LIST
-export async function getPointRankingList(): Promise<[PointRankingType] | undefined> {
+export async function getPointRankingList(user_id: number): Promise<PointRankingListType | undefined> {
     try {
-        const dbPointRanking = await api.get(`/point/ranking/`)
+        const dbPointRanking = await api.get(`/point/ranking?user_id=${user_id}`)
         const dbPointRankingData = await dbPointRanking.data
         return dbPointRankingData
     } catch (error) {

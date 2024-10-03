@@ -1,24 +1,28 @@
-import './App.css'
-import Footer from './components/FooterComponent/Footer'
+import WebApp from '@twa-dev/sdk'
 import { useEffect, useState } from 'react'
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { initUtils, mockTelegramEnv, parseInitData } from '@telegram-apps/sdk'
-import WebApp from '@twa-dev/sdk'
-import { ClipLoader } from 'react-spinners'
 
-import DemoRanking from './pages/DemoRanking/DemoRanking'
-import DemoLinks from './pages/DemoLinksPage/DemoLinks'
-import { testInitDataRaw } from './constants'
-import Background from './components/BackgroundComponent/Background'
-import DemoEarn from './pages/DemoEarnPage/DemoEarn'
-import DemoTitle from './components/DemoTitleComponent/DemoTitle'
-import DemoProfile from './pages/DemoProfilePage/DemoProfile'
+import { useFriendContext } from './contexts/FriendContext'
 import { useUserContext } from './contexts/UserContext'
 import { usePointContext } from './contexts/PointContext'
 import { useActivityContext } from './contexts/ActivityContext'
-import { useFriendContext } from './contexts/FriendContext'
-import DemoDev from './pages/DemoDevPage/DemoDev'
+
+import './App.css'
+
 import { Toaster } from './components/ui/toaster'
+import Footer from './components/FooterComponent/Footer'
+import DemoTitle from './components/DemoTitleComponent/DemoTitle'
+import Background from './components/BackgroundComponent/Background'
+import { testInitDataRaw } from './constants'
+
+import DemoEarn from './pages/DemoEarnPage/DemoEarn'
+import DemoRanking from './pages/DemoRanking/DemoRanking'
+import DemoLinks from './pages/DemoLinksPage/DemoLinks'
+import DemoProfile from './pages/DemoProfilePage/DemoProfile'
+import DemoDev from './pages/DemoDevPage/DemoDev'
+
+import Loader from './components/LoaderComponent/Loader'
 
 const App = () => {
   if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
@@ -52,16 +56,34 @@ const App = () => {
 
   const [isWaiting, setIsWaiting] = useState(false)
 
-  const { isWaitingUser, setIsWaitingUser, account } = useUserContext()
-  const { isWaitingPoint, setIsWaitingPoint, point } = usePointContext()
-  const { isWaitingActivity, setIsWaitingActivity, activity } = useActivityContext()
-  const { isWaitingFriend, setIsWaitingFriend, friend } = useFriendContext()
+  const [waitingType, setWaitingType] = useState("")
+
+  const { isWaitingUser } = useUserContext()
+  const { isWaitingPoint } = usePointContext()
+  const { isWaitingActivity } = useActivityContext()
+  const { isWaitingFriend } = useFriendContext()
+
+  const MINI_APP_BOT_NAME = import.meta.env.VITE_MINI_APP_BOT_NAME
+  const MINI_APP_NAME = import.meta.env.VITE_MINI_APP_NAME
 
   useEffect(() => {
     if (isWaitingUser == true || isWaitingPoint == true || isWaitingActivity == true || isWaitingFriend == true) {
       setIsWaiting(true)
     } else {
       setIsWaiting(false)
+    }
+
+    if (isWaitingUser == true) {
+      setWaitingType("user")
+    }
+    if (isWaitingPoint == true) {
+      setWaitingType("point")
+    }
+    if (isWaitingActivity == true) {
+      setWaitingType("activity")
+    }
+    if (isWaitingFriend == true) {
+      setWaitingType("friend")
     }
   }, [isWaitingUser, isWaitingPoint, isWaitingFriend, isWaitingActivity])
 
@@ -74,31 +96,22 @@ const App = () => {
     navigate('/');
   };
 
-  console.log('isWaitingUser:', isWaitingUser);
-  console.log('isWaitingPoint:', isWaitingPoint);
-  console.log('isWaitingActivity:', isWaitingActivity);
-  console.log('isWaitingFriend:', isWaitingFriend);
-
+  console.log(`${waitingType}: `, isWaiting);
 
   import.meta.env.VITE_MINI_APP_ENV !== 'test' && WebApp.BackButton.onClick(navigateToHome)
 
   return (
-    <>
+    <div>
       {
-        isWaiting == true ? //FIXME: flat waiting state
-          <div className='bg-gray-500 opacity-40 w-[400px] h-[700px] relative'>
-            <ClipLoader
-              loading={isWaiting}
-              size={150}
-              className='w-[100%] absolute top-[35%] left-[30%] translate-x-[-50%]' />
-          </div> :
+        isWaiting == true ?
+          <Loader isLoading={isWaiting} spinnerTopPosition='50%'/> :
           <div className='app-container'>
             <Background>
               <DemoTitle titlename={`${location.pathname == '/' ? 'EARN' : location.pathname.split('/')[1].toUpperCase()}`} />
               <Routes>
-                <Route path='/' element={<DemoEarn />} />
+                <Route path='/' element={<DemoEarn appLink={`https://t.me/${MINI_APP_BOT_NAME}/${MINI_APP_NAME}/start?startapp=${WebApp.initDataUnsafe.user?.id}`} />} />
                 <Route path='/ranking' element={<DemoRanking />} />
-                <Route path='/links' element={<DemoLinks utils={utils} />} />
+                <Route path='/links' element={<DemoLinks utils={utils} appLink={`https://t.me/${MINI_APP_BOT_NAME}/${MINI_APP_NAME}/start`} />} />
                 <Route path='/profile' element={<DemoProfile />} />
                 <Route path='/dev' element={<DemoDev />} />
               </Routes>
@@ -107,8 +120,7 @@ const App = () => {
             <Toaster /> {/* shadcn-ui */}
           </div >
       }
-
-    </>
+    </div >
   )
 }
 

@@ -1,41 +1,43 @@
-import { Utils } from '@telegram-apps/sdk'
-import DemoIgSvg from '../../assets/icons/DemoIg.svg'
-import DemoXSvg from '../../assets/icons/DemoX.svg'
-import DemoGolfinWebSvg from '../../assets/icons/DemoGolfinWeb.svg'
+import { cn } from '@/lib/utils'
 
-interface LinkPageProp {
-    utils: Utils
-}
+import { useToast } from '@/hooks/use-toast'
 
-const socialMediaLinks = [
-    { label: 'Instagram', url: 'https://www.instagram.com/golfin_official/', icon: <div className='scale-150 mx-2'><DemoIgSvg /></div>, cto: 'Follow us on Instagram' },
-    { label: 'X', url: 'https://x.com/GOLFIN_GL', icon: <div className='scale-150 mx-2'><DemoXSvg /></div>, cto: 'Follow us on X' },
-    { label: 'Golfin Website', url: 'https://golfin.io/en/', icon: <div className='scale-150 mx-2'><DemoGolfinWebSvg /></div>, cto: 'Visit Golfin Website' },
-]
+import useCopyToClipboard from '@/hooks/useCopyToClipboard'
 
-const DemoLinks = ({ utils }: LinkPageProp) => {
+import { demoSocialMediaLinks } from '@/constants'
+import { DemoLinkProp, DemoLinkSocialMediaLink } from '@/type'
+
+const DemoLinks = ({ utils, appLink }: DemoLinkProp) => {
     return (
         <div className='w-[100%] h-[690px]'>
-            <DemoLinkPageComponent utils={utils} />
+            <DemoLinkPageComponent utils={utils} appLink={appLink} />
         </div >
     )
 }
 
-const DemoLinkPageComponent = ({ utils }: LinkPageProp) => {
+const DemoLinkPageComponent = ({ utils, appLink }: DemoLinkProp) => {
+    const handleClick = (socialMediaLink: DemoLinkSocialMediaLink) => {
+        if (socialMediaLink.label == 'Golfin Forward Link') {
+            copyToClipboard(appLink)
+            toast({
+                className: cn('bg-[#FFFAE6] rounded-[10px]'),
+                description: 'Invitation link copied to clipboard',
+            })
+        } else if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
+            window.open(socialMediaLink.url, '_blank')
+        } else {
+            utils?.openLink(socialMediaLink.url, { tryInstantView: true })
+        }
+    }
+    const { copyToClipboard } = useCopyToClipboard()
+    const { toast } = useToast()
     return (
         <div className='grid space-y-5 mx-auto justify-items-center cursor-pointer mt-5'>
-            {socialMediaLinks.map((socialMediaLink, index) => {
+            {demoSocialMediaLinks?.map((socialMediaLink, index) => {
                 return (
                     <div key={index}
-                        className="w-[21.4375rem] h-[6.25rem] rounded-lg bg-white/[.20] content-center cursor-pointer"
-                        onClick={() => {
-                            if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
-                                window.open(socialMediaLink.url, '_blank')
-                            }
-                            else {
-                                utils !== undefined ? utils.openLink(socialMediaLink.url, { tryInstantView: true }) : window.open(socialMediaLink.url, '_blank')
-                            }
-                        }}>
+                        className="w-[21.4375rem] h-[2.5rem] rounded-lg bg-white/[.20] content-center cursor-pointer"
+                        onClick={() => { handleClick(socialMediaLink) }}>
                         <div className='flex justify-start mx-3 cursor-pointer'>
                             {socialMediaLink.icon}
                             <div className={`${socialMediaLink.label} cursor-pointertext-white text-xl font-medium leading-[2.125rem] text-center font-['Rubik'] content-center text-white`}>{socialMediaLink.cto}</div>

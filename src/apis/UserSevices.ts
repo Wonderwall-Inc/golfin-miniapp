@@ -1,4 +1,4 @@
-import { UserCreateRequestType, UserCreateResponseType, UserRetrievalRequestType, UserRetrievalResponseType, UserUpdateDetailsType, UserUpdateRequestType, UserUpdateResponseType } from '@/type';
+import { UserCreateRequestType, UserCreateResponseType, UserFriendRankingListType, UserRetrievalRequestType, UserRetrievalResponseType, UserUpdateDetailsType, UserUpdateRequestType, UserUpdateResponseType } from '@/type';
 import api from './api';
 
 // USER CREATION
@@ -45,7 +45,8 @@ export async function getUser(userRetrieval: UserRetrievalRequestType): Promise<
 export const getUsers = async (skip: number = 0, limit: number = 15): Promise<[UserRetrievalResponseType] | undefined> => {
     try {
         const response = await api.get(`/user/details?skip=${skip}&limit=${limit}`);
-        return response.data;
+        const dbUsersDate = await response.data
+        return dbUsersDate
     } catch (error) {
         console.error('Error retrieving friends:', error);
         throw error; // Re-throw for error handling
@@ -55,9 +56,21 @@ export const getUsers = async (skip: number = 0, limit: number = 15): Promise<[U
 export const updateUser = async (userUpdate: UserUpdateRequestType): Promise<UserUpdateResponseType | undefined> => {
     try {
         const response = await api.put('/user/update', userUpdate);
-        return response.data;
+        const dbUpdateUserData = await response.data
+        return dbUpdateUserData
     } catch (error) {
         console.error('Error updating user:', error);
+        throw error; // Re-throw for error handling
+    }
+};
+
+export const getUserFriendRanking = async (sender_id: number): Promise<UserFriendRankingListType | undefined> => {
+    try {
+        const response = await api.get(`/user/referral-ranking?sender_id=${sender_id}`);
+        const dbUserFriendRankingData = await response.data
+        return dbUserFriendRankingData
+    } catch (error) {
+        console.error('Error retrieving user friend ranking:', error);
         throw error; // Re-throw for error handling
     }
 };

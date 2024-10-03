@@ -1,3 +1,4 @@
+import { Utils } from "@telegram-apps/sdk"
 import { CSSProperties, Dispatch, SetStateAction } from "react"
 // COMPONENTS
 export interface TitleComponentProps {
@@ -33,6 +34,7 @@ export interface DemoEarnComponentProp {
     sgTime: string,
     isClicked: boolean,
     setIsClicked: Dispatch<SetStateAction<boolean>>,
+    appLink: string,
     /*     dailyReward: boolean,
         setDailyReward: Dispatch<SetStateAction<boolean>>, */
 }
@@ -55,6 +57,30 @@ export interface DemoFriendReferralComponentProp {
     referralCount?: number
 }
 
+export interface DemoLinkSocialMediaLink {
+    label: string
+    url: string
+    icon: React.ReactNode
+    cto: string
+}
+
+export interface DemoLinkProp {
+    utils: Utils
+    appLink: string
+    socialMediaLinks?: DemoLinkSocialMediaLink[]
+}
+
+export interface ReferralRankingItemType {
+    rank: number,
+    name: string;
+    referral: number;
+}
+
+export interface PointRankingItemType {
+    rank: number,
+    name: string;
+    point: number;
+}
 
 // CONTEXT 
 export interface UserContextType {
@@ -219,6 +245,20 @@ export interface UserUpdateResponseType {
 
 export interface UserDetailsResponseType {
     user_details: UserDetailsType
+}
+
+export interface UserFriendRankingType {
+    rank: number
+    sender_count: number
+    user_id: number
+    telegram_id: string
+    username: string
+}
+
+export interface UserFriendRankingListType {
+    top_10: UserFriendRankingType[]
+    sender_info: UserFriendRankingType
+    sender_in_top_10: boolean
 }
 
 // GAME CHARACTER
@@ -440,11 +480,19 @@ export interface PointUpdateResponseType {
     point_base: PointDetailsType
 }
 
-export interface PointRankingType {
+export interface PointRankingItemServerType {
     rank: number
     total_points: number
     user_id: number
     id: number | undefined
+    username: string
+    telegram_id: string
+}
+
+export interface PointRankingListType {
+    top_10: PointRankingItemServerType[]
+    user_info: PointRankingItemServerType
+    point_in_top_10: boolean
 }
 
 // ACTIVITY
@@ -717,7 +765,8 @@ export interface FriendBaseType {
 }
 
 export interface FriendUpdateDetailsType {
-    status: FriendStatusType
+    status?: FriendStatusType
+    has_claimed?: boolean
     custom_logs?: {
         action: string,
         date: string
@@ -792,6 +841,7 @@ export interface FriendUpdateByReceiverIdRequestType {
 export interface FriendDetailsResponseType {
     friend_details: FriendDetailsType
 }
+
 export interface getFriendRequestType {
     access_token: string
     id?: number

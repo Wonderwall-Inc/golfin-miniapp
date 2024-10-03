@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import WebApp from '@twa-dev/sdk';
+/* import WebApp from '@twa-dev/sdk'; */
 import { PointCreateRequestType, PointType, } from '../type';
 import { createPoint, getPoint } from '@/apis/PointServices';
 import { useUserContext } from '@/contexts/UserContext';
@@ -9,8 +9,8 @@ export const PointProvider: React.FC<React.PropsWithChildren> = ({ children }) =
     const [point, setPoint] = useState<PointType | undefined>();
     const [isWaitingPoint, setIsWaitingPoint] = useState(false)
 
-    const webappUser = WebApp.initDataUnsafe.user
-    const webappStartParam = WebApp.initDataUnsafe.start_param
+ /*    const webappUser = WebApp.initDataUnsafe.user
+    const webappStartParam = WebApp.initDataUnsafe.start_param */
 
     const { account } = useUserContext()
     useEffect(() => {
