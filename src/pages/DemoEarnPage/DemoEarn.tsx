@@ -1,6 +1,6 @@
 import WebApp from '@twa-dev/sdk'
 import { format } from 'date-fns'
-import { useEffect, useState } from 'react'
+import { lazy, memo, useEffect, useState } from 'react'
 
 import { useUserContext } from '../../contexts/UserContext'
 import { usePointContext } from '@/contexts/PointContext'
@@ -8,10 +8,11 @@ import { useActivityContext } from '@/contexts/ActivityContext'
 import { useFriendContext } from '@/contexts/FriendContext'
 
 import CoinIcon from '../../assets/images/02_earn_coin_new.png'
-import Countdown from '../../components/Countdown'
+/* import Countdown from '../../components/Countdown' */
 
 import { Progress } from "@/components/ui/progress"
-
+const Countdown = lazy(() => import('../../components/Countdown'))
+/* const Progress = lazy(() => import("@/components/ui/progress")) */
 import { updatePoint } from '@/apis/PointServices'
 import { updateActivity } from '@/apis/ActivityServices'
 import { batchUpdateRewardClaimedBySenderId, getFriend } from '@/apis/FriendServices'
@@ -48,7 +49,7 @@ const DemoEarn = ({ appLink }: { appLink: string }) => {
         const todayDD = todayDay.getDate() + 1 < 10 ? `0${todayDay.getDate() + 1}` : todayDay.getDate() + 1
         const todayYYMMDD = `${todayYY}-${preTodayMM}-${todayDD}T00:00:00`
         setTimeLeft(todayYYMMDD)
-    }, [new Date()])
+    }, [])
 
 
     useEffect(() => {
@@ -102,7 +103,7 @@ const DemoEarn = ({ appLink }: { appLink: string }) => {
         };
 
         handleWeeklyReward(); // Call the function on component mount
-    }, [activity?.login_streak]); // Only re-run when login_streak changes
+    }, [activity?.login_streak, point, account?.id, sgTime]); // Only re-run when login_streak changes
 
     useEffect(() => {
         const handleReferralReward = async () => {
@@ -402,8 +403,7 @@ const DemoBonusComponent = ({ weeklyCount, referralCount }: DemoBonusComponentPr
 
     )
 }
-//border-radius: 6px 0px 0px 0px;
-//background: radial-gradient(170.72% 76.05% at 87.88% 12.5%, #FFE100 0%, #FF9500 100%);
+
 const DemoFriendReferralComponent = ({ referralCount }: DemoFriendReferralComponentProp) => {
     return (
         <div className="w-[342px] h-14 bg-[rgba(255,255,255,1.0)] rounded-[6px_6px_6px_6px]  overflow-hidden [background:radial-gradient(170.72%_76.05%_at_87.88%_12.5%,rgb(112.62,108.57,77.9)_0%,rgb(119,102.27,78.84)_100%)] relative">
@@ -422,9 +422,8 @@ const DemoFriendReferralComponent = ({ referralCount }: DemoFriendReferralCompon
                     points for every 10 people
                 </span>
             </p>
-
         </div >
     )
 
 }
-export default DemoEarn
+export default memo(DemoEarn)
