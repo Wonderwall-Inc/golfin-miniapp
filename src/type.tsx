@@ -75,6 +75,7 @@ export interface ReferralRankingItemType {
     name: string;
     referral: number;
 }
+
 export interface PointRankingItemType {
     rank: number,
     name: string;

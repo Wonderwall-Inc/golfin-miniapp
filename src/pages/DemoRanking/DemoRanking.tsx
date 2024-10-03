@@ -6,7 +6,7 @@ import { usePointContext } from '@/contexts/PointContext'
 import { useFriendContext } from '@/contexts/FriendContext'
 
 import { getUserFriendRanking } from '@/apis/UserSevices'
-import { getPointRanking, getPointRankingList } from '@/apis/PointServices'
+import { getPointRankingList } from '@/apis/PointServices'
 
 import Loader from '@/components/LoaderComponent/Loader'
 import CoinImage from '../../assets/images/02_earn_coin.png'
@@ -154,39 +154,9 @@ const DemoRanking = () => {
                                             'text-[rgba(255,255,255,0.4)] font-[700] rounded-t-lg border-b-2 border-white' :
                                             'text-[rgba(255,255,255,0.4)] font-[700] border-b-2 border-gray-500'}`} />
                                 </div>
-                                {activeTab === 'tab-1' && <>
-                                    <div className='h-[300px] w-[343px] overflow-y-scroll sm:h-[400px] md:h-[460px] pt-3'>
-                                        <div className={`text-white bg-[#ffffff33] flex items-center justify-between border-4 rounded-md border-[#8ADD5D] p-1`}>
-                                            <div className='flex items-center font-rubik font-[400] text-xl'>
-                                                <div className='text-center mx-4 text-[17px]'>{myReferralRecord !== undefined && myReferralRecord.rank > 100 ? '100+' : (myReferralRecord?.rank !== undefined && myReferralRecord.rank)}</div>
-                                                <div className='text-center text-[17px]'>{myReferralRecord !== undefined && rankingNameDisplayer(myReferralRecord.name)}</div>
-                                            </div>
-                                            <div className='flex items-center'>
-                                                <img src={CoinImage} width='20' height='20' className='mr-2' alt="Coin" />
-                                                <div className='text-xl text-[17px]'>{myReferralRecord !== undefined && myReferralRecord.referral}</div>
-                                            </div>
-                                        </div>
-
-                                        <div className='sm:h-[250px] md:h-[400px] overflow-y-scroll md:overflow-hidden bg-[#ffffff33]'>
-                                            {referralRanking.map((referralRank, index) => {
-                                                if (index < 10) {
-                                                    return (
-                                                        <div key={referralRank.name} className='text-white flex items-center justify-between p-1 pr-10'>
-                                                            <div className='flex items-center space-x-3 flex-1'>
-                                                                <div className='w-6 text-right text-[17px]'>{index + 1}</div>
-                                                                <div className='text-[17px] truncate'>{rankingNameDisplayer(referralRank.name)}</div>
-                                                            </div>
-                                                            <div className='flex items-center space-x-2 flex-shrink-0'>
-                                                                <img src={CoinImage} width='20' height='20' alt="Coin" />
-                                                                <div className='text-[17px] w-12 text-left'>{referralRank.referral}</div>
-                                                            </div>
-                                                        </div>
-                                                    )
-                                                }
-                                            })}
-                                        </div>
-                                    </div>
-                                </>}
+                                {activeTab === 'tab-1' &&
+                                    <RankingTab type='referral' myRecord={myReferralRecord} ranking={referralRanking} />
+                                }
 
                                 {activeTab === 'tab-2' && <>
                                     <div className='h-[300px] w-[343px] overflow-y-scroll sm:h-[400px] md:h-[460px] pt-3'>
@@ -230,10 +200,49 @@ const DemoRanking = () => {
     )
 }
 
-const RankingTab = () => {
+interface RankingTabProps {
+    type: string,
+    myRecord: ReferralRankingItemType | PointRankingItemType | undefined;
+    ranking: ReferralRankingItemType[] | PointRankingItemType[]
+}
+const RankingTab = ({ type, myRecord, ranking }: RankingTabProps) => {
+    const rankingNameDisplayer = (name: string) => {
+        if (name.length > 10) {
+            return name.substring(0, 7) + '...' + name.substring(name.length - 3)
+        }
+        return name
+    }
     return (
-        <div>
+        <div className='h-[300px] w-[343px] overflow-y-scroll sm:h-[400px] md:h-[460px] pt-3'>
+            <div className={`text-white bg-[#ffffff33] flex items-center justify-between border-4 rounded-md border-[#8ADD5D] p-1`}>
+                <div className='flex items-center font-rubik font-[400] text-xl'>
+                    <div className='text-center mx-4 text-[17px]'>{myRecord !== undefined && myRecord.rank > 100 ? '100+' : (myRecord?.rank !== undefined && myRecord.rank)}</div>
+                    <div className='text-center text-[17px]'>{myRecord !== undefined && rankingNameDisplayer(myRecord.name)}</div>
+                </div>
+                <div className='flex items-center'>
+                    <img src={CoinImage} width='20' height='20' className='mr-2' alt="Coin" />
+                    <div className='text-xl text-[17px]'>{myRecord !== undefined && (type === 'referral' ? (myRecord as ReferralRankingItemType).referral : (myRecord as PointRankingItemType).point)}</div>
+                </div>
+            </div>
 
+            <div className='sm:h-[250px] md:h-[400px] overflow-y-scroll md:overflow-hidden bg-[#ffffff33]'>
+                {ranking.map((rank, index) => {
+                    if (index < 10) {
+                        return (
+                            <div key={rank.name} className='text-white flex items-center justify-between p-1 pr-10'>
+                                <div className='flex items-center space-x-3 flex-1'>
+                                    <div className='w-6 text-right text-[17px]'>{index + 1}</div>
+                                    <div className='text-[17px] truncate'>{rankingNameDisplayer(rank.name)}</div>
+                                </div>
+                                <div className='flex items-center space-x-2 flex-shrink-0'>
+                                    <img src={CoinImage} width='20' height='20' alt="Coin" />
+                                    <div className='text-[17px] w-12 text-left'>{type === 'referral' ? (rank as ReferralRankingItemType).referral : (rank as PointRankingItemType).point}</div>
+                                </div>
+                            </div>
+                        )
+                    }
+                })}
+            </div>
         </div>
     )
 }
