@@ -137,6 +137,7 @@ const DemoProfile = () => {
                         }}>
                         <span className='text-white text-[20px] font-bold text-center'>SAVE</span>
                     </Button>
+                    <a target='_blank' className='my-10' href='https://golfin.io/en/privacy-policy-en/'>Privacy Policy</a>
                 </div >
             </div >
         </ToastProvider >
