@@ -8,7 +8,7 @@ interface LoaderComponentProps {
     spinnerTopPosition?: string;
 }
 
-const Loader = ({ isLoading, wrapperHeight = '852px', wrapperWidth = '393px', spinnerTopPosition = '30%' }: LoaderComponentProps) => {
+const Loader = ({ isLoading, wrapperHeight = '852px', wrapperWidth = '393px', spinnerTopPosition = '40%' }: LoaderComponentProps) => {
     return (
         <div>
             <div className="bg-[#00161c] justify-center w-full">

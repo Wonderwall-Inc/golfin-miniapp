@@ -6,6 +6,7 @@ import DemoIgSvg from '../assets/icons/DemoIg.svg'
 import DemoXSvg from '../assets/icons/DemoX.svg'
 import DemoGolfinWebSvg from '../assets/icons/DemoGolfinWeb.svg'
 import ForwardTgLinkSvg from '../assets/icons/ForwardTgLink.svg'
+import DiscordSvgLinkSvg from '../assets/icons/Discord.svg'
 
 const MINI_APP_BOT_NAME = import.meta.env.VITE_MINI_APP_BOT_NAME
 const MINI_APP_NAME = import.meta.env.VITE_MINI_APP_NAME
@@ -32,7 +33,7 @@ const navLinks = [
     { label: 'Demo Ranking', url: '/ranking' },
     { label: 'Demo Links', url: '/links' },
     { label: 'Demo Profile', url: '/profile' },
-/*     { label: 'Demo Dev', url: '/dev' },
+/*     { label: 'Demo Dev', url: '/dev' },P
  */]
 
 const socialMediaLinks = [
@@ -46,7 +47,7 @@ const demoSocialMediaLinks = [
     { label: 'Golfin Instagram', url: 'https://www.instagram.com/golfin_official/', icon: <div className='scale-150 mx-3'><DemoIgSvg /></div>, cto: 'Follow us on Instagram' },
     { label: 'Golfin X', url: 'https://x.com/GOLFIN_GL', icon: <div className='scale-150 mx-3'><DemoXSvg /></div>, cto: 'Follow us on X' },
     { label: 'Golfin Website', url: 'https://golfin.io/en/', icon: <div className='scale-150 mx-3'><DemoGolfinWebSvg /></div>, cto: 'Visit Golfin Website' },
-    { label: 'Golfin Discord', url: 'https://discord.com/invite/9jHYM5zYnv', icon: <div className='scale-150 mx-3'><DemoGolfinWebSvg /></div>, cto: 'Join Golfin Discord' },
+    { label: 'Golfin Discord', url: 'https://discord.com/invite/9jHYM5zYnv', icon: <div className='scale-120 mx-3'><DiscordSvgLinkSvg /></div>, cto: 'Join Golfin Discord' },
 ]
 
 const mockPointRankingData = [
