@@ -58,11 +58,11 @@ const App = () => {
 
   const [waitingType, setWaitingType] = useState("")
 
-  const { isWaitingUser, setIsWaitingUser, account } = useUserContext()
-  const { isWaitingPoint, setIsWaitingPoint, point } = usePointContext()
-  const { isWaitingActivity, setIsWaitingActivity, activity } = useActivityContext()
-  const { isWaitingFriend, setIsWaitingFriend, friend } = useFriendContext()
-  
+  const { isWaitingUser } = useUserContext()
+  const { isWaitingPoint } = usePointContext()
+  const { isWaitingActivity } = useActivityContext()
+  const { isWaitingFriend } = useFriendContext()
+
   const MINI_APP_BOT_NAME = import.meta.env.VITE_MINI_APP_BOT_NAME
   const MINI_APP_NAME = import.meta.env.VITE_MINI_APP_NAME
 
@@ -98,22 +98,8 @@ const App = () => {
 
   console.log(`${waitingType}: `, isWaiting);
 
-
   import.meta.env.VITE_MINI_APP_ENV !== 'test' && WebApp.BackButton.onClick(navigateToHome)
-  {/* <div>
-            <div className="bg-[#00161c] justify-center w-full">
-              <div className="bg-[#00161c] overflow-hidden w-[393px] h-[852px] relative">
-                <ClipLoader
-                  color='gray'
-                  loading={isWaiting}
-                  size={150}
-                  className='opacity-80 absolute top-[30%] left-[30%] translate-x-[-50%] translate-y-[-50%]'
-                >
-                </ClipLoader>
-                <img className="absolute left-[50%] w-[100%] translate-x-[-50%]" alt="Ellipse171" src={ellipseImage1} />
-              </div>
-            </div>
-          </div> */}
+
   return (
     <div>
       {

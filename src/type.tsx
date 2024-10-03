@@ -70,6 +70,16 @@ export interface DemoLinkProp {
     socialMediaLinks?: DemoLinkSocialMediaLink[]
 }
 
+export interface ReferralRankingItemType {
+    rank: number,
+    name: string;
+    referral: number;
+}
+export interface PointRankingItemType {
+    rank: number,
+    name: string;
+    point: number;
+}
 
 // CONTEXT 
 export interface UserContextType {
@@ -469,13 +479,19 @@ export interface PointUpdateResponseType {
     point_base: PointDetailsType
 }
 
-export interface PointRankingType {
+export interface PointRankingItemServerType {
     rank: number
     total_points: number
     user_id: number
     id: number | undefined
-    username?: string
-    telegram_id?: string
+    username: string
+    telegram_id: string
+}
+
+export interface PointRankingListType {
+    top_10: PointRankingItemServerType[]
+    user_info: PointRankingItemServerType
+    point_in_top_10: boolean
 }
 
 // ACTIVITY

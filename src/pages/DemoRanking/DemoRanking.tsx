@@ -1,55 +1,33 @@
-import { useCallback, useEffect, useState } from 'react'
 import { TabbarLink } from 'konsta/react'
-import { mockPointRankingData, mockReferralRankingData } from '@/constants'
-import CoinImage from '../../assets/images/02_earn_coin.png'
-import { getUser, getUserFriendRanking, getUsers } from '@/apis/UserSevices'
-import { useUserContext } from '@/contexts/UserContext'
-import { useFriendContext } from '@/contexts/FriendContext'
-import { getPointRanking, getPointRankingList } from '@/apis/PointServices'
-import { ClipLoader } from 'react-spinners'
-import ellipseImage1 from '../../assets/images/ellipse-171.png'
-import { usePointContext } from '@/contexts/PointContext'
+import { useCallback, useEffect, useState } from 'react'
 
-interface ReferralRankingItem {
-    rank: number,
-    name: string;
-    referral: number;
-}
-interface PointRankingItem {
-    rank: number,
-    name: string;
-    point: number;
-}
+import { useUserContext } from '@/contexts/UserContext'
+import { usePointContext } from '@/contexts/PointContext'
+import { useFriendContext } from '@/contexts/FriendContext'
+
+import { getUserFriendRanking } from '@/apis/UserSevices'
+import { getPointRanking, getPointRankingList } from '@/apis/PointServices'
+
+import Loader from '@/components/LoaderComponent/Loader'
+import CoinImage from '../../assets/images/02_earn_coin.png'
+
+import { mockPointRankingData, mockReferralRankingData } from '@/constants'
+import { PointRankingItemType, ReferralRankingItemType } from '@/type'
+
+
 const DemoRanking = () => {
     const { account } = useUserContext()
     const { setIsWaitingFriend } = useFriendContext()
     const { setIsWaitingPoint } = usePointContext()
     const [activeTab, setActiveTab] = useState('tab-1');
 
-    const [referralRanking, setReferrakRanking] = useState<ReferralRankingItem[]>([])
-    const [pointRanking, setPointRanking] = useState<any[]>([])
+    const [referralRanking, setReferrakRanking] = useState<ReferralRankingItemType[]>([])
+    const [pointRanking, setPointRanking] = useState<PointRankingItemType[]>([])
 
-    const [myReferralRecord, setMyReferralRecord] = useState<ReferralRankingItem>()
-    const [myPointRecord, setMyPointRecord] = useState<PointRankingItem>()
-    /*     const [isLoadingRanking, setIsLoadingRanking] = useState<boolean>(false)
-     */
+    const [myReferralRecord, setMyReferralRecord] = useState<ReferralRankingItemType>()
+    const [myPointRecord, setMyPointRecord] = useState<PointRankingItemType>()
     const [isLoadingReferral, setIsLoadingReferral] = useState<boolean>(false);
     const [isLoadingPoint, setIsLoadingPoint] = useState<boolean>(false);
-    // FIXME
-    // const myReferralRankingFromServer = await getReferralRanking({
-    //     access_token: '',
-    //     user_id: account?.id
-    // })
-    // console.log('my referral ranking from server: ', myReferralRankingFromServer);
-    // if (myReferralRankingFromServer && account?.telegram_info.username) {
-    //     setMyReferralRecord({
-    //         rank: myReferralRankingFromServer.rank,
-    //         name: account?.telegram_info.username,
-    //         referral: myReferralRankingFromServer?.referral_count
-    //     })
-    // }
-
-
 
     const handleReferralRanking = useCallback(async () => {
         try {
@@ -61,12 +39,8 @@ const DemoRanking = () => {
                 if (account?.id) {
                     const userFriendRanking = await getUserFriendRanking(account?.id)
                     console.log(userFriendRanking);
-                    /*                     const existingUsers = await getUsers(0, 100); // FIXME */
-                    /*  console.log(existingUsers); */
-
                     if (userFriendRanking && userFriendRanking.top_10.length > 0) {
-                        const referralRanking: ReferralRankingItem[] = userFriendRanking.top_10.map((ranking, /* index */) => {
-                            /*     const senderCount = user.user_details.sender?.length || 0; */ // Handle potential nullish value
+                        const referralRanking: ReferralRankingItemType[] = userFriendRanking.top_10.map((ranking) => {
                             return {
                                 rank: ranking.rank,
                                 name: ranking.username == "" ? ranking.telegram_id : ranking.username,
@@ -81,7 +55,6 @@ const DemoRanking = () => {
                                 referral: myReferralRecord.sender_count,
                             })
                         }
-
                         setReferrakRanking(referralRanking);
                     }
                 }
@@ -102,45 +75,35 @@ const DemoRanking = () => {
     const handlePointRanking = useCallback(async () => {
         try {
             setIsLoadingPoint(true);
-            if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
-                setPointRanking(mockPointRankingData)
-                setMyPointRecord({ name: 'nextInnovationDev25', rank: 1000, point: 250 })
+            if (import.meta.env.VITE_MINI_APP_ENV === 'test') {
+                setPointRanking(mockPointRankingData as PointRankingItemType[]);
+                setMyPointRecord({ name: 'nextInnovationDev25', rank: 1000, point: 250 });
             } else {
-                const myPointRankingFromServer = await getPointRanking({ access_token: '', user_id: account?.id })
-                console.log('my ranking from server: ', myPointRankingFromServer);
-                const existingUsers = await getPointRankingList(); // get the ranking list from server for all users and return the rank position and the total points
-                if (existingUsers?.length) {
-                    const pointRanking = existingUsers?.map((ranking) => {
-                        return {
-                            rank: ranking.rank,
-                            name: ranking.username == "" ? ranking.telegram_id : ranking.username,
-                            point: ranking.total_points
+                if (account?.id) {
+                    /*           const myPointRankingFromServer = await getPointRanking({ user_id: account?.id }); */
+                    /*        console.log('my ranking from server: ', myPointRankingFromServer); */
+                    const userPointRanking = await getPointRankingList(account?.id); // get the ranking list from server for all users and return the rank position and the total points
+                    console.log(userPointRanking);
+
+                    if (userPointRanking && userPointRanking.top_10.length > 0) {
+                        const pointRanking: PointRankingItemType[] = userPointRanking.top_10.map((ranking) => {
+                            return {
+                                rank: ranking.rank,
+                                name: ranking.username == "" ? ranking.telegram_id : ranking.username,
+                                point: ranking.total_points
+                            }
+                        })
+                        const myPointRanking = userPointRanking.user_info
+                        if (myPointRanking) {
+                            setMyPointRecord({
+                                rank: myPointRanking.rank,
+                                name: myPointRanking.username == "" ? myPointRanking.telegram_id : myPointRanking.username,
+                                point: myPointRanking.total_points,
+                            });
                         }
-                    })
-                    if (myPointRankingFromServer && pointRanking && account?.id) {
-                        setMyPointRecord({
-                            rank: myPointRankingFromServer.rank,
-                            point: myPointRankingFromServer.total_points,
-                            name: account?.telegram_info?.username || account?.telegram_info?.telegram_id || '',
-                        });
                         setPointRanking(pointRanking);
                     }
                 }
-                /*          const pointRanking = existingUsers && await Promise.all(existingUsers.map(async (user) => {
-                             const dbUser = await getUser({
-                                 access_token: '',
-                                 id: user.user_id.toString()
-                             })
-                             // Handle potential nullish values for user.user_details.point and user.user_details.point[0]
-                             return {
-                                 rank: user.rank,
-                                 name: dbUser?.user_details.user_base.telegram_info.username == "" ? dbUser?.user_details.user_base.telegram_info.telegram_id : dbUser?.user_details.user_base.telegram_info.username,
-                                 point: user?.total_points,
-                             }
-                         })) */
-
-
-
             }
         } catch (error) {
             console.error('Error handling referral reward:', error);
@@ -159,26 +122,6 @@ const DemoRanking = () => {
         handlePointRanking()
     }, [handlePointRanking])
 
-
-    console.log('myReferralRecord');
-    console.log(myReferralRecord);
-
-    console.log('referranRanking');
-    console.log(referralRanking);
-
-
-    console.log('myPointRecord');
-    console.log(myPointRecord);
-
-    console.log('pointRanking');
-    console.log(pointRanking);
-
-    /*  useEffect(() => { */
-    /*      setIsWaitingFriend(isLoadingRanking); */
-    /*      setIsWaitingPoint(isLoadingRanking); */
-    /*  }, [isLoadingRanking, setIsWaitingFriend, setIsWaitingPoint]) */
-
-
     const rankingNameDisplayer = (name: string) => {
         if (name.length > 10) {
             return name.substring(0, 7) + '...' + name.substring(name.length - 3)
@@ -190,20 +133,7 @@ const DemoRanking = () => {
         <div>
             {
                 isLoadingReferral == true || isLoadingPoint == true ?
-                    <div>
-                        <div className="bg-[#00161c] justify-center w-full">
-                            <div className="bg-[#00161c] overflow-hidden w-[393px] h-[690px] relative">
-                                <ClipLoader
-                                    color='gray'
-                                    loading={isLoadingReferral || isLoadingPoint}
-                                    size={150}
-                                    className='opacity-80 absolute top-[12%] left-[30%] translate-x-[-50%] translate-y-[-50%]'
-                                >
-                                </ClipLoader>
-                                <img className="absolute left-[50%] w-[100%] translate-x-[-50%]" alt="Ellipse171" src={ellipseImage1} />
-                            </div>
-                        </div>
-                    </div> :
+                    <Loader isLoading={isLoadingReferral || isLoadingPoint} wrapperHeight='690px' wrapperWidth='393px' spinnerTopPosition='12%' /> :
                     <div className='w-[100%] h-[690px]'>
                         <div className='flex justify-center'>
                             <div className='mx-10 mt-5 sm:mt-[5px] md:mt-[12px] lg:mt-[15px]'>
@@ -297,6 +227,14 @@ const DemoRanking = () => {
 
             }</div>
 
+    )
+}
+
+const RankingTab = () => {
+    return (
+        <div>
+
+        </div>
     )
 }
 
