@@ -26,6 +26,19 @@ export interface DemoTitleProps {
 }
  */
 
+export interface NavIconPropsType {
+    className?: string
+    color?: string
+
+}
+
+export interface LoaderComponentPropsType {
+    isLoading: boolean;
+    wrapperHeight?: string;
+    wrapperWidth?: string;
+    spinnerTopPosition?: string;
+    type?: string;
+}
 
 // PAGE
 export interface DemoEarnComponentProp {
@@ -80,6 +93,13 @@ export interface PointRankingItemType {
     rank: number,
     name: string;
     point: number;
+}
+
+
+export interface RankingTabPropsType {
+    type: string,
+    myRecord: ReferralRankingItemType | PointRankingItemType | undefined;
+    ranking: ReferralRankingItemType[] | PointRankingItemType[]
 }
 
 // CONTEXT 
@@ -849,6 +869,12 @@ export interface getFriendRequestType {
 }
 
 
+export interface ReferralRankingType {
+    rank: number
+    referral_count: number
+    user_id: number
+    id: number | undefined
+}
 // RECORD
 export enum RecordActionType {
     create = "CREATE",

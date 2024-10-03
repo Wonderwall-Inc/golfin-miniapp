@@ -12,7 +12,7 @@ import Loader from '@/components/LoaderComponent/Loader'
 import CoinImage from '../../assets/images/02_earn_coin_new.png'
 
 import { mockPointRankingData, mockReferralRankingData } from '@/constants'
-import { PointRankingItemType, ReferralRankingItemType } from '@/type'
+import { PointRankingItemType, RankingTabPropsType, ReferralRankingItemType } from '@/type'
 
 
 const DemoRanking = () => {
@@ -200,12 +200,7 @@ const DemoRanking = () => {
     )
 }
 
-interface RankingTabProps {
-    type: string,
-    myRecord: ReferralRankingItemType | PointRankingItemType | undefined;
-    ranking: ReferralRankingItemType[] | PointRankingItemType[]
-}
-const RankingTab = ({ type, myRecord, ranking }: RankingTabProps) => {
+const RankingTab = ({ type, myRecord, ranking }: RankingTabPropsType) => {
     const rankingNameDisplayer = (name: string) => {
         if (name.length > 10) {
             return name.substring(0, 7) + '...' + name.substring(name.length - 3)

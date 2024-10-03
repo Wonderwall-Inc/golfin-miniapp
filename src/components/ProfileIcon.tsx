@@ -1,12 +1,7 @@
+import { NavIconPropsType } from "@/type"
 import { twMerge } from "tailwind-merge"
 
-interface NavIconProps {
-    className?: string
-    color?: string
-
-}
-
-const ProfileIcon = ({ className, color }: NavIconProps) => {
+const ProfileIcon = ({ className, color }: NavIconPropsType) => {
     return (
         <svg width="38" height="38" viewBox="0 0 38 38" fill={color} xmlns="http://www.w3.org/2000/svg" className={twMerge(className)}>
             <g id="Group">
