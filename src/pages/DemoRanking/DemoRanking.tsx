@@ -73,13 +73,7 @@ const DemoRanking = () => {
                                 referral: ranking.sender_count,
                             };
                         })
-                        /*                             .sort((a, b) => b.referral - a.referral)
-                                                    .map((item, index) => ({ ...item, rank: index + 1 })); */
-
-                        /*                         const myReferralRecord = referralRanking.find(r => r.name == account?.telegram_info.username || r.name == account?.telegram_info.telegram_id)
-                         
-                        */
-                       const myReferralRecord = userFriendRanking.sender_info
+                        const myReferralRecord = userFriendRanking.sender_info
                         if (myReferralRecord) {
                             setMyReferralRecord({
                                 rank: myReferralRecord.rank,
@@ -112,33 +106,40 @@ const DemoRanking = () => {
                 setPointRanking(mockPointRankingData)
                 setMyPointRecord({ name: 'nextInnovationDev25', rank: 1000, point: 250 })
             } else {
-                const myPointRankingFromServer = await getPointRanking({
-                    access_token: '',
-                    user_id: account?.id
-                })
+                const myPointRankingFromServer = await getPointRanking({ access_token: '', user_id: account?.id })
                 console.log('my ranking from server: ', myPointRankingFromServer);
                 const existingUsers = await getPointRankingList(); // get the ranking list from server for all users and return the rank position and the total points
-                const pointRanking = existingUsers && await Promise.all(existingUsers.map(async (user) => {
-                    const dbUser = await getUser({
-                        access_token: '',
-                        id: user.user_id.toString()
+                if (existingUsers?.length) {
+                    const pointRanking = existingUsers?.map((ranking) => {
+                        return {
+                            rank: ranking.rank,
+                            name: ranking.username == "" ? ranking.telegram_id : ranking.username,
+                            point: ranking.total_points
+                        }
                     })
-                    // Handle potential nullish values for user.user_details.point and user.user_details.point[0]
-                    return {
-                        rank: user.rank,
-                        name: dbUser?.user_details.user_base.telegram_info.username == "" ? dbUser?.user_details.user_base.telegram_info.telegram_id : dbUser?.user_details.user_base.telegram_info.username,
-                        point: user?.total_points,
+                    if (myPointRankingFromServer && pointRanking && account?.id) {
+                        setMyPointRecord({
+                            rank: myPointRankingFromServer.rank,
+                            point: myPointRankingFromServer.total_points,
+                            name: account?.telegram_info?.username || account?.telegram_info?.telegram_id || '',
+                        });
+                        setPointRanking(pointRanking);
                     }
-                }))
-
-                if (myPointRankingFromServer && pointRanking && account?.id) {
-                    setMyPointRecord({
-                        rank: myPointRankingFromServer.rank,
-                        point: myPointRankingFromServer.total_points,
-                        name: account?.telegram_info?.username || account?.telegram_info?.telegram_id || '',
-                    });
-                    setPointRanking(pointRanking);
                 }
+                /*          const pointRanking = existingUsers && await Promise.all(existingUsers.map(async (user) => {
+                             const dbUser = await getUser({
+                                 access_token: '',
+                                 id: user.user_id.toString()
+                             })
+                             // Handle potential nullish values for user.user_details.point and user.user_details.point[0]
+                             return {
+                                 rank: user.rank,
+                                 name: dbUser?.user_details.user_base.telegram_info.username == "" ? dbUser?.user_details.user_base.telegram_info.telegram_id : dbUser?.user_details.user_base.telegram_info.username,
+                                 point: user?.total_points,
+                             }
+                         })) */
+
+
 
             }
         } catch (error) {

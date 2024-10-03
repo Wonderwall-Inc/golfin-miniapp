@@ -474,6 +474,8 @@ export interface PointRankingType {
     total_points: number
     user_id: number
     id: number | undefined
+    username?: string
+    telegram_id?: string
 }
 
 // ACTIVITY
