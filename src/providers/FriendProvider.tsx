@@ -27,18 +27,9 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                 setFriend({ sender: existingFriend.sender, receiver: existingFriend.receiver })
                 setFriendNumber(existingFriend.sender?.length + existingFriend.receiver?.length) // total friend with me
                 if (existingFriend?.sender?.length % 10 == 0) {
-                    console.log("friend?.sender");
-                    console.log(friend?.sender);
-
                     const unclaimedFriends = existingFriend?.sender?.filter(f => !f.has_claimed)
-                    console.log(unclaimedFriends);
 
                     if (unclaimedFriends?.length) {
-                        console.log("unclaimedFriends");
-                        console.log(unclaimedFriends);
-                        console.log('trigger get friend on provider');
-                        console.log(friendTrigger);
-
                         setFriendTrigger(unclaimedFriends?.length)
                         setIsWaitingFriend(false)
                         return existingFriend
@@ -137,10 +128,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                 sender: mockFriends,
                 receiver: []
             })
-            console.log(friend);
-
             if (friend) {
-
                 if (friend.sender && friend.receiver) {
                     setFriendNumber(friend?.sender?.length + friend.receiver?.length)
                     if (friend.sender.length % 10 == 0) {

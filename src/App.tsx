@@ -1,5 +1,5 @@
 import WebApp from '@twa-dev/sdk'
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { initUtils, mockTelegramEnv, parseInitData } from '@telegram-apps/sdk'
 
@@ -16,13 +16,19 @@ import DemoTitle from './components/DemoTitleComponent/DemoTitle'
 import Background from './components/BackgroundComponent/Background'
 import { testInitDataRaw } from './constants'
 
-import DemoEarn from './pages/DemoEarnPage/DemoEarn'
+/* import DemoEarn from './pages/DemoEarnPage/DemoEarn'
 import DemoRanking from './pages/DemoRanking/DemoRanking'
 import DemoLinks from './pages/DemoLinksPage/DemoLinks'
 import DemoProfile from './pages/DemoProfilePage/DemoProfile'
-import DemoDev from './pages/DemoDevPage/DemoDev'
+import DemoDev from './pages/DemoDevPage/DemoDev' */
 
 import Loader from './components/LoaderComponent/Loader'
+
+const DemoEarn = lazy(() => import('./pages/DemoEarnPage/DemoEarn'))
+const DemoRanking = lazy(() => import('./pages/DemoRanking/DemoRanking'))
+const DemoLinks = lazy(() => import('./pages/DemoLinksPage/DemoLinks'))
+const DemoProfile = lazy(() => import('./pages/DemoProfilePage/DemoProfile'))
+const DemoDev = lazy(() => import('./pages/DemoDevPage/DemoDev'))
 
 const App = () => {
   if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
@@ -67,29 +73,21 @@ const App = () => {
   const MINI_APP_NAME = import.meta.env.VITE_MINI_APP_NAME
 
   useEffect(() => {
-    if (isWaitingUser == true || isWaitingPoint == true || isWaitingActivity == true || isWaitingFriend == true) {
-      setIsWaiting(true)
-    } else {
-      setIsWaiting(false)
-    }
-
-    if (isWaitingUser == true) {
+    setIsWaiting(isWaitingUser == true || isWaitingPoint == true || isWaitingActivity == true || isWaitingFriend == true)
+    if (isWaitingUser) {
       setWaitingType("user")
-    }
-    if (isWaitingPoint == true) {
+    } else if (isWaitingPoint) {
       setWaitingType("point")
-    }
-    if (isWaitingActivity == true) {
+    } else if (isWaitingActivity) {
       setWaitingType("activity")
-    }
-    if (isWaitingFriend == true) {
+    } else if (isWaitingFriend) {
       setWaitingType("friend")
     }
   }, [isWaitingUser, isWaitingPoint, isWaitingFriend, isWaitingActivity])
 
 
   useEffect(() => {
-    location.pathname == '/' ? WebApp.BackButton.hide() : WebApp.BackButton.show()
+    WebApp.BackButton[location.pathname === '/' ? 'hide' : 'show']()
   }, [location])
 
   const navigateToHome = () => {
@@ -104,21 +102,23 @@ const App = () => {
     <div>
       {
         isWaiting == true ?
-          <Loader isLoading={isWaiting} spinnerTopPosition='50%'/> :
-          <div className='app-container'>
+          <Loader isLoading={isWaiting} type='default' /> :
+          <>
             <Background>
-              <DemoTitle titlename={`${location.pathname == '/' ? 'EARN' : location.pathname.split('/')[1].toUpperCase()}`} />
-              <Routes>
-                <Route path='/' element={<DemoEarn appLink={`https://t.me/${MINI_APP_BOT_NAME}/${MINI_APP_NAME}/start?startapp=${WebApp.initDataUnsafe.user?.id}`} />} />
-                <Route path='/ranking' element={<DemoRanking />} />
-                <Route path='/links' element={<DemoLinks utils={utils} appLink={`https://t.me/${MINI_APP_BOT_NAME}/${MINI_APP_NAME}/start`} />} />
-                <Route path='/profile' element={<DemoProfile />} />
-                <Route path='/dev' element={<DemoDev />} />
-              </Routes>
+              <DemoTitle titlename={`${location.pathname === '/' ? 'EARN' : location.pathname.split('/')[1].toUpperCase()}`} />
+              <Suspense fallback={<Loader isLoading={true} type='default' />}>
+                <Routes>
+                  <Route path='/' element={<DemoEarn appLink={`https://t.me/${MINI_APP_BOT_NAME}/${MINI_APP_NAME}/start?startapp=${WebApp.initDataUnsafe.user?.id}`} />} />
+                  <Route path='/ranking' element={<DemoRanking />} />
+                  <Route path='/links' element={<DemoLinks utils={utils} appLink={`https://t.me/${MINI_APP_BOT_NAME}/${MINI_APP_NAME}/start`} />} />
+                  <Route path='/profile' element={<DemoProfile />} />
+                  <Route path='/dev' element={<DemoDev />} />
+                </Routes>
+              </Suspense>
             </Background>
             <Footer />
             <Toaster /> {/* shadcn-ui */}
-          </div >
+          </>
       }
     </div >
   )

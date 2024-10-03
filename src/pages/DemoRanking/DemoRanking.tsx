@@ -9,7 +9,7 @@ import { getUserFriendRanking } from '@/apis/UserSevices'
 import { getPointRankingList } from '@/apis/PointServices'
 
 import Loader from '@/components/LoaderComponent/Loader'
-import CoinImage from '../../assets/images/02_earn_coin.png'
+import CoinImage from '../../assets/images/02_earn_coin_new.png'
 
 import { mockPointRankingData, mockReferralRankingData } from '@/constants'
 import { PointRankingItemType, ReferralRankingItemType } from '@/type'
@@ -134,7 +134,7 @@ const DemoRanking = () => {
         <div>
             {
                 isLoadingReferral == true || isLoadingPoint == true ?
-                    <Loader isLoading={isLoadingReferral || isLoadingPoint} wrapperHeight='690px' wrapperWidth='393px' spinnerTopPosition='12%' /> :
+                    <Loader isLoading={isLoadingReferral || isLoadingPoint} wrapperHeight='690px' wrapperWidth='393px' type='ranking' /> :
                     <div className='w-[100%] h-[690px]'>
                         <div className='flex justify-center'>
                             <div className='mx-10 mt-5 sm:mt-[5px] md:mt-[12px] lg:mt-[15px]'>

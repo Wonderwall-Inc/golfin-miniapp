@@ -1,7 +1,3 @@
-import InstagramImage from '../assets/images/04_links_icon_instagram.png'
-import XImage from '../assets/images/04_links_icon_x.png'
-import GolfinWebsiteImage from '../assets/images/04_links_icon_golfin.png'
-
 import DemoIgSvg from '../assets/icons/DemoIg.svg'
 import DemoXSvg from '../assets/icons/DemoX.svg'
 import DemoGolfinWebSvg from '../assets/icons/DemoGolfinWeb.svg'
@@ -32,13 +28,7 @@ const navLinks = [
     { label: 'Demo Home', url: '/' },
     { label: 'Demo Ranking', url: '/ranking' },
     { label: 'Demo Links', url: '/links' },
-    { label: 'Demo Profile', url: '/profile' }
-]
-
-const socialMediaLinks = [
-    { label: 'Instagram', url: 'https://www.instagram.com/golfin_official/', icon: <img src={InstagramImage} width='50px' height='50px' />, cto: 'Follow us on Instagram' },
-    { label: 'X', url: 'https://x.com/GOLFIN_official', icon: <img src={XImage} width='50px' height='50px' />, cto: 'Follow us on X' },
-    { label: 'Golfin Website', url: 'https://golfin.io/', icon: <img src={GolfinWebsiteImage} width='50px' height='50px' />, cto: 'Golfin Website' },
+    { label: 'Demo Profile', url: '/profile' },
 ]
 
 const demoSocialMediaLinks = [
@@ -121,7 +111,6 @@ const tenFriendsReferralPointReward = 3000
 export {
     testInitDataRaw,
     navLinks,
-    socialMediaLinks,
     mockPointRankingData,
     mockReferralRankingData,
     mockUserAccount,
