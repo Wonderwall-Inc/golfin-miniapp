@@ -1,15 +1,8 @@
 import { ClipLoader } from 'react-spinners'
 import ellipseImage1 from '../../assets/images/ellipse-171.png'
+import { LoaderComponentPropsType } from '@/type'
 
-interface LoaderComponentProps {
-    isLoading: boolean;
-    wrapperHeight?: string;
-    wrapperWidth?: string;
-    spinnerTopPosition?: string;
-    type?: string;
-}
-
-const Loader = ({ isLoading, wrapperHeight = '852px', wrapperWidth = '393', type = 'default' }: LoaderComponentProps) => {
+const Loader = ({ isLoading, wrapperHeight = '852px', wrapperWidth = '393', type = 'default' }: LoaderComponentPropsType) => {
     return (
         type == 'default' ?
             <div>

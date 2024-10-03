@@ -1,12 +1,7 @@
+import { NavIconPropsType } from "@/type"
 import { twMerge } from "tailwind-merge"
 
-interface NavIconProps {
-    className?: string
-    color?: string
-
-}
-
-const LinkIcon = ({ className, color }: NavIconProps) => {
+const LinkIcon = ({ className, color }: NavIconPropsType) => {
     return (
         <svg width="50" height="50" viewBox="0 0 68 68" fill={color} xmlns="http://www.w3.org/2000/svg" className={twMerge(className)}>
             <g id="Clip path group">

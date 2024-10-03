@@ -5,7 +5,8 @@ import {
     FriendRetrievalRequestType,
     FriendUpdateByIdRequestType,
     FriendUpdateDetailsType,
-    FriendWithIdsRetrievalResponseType
+    FriendWithIdsRetrievalResponseType,
+    ReferralRankingType
 } from '@/type';
 import api from './api';
 
@@ -89,13 +90,6 @@ export async function batchUpdateRewardClaimedBySenderId(senderId: number): Prom
     }
 }
 
-
-interface ReferralRankingType {
-    rank: number
-    referral_count: number
-    user_id: number
-    id: number | undefined
-}
 // GET TOTAL REFERRAL RANKING
 export async function getReferralRanking(referralRankingRetrival: FriendRetrievalRequestType): Promise<ReferralRankingType | undefined> {
     try {

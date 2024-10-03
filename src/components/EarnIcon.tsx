@@ -1,14 +1,7 @@
+import { NavIconPropsType } from '@/type';
 import { twMerge } from 'tailwind-merge';
 
-// import './EarnIcon.css'
-
-interface NavIconProps {
-    className?: string
-    color?: string
-
-}
-
-const EarnIcon = ({ className, color }: NavIconProps) => {
+const EarnIcon = ({ className, color }: NavIconPropsType) => {
     return (
         <svg
             width="50"
