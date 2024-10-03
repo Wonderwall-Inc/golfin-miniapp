@@ -14,9 +14,6 @@ import api from './api';
 export async function createFriend(friendCreate: FriendCreateRequestType): Promise<FriendCreateResponseType | undefined> {
     try {
         api.defaults.headers.put['Content-Type'] = 'application/json'
-        // console.log('friendCreate');
-        // console.log(friendCreate);
-
         const dbFriend = await api.post('/friend/create', friendCreate);
         if (dbFriend.status == 500 || dbFriend.status == 400) { // force user to the main page relogin again         
             return undefined
