@@ -104,7 +104,7 @@ const App = () => {
     <div>
       {
         isWaiting == true ?
-          <Loader isLoading={isWaiting} /> :
+          <Loader isLoading={isWaiting} spinnerTopPosition='50%'/> :
           <div className='app-container'>
             <Background>
               <DemoTitle titlename={`${location.pathname == '/' ? 'EARN' : location.pathname.split('/')[1].toUpperCase()}`} />
