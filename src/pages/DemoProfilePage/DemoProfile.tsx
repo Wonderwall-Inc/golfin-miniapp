@@ -1,22 +1,23 @@
-import { useUserContext } from '@/contexts/UserContext'
+import { cn } from '@/lib/utils'
 import { useState } from 'react'
+
+import { useUserContext } from '@/contexts/UserContext'
+
 import { getUser, updateUser } from '@/apis/UserSevices'
+
+import { useToast } from '@/hooks/use-toast'
 import { Button } from "@/components/ui/button"
 import { ToastAction, ToastProvider } from "@/components/ui/toast"
-import { useToast } from '@/hooks/use-toast'
-import { cn } from '@/lib/utils'
-import Loader from '@/components/LoaderComponent/Loader'
 
 const DemoProfile = () => {
     const { account, setAccount } = useUserContext()
     const [username, setUsername] = useState(account?.telegram_info.username || "");
-    const [isLoading, setIsLoading] = useState(false);
+/*     const [isLoading, setIsLoading] = useState(false); */
     const { toast } = useToast()
 
     console.log(username);
 
     const handleUsernameChange = async (username: string) => {
-
         const updatedUser = await updateUser({
             access_token: '',
             id: account?.id || 0,
@@ -71,9 +72,9 @@ const DemoProfile = () => {
                         type='submit'
                         onClick={async () => {
                             if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
-                                setIsLoading(true)
+            /*                     setIsLoading(true) */
                                 if (username == account?.telegram_info.username) {
-                                    setIsLoading(false)
+                            /*         setIsLoading(false) */
                                     return toast({
                                         className: cn('bg-[#FFFAE6] rounded-[10px]'),
                                         title: 'no change',
@@ -84,7 +85,7 @@ const DemoProfile = () => {
                                 }
 
                                 else {
-                                    setIsLoading(false)
+                                  /*   setIsLoading(false) */
                                     return toast({
                                         className: cn('bg-[#FFFAE6] rounded-[10px]'),
                                         description:
@@ -96,9 +97,9 @@ const DemoProfile = () => {
 
                                 }
                             } else {
-                                setIsLoading(true)
+      /*                           setIsLoading(true) */
                                 if (username == account?.telegram_info.username) {
-                                    setIsLoading(false)
+                                  /*   setIsLoading(false) */
                                     return toast({
                                         className: cn('bg-[#FFFAE6] rounded-[10px]'),
                                         title: 'no change',
@@ -112,7 +113,7 @@ const DemoProfile = () => {
                                         telegram_id: account?.id?.toString() ?? ''
                                     })
                                     if (dbUser?.user_details.user_base.telegram_info.username == username) {
-                                        setIsLoading(false)
+                                      /*   setIsLoading(false) */
                                         return toast({
                                             className: cn('bg-[#FFFAE6] rounded-[10px]'),
                                             title: 'no change',
@@ -121,7 +122,7 @@ const DemoProfile = () => {
                                         })
                                     } else {
                                         await handleUsernameChange(username)
-                                        setIsLoading(false)
+                /*                         setIsLoading(false) */
                                         return toast({
                                             className: cn('bg-[#FFFAE6] rounded-[10px]'),
                                             description:

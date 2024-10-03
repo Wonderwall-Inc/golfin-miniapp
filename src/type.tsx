@@ -1,3 +1,4 @@
+import { Utils } from "@telegram-apps/sdk"
 import { CSSProperties, Dispatch, SetStateAction } from "react"
 // COMPONENTS
 export interface TitleComponentProps {
@@ -33,6 +34,7 @@ export interface DemoEarnComponentProp {
     sgTime: string,
     isClicked: boolean,
     setIsClicked: Dispatch<SetStateAction<boolean>>,
+    appLink: string,
     /*     dailyReward: boolean,
         setDailyReward: Dispatch<SetStateAction<boolean>>, */
 }
@@ -53,6 +55,19 @@ export interface DemoBonusComponentProp {
 
 export interface DemoFriendReferralComponentProp {
     referralCount?: number
+}
+
+export interface DemoLinkSocialMediaLink {
+    label: string
+    url: string
+    icon: React.ReactNode
+    cto: string
+}
+
+export interface DemoLinkProp {
+    utils: Utils
+    appLink: string
+    socialMediaLinks?: DemoLinkSocialMediaLink[]
 }
 
 

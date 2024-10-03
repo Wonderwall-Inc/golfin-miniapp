@@ -2,6 +2,14 @@ import InstagramImage from '../assets/images/04_links_icon_instagram.png'
 import XImage from '../assets/images/04_links_icon_x.png'
 import GolfinWebsiteImage from '../assets/images/04_links_icon_golfin.png'
 
+import DemoIgSvg from '../assets/icons/DemoIg.svg'
+import DemoXSvg from '../assets/icons/DemoX.svg'
+import DemoGolfinWebSvg from '../assets/icons/DemoGolfinWeb.svg'
+import ForwardTgLinkSvg from '../assets/icons/ForwardTgLink.svg'
+
+const MINI_APP_BOT_NAME = import.meta.env.VITE_MINI_APP_BOT_NAME
+const MINI_APP_NAME = import.meta.env.VITE_MINI_APP_NAME
+
 const testInitDataRaw = [
     ['user', JSON.stringify({
         id: 99281932,
@@ -31,6 +39,14 @@ const socialMediaLinks = [
     { label: 'Instagram', url: 'https://www.instagram.com/golfin_official/', icon: <img src={InstagramImage} width='50px' height='50px' />, cto: 'Follow us on Instagram' },
     { label: 'X', url: 'https://x.com/GOLFIN_official', icon: <img src={XImage} width='50px' height='50px' />, cto: 'Follow us on X' },
     { label: 'Golfin Website', url: 'https://golfin.io/', icon: <img src={GolfinWebsiteImage} width='50px' height='50px' />, cto: 'Golfin Website' },
+]
+
+const demoSocialMediaLinks = [
+    { label: 'Golfin Forward Link', url: `https://t.me/${MINI_APP_BOT_NAME}/${MINI_APP_NAME}/start`, icon: <div className='scale-120 mx-3'><ForwardTgLinkSvg /></div>, cto: 'Copy invitation link' },
+    { label: 'Golfin Instagram', url: 'https://www.instagram.com/golfin_official/', icon: <div className='scale-150 mx-3'><DemoIgSvg /></div>, cto: 'Follow us on Instagram' },
+    { label: 'Golfin X', url: 'https://x.com/GOLFIN_GL', icon: <div className='scale-150 mx-3'><DemoXSvg /></div>, cto: 'Follow us on X' },
+    { label: 'Golfin Website', url: 'https://golfin.io/en/', icon: <div className='scale-150 mx-3'><DemoGolfinWebSvg /></div>, cto: 'Visit Golfin Website' },
+    { label: 'Golfin Discord', url: 'https://discord.com/invite/9jHYM5zYnv', icon: <div className='scale-150 mx-3'><DemoGolfinWebSvg /></div>, cto: 'Join Golfin Discord' },
 ]
 
 const mockPointRankingData = [
@@ -112,5 +128,6 @@ export {
     dailyCheckInPointReward,
     weeklyCheckInPointReward,
     friendReferralPointReward,
-    tenFriendsReferralPointReward
+    tenFriendsReferralPointReward,
+    demoSocialMediaLinks
 }

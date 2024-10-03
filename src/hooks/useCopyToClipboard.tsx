@@ -3,7 +3,7 @@ import { useState } from 'react'
 const useCopyToClipboard = () => {
     const [isCopied, setIsCopied] = useState(false)
 
-    const copytoClipboard = async (content: string) => {
+    const copyToClipboard = async (content: string) => {
         try {
             await navigator.clipboard.writeText(content)
             setIsCopied(true)
@@ -13,6 +13,6 @@ const useCopyToClipboard = () => {
         }
     }
 
-    return { isCopied, copytoClipboard }
+    return { isCopied, copyToClipboard }
 }
 export default useCopyToClipboard

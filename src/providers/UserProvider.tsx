@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react'
 import WebApp from '@twa-dev/sdk';
+import React, { useEffect, useState } from 'react'
+
 import { UserContext } from '../contexts/UserContext';
-import { UserCreateRequestType, UserType } from '../type';
+
 import { createUser, getUser } from '@/apis/UserSevices';
+
+import { UserCreateRequestType, UserType } from '../type';
 
 export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const [account, setAccount] = useState<UserType | undefined>();
@@ -77,7 +80,7 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
 
                     setAccount(newUser.user_details.user_base)
                     setIsWaitingUser(false)
-                    return newUser
+                    /* return newUser */
                 } else {
                     const existingUser = await getUser({
                         access_token: '',
@@ -86,7 +89,7 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                     if (existingUser) {
                         setAccount(existingUser.user_details.user_base)
                         setIsWaitingUser(false)
-                        return existingUser
+                       /*  return existingUser */
                     }
                 }
             } catch (error) {
@@ -123,7 +126,7 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
             setIsWaitingUser(true)
             if (webappUser?.id !== undefined) {// CHECK IF HAVING ID
                 // CHECK IF ID == START PARAM >>> BAN
-                if (`${webappUser?.id}` == webappStartParam) {
+                if (`${webappUser.id}` == webappStartParam) {
                     window.alert('Same ID')
                     WebApp.close()
                 }
@@ -164,8 +167,6 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                     personal_info: personal_info,
                     telegram_info: telegram_info
                 }
-
-
 
                 userCreation(payload)
             }

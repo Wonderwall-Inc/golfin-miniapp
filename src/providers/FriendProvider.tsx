@@ -1,11 +1,14 @@
-import { createFriend, getFriend, } from "@/apis/FriendServices"
-import { getPoint, updatePoint } from "@/apis/PointServices"
-import { getUser } from "@/apis/UserSevices"
-import { FriendContext } from "@/contexts/FriendContext"
-import { useUserContext } from "@/contexts/UserContext"
-import { FriendRetrievalRequestType, FriendStatusType, FriendWithIdsRetrievalResponseType } from "@/type"
 import WebApp from "@twa-dev/sdk"
 import { useEffect, useState } from "react"
+
+import { getUser } from "@/apis/UserSevices"
+import { getPoint, updatePoint } from "@/apis/PointServices"
+import { createFriend, getFriend } from "@/apis/FriendServices"
+
+import { FriendContext } from "@/contexts/FriendContext"
+import { useUserContext } from "@/contexts/UserContext"
+
+import { FriendRetrievalRequestType, FriendStatusType, FriendWithIdsRetrievalResponseType } from "@/type"
 
 export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const [friend, setFriend] = useState<FriendWithIdsRetrievalResponseType | undefined>()
@@ -13,7 +16,6 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
     const [friendNumber, setFriendNumber] = useState(0)
     let [friendTrigger, setFriendTrigger] = useState(0)
 
-    const webappUser = WebApp.initDataUnsafe.user
     const webappStartParam = WebApp.initDataUnsafe.start_param
 
     const { account } = useUserContext()
@@ -137,32 +139,39 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
             })
             console.log(friend);
 
-            if (friend?.sender && friend.receiver) {
-                setFriendNumber(friend?.sender?.length + friend.receiver?.length)
-                if (friend.sender.length % 10 == 0) {
-                    let count = 0
-                    friend.sender.forEach(f => {
-                        f.has_claimed == false && count++
-                    })
-                    if (count == 10) {
-                        setFriendTrigger(10)
+            if (friend) {
+
+                if (friend.sender && friend.receiver) {
+                    setFriendNumber(friend?.sender?.length + friend.receiver?.length)
+                    if (friend.sender.length % 10 == 0) {
+                        let count = 0
+                        friend.sender.forEach(f => {
+                            f.has_claimed == false && count++
+                        })
+                        if (count == 10) {
+                            setFriendTrigger(10)
+                        }
+                    } else {
+                        window.alert(friend.sender.length % 10)
+                        setFriendTrigger(friend.sender.length % 10)
                     }
-                } else {
-                    window.alert(friend.sender.length % 10)
-                    setFriendTrigger(friend.sender.length % 10)
+                    setIsWaitingFriend(false)
                 }
-                setIsWaitingFriend(false)
             }
         } else {
             setIsWaitingFriend(true)
-            if (account?.id !== undefined && webappStartParam !== undefined) {
-                /*  the one who make the friend request == sender */
-                friendCreation(webappStartParam, account?.id)
-            } else {
-                friendRetrieval({ access_token: '', user_id: account?.id })
+            if (account !== undefined && account.id !== undefined) {
+                if (webappStartParam !== undefined) {
+
+                    /*  the one who make the friend request == sender */
+                    friendCreation(webappStartParam, account.id)
+                }
+                else {
+                    friendRetrieval({ access_token: '', user_id: account.id })
+                }
             }
         }
-    }, [account, webappStartParam])
+    }, [account, /* webappStartParam */])
 
     return <FriendContext.Provider value={{
         friend,

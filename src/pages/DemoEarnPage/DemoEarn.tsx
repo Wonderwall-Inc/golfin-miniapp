@@ -1,25 +1,28 @@
+import WebApp from '@twa-dev/sdk'
+import { format } from 'date-fns'
 import { useEffect, useState } from 'react'
+
+import { useUserContext } from '../../contexts/UserContext'
+import { usePointContext } from '@/contexts/PointContext'
+import { useActivityContext } from '@/contexts/ActivityContext'
+import { useFriendContext } from '@/contexts/FriendContext'
+
 import CoinIcon from '../../assets/images/02_earn_coin_new.png'
 import Countdown from '../../components/Countdown'
-import { useUserContext } from '../../contexts/UserContext'
-import WebApp from '@twa-dev/sdk'
+
 import { Progress } from "@/components/ui/progress"
-import { usePointContext } from '@/contexts/PointContext'
+
 import { updatePoint } from '@/apis/PointServices'
-import { dailyCheckInPointReward, friendReferralPointReward, tenFriendsReferralPointReward, weeklyCheckInPointReward } from '@/constants'
-import { useActivityContext } from '@/contexts/ActivityContext'
 import { updateActivity } from '@/apis/ActivityServices'
-import { useFriendContext } from '@/contexts/FriendContext'
-import { isYesterday, sgTimeNowByDayJs } from '@/utils'
-import { format } from 'date-fns'
-import { DemoBonusComponentProp, DemoDailyRewardComponentProp, DemoEarnComponentProp, DemoFriendReferralComponentProp } from '@/type'
 import { batchUpdateRewardClaimedBySenderId, getFriend } from '@/apis/FriendServices'
 
-const MINI_APP_BOT_NAME = import.meta.env.VITE_MINI_APP_BOT_NAME
-const MINI_APP_NAME = import.meta.env.VITE_MINI_APP_NAME
-const MINI_APP_APP = `https://t.me/${MINI_APP_BOT_NAME}/${MINI_APP_NAME}/start?startapp=${WebApp.initDataUnsafe.user?.id}`
+import { isYesterday, sgTimeNowByDayJs } from '@/utils'
 
-const DemoEarn = () => {
+import { dailyCheckInPointReward, friendReferralPointReward, tenFriendsReferralPointReward, weeklyCheckInPointReward } from '@/constants'
+import { DemoBonusComponentProp, DemoDailyRewardComponentProp, DemoEarnComponentProp, DemoFriendReferralComponentProp } from '@/type'
+
+
+const DemoEarn = ({ appLink }: { appLink: string }) => {
     const { account } = useUserContext()
     const { point, setPoint, setIsWaitingPoint } = usePointContext()
     const { activity, setActivity, setIsWaitingActivity } = useActivityContext()
@@ -162,6 +165,7 @@ const DemoEarn = () => {
                 sgTime={sgTime}
                 isClicked={isClicked}
                 setIsClicked={setIsClicked}
+                appLink={appLink}
             />
             <DemoBonusComponent
                 weeklyCount={activity?.login_streak} // using cont 7 day count
@@ -170,7 +174,7 @@ const DemoEarn = () => {
     )
 }
 
-const DemoEarnComponent = ({ timeLeft, totalPointAmount, sgTime, isClicked, setIsClicked }: DemoEarnComponentProp) => {
+const DemoEarnComponent = ({ timeLeft, totalPointAmount, sgTime, isClicked, setIsClicked, appLink }: DemoEarnComponentProp) => {
     return (
         <>
             <div className="w-[343px] h-[85px] sm:h-[95px] md:h-[105px] bg-[#ffffff33] rounded-lg flex justify-center content-center items-center mx-auto my-[12px]">
@@ -187,7 +191,7 @@ const DemoEarnComponent = ({ timeLeft, totalPointAmount, sgTime, isClicked, setI
                     isClicked={isClicked}
                     setIsClicked={setIsClicked}
                 />
-                <DemoReferralComponent />
+                <DemoReferralComponent appLink={appLink} />
             </div>
         </>
     )
@@ -333,9 +337,9 @@ const DemoDailyRewardComponent = ({ timeLeft, sgTime, isClicked, setIsClicked }:
 
 }
 
-const DemoReferralComponent = ({ }) => {
+const DemoReferralComponent = ({ appLink }: { appLink: string }) => {
     return (
-        <div className={`h-[100px] cursor-pointer`} onClick={() => { WebApp.openTelegramLink(`https://t.me/share/url?url=${MINI_APP_APP}`) }}>
+        <div className={`h-[100px] cursor-pointer`} onClick={() => { WebApp.openTelegramLink(`https://t.me/share/url?url=${appLink}`) }}>
             <div className='text-center w-[100%] h-[80px]'>
                 <div className="relative w-[160px] h-14 rounded-[6px_6px_0px_0px] [background:linear-gradient(180deg,rgb(169,231,29)_0%,rgb(94.04,196.56,89.27)_100%)]">
                     <div className="absolute w-[77px] top-[7px] left-[46px] [font-family:'Roboto-Medium',Helvetica] font-medium text-[#ffffff] text-xl text-center tracking-[0] leading-[22px]">
