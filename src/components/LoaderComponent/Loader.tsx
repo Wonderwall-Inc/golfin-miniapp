@@ -6,24 +6,40 @@ interface LoaderComponentProps {
     wrapperHeight?: string;
     wrapperWidth?: string;
     spinnerTopPosition?: string;
+    type?: string;
 }
 
-const Loader = ({ isLoading, wrapperHeight = '852px', wrapperWidth = '393px', spinnerTopPosition = '40%' }: LoaderComponentProps) => {
+const Loader = ({ isLoading, wrapperHeight = '852px', wrapperWidth = '393', type = 'default' }: LoaderComponentProps) => {
     return (
-        <div>
-            <div className="bg-[#00161c] justify-center w-full">
-                <div className={`bg-[#00161c] overflow-hidden w-[${wrapperWidth}] h-[${wrapperHeight}] relative`}>
-                    <ClipLoader
-                        color='gray'
-                        loading={isLoading}
-                        size={150}
-                        className={`opacity-80 absolute top-[${spinnerTopPosition}] left-[30%] translate-x-[-50%] translate-y-[-50%]`}
-                    >
-                    </ClipLoader>
-                    <img className="absolute left-[50%] w-[100%] translate-x-[-50%]" alt="Ellipse171" src={ellipseImage1} />
+        type == 'default' ?
+            <div>
+                <div className="bg-[#00161c] justify-center w-full">
+                    <div className={`bg-[#00161c] overflow-hidden w-[${wrapperWidth}px] h-[${wrapperHeight}] relative`}>
+                        <ClipLoader
+                            color='gray'
+                            loading={isLoading}
+                            size={150}
+                            className={`opacity-80 absolute top-[40%] left-[30%] translate-x-[-50%] translate-y-[-50%]`}
+                        >
+                        </ClipLoader>
+                        <img className="absolute left-[50%] w-[100%] translate-x-[-50%]" alt="Ellipse171" src={ellipseImage1} />
+                    </div>
+                </div>
+            </div> :
+            <div>
+                <div className="bg-[#00161c] justify-center w-full">
+                    <div className={`bg-[#00161c] overflow-hidden w-[${wrapperWidth}px] h-[${wrapperHeight}] relative`}>
+                        <ClipLoader
+                            color='gray'
+                            loading={isLoading}
+                            size={150}
+                            className={`opacity-80 absolute top-[23%] left-[30%] translate-x-[-50%] translate-y-[-50%]`}
+                        >
+                        </ClipLoader>
+                        <img className="absolute left-[50%] w-[100%] translate-x-[-50%]" alt="Ellipse171" src={ellipseImage1} />
+                    </div>
                 </div>
             </div>
-        </div>
     )
 }
 

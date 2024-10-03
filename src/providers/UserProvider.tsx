@@ -14,70 +14,11 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
     const webappUser = WebApp.initDataUnsafe.user
     const webappStartParam = WebApp.initDataUnsafe.start_param
 
-/*     const [lat, setLat] = useState('')
-    const [long, setLong] = useState('')
-    const [currentLocation, setCurrentLocation] = useState('') */
-
-/*     console.log('lat: ', lat);
-    console.log('long: ', long);
-
-    const OPEN_WEATHER_API_KEY = import.meta.env.VITE_OPEN_WEATHER_API_KEY
-    const OPEN_WEATHER_API_URL = `https://api.openweathermap.org/data/2.5/onecall?`
-    window.alert(OPEN_WEATHER_API_KEY)
-
     useEffect(() => {
-
-        const getCurrentLatLong = async () => {
-            navigator.geolocation.getCurrentPosition((position) => {
-                setLat(position.coords.latitude.toString());
-                setLong(position.coords.longitude.toString());
-            });
-        }
-
-        getCurrentLatLong()
-    }, [])
-
-    useEffect(() => {
-        const getCurrentLocation = async () => {
-            const res = await api.get(`${OPEN_WEATHER_API_URL}lat=${lat}&lon=${long}&exclude=hourly,daily&appid=${OPEN_WEATHER_API_KEY}`)
-            console.log('res: ', res);
-            setCurrentLocation(res.data.name)
-        }
-        getCurrentLocation()
-    }, [lat, long]) */
-
-    useEffect(() => {
-
-
         const userCreation = async (userCreatePayload: UserCreateRequestType) => {
             try {
                 const newUser = await createUser(userCreatePayload)
                 if (newUser !== undefined) {
-                    // const sender = await getUser({
-                    //     access_token: '',
-                    //     telegram_id: `${userCreatePayload.telegram_info.start_param}`
-                    // })
-                    // if (sender) {
-                    //     const senderPoint = await getPoint({
-                    //         access_token: '',
-                    //         user_id: sender.user_details.user_base.id
-                    //     })
-                    //     if (senderPoint) {
-                    //         const dbPoint = await updatePoint({
-                    //             access_token: '',
-                    //             id: senderPoint.point_base.point.id,
-                    //             type: 'add', // REVIEW: add / drop point
-                    //             point_payload: {
-                    //                 login_amount: senderPoint.point_base.point.login_amount,
-                    //                 referral_amount: senderPoint.point_base.point.referral_amount += 100
-                    //             }
-                    //         })
-                    //         console.log('update point for sender');
-                    //         console.log(dbPoint);
-                    //     }
-                    // }
-
-
                     setAccount(newUser.user_details.user_base)
                     setIsWaitingUser(false)
                     /* return newUser */
@@ -89,7 +30,7 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
                     if (existingUser) {
                         setAccount(existingUser.user_details.user_base)
                         setIsWaitingUser(false)
-                       /*  return existingUser */
+                        /*  return existingUser */
                     }
                 }
             } catch (error) {
@@ -172,10 +113,7 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
             }
         }
     }, [webappUser, webappStartParam])
-
-    console.log('chat_id from db: ', account?.telegram_info.chat_id);
-    console.log('chat from tg: ', WebApp.initDataUnsafe.chat);
-    console.log('chat_id from tg: ', WebApp.initDataUnsafe.chat?.id);
+    
     return (
         <UserContext.Provider value={{
             account,
