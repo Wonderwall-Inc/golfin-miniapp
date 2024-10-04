@@ -274,6 +274,7 @@ const DemoDailyRewardComponent = ({ timeLeft, sgTime, isClicked, setIsClicked }:
             }
         }
     }
+    console.log('timeLeft', timeLeft);
 
     return (
         <div className={`h-[100px] cursor-pointer ${!allowed && 'pointer-events-none'}`}
