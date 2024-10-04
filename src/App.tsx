@@ -96,7 +96,7 @@ const App = () => {
     <div>
       {
         isWaiting == true ?
-          <Loader isLoading={isWaiting} /* type='default'  *//> :
+          <Loader isLoading={isWaiting} /* type='default'  */ /> :
           <>
             <Background>
               <DemoTitle titlename={`${location.pathname === '/' ? 'EARN' : location.pathname.split('/')[1].toUpperCase()}`} />
@@ -104,7 +104,7 @@ const App = () => {
                 <Routes>
                   <Route path='/' element={<DemoEarn appLink={`https://t.me/${MINI_APP_BOT_NAME}/${MINI_APP_NAME}/start?startapp=${WebApp.initDataUnsafe.user?.id}`} />} />
                   <Route path='/ranking' element={<DemoRanking />} />
-                  <Route path='/links' element={<DemoLinks utils={utils} appLink={`https://t.me/${MINI_APP_BOT_NAME}/${MINI_APP_NAME}/start`} />} />
+                  <Route path='/links' element={<DemoLinks utils={utils} appLink={`https://t.me/${MINI_APP_BOT_NAME}/${MINI_APP_NAME}/start?startapp=${WebApp.initDataUnsafe.user?.id}`} />} />
                   <Route path='/profile' element={<DemoProfile />} />
                   <Route path='/dev' element={<DemoDev />} />
                 </Routes>
