@@ -63,7 +63,6 @@ const DemoRanking = () => {
             console.error('Error handling referral reward:', error);
 
         } finally {
-            console.log('finally set false isLoadingRanking on referral ranking');
             setIsLoadingReferral(false);
         }
 
@@ -103,7 +102,6 @@ const DemoRanking = () => {
         } catch (error) {
             console.error('Error handling referral reward:', error);
         } finally {
-            console.log('finally set false isLoadingRanking on point ranking');
             setIsLoadingPoint(false);
         }
     }, [setIsWaitingPoint, setMyPointRecord, setPointRanking, account])
