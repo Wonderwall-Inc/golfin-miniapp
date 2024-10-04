@@ -77,10 +77,8 @@ const DemoProfile = () => {
                                         setIsWaitingUser(false)
                                         return toast({
                                             className: cn('bg-[#FFFAE6] rounded-[10px]'),
-                                            title: 'no change',
-                                            description: 'Username is not changed',
+                                            description: 'Username does not changed',
                                             action: <ToastAction altText="Try again">Try again</ToastAction>,
-
                                         })
                                     }
 
