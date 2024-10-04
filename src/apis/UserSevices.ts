@@ -1,4 +1,4 @@
-import { UserCreateRequestType, UserCreateResponseType, UserFriendRankingListType, UserRetrievalRequestType, UserRetrievalResponseType, UserUpdateDetailsType, UserUpdateRequestType, UserUpdateResponseType } from '@/type';
+import { UserCreateRequestType, UserCreateResponseType, UserFriendRankingListType, UserRetrievalRequestType, UserRetrievalResponseType, UserUpdateRequestType, UserUpdateResponseType } from '@/type';
 import api from './api';
 
 // USER CREATION
