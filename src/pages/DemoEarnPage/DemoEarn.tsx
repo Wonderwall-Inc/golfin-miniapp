@@ -1,6 +1,7 @@
 import WebApp from '@twa-dev/sdk'
-import { format } from 'date-fns'
+import { format, addDays, set } from 'date-fns'
 import { lazy, memo, useEffect, useState } from 'react'
+import { formatInTimeZone } from 'date-fns-tz'
 
 import { useUserContext } from '../../contexts/UserContext'
 import { usePointContext } from '@/contexts/PointContext'
@@ -40,15 +41,28 @@ const DemoEarn = ({ appLink }: { appLink: string }) => {
         return () => clearInterval(timer);
     }, []);
 
+    /*    useEffect(() => {
+           const todayDay = new Date()
+           const todayYY = todayDay.getFullYear()
+           const todayMM = todayDay.getUTCMonth() + 1
+           const preTodayMM = todayMM < 10 ? `0${todayMM}` : todayMM
+           const todayDD = todayDay.getDate() + 1 < 10 ? `0${todayDay.getDate() + 1}` : todayDay.getDate() + 1
+           const todayYYMMDD = `${todayYY}-${preTodayMM}-${todayDD}T00:00:00`
+           setTimeLeft(todayYYMMDD)
+       }, []) */
     useEffect(() => {
-        const todayDay = new Date()
-        const todayYY = todayDay.getFullYear()
-        const todayMM = todayDay.getUTCMonth() + 1
-        const preTodayMM = todayMM < 10 ? `0${todayMM}` : todayMM
-        const todayDD = todayDay.getDate() + 1 < 10 ? `0${todayDay.getDate() + 1}` : todayDay.getDate() + 1
-        const todayYYMMDD = `${todayYY}-${preTodayMM}-${todayDD}T00:00:00`
-        setTimeLeft(todayYYMMDD)
-    }, [])
+        const setNextMidnight = () => {
+            const sgNow = sgTimeNowByDayJs();
+            const nextMidnight = addDays(set(sgNow, { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 }), 1);
+            setTimeLeft(formatInTimeZone(nextMidnight, 'Asia/Singapore', "yyyy-MM-dd'T'HH:mm:ss"));
+        };
+
+        setNextMidnight();
+        const timer = setInterval(setNextMidnight, 60000); // Update every minute
+
+        return () => clearInterval(timer);
+    }, []);
+
 
 
     useEffect(() => {
