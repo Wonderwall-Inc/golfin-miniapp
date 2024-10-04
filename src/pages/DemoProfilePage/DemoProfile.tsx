@@ -100,22 +100,20 @@ const DemoProfile = () => {
                                   /*   setIsLoading(false) */
                                     return toast({
                                         className: cn('bg-[#FFFAE6] rounded-[10px]'),
-                                        title: 'no change',
-                                        description: 'Username is not changed',
+                                        description: 'Same username',
                                         action: <ToastAction altText="Try again">Try again</ToastAction>,
                                     })
                                 }
                                 else {
                                     const dbUser = await getUser({
                                         access_token: '',
-                                        telegram_id: account?.id?.toString() ?? ''
+                                        username: username
                                     })
                                     if (dbUser?.user_details.user_base.telegram_info.username == username) {
                                       /*   setIsLoading(false) */
                                         return toast({
                                             className: cn('bg-[#FFFAE6] rounded-[10px]'),
-                                            title: 'no change',
-                                            description: 'Username Duplication',
+                                            description: 'Username already exists',
                                             action: <ToastAction altText="Try again">Try again</ToastAction>,
                                         })
                                     } else {
