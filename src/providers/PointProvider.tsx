@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react'
-/* import WebApp from '@twa-dev/sdk'; */
-import { /* PointCreateRequestType, */ PointType, } from '../type';
-import { createPoint, getPoint } from '@/apis/PointServices';
+
 import { useUserContext } from '@/contexts/UserContext';
 import { PointContext } from '@/contexts/PointContext';
+
+import { createPoint, getPoint } from '@/apis/PointServices';
+
+import { PointType } from '../type';
 
 export const PointProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const [point, setPoint] = useState<PointType | undefined>();
     const [isWaitingPoint, setIsWaitingPoint] = useState(false)
     const { account } = useUserContext()
-    
+
     useEffect(() => {
         const fetchDbPointData = async (accountId: number) => {
             const existingPoint = await getPoint({ access_token: '', user_id: accountId })

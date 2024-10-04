@@ -1,8 +1,11 @@
-import { ActivityBaseType, ActivityCreateRequestType } from "@/type";
 import { useEffect, useState } from "react";
-import { ActivityContext } from "@/contexts/ActivityContext";
+
 import { useUserContext } from "@/contexts/UserContext";
+import { ActivityContext } from "@/contexts/ActivityContext";
+
 import { createActivity, getActivity } from "@/apis/ActivityServices";
+
+import { ActivityBaseType } from "@/type";
 
 export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const [activity, setActivity] = useState<ActivityBaseType | undefined>();
@@ -10,18 +13,19 @@ export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }
     const { account } = useUserContext()
 
     useEffect(() => {
-        const activityCreation = async (activityCreatePayload: ActivityCreateRequestType) => {
-            const newActivity = await createActivity(activityCreatePayload)
-            if (newActivity) {
-                setActivity(newActivity.activity)
+        const fetchDbActivityData = async (accountId: number) => {
+            const existingActivity = await getActivity({ access_token: '', user_id: accountId })
+            if (existingActivity) {
+                setActivity(existingActivity.activity)
                 setIsWaitingActivity(false)
             } else {
-                const existingActivity = await getActivity({
+                const newActivity = await createActivity({
+                    user_id: accountId,
                     access_token: '',
-                    user_id: account?.id
+                    activity: {}
                 })
-                if (existingActivity) {
-                    setActivity(existingActivity.activity)
+                if (newActivity) {
+                    setActivity(newActivity.activity)
                     setIsWaitingActivity(false)
                 }
             }
@@ -43,12 +47,7 @@ export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }
         else {
             setIsWaitingActivity(true)
             if (account?.id !== undefined) {
-                const payload = {
-                    user_id: account.id,
-                    access_token: '',
-                    activity: {}
-                }
-                activityCreation(payload)
+                fetchDbActivityData(account.id)
             }
 
         }
@@ -59,11 +58,8 @@ export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }
             activity,
             setActivity,
             isWaitingActivity,
-            setIsWaitingActivity,
-            // isTodayCheckedIn,
-            // setIsTodayCheckedIn
-        }}>
-            {children}
+            setIsWaitingActivity
+        }}>{children}
         </ActivityContext.Provider>
     )
 }
