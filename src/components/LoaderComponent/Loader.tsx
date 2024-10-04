@@ -1,8 +1,20 @@
 import { ClipLoader } from 'react-spinners'
 import ellipseImage1 from '../../assets/images/ellipse-171.png'
 import { LoaderComponentPropsType } from '@/type'
+import { useEffect, useState } from 'react'
 
 const Loader = ({ isLoading, wrapperHeight = '852px', wrapperWidth = '393', type = 'default' }: LoaderComponentPropsType) => {
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+    const [windowHeight, setWindowHeight] = useState(window.innerHeight)
+
+    useEffect(() => {
+        setWindowWidth(window.innerWidth)
+        setWindowHeight(window.innerHeight)
+    }, [])
+
+    console.log('windowWidth', windowWidth);
+    console.log('windowHeight', windowHeight);
+
     return (
         type == 'default' ?
             <div>
