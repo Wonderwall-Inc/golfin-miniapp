@@ -152,7 +152,9 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                 if (webappStartParam !== undefined) {
 
                     /*  the one who make the friend request == sender */
+                    console.log('trigger user creation');
                     friendCreation(webappStartParam, account.id)
+                    
                 }
                 else {
                     friendRetrieval({ access_token: '', user_id: account.id })
