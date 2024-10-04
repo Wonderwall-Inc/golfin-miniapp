@@ -1,5 +1,5 @@
 import WebApp from '@twa-dev/sdk'
-import { format, addDays, set } from 'date-fns'
+import { format, addDays, set, subHour } from 'date-fns'
 import { lazy, memo, useEffect, useState } from 'react'
 import { formatInTimeZone } from 'date-fns-tz'
 
@@ -53,6 +53,7 @@ const DemoEarn = ({ appLink }: { appLink: string }) => {
     useEffect(() => {
         const setNextMidnight = () => {
             const sgNow = sgTimeNowByDayJs();
+            console.log(sgNow);
             const nextMidnight = addDays(set(sgNow, { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 }), 1);
             setTimeLeft(formatInTimeZone(nextMidnight, 'Asia/Singapore', "yyyy-MM-dd'T'HH:mm:ss"));
         };
