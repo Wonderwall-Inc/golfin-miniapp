@@ -35,7 +35,6 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                        /*  return existingFriend */
                     }
                 }
-
                 setIsWaitingFriend(false)
           /*       return existingFriend */
             }

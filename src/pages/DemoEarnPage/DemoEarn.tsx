@@ -8,11 +8,10 @@ import { useActivityContext } from '@/contexts/ActivityContext'
 import { useFriendContext } from '@/contexts/FriendContext'
 
 import CoinIcon from '../../assets/images/02_earn_coin_new.png'
-/* import Countdown from '../../components/Countdown' */
 
 import { Progress } from "@/components/ui/progress"
 const Countdown = lazy(() => import('../../components/Countdown'))
-/* const Progress = lazy(() => import("@/components/ui/progress")) */
+
 import { updatePoint } from '@/apis/PointServices'
 import { updateActivity } from '@/apis/ActivityServices'
 import { batchUpdateRewardClaimedBySenderId, getFriend } from '@/apis/FriendServices'
@@ -203,7 +202,7 @@ const DemoDailyRewardComponent = ({ timeLeft, sgTime, isClicked, setIsClicked }:
     const { setPoint, setIsWaitingPoint, point } = usePointContext()
     const { account } = useUserContext()
     const { setActivity, activity, setIsWaitingActivity } = useActivityContext()
-    const [allowed, setAllowed] = useState(true)
+    const [allowed, setAllowed] = useState(false)
 
     useEffect(() => {
         if (import.meta.env.VITE_MINI_APP_ENV == 'test' && activity?.last_login_time) {
@@ -277,8 +276,8 @@ const DemoDailyRewardComponent = ({ timeLeft, sgTime, isClicked, setIsClicked }:
     }
 
     return (
-        <div className={`h-[100px] cursor-pointer ${allowed != true && 'pointer-events-none'}`}
-            aria-disabled={allowed != true}
+        <div className={`h-[100px] cursor-pointer ${!allowed && 'pointer-events-none'}`}
+            aria-disabled={!allowed}
             onClick={() => { // FIXME: add daily check in boolean field on each day on backend table 
                 if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
                     setIsClicked(true)
@@ -310,25 +309,28 @@ const DemoDailyRewardComponent = ({ timeLeft, sgTime, isClicked, setIsClicked }:
 
             <div className='text-center w-[100%] h-[80px]'>
                 <div className={`relative w-[160px] h-14 rounded-[6px_6px_0px_0px] 
-                ${allowed == true ? "[background:linear-gradient(180deg,rgb(169,231,29)_0%,rgb(94.04,196.56,89.27)_100%)]" :
-                        "[background:radial-gradient(50%_50%_at_50%_50%,rgb(112.62,108.57,77.9)_0%,rgb(119,102.27,78.84)_100%)]"}`}>
-                    {allowed == true ? <div className="absolute w-[77px] top-[7px] left-[40px] [font-family:'Roboto-Medium',Helvetica] font-medium text-[#ffffff] text-xl text-center tracking-[0] leading-[22px]">
-                        Daily
-                        <br />
-                        Reward
-                    </div> :
-                        <div className="absolute w-[123px] top-[7px] left-[19px] [font-family:'Roboto-Medium',Helvetica] font-medium text-[#ffffff] text-xl text-center tracking-[0] leading-[22px]"
-                        >
-                            Daily Reward
-                            <br />
-                            <Countdown targetDate={timeLeft}  /* dailyReward={dailyReward} setDailyReward={setDailyReward} */ />
-                        </div>
-                    }
+                ${allowed ? "[background:linear-gradient(180deg,rgb(169,231,29)_0%,rgb(94.04,196.56,89.27)_100%)]" : "[background:radial-gradient(50%_50%_at_50%_50%,rgb(112.62,108.57,77.9)_0%,rgb(119,102.27,78.84)_100%)]"}`}>
+                    <div className={`absolute [font-family:'Roboto-Medium',Helvetica] font-medium text-[#ffffff] text-xl text-center tracking-[0] leading-[22px] 
+                        ${allowed ? "w-[77px] top-[7px] left-[40px]" : "w-[123px] top-[7px] left-[19px]"}`}>
+                        {allowed ? (
+                            <>
+                                Daily
+                                <br />
+                                Reward</>
+                        ) : (
+                            <>
+                                Daily Reward
+                                <br />
+                                <Countdown targetDate={timeLeft} />
+                            </>
+                        )
+                        }
 
+                    </div>
                 </div>
 
                 <div className='bg-white text-black-400 border-white h-[50%] content-center text-center items-center w-[160px] rounded-[0px_0px_6px_6px]'>
-                    + {`${dailyCheckInPointReward}`}
+                    + {dailyCheckInPointReward}
                 </div>
             </div>
 
