@@ -8,11 +8,12 @@ import { getUser, updateUser } from '@/apis/UserSevices'
 import { useToast } from '@/hooks/use-toast'
 import { Button } from "@/components/ui/button"
 import { ToastAction, ToastProvider } from "@/components/ui/toast"
+import Loader from '@/components/LoaderComponent/Loader'
 
 const DemoProfile = () => {
-    const { account, setAccount } = useUserContext()
+    const { account, setAccount, setIsWaitingUser, isWaitingUser } = useUserContext()
     const [username, setUsername] = useState(account?.telegram_info.username || "");
-/*     const [isLoading, setIsLoading] = useState(false); */
+    /*     const [isLoading, setIsLoading] = useState(false); */
     const { toast } = useToast()
 
     const handleUsernameChange = async (username: string) => {
@@ -34,13 +35,14 @@ const DemoProfile = () => {
     return (
         <ToastProvider swipeDirection='up'>
             <div>
-                {/*  {isLoading == true && <Loader isLoading={isLoading} wrapperHeight='690px' spinnerTopPosition='12%' />} */}
-                <div className='text-white grid grid-cols-1'>
-                    <input
-                        placeholder='username'
-                        defaultValue={account?.telegram_info.username}
-                        type="text"
-                        className='mx-auto 
+                {isWaitingUser == true ?
+                    <Loader isLoading={isWaitingUser} /> :
+                    <div className='text-white grid grid-cols-1'>
+                        <input
+                            placeholder='username'
+                            defaultValue={account?.telegram_info.username}
+                            type="text"
+                            className='mx-auto 
                             rounded-[8px] 
                             py-[19px] 
                             px-[25px] 
@@ -56,10 +58,10 @@ const DemoProfile = () => {
                             gap-10
                             bg-[rgba(255,255,255,0.20)]
                             m-3'
-                        onChange={(e) => setUsername(e.target.value)} />
-                    <Button
-                        variant='default'
-                        className='mx-auto text-white font-bold
+                            onChange={(e) => setUsername(e.target.value)} />
+                        <Button
+                            variant='default'
+                            className='mx-auto text-white font-bold
                             [background:linear-gradient(158deg,rgba(169,231,29,1)_-7.35%,rgba(94,197,89,1)_84.4%)]
                             w-[343px]
                             h-[56px]
@@ -67,58 +69,23 @@ const DemoProfile = () => {
                             justify-center
                             items-center
                             rounded-[6px]'
-                        type='submit'
-                        onClick={async () => {
-                            if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
-            /*                     setIsLoading(true) */
-                                if (username == account?.telegram_info.username) {
-                            /*         setIsLoading(false) */
-                                    return toast({
-                                        className: cn('bg-[#FFFAE6] rounded-[10px]'),
-                                        title: 'no change',
-                                        description: 'Username is not changed',
-                                        action: <ToastAction altText="Try again">Try again</ToastAction>,
-
-                                    })
-                                }
-
-                                else {
-                                  /*   setIsLoading(false) */
-                                    return toast({
-                                        className: cn('bg-[#FFFAE6] rounded-[10px]'),
-                                        description:
-                                            <div className=''>
-                                                Username is changed to { }
-                                                <span className='font-semibold'>{username}</span>
-                                            </div>
-                                    })
-
-                                }
-                            } else {
-      /*                           setIsLoading(true) */
-                                if (username == account?.telegram_info.username) {
-                                  /*   setIsLoading(false) */
-                                    return toast({
-                                        className: cn('bg-[#FFFAE6] rounded-[10px]'),
-                                        description: 'Same username',
-                                        action: <ToastAction altText="Try again">Try again</ToastAction>,
-                                    })
-                                }
-                                else {
-                                    const dbUser = await getUser({
-                                        access_token: '',
-                                        username: username
-                                    })
-                                    if (dbUser?.user_details.user_base.telegram_info.username == username) {
-                                      /*   setIsLoading(false) */
+                            type='submit'
+                            onClick={async () => {
+                                if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
+                                    setIsWaitingUser(true)
+                                    if (username == account?.telegram_info.username) {
+                                        setIsWaitingUser(false)
                                         return toast({
                                             className: cn('bg-[#FFFAE6] rounded-[10px]'),
-                                            description: 'Username already exists',
+                                            title: 'no change',
+                                            description: 'Username is not changed',
                                             action: <ToastAction altText="Try again">Try again</ToastAction>,
+
                                         })
-                                    } else {
-                                        await handleUsernameChange(username)
-                /*                         setIsLoading(false) */
+                                    }
+
+                                    else {
+                                        setIsWaitingUser(false)
                                         return toast({
                                             className: cn('bg-[#FFFAE6] rounded-[10px]'),
                                             description:
@@ -127,14 +94,50 @@ const DemoProfile = () => {
                                                     <span className='font-semibold'>{username}</span>
                                                 </div>
                                         })
+
+                                    }
+                                } else {
+                                    setIsWaitingUser(true)
+                                    if (username == account?.telegram_info.username) {
+                                        setIsWaitingUser(false)
+                                        return toast({
+                                            className: cn('bg-[#FFFAE6] rounded-[10px]'),
+                                            description: 'Same username',
+                                            action: <ToastAction altText="Try again">Try again</ToastAction>,
+                                        })
+                                    }
+                                    else {
+                                        const dbUser = await getUser({
+                                            access_token: '',
+                                            username: username
+                                        })
+                                        if (dbUser?.user_details.user_base.telegram_info.username == username) {
+                                            setIsWaitingUser(false)
+                                            return toast({
+                                                className: cn('bg-[#FFFAE6] rounded-[10px]'),
+                                                description: 'Username already exists',
+                                                action: <ToastAction altText="Try again">Try again</ToastAction>,
+                                            })
+                                        } else {
+                                            await handleUsernameChange(username)
+                                            setIsWaitingUser(false)
+                                            return toast({
+                                                className: cn('bg-[#FFFAE6] rounded-[10px]'),
+                                                description:
+                                                    <div className=''>
+                                                        Username is changed to { }
+                                                        <span className='font-semibold'>{username}</span>
+                                                    </div>
+                                            })
+                                        }
                                     }
                                 }
-                            }
-                        }}>
-                        <span className='text-white text-[20px] font-bold text-center'>SAVE</span>
-                    </Button>
-                    <a target='_blank' className='my-10' href='https://golfin.io/en/privacy-policy-en/'>Privacy Policy</a>
-                </div >
+                            }}>
+                            <span className='text-white text-[20px] font-bold text-center'>SAVE</span>
+                        </Button>
+                        <a target='_blank' className='my-10' href='https://golfin.io/en/privacy-policy-en/'>Privacy Policy</a>
+                    </div >
+                }
             </div >
         </ToastProvider >
     )
