@@ -1,50 +1,23 @@
 import { ClipLoader } from 'react-spinners'
 import ellipseImage1 from '../../assets/images/ellipse-171.png'
 import { LoaderComponentPropsType } from '@/type'
-import { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 
-const Loader = ({ isLoading, wrapperHeight = '852px', wrapperWidth = '393', type = 'default' }: LoaderComponentPropsType) => {
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth)
-    const [windowHeight, setWindowHeight] = useState(window.innerHeight)
+const Loader = ({ isLoading }: LoaderComponentPropsType) => {
 
-    useEffect(() => {
-        setWindowWidth(window.innerWidth)
-        setWindowHeight(window.innerHeight)
-    }, [])
-
-    console.log('windowWidth', windowWidth);
-    console.log('windowHeight', windowHeight);
+    const location = useLocation()
 
     return (
-        type == 'default' ?
-            <div>
-                <div className="bg-[#00161c] justify-center w-full">
-                    <div className={`bg-[#00161c] overflow-hidden w-[${wrapperWidth}px] h-[${wrapperHeight}] relative`}>
-                        <ClipLoader
-                            color='gray'
-                            loading={isLoading}
-                            size={150}
-                            className={`opacity-80 absolute top-[30%] left-[30%] translate-x-[-50%] translate-y-[-50%]`}
-                        >
-                        </ClipLoader>
-                        <img className="absolute left-[50%] w-[100%] translate-x-[-50%]" alt="Ellipse171" src={ellipseImage1} />
-                    </div>
-                </div>
-            </div> :
-            <div>
-                <div className="bg-[#00161c] justify-center w-full">
-                    <div className={`bg-[#00161c] overflow-hidden w-[${wrapperWidth}px] h-[${wrapperHeight}] relative`}>
-                        <ClipLoader
-                            color='gray'
-                            loading={isLoading}
-                            size={150}
-                            className={`opacity-80 absolute top-[13%] left-[30%] translate-x-[-50%] translate-y-[-50%]`}
-                        >
-                        </ClipLoader>
-                        <img className="absolute left-[50%] w-[100%] translate-x-[-50%]" alt="Ellipse171" src={ellipseImage1} />
-                    </div>
-                </div>
+        <div className="bg-[#00161c] justify-center w-full">
+            <div className={` bg-[#00161c] overflow-hidden w-[393px] relative ${location.pathname == '/' ? ' h-[852px]' : ' h-[690px]'}`}>
+                <ClipLoader
+                    color='gray'
+                    loading={isLoading}
+                    size={150}
+                    className={`opacity-80 absolute left-[30%] translate-x-[-50%] translate-y-[-50%] ${location.pathname == '/' ? 'top-[30%]' : 'top-[13%]'} `} />
+                <img className="absolute left-[50%] w-[100%] translate-x-[-50%]" alt="Ellipse171" src={ellipseImage1} />
             </div>
+        </div>
     )
 }
 

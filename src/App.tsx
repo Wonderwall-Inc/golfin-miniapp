@@ -96,11 +96,11 @@ const App = () => {
     <div>
       {
         isWaiting == true ?
-          <Loader isLoading={isWaiting} type='default' /> :
+          <Loader isLoading={isWaiting} /* type='default'  *//> :
           <>
             <Background>
               <DemoTitle titlename={`${location.pathname === '/' ? 'EARN' : location.pathname.split('/')[1].toUpperCase()}`} />
-              <Suspense fallback={<Loader isLoading={true} type='default' />}>
+              <Suspense fallback={<Loader isLoading={true} /* type='default' */ />}>
                 <Routes>
                   <Route path='/' element={<DemoEarn appLink={`https://t.me/${MINI_APP_BOT_NAME}/${MINI_APP_NAME}/start?startapp=${WebApp.initDataUnsafe.user?.id}`} />} />
                   <Route path='/ranking' element={<DemoRanking />} />

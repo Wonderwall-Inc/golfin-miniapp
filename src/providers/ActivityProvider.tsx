@@ -12,12 +12,11 @@ export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }
 
     useEffect(() => {
         const activityCreation = async (activityCreatePayload: ActivityCreateRequestType) => {
-            try {
                 const newActivity = await createActivity(activityCreatePayload)
                 if (newActivity) {
                     setActivity(newActivity.activity)
                     setIsWaitingActivity(false)
-                    return newActivity
+                  /*   return newActivity */
                 } else {
                     const existingActivity = await getActivity({
                         access_token: '',
@@ -26,13 +25,9 @@ export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }
                     if (existingActivity) {
                         setActivity(existingActivity.activity)
                         setIsWaitingActivity(false)
-                        return existingActivity
+                     /*    return existingActivity */
                     }
                 }
-            } catch (error) {
-                console.log(error)
-                return error
-            }
         }
         if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
             setIsWaitingActivity(true)

@@ -34,10 +34,10 @@ export interface NavIconPropsType {
 
 export interface LoaderComponentPropsType {
     isLoading: boolean;
-    wrapperHeight?: string;
+/*     wrapperHeight?: string;
     wrapperWidth?: string;
     spinnerTopPosition?: string;
-    type?: string;
+    type?: string; */
 }
 
 // PAGE

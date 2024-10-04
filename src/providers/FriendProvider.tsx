@@ -32,12 +32,12 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                     if (unclaimedFriends?.length) {
                         setFriendTrigger(unclaimedFriends?.length)
                         setIsWaitingFriend(false)
-                        return existingFriend
+                       /*  return existingFriend */
                     }
                 }
 
                 setIsWaitingFriend(false)
-                return existingFriend
+          /*       return existingFriend */
             }
         }
 
@@ -70,8 +70,6 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                             },
                         });
                         if (updatedPoint && updatedPoint?.point_base.user_id) {
-                            console.log("updatedPoint.point_base.point");
-                            console.log(updatedPoint.point_base.point);
                             setFriend({
                                 sender: [],
                                 receiver: [{
@@ -86,7 +84,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                             })
                             setFriendNumber(1) // friend number = sender + receiver, not only from receiver
                             setIsWaitingFriend(false)
-                            return newFriend
+                        /*     return newFriend */
                         }
                     }
                 } else {// friendship already existed, check the friend from the current user
@@ -102,7 +100,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                             if (unclaimedFriends?.length) {
                                 setFriendTrigger(unclaimedFriends?.length)
                                 setIsWaitingFriend(false)
-                                return existingFriend
+                              /*   return existingFriend */
                             }
                         }
                     }
@@ -150,11 +148,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
             setIsWaitingFriend(true)
             if (account !== undefined && account.id !== undefined) {
                 if (webappStartParam !== undefined) {
-
-                    /*  the one who make the friend request == sender */
-                    console.log('trigger user creation');
                     friendCreation(webappStartParam, account.id)
-                    
                 }
                 else {
                     friendRetrieval({ access_token: '', user_id: account.id })

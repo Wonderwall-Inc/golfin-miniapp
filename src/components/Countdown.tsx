@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react';
 
 const Countdown = ({ targetDate }: CountdownProps) => {
     const { activity, setActivity } = useActivityContext()
-    console.log('targetDate: ', targetDate);
     const { account } = useUserContext()
     const calculateTimeLeft = () => {
         const difference = +new Date(targetDate) - +new Date();

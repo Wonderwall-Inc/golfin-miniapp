@@ -5,24 +5,12 @@ import { useFriendContext } from '@/contexts/FriendContext'
 import { sgTimeNowByDayJs } from '@/utils'
 import { useState } from 'react'
 
-
 const DemoDev = () => {
-    const { account, setAccount } = useUserContext()
-    const { point, setPoint } = usePointContext()
-    const { activity, setActivity } = useActivityContext()
-    const { friend, setFriend, friendTrigger, friendNumber } = useFriendContext()
-    const [sgTime, setSgTime] = useState(sgTimeNowByDayJs());
-    console.log('account');
-    console.log(account);
-
-    console.log('point');
-    console.log(point);
-
-    console.log('activity');
-    console.log(activity);
-
-    console.log('friend');
-    console.log(friend);
+    const { account } = useUserContext()
+    const { point } = usePointContext()
+    const { activity } = useActivityContext()
+    const { friend, friendTrigger, friendNumber } = useFriendContext()
+    const [sgTime] = useState(sgTimeNowByDayJs());
 
     return (
         <div>

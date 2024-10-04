@@ -8,43 +8,25 @@ import { PointContext } from '@/contexts/PointContext';
 export const PointProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const [point, setPoint] = useState<PointType | undefined>();
     const [isWaitingPoint, setIsWaitingPoint] = useState(false)
-
- /*    const webappUser = WebApp.initDataUnsafe.user
-    const webappStartParam = WebApp.initDataUnsafe.start_param */
-
     const { account } = useUserContext()
     useEffect(() => {
         const pointCreation = async (pointCreatePayload: PointCreateRequestType) => {
-            try {
-                const newpoint = await createPoint(pointCreatePayload)
-                if (newpoint) {
-                    setPoint(newpoint.point_base.point)
-                    setIsWaitingPoint(false)
-                    return newpoint
-                } else {
-                    const existingpoint = await getPoint({
-                        access_token: '',
-                        user_id: account?.id
-                    })
+            const newpoint = await createPoint(pointCreatePayload)
+            if (newpoint) {
+                setPoint(newpoint.point_base.point)
+                setIsWaitingPoint(false)
+                /*       return newpoint */
+            } else {
+                const existingpoint = await getPoint({
+                    access_token: '',
+                    user_id: account?.id
+                })
 
-                    if (existingpoint) {
-                        setPoint(existingpoint.point_base.point)
-                        /* {
-                            id: existingpoint.point_base.point.id,
-                            extra_profit_per_hour: existingpoint.point_base.point.extra_profit_per_hour,
-                            login_amount: existingpoint.point_base.point.login_amount,
-                            referral_amount: existingpoint.point_base.point.referral_amount,
-                            custom_logs: existingpoint.point_base.point.custom_logs,
-                            created_at: existingpoint.point_base.point.created_at,
-                            updated_at: existingpoint.point_base.point.updated_at,
-                        } */
-                        setIsWaitingPoint(false)
-                        return existingpoint
-                    }
+                if (existingpoint) {
+                    setPoint(existingpoint.point_base.point)
+                    setIsWaitingPoint(false)
+                    /*    return existingpoint */
                 }
-            } catch (error) {
-                console.log(error);
-                return error
             }
         }
         if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
@@ -73,7 +55,6 @@ export const PointProvider: React.FC<React.PropsWithChildren> = ({ children }) =
                 }
                 pointCreation(payload)
             }
-
         }
     }, [account])
 
@@ -83,8 +64,7 @@ export const PointProvider: React.FC<React.PropsWithChildren> = ({ children }) =
             setPoint,
             isWaitingPoint,
             setIsWaitingPoint
-        }}>
-            {children}
+        }}>{children}
         </PointContext.Provider>
     );
 }

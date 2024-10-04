@@ -122,7 +122,7 @@ const DemoRanking = () => {
         <div>
             {
                 isLoadingReferral == true || isLoadingPoint == true ?
-                    <Loader isLoading={isLoadingReferral || isLoadingPoint} wrapperHeight='690px' wrapperWidth='393px' type='ranking' /> :
+                    <Loader isLoading={isLoadingReferral || isLoadingPoint}/*  wrapperHeight='690px' wrapperWidth='393px' type='ranking' */ /> :
                     <div className='w-[100%] h-[690px]'>
                         <div className='flex justify-center'>
                             <div className='mx-10 mt-5 sm:mt-[5px] md:mt-[12px] lg:mt-[15px]'>
@@ -143,13 +143,13 @@ const DemoRanking = () => {
                                             'text-[rgba(255,255,255,0.4)] font-[700] border-b-2 border-gray-500'}`} />
                                 </div>
                                 {activeTab === 'tab-1' &&
-                                    <Suspense fallback={<Loader isLoading={true} type='ranking' />}>
+                                    <Suspense fallback={<Loader isLoading={true}/*  type='ranking' */ />}>
                                         <RankingTab type='referral' myRecord={myReferralRecord} ranking={referralRanking} />
                                     </Suspense>
                                 }
 
                                 {activeTab === 'tab-2' && <>
-                                    <Suspense fallback={<Loader isLoading={true} type='ranking' />}>
+                                    <Suspense fallback={<Loader isLoading={true}/*  type='ranking' */ />}>
                                         <RankingTab type='point' myRecord={myPointRecord} ranking={pointRanking} />
                                     </Suspense>
                                 </>

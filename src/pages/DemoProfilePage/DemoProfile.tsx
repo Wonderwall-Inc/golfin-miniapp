@@ -15,8 +15,6 @@ const DemoProfile = () => {
 /*     const [isLoading, setIsLoading] = useState(false); */
     const { toast } = useToast()
 
-    console.log(username);
-
     const handleUsernameChange = async (username: string) => {
         const updatedUser = await updateUser({
             access_token: '',

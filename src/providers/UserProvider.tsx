@@ -16,26 +16,19 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
 
     useEffect(() => {
         const userCreation = async (userCreatePayload: UserCreateRequestType) => {
-            try {
-                const newUser = await createUser(userCreatePayload)
-                if (newUser !== undefined) {
-                    setAccount(newUser.user_details.user_base)
+            const newUser = await createUser(userCreatePayload)
+            if (newUser) {
+                setAccount(newUser.user_details.user_base)
+                setIsWaitingUser(false)
+            } else {
+                const existingUser = await getUser({
+                    access_token: '',
+                    telegram_id: `${userCreatePayload.telegram_info.telegram_id}`
+                })
+                if (existingUser) {
+                    setAccount(existingUser.user_details.user_base)
                     setIsWaitingUser(false)
-                    /* return newUser */
-                } else {
-                    const existingUser = await getUser({
-                        access_token: '',
-                        telegram_id: `${userCreatePayload.telegram_info.telegram_id}`
-                    })
-                    if (existingUser) {
-                        setAccount(existingUser.user_details.user_base)
-                        setIsWaitingUser(false)
-                        /*  return existingUser */
-                    }
                 }
-            } catch (error) {
-                console.log(error);
-                return error
             }
         }
         if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
@@ -113,7 +106,7 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
             }
         }
     }, [webappUser, webappStartParam])
-    
+
     return (
         <UserContext.Provider value={{
             account,
