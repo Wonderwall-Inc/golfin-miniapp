@@ -38,7 +38,6 @@ const DemoRanking = () => {
             } else {
                 if (account?.id) {
                     const userFriendRanking = await getUserFriendRanking(account?.id)
-                    console.log(userFriendRanking);
                     if (userFriendRanking && userFriendRanking.top_10.length > 0) {
                         const referralRanking: ReferralRankingItemType[] = userFriendRanking.top_10.map((ranking) => {
                             return {
@@ -80,11 +79,7 @@ const DemoRanking = () => {
                 setMyPointRecord({ name: 'nextInnovationDev25', rank: 1000, point: 250 });
             } else {
                 if (account?.id) {
-                    /*           const myPointRankingFromServer = await getPointRanking({ user_id: account?.id }); */
-                    /*        console.log('my ranking from server: ', myPointRankingFromServer); */
                     const userPointRanking = await getPointRankingList(account?.id); // get the ranking list from server for all users and return the rank position and the total points
-                    console.log(userPointRanking);
-
                     if (userPointRanking && userPointRanking.top_10.length > 0) {
                         const pointRanking: PointRankingItemType[] = userPointRanking.top_10.map((ranking) => {
                             return {
@@ -136,7 +131,6 @@ const DemoRanking = () => {
                                         active={activeTab === 'tab-1'}
                                         onClick={() => setActiveTab('tab-1')}
                                         label='Referral'
-                                        style={{}}
                                         className={`${activeTab === 'tab-1' ?
                                             'text-[rgba(255,255,255,0.4)] font-[700] rounxded-t-lg border-b-2 border-white' :
                                             'text-[rgba(255,255,255,0.4)] border-b-2 border-gray-500'}`} />
@@ -158,37 +152,6 @@ const DemoRanking = () => {
                                     <Suspense fallback={<Loader isLoading={true} type='ranking' />}>
                                         <RankingTab type='point' myRecord={myPointRecord} ranking={pointRanking} />
                                     </Suspense>
-                                    {/* <div className='h-[300px] w-[343px] overflow-y-scroll sm:h-[400px] md:h-[460px] pt-3'>
-                                        <div className={`text-white bg-[#ffffff33] flex items-center justify-between border-4 rounded-md border-[#8ADD5D] p-1`}>
-                                            <div className='flex items-center font-rubik font-[400] text-xl'>
-                                                <div className='text-center mx-4 text-[17px]'>{myPointRecord !== undefined && myPointRecord.rank > 100 ? '100+' : (myPointRecord?.rank !== undefined && myPointRecord.rank)}</div>
-                                                <div className='text-center text-[17px]'>{myPointRecord !== undefined && rankingNameDisplayer(myPointRecord.name)}</div>
-                                            </div>
-                                            <div className='flex items-center'>
-                                                <img src={CoinImage} width='20' height='20' className='mr-2' alt="Coin" />
-                                                <div className='text-xl text-[17px]'>{myPointRecord !== undefined && myPointRecord.point}</div>
-                                            </div>
-                                        </div>
-
-                                        <div className='sm:h-[250px] md:h-[400px] overflow-y-scroll md:overflow-hidden bg-[#ffffff33]'>
-                                            {pointRanking.map((pointRank, index) => {
-                                                if (index < 10) {
-                                                    return (
-                                                        <div key={pointRank.name} className='text-white flex items-center justify-between p-1 pr-10'>
-                                                            <div className='flex items-center space-x-3 flex-1'>
-                                                                <div className='w-6 text-right text-[17px]'>{index + 1}</div>
-                                                                <div className='text-[17px] truncate'>{rankingNameDisplayer(pointRank.name)}</div>
-                                                            </div>
-                                                            <div className='flex items-center space-x-2 flex-shrink-0'>
-                                                                <img src={CoinImage} width='20' height='20' alt="Coin" />
-                                                                <div className='text-[17px] w-12 text-left'>{pointRank.point}</div>
-                                                            </div>
-                                                        </div>
-                                                    )
-                                                }
-                                            })}
-                                        </div>
-                                    </div> */}
                                 </>
                                 }
                             </div>
@@ -222,7 +185,6 @@ const RankingTab = ({ type, myRecord, ranking }: RankingTabPropsType) => {
 
             <div className='sm:h-[250px] md:h-[400px] overflow-y-scroll md:overflow-hidden bg-[#ffffff33]'>
                 {ranking.map((rank, index) => {
-                    if (index < 10) {
                         return (
                             <div key={rank.name} className='text-white flex items-center justify-between p-1 pr-10'>
                                 <div className='flex items-center space-x-3 flex-1'>
@@ -235,7 +197,6 @@ const RankingTab = ({ type, myRecord, ranking }: RankingTabPropsType) => {
                                 </div>
                             </div>
                         )
-                    }
                 })}
             </div>
         </div>
