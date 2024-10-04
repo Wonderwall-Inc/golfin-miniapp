@@ -41,30 +41,15 @@ const DemoEarn = ({ appLink }: { appLink: string }) => {
         return () => clearInterval(timer);
     }, []);
 
-    /*    useEffect(() => {
-           const todayDay = new Date()
-           const todayYY = todayDay.getFullYear()
-           const todayMM = todayDay.getUTCMonth() + 1
-           const preTodayMM = todayMM < 10 ? `0${todayMM}` : todayMM
-           const todayDD = todayDay.getDate() + 1 < 10 ? `0${todayDay.getDate() + 1}` : todayDay.getDate() + 1
-           const todayYYMMDD = `${todayYY}-${preTodayMM}-${todayDD}T00:00:00`
-           setTimeLeft(todayYYMMDD)
-       }, []) */
     useEffect(() => {
-        const setNextMidnight = () => {
-            const sgNow = new Date(sgTimeNowByDayJs());
-            const nextMidnight = new Date(sgNow);
-            nextMidnight.setHours(24, 0, 0, 0);
-            setTimeLeft(formatInTimeZone(nextMidnight, 'Asia/Singapore', "yyyy-MM-dd'T'HH:mm:ss"));
-        };
-
-        setNextMidnight();
-        const timer = setInterval(setNextMidnight, 60000); // Update every minute
-
-        return () => clearInterval(timer);
-    }, []);
-
-
+        const todayDay = new Date()
+        const todayYY = todayDay.getFullYear()
+        const todayMM = todayDay.getUTCMonth() + 1
+        const preTodayMM = todayMM < 10 ? `0${todayMM}` : todayMM
+        const todayDD = todayDay.getDate() + 1 < 10 ? `0${todayDay.getDate() + 1}` : todayDay.getDate() + 1
+        const todayYYMMDD = `${todayYY}-${preTodayMM}-${todayDD}T00:00:00`
+        setTimeLeft(todayYYMMDD)
+    }, [])
 
     useEffect(() => {
         if (point) {
