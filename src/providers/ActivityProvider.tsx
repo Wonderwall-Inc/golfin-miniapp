@@ -2,32 +2,29 @@ import { ActivityBaseType, ActivityCreateRequestType } from "@/type";
 import { useEffect, useState } from "react";
 import { ActivityContext } from "@/contexts/ActivityContext";
 import { useUserContext } from "@/contexts/UserContext";
-import { createActivity, getActivity, updateActivity } from "@/apis/ActivityServices";
+import { createActivity, getActivity } from "@/apis/ActivityServices";
 
 export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const [activity, setActivity] = useState<ActivityBaseType | undefined>();
     const [isWaitingActivity, setIsWaitingActivity] = useState(false)
-    // const [rewardNotYetClaimed, setRewardNotYetClaimed] = useState(true) //logged_in = True
     const { account } = useUserContext()
 
     useEffect(() => {
         const activityCreation = async (activityCreatePayload: ActivityCreateRequestType) => {
-                const newActivity = await createActivity(activityCreatePayload)
-                if (newActivity) {
-                    setActivity(newActivity.activity)
+            const newActivity = await createActivity(activityCreatePayload)
+            if (newActivity) {
+                setActivity(newActivity.activity)
+                setIsWaitingActivity(false)
+            } else {
+                const existingActivity = await getActivity({
+                    access_token: '',
+                    user_id: account?.id
+                })
+                if (existingActivity) {
+                    setActivity(existingActivity.activity)
                     setIsWaitingActivity(false)
-                  /*   return newActivity */
-                } else {
-                    const existingActivity = await getActivity({
-                        access_token: '',
-                        user_id: account?.id
-                    })
-                    if (existingActivity) {
-                        setActivity(existingActivity.activity)
-                        setIsWaitingActivity(false)
-                     /*    return existingActivity */
-                    }
                 }
+            }
         }
         if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
             setIsWaitingActivity(true)
@@ -39,7 +36,7 @@ export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }
                 last_action_time: '2024-09-17T00:00:00',
                 last_login_time: '2024-09-17T00:00:00',
                 created_at: '2024-09-17T00:00:00',
-                updated_at:'2024-09-17T00:00:00',
+                updated_at: '2024-09-17T00:00:00',
             })
             setIsWaitingActivity(false)
         }
