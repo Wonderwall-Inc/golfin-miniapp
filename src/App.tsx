@@ -16,12 +16,6 @@ import DemoTitle from './components/DemoTitleComponent/DemoTitle'
 import Background from './components/BackgroundComponent/Background'
 import { testInitDataRaw } from './constants'
 
-/* import DemoEarn from './pages/DemoEarnPage/DemoEarn'
-import DemoRanking from './pages/DemoRanking/DemoRanking'
-import DemoLinks from './pages/DemoLinksPage/DemoLinks'
-import DemoProfile from './pages/DemoProfilePage/DemoProfile'
-import DemoDev from './pages/DemoDevPage/DemoDev' */
-
 import Loader from './components/LoaderComponent/Loader'
 
 const DemoEarn = lazy(() => import('./pages/DemoEarnPage/DemoEarn'))

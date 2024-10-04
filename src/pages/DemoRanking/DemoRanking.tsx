@@ -1,5 +1,5 @@
 import { TabbarLink } from 'konsta/react'
-import { useCallback, useEffect, useState } from 'react'
+import { Suspense, useCallback, useEffect, useState } from 'react'
 
 import { useUserContext } from '@/contexts/UserContext'
 import { usePointContext } from '@/contexts/PointContext'
@@ -123,13 +123,6 @@ const DemoRanking = () => {
         handlePointRanking()
     }, [handlePointRanking])
 
-    const rankingNameDisplayer = (name: string) => {
-        if (name.length > 10) {
-            return name.substring(0, 7) + '...' + name.substring(name.length - 3)
-        }
-        return name
-    }
-
     return (
         <div>
             {
@@ -156,11 +149,16 @@ const DemoRanking = () => {
                                             'text-[rgba(255,255,255,0.4)] font-[700] border-b-2 border-gray-500'}`} />
                                 </div>
                                 {activeTab === 'tab-1' &&
-                                    <RankingTab type='referral' myRecord={myReferralRecord} ranking={referralRanking} />
+                                    <Suspense fallback={<Loader isLoading={true} type='ranking' />}>
+                                        <RankingTab type='referral' myRecord={myReferralRecord} ranking={referralRanking} />
+                                    </Suspense>
                                 }
 
                                 {activeTab === 'tab-2' && <>
-                                    <div className='h-[300px] w-[343px] overflow-y-scroll sm:h-[400px] md:h-[460px] pt-3'>
+                                    <Suspense fallback={<Loader isLoading={true} type='ranking' />}>
+                                        <RankingTab type='point' myRecord={myPointRecord} ranking={pointRanking} />
+                                    </Suspense>
+                                    {/* <div className='h-[300px] w-[343px] overflow-y-scroll sm:h-[400px] md:h-[460px] pt-3'>
                                         <div className={`text-white bg-[#ffffff33] flex items-center justify-between border-4 rounded-md border-[#8ADD5D] p-1`}>
                                             <div className='flex items-center font-rubik font-[400] text-xl'>
                                                 <div className='text-center mx-4 text-[17px]'>{myPointRecord !== undefined && myPointRecord.rank > 100 ? '100+' : (myPointRecord?.rank !== undefined && myPointRecord.rank)}</div>
@@ -190,8 +188,9 @@ const DemoRanking = () => {
                                                 }
                                             })}
                                         </div>
-                                    </div>
-                                </>}
+                                    </div> */}
+                                </>
+                                }
                             </div>
                         </div>
                     </div>
