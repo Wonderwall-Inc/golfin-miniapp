@@ -41,6 +41,26 @@ export async function getUser(userRetrieval: UserRetrievalRequestType): Promise<
     }
 }
 
+// USER EXTRA DETAILS RETRIEVAL, INCLUDING INFO FROM OTHER TABLES
+export async function getUserExtraDetails(userRetrieval: UserRetrievalRequestType): Promise<UserRetrievalResponseType | undefined> {
+    try {
+        const qs = []
+        for (const [key, val] of Object.entries(userRetrieval)) {
+            if (val !== undefined && val !== null) {
+                qs.push(`${key}=${encodeURIComponent(val)}`)
+            }
+        }
+        const queryString = qs.length > 0 ? `?${qs.join('&')}` : '';
+
+        const dbUser = await api.get(`/user/extra-detail/${queryString}`)
+        const dbUserData = await dbUser.data
+        return dbUserData
+    } catch (error) {
+        console.log(error)
+        return undefined
+    }
+}
+
 // FRIENDS RETRIEVAL
 export const getUsers = async (skip: number = 0, limit: number = 15): Promise<[UserRetrievalResponseType] | undefined> => {
     try {
