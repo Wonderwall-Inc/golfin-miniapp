@@ -2,6 +2,7 @@ import WebApp from '@twa-dev/sdk'
 import { lazy, Suspense, useEffect, useState } from 'react'
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { initUtils, mockTelegramEnv, parseInitData } from '@telegram-apps/sdk'
+import { Analytics } from "@vercel/analytics/react"
 
 import { useFriendContext } from './contexts/FriendContext'
 import { useUserContext } from './contexts/UserContext'
@@ -112,6 +113,7 @@ const App = () => {
             </Background>
             <Footer />
             <Toaster /> {/* shadcn-ui */}
+            <Analytics />
           </>
       }
     </div >
