@@ -16,14 +16,11 @@ export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }
 
     const convertUTCToLocal = (utcTime: string | undefined) => {
         if (!utcTime) return undefined;
-        const date = new Date(utcTime);
+        const date = new Date(utcTime + 'Z'); // Append 'Z' to treat it as UTC
         console.log('Input UTC time:', utcTime);
         console.log('Date object created:', date.toISOString());
         
-        const offset = date.getTimezoneOffset() * 60000; // offset in milliseconds
-        console.log('Local timezone offset (minutes):', date.getTimezoneOffset());
-        
-        const localDate = new Date(date.getTime() - offset);
+        const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
         console.log('Adjusted local date:', localDate.toISOString());
         
         const result = localDate.toISOString().slice(0, 19);
