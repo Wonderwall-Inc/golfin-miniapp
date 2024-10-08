@@ -13,6 +13,25 @@ export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }
     const [isWaitingActivity, setIsWaitingActivity] = useState(false)
     const { account } = useUserContext()
 
+
+    const convertUTCToLocal = (utcTime: string | undefined) => {
+        if (!utcTime) return undefined;
+        const date = new Date(utcTime);
+        console.log('Input UTC time:', utcTime);
+        console.log('Date object created:', date.toISOString());
+        
+        const offset = date.getTimezoneOffset() * 60000; // offset in milliseconds
+        console.log('Local timezone offset (minutes):', date.getTimezoneOffset());
+        
+        const localDate = new Date(date.getTime() - offset);
+        console.log('Adjusted local date:', localDate.toISOString());
+        
+        const result = localDate.toISOString().slice(0, 19);
+        console.log('Final result:', result);
+        
+        return result;
+    }
+
     useEffect(() => {
         const fetchDbActivityData = async (accountId: number) => {
             const existingActivity = await getActivity({ access_token: '', user_id: accountId })
@@ -49,13 +68,7 @@ export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }
     }, [account])
 
     console.log(activity);
-    const convertUTCToLocal = (utcTime: string | undefined) => {
-        if (!utcTime) return undefined;
-        const date = new Date(utcTime);
-        const offset = date.getTimezoneOffset() * 60000; // offset in milliseconds
-        const localDate = new Date(date.getTime() - offset);
-        return localDate.toISOString().slice(0, 19); // Remove milliseconds and timezone info
-    }
+
     return (
         <ActivityContext.Provider value={{
             activity,
