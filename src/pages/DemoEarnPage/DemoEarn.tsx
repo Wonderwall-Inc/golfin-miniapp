@@ -86,7 +86,7 @@ const DemoEarn = ({ appLink }: { appLink: string }) => {
         };
 
         handleWeeklyReward(); // Call the function on component mount
-    }, [activity?.login_streak, point, account?.id, sgTime]); // Only re-run when login_streak changes
+    }, [activity?.login_streak,/*  point, */ account?.id, sgTime]); // Only re-run when login_streak changes
 
     useEffect(() => {
         const handleReferralReward = async () => {
