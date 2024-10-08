@@ -21,7 +21,6 @@ import { /* isYesterday, */ sgTimeNowByDayJs } from '@/utils'
 
 import { dailyCheckInPointReward, friendReferralPointReward, mockDailyCheckInActivity, mockDailyCheckInPoint, tenFriendsReferralPointReward, weeklyCheckInPointReward } from '@/constants'
 import { DemoBonusComponentProp, DemoDailyRewardComponentProp, DemoEarnComponentProp, DemoFriendReferralComponentProp } from '@/type'
-import { string } from '@telegram-apps/sdk'
 
 
 const DemoEarn = ({ appLink }: { appLink: string }) => {
@@ -223,43 +222,7 @@ const DemoDailyRewardComponent = ({ timeLeft, sgTime, isClicked, setIsClicked }:
             }
         }
     }, [activity?.last_action_time])
-    const [s, setS] = useState('')
-    const [m, setM] = useState('')
-    const [h, setH] = useState('')
-    useEffect(() => {
-        const target = timeLeft
-        console.log('target', target);
-        
-        const diff = +new Date(target) - +new Date();
-        console.log('diff', diff);
-        console.log('allowed', allowed);
 
-        if (diff > 0) {
-            if (!allowed) {
-                const interval = setInterval(() => {
-                    const h = Math.floor((diff / (1000 * 60 * 60)) % 24)
-                    setH(h < 10 ? `0${h}` : `${h}`)
-                    const m = Math.floor((diff / 1000 / 60) % 60)
-                    setM(m < 10 ? `0${m}` : `${m}`)
-                    const s = Math.floor((diff / 1000) % 60)
-                    setS(s < 10 ? `0${s}` : `${s}`)
-                }, 1000)
-                return () => clearInterval(interval)
-            } else {
-                if (activity)
-                    setActivity({
-                        id: activity.id,
-                        logged_in: true,
-                        login_streak: activity.login_streak,
-                        total_logins: activity.total_logins,
-                        last_action_time: activity.last_action_time,
-                        last_login_time: activity.last_login_time,
-                        created_at: activity.created_at,
-                        updated_at: activity.updated_at,
-                    })
-            }
-        }
-    }, [allowed])
 
     const handleCheckInDailyReward = async () => {
         setIsWaitingActivity(true)
@@ -362,10 +325,8 @@ const DemoDailyRewardComponent = ({ timeLeft, sgTime, isClicked, setIsClicked }:
                     </div> :
                         <div className="absolute w-[123px] top-[7px] left-[19px] [font-family:'Roboto-Medium',Helvetica] font-medium text-[#ffffff] text-xl text-center tracking-[0] leading-[22px]"
                         >
-                            {/*  Daily Reward */}
-                            <span>{h}: {m}: {s}</span>
+                             Daily Reward
                             <br />
-
                             <Countdown targetDate={timeLeft}  /* dailyReward={dailyReward} setDailyReward={setDailyReward} */ />
 
                         </div>
