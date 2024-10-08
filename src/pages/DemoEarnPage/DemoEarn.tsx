@@ -218,20 +218,25 @@ const DemoDailyRewardComponent = ({ timeLeft, sgTime, isClicked, setIsClicked }:
             setIsWaitingActivity(true);
             setIsWaitingPoint(true);
             try {// Fetch existing point and update if necessary
-                if (activity && point) {
-                    if (account?.id) {
-                        const weeklyCheckIn = await weeklyCheckInActivity({
-                            user_id: account?.id,
-                            access_token: ''
-                        })
-                        if (weeklyCheckIn?.activity) {
-                            setActivity(weeklyCheckIn.activity)
-                        }
-                        if (weeklyCheckIn?.point) {
-                            setPoint(weeklyCheckIn.point)
-                        }
+                if (account?.id) {
+                    const weeklyCheckIn = await weeklyCheckInActivity({
+                        user_id: account?.id,
+                        access_token: ''
+                    })
+                    if (weeklyCheckIn?.activity) {
+                        setActivity(prevActivity => ({
+                            ...prevActivity,
+                            ...weeklyCheckIn.activity
+                        }));
+                    }
+                    if (weeklyCheckIn?.point) {
+                        setPoint(prevPoint => ({
+                            ...prevPoint,
+                            ...weeklyCheckIn.point
+                        }));
                     }
                 }
+
             } catch (error) {
                 console.error('Error handling weekly reward:', error);
             } finally {
@@ -241,7 +246,7 @@ const DemoDailyRewardComponent = ({ timeLeft, sgTime, isClicked, setIsClicked }:
         };
 
         handleWeeklyReward(); // Call the function on component mount
-    }, [activity?.login_streak]);
+    }, [account?.id]);
 
     const handleCheckInDailyReward = async () => {
         setIsWaitingActivity(true)
@@ -257,19 +262,19 @@ const DemoDailyRewardComponent = ({ timeLeft, sgTime, isClicked, setIsClicked }:
                 if (dailyCheckIn?.point) {
                     setPoint(dailyCheckIn.point)
                 }
-/* 
-                if (activity?.login_streak == 7) {
-                    const weeklyCheckIn = await weeklyCheckInActivity({
-                        user_id: account?.id,
-                        access_token: ''
-                    })
-                    if (weeklyCheckIn?.activity) {
-                        setActivity(weeklyCheckIn.activity)
-                    }
-                    if (weeklyCheckIn?.point) {
-                        setPoint(weeklyCheckIn.point)
-                    }
-                } */
+                /* 
+                                if (activity?.login_streak == 7) {
+                                    const weeklyCheckIn = await weeklyCheckInActivity({
+                                        user_id: account?.id,
+                                        access_token: ''
+                                    })
+                                    if (weeklyCheckIn?.activity) {
+                                        setActivity(weeklyCheckIn.activity)
+                                    }
+                                    if (weeklyCheckIn?.point) {
+                                        setPoint(weeklyCheckIn.point)
+                                    }
+                                } */
             }
         } catch (error) {
             console.error('Error processing daily check-in:', error);
