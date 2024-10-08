@@ -11,7 +11,7 @@ const Countdown = ({ targetDate }: CountdownProps) => {
         let timeLeft = {};
         if (difference > 0) {
             // const day = Math.floor(difference / (1000 * 60 * 60 * 24))
-            const h = Math.floor((difference / (1000 * 60 * 60)) % 24)
+            const h = Math.floor((difference / (1000 * 60 * 60)) % 25)
             const m = Math.floor((difference / 1000 / 60) % 60)
             const s = Math.floor((difference / 1000) % 60)
 
