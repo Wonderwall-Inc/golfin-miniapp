@@ -19,8 +19,8 @@ export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }
             if (existingActivity) {
                 setActivity({
                     ...existingActivity?.activity,
-                    last_login_time: existingActivity.activity.last_login_time?.toLocaleString(),
-                    last_action_time: existingActivity.activity.last_action_time?.toLocaleString(),
+                    last_login_time: convertUTCToLocal(existingActivity.activity.last_login_time),
+                    last_action_time: convertUTCToLocal(existingActivity.activity.last_action_time),
                 })
                 setIsWaitingActivity(false)
             } else {
@@ -49,7 +49,19 @@ export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }
     }, [account])
 
     console.log(activity);
-    
+    const convertUTCToLocal = (utcTime: string | undefined) => {
+        if (!utcTime) return undefined;
+        const date = new Date(utcTime);
+        return date.toLocaleString(undefined, {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false,
+        });
+    }
     return (
         <ActivityContext.Provider value={{
             activity,
