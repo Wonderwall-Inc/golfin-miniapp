@@ -1,5 +1,7 @@
 import {
     ActivityBaseType,
+    ActivityCheckInRequestType,
+    ActivityCheckInResponseType,
     ActivityCreateRequestType,
     ActivityCreateResponseType,
     ActivityRetrievalRequestType,
@@ -64,7 +66,7 @@ export async function updateActivity(activityUpdate: ActivityUpdateRequestType):
 }
 
 // ACTIVITY DAILY CHECK-IN
-export async function dailyCheckInActivity(activityCheckIn: { user_id: number, access_token?: string }): Promise<{activity: ActivityBaseType, point: PointType} | undefined> {
+export async function dailyCheckInActivity(activityCheckIn: ActivityCheckInRequestType ): Promise<ActivityCheckInResponseType | undefined> {
     try {
         const dbActivity = await api.post('/activity/daily-check-in', activityCheckIn);
         const dbActivityData = await dbActivity.data;

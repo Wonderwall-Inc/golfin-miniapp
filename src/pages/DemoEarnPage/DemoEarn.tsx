@@ -227,7 +227,11 @@ const DemoDailyRewardComponent = ({ timeLeft, sgTime, isClicked, setIsClicked }:
         setIsWaitingActivity(true)
         setIsWaitingPoint(true)
         if (account?.id) {
-            const dailyCheckIn = await dailyCheckInActivity({ user_id: account?.id, access_token: '' })
+            const dailyCheckInPayload = {
+                user_id: account?.id,
+                access_token: ''
+            }
+            const dailyCheckIn = await dailyCheckInActivity(dailyCheckInPayload)
             if (dailyCheckIn?.activity) {
                 setActivity(dailyCheckIn?.activity)
             }

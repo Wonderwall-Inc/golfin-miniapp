@@ -599,6 +599,16 @@ export interface ActivityUpdateResponseType {
     activity: ActivityBaseType
 }
 
+export interface ActivityCheckInRequestType {
+    user_id: number
+    access_token: string
+}
+
+export interface ActivityCheckInResponseType {
+    activity: ActivityBaseType
+    point: PointType
+}
+
 
 // SOCIAL MEDIA
 export interface YoutubeSocialMediaType {
