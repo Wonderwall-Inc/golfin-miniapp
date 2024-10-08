@@ -19,13 +19,13 @@ export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }
         const date = new Date(utcTime + 'Z'); // Append 'Z' to treat it as UTC
         console.log('Input UTC time:', utcTime);
         console.log('Date object created:', date.toISOString());
-        
-        const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+
+        const localDate = new Date(date.getTime() + 8 * 60 * 60 * 1000);
         console.log('Adjusted local date:', localDate.toISOString());
-        
+
         const result = localDate.toISOString().slice(0, 19);
         console.log('Final result:', result);
-        
+
         return result;
     }
 
