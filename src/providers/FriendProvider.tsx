@@ -94,14 +94,14 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                             receiver: existingFriend.receiver
                         })
                         setFriendNumber(existingFriend.sender?.length + existingFriend.receiver?.length)
-                        if (existingFriend?.sender?.length % 10 == 0) {
+                     /*    if (existingFriend?.sender?.length % 10 == 0) { */
                             const unclaimedFriends = friend?.sender?.filter(f => !f.has_claimed)
                             if (unclaimedFriends?.length) {
                                 setFriendTrigger(unclaimedFriends?.length)
                                 setIsWaitingFriend(false)
                               /*   return existingFriend */
                             }
-                        }
+                    /*     } */
                     }
                 }
             }
