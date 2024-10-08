@@ -61,35 +61,34 @@ const DemoEarn = ({ appLink }: { appLink: string }) => {
     useEffect(() => {
         const handleWeeklyReward = async () => {
             if (!activity?.login_streak || activity?.login_streak == 0 || activity?.login_streak !== 7) return; // Early exit if not a streak of 7
-            else {
-                setIsWaitingActivity(true);
-                setIsWaitingPoint(true);
-                try {// Fetch existing point and update if necessary
-                    if (activity && point) {
-                        if (account?.id) {
-                            const weeklyCheckIn = await weeklyCheckInActivity({
-                                user_id: account?.id,
-                                access_token: ''
-                            })
-                            if (weeklyCheckIn?.activity) {
-                                setActivity(weeklyCheckIn.activity)
-                            }
-                            if (weeklyCheckIn?.point) {
-                                setPoint(weeklyCheckIn.point)
-                            }
+
+            setIsWaitingActivity(true);
+            setIsWaitingPoint(true);
+            try {// Fetch existing point and update if necessary
+                if (activity && point) {
+                    if (account?.id) {
+                        const weeklyCheckIn = await weeklyCheckInActivity({
+                            user_id: account?.id,
+                            access_token: ''
+                        })
+                        if (weeklyCheckIn?.activity) {
+                            setActivity(weeklyCheckIn.activity)
+                        }
+                        if (weeklyCheckIn?.point) {
+                            setPoint(weeklyCheckIn.point)
                         }
                     }
-                } catch (error) {
-                    console.error('Error handling weekly reward:', error);
-                } finally {
-                    setIsWaitingActivity(false);
-                    setIsWaitingPoint(false);
                 }
+            } catch (error) {
+                console.error('Error handling weekly reward:', error);
+            } finally {
+                setIsWaitingActivity(false);
+                setIsWaitingPoint(false);
             }
         };
 
         handleWeeklyReward(); // Call the function on component mount
-    }, [activity?.login_streak,/*  point, */ account?.id, sgTime]); // Only re-run when login_streak changes
+    }, [activity?.login_streak,/*  point, */ account?.id]); // Only re-run when login_streak changes
 
     useEffect(() => {
         const handleReferralReward = async () => {
