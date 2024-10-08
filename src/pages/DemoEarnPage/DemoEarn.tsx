@@ -233,6 +233,8 @@ const DemoDailyRewardComponent = ({ timeLeft, sgTime, isClicked, setIsClicked }:
                     access_token: ''
                 }
                 const dailyCheckIn = await dailyCheckInActivity(dailyCheckInPayload)
+                console.log(dailyCheckIn);
+                
                 if (dailyCheckIn?.activity) {
                     setActivity(dailyCheckIn?.activity)
                 }
