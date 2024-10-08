@@ -229,6 +229,9 @@ const DemoDailyRewardComponent = ({ timeLeft, sgTime, isClicked, setIsClicked }:
     useEffect(() => {
         const target = new Date(sgTime.split('T')[0])
         const diff = target.getTime() - new Date().getTime()
+        console.log('diff', diff);
+        console.log('allowed', allowed);
+
         if (diff > 0) {
             if (!allowed) {
                 const interval = setInterval(() => {
@@ -357,12 +360,12 @@ const DemoDailyRewardComponent = ({ timeLeft, sgTime, isClicked, setIsClicked }:
                     </div> :
                         <div className="absolute w-[123px] top-[7px] left-[19px] [font-family:'Roboto-Medium',Helvetica] font-medium text-[#ffffff] text-xl text-center tracking-[0] leading-[22px]"
                         >
-                           {/*  Daily Reward */}
-                           <span>{h}: {m}: {s}</span>
+                            {/*  Daily Reward */}
+                            <span>{h}: {m}: {s}</span>
                             <br />
 
                             <Countdown targetDate={timeLeft}  /* dailyReward={dailyReward} setDailyReward={setDailyReward} */ />
-                        
+
                         </div>
                     }
 
