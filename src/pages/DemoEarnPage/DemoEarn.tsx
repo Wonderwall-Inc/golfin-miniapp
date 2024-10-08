@@ -219,7 +219,13 @@ const DemoDailyRewardComponent = ({ timeLeft, sgTime, isClicked, setIsClicked }:
                     user_id: account?.id,
                     access_token: ''
                 })
-                if (dailyCheckIn?.activity && dailyCheckIn.activity.login_streak == 7) {
+                if (dailyCheckIn?.activity)
+                    setActivity(dailyCheckIn.activity)
+                if (dailyCheckIn?.point) {
+                    setPoint(dailyCheckIn.point)
+                }
+
+                if (activity?.login_streak == 7) {
                     const weeklyCheckIn = await weeklyCheckInActivity({
                         user_id: account?.id,
                         access_token: ''
@@ -229,12 +235,6 @@ const DemoDailyRewardComponent = ({ timeLeft, sgTime, isClicked, setIsClicked }:
                     }
                     if (weeklyCheckIn?.point) {
                         setPoint(weeklyCheckIn.point)
-                    }
-                } else {
-                    if (dailyCheckIn?.activity)
-                        setActivity(dailyCheckIn.activity)
-                    if (dailyCheckIn?.point) {
-                        setPoint(dailyCheckIn.point)
                     }
                 }
             }
