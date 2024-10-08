@@ -1,5 +1,5 @@
 import WebApp from '@twa-dev/sdk'
-import { format } from 'date-fns'
+/* import { format } from 'date-fns' */
 import { lazy, memo, useEffect, useState } from 'react'
 
 import { useUserContext } from '../../contexts/UserContext'
@@ -17,9 +17,9 @@ import { updatePoint } from '@/apis/PointServices'
 import { dailyCheckInActivity, updateActivity } from '@/apis/ActivityServices'
 import { batchUpdateRewardClaimedBySenderId, getFriend } from '@/apis/FriendServices'
 
-import { isYesterday, sgTimeNowByDayJs } from '@/utils'
+import { /* isYesterday, */ sgTimeNowByDayJs } from '@/utils'
 
-import { dailyCheckInPointReward, friendReferralPointReward, tenFriendsReferralPointReward, weeklyCheckInPointReward } from '@/constants'
+import { dailyCheckInPointReward, friendReferralPointReward, mockDailyCheckInActivity, mockDailyCheckInPoint, tenFriendsReferralPointReward, weeklyCheckInPointReward } from '@/constants'
 import { DemoBonusComponentProp, DemoDailyRewardComponentProp, DemoEarnComponentProp, DemoFriendReferralComponentProp } from '@/type'
 
 
@@ -200,7 +200,7 @@ const DemoEarnComponent = ({ timeLeft, totalPointAmount, sgTime, isClicked, setI
 
 
 const DemoDailyRewardComponent = ({ timeLeft, sgTime, isClicked, setIsClicked }: DemoDailyRewardComponentProp) => {
-    const { setPoint, setIsWaitingPoint, point } = usePointContext()
+    const { setPoint, setIsWaitingPoint } = usePointContext()
     const { account } = useUserContext()
     const { setActivity, activity, setIsWaitingActivity } = useActivityContext()
     const [allowed, setAllowed] = useState(true)
@@ -228,13 +228,10 @@ const DemoDailyRewardComponent = ({ timeLeft, sgTime, isClicked, setIsClicked }:
         setIsWaitingPoint(true)
         try {
             if (account?.id) {
-                const dailyCheckInPayload = {
+                const dailyCheckIn = await dailyCheckInActivity({
                     user_id: account?.id,
                     access_token: ''
-                }
-                const dailyCheckIn = await dailyCheckInActivity(dailyCheckInPayload)
-                console.log(dailyCheckIn);
-                
+                })
                 if (dailyCheckIn?.activity) {
                     setActivity(dailyCheckIn?.activity)
                 }
@@ -307,25 +304,9 @@ const DemoDailyRewardComponent = ({ timeLeft, sgTime, isClicked, setIsClicked }:
                 if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
                     setIsClicked(true)
                     setIsWaitingActivity(true)
-                    setActivity({
-                        id: 1,
-                        logged_in: false,
-                        login_streak: 1,
-                        total_logins: 1,
-                        last_action_time: sgTime,
-                        last_login_time: sgTime,
-                        created_at: sgTime,
-                        updated_at: sgTime,
-                    })
+                    setActivity(mockDailyCheckInActivity)
                     setIsWaitingPoint(true)
-                    setPoint({
-                        id: 1,
-                        login_amount: 2,
-                        referral_amount: 0,
-                        extra_profit_per_hour: 0,
-                        created_at: sgTime,
-                        updated_at: sgTime,
-                    })
+                    setPoint(mockDailyCheckInPoint)
                 } else {
                     setIsClicked(true)
                     handleCheckInDailyReward()

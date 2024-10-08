@@ -6,6 +6,7 @@ import { PointContext } from '@/contexts/PointContext';
 import { createPoint, getPoint } from '@/apis/PointServices';
 
 import { PointType } from '../type';
+import { mockProviderPoint } from '@/constants';
 
 export const PointProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const [point, setPoint] = useState<PointType | undefined>();
@@ -37,14 +38,7 @@ export const PointProvider: React.FC<React.PropsWithChildren> = ({ children }) =
         }
         if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
             setIsWaitingPoint(true)
-            setPoint({
-                id: 1,
-                login_amount: 0,
-                referral_amount: 0,
-                extra_profit_per_hour: 1,
-                created_at: '2024-09-17T00:00:00',
-                updated_at: '2024-09-17T00:00:00',
-            })
+            setPoint(mockProviderPoint)
             setIsWaitingPoint(false)
         }
         else {

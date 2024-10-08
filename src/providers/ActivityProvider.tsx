@@ -6,6 +6,7 @@ import { ActivityContext } from "@/contexts/ActivityContext";
 import { createActivity, getActivity } from "@/apis/ActivityServices";
 
 import { ActivityBaseType } from "@/type";
+import { mockProviderActivity } from "@/constants";
 
 export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const [activity, setActivity] = useState<ActivityBaseType | undefined>();
@@ -16,7 +17,11 @@ export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }
         const fetchDbActivityData = async (accountId: number) => {
             const existingActivity = await getActivity({ access_token: '', user_id: accountId })
             if (existingActivity) {
-                setActivity(existingActivity.activity)
+                setActivity({
+                    ...existingActivity?.activity,
+                    last_login_time: existingActivity.activity.last_login_time?.toLocaleString(),
+                    last_action_time: existingActivity.activity.last_action_time?.toLocaleString(),
+                })
                 setIsWaitingActivity(false)
             } else {
                 const newActivity = await createActivity({
@@ -32,16 +37,7 @@ export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }
         }
         if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
             setIsWaitingActivity(true)
-            setActivity({
-                id: 1,
-                logged_in: true,
-                login_streak: 1,
-                total_logins: 1,
-                last_action_time: '2024-09-17T00:00:00',
-                last_login_time: '2024-09-17T00:00:00',
-                created_at: '2024-09-17T00:00:00',
-                updated_at: '2024-09-17T00:00:00',
-            })
+            setActivity(mockProviderActivity)
             setIsWaitingActivity(false)
         }
         else {
@@ -49,7 +45,6 @@ export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }
             if (account?.id !== undefined) {
                 fetchDbActivityData(account.id)
             }
-
         }
     }, [account])
 

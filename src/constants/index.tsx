@@ -3,9 +3,11 @@ import DemoXSvg from '../assets/icons/DemoX.svg'
 import DemoGolfinWebSvg from '../assets/icons/DemoGolfinWeb.svg'
 import ForwardTgLinkSvg from '../assets/icons/ForwardTgLink.svg'
 import DiscordSvgLinkSvg from '../assets/icons/Discord.svg'
+import { sgTimeNowByDayJs } from '@/utils'
 
 const MINI_APP_BOT_NAME = import.meta.env.VITE_MINI_APP_BOT_NAME
 const MINI_APP_NAME = import.meta.env.VITE_MINI_APP_NAME
+const sgTime = sgTimeNowByDayJs()
 
 const testInitDataRaw = [
     ['user', JSON.stringify({
@@ -108,6 +110,53 @@ const friendReferralPointReward = 100
 
 const tenFriendsReferralPointReward = 3000
 
+// DEMO PAGE TEST DATA
+const mockDailyCheckInActivity = {
+    id: 1,
+    logged_in: false,
+    login_streak: 1,
+    total_logins: 1,
+    last_action_time: sgTime,
+    last_login_time: sgTime,
+    created_at: sgTime,
+    updated_at: sgTime,
+}
+
+const mockDailyCheckInPoint = {
+    id: 1,
+    login_amount: 2,
+    referral_amount: 0,
+    extra_profit_per_hour: 0,
+    created_at: sgTime,
+    updated_at: sgTime,
+}
+
+
+// ACTIVITY PROVIDER MOCK DATA
+const mockProviderActivity = {
+    id: 1,
+    logged_in: true,
+    login_streak: 1,
+    total_logins: 1,
+    last_action_time: '2024-09-17T00:00:00',
+    last_login_time: '2024-09-17T00:00:00',
+    created_at: '2024-09-17T00:00:00',
+    updated_at: '2024-09-17T00:00:00',
+}
+
+// USER PROVIDER MOCK DATA
+const mockProviderPoint = {
+    id: 1,
+    login_amount: 0,
+    referral_amount: 0,
+    extra_profit_per_hour: 1,
+    created_at: '2024-09-17T00:00:00',
+    updated_at: '2024-09-17T00:00:00',
+}
+// POINT PROVIDER MOCK DATA
+
+// FRIEND PROVIDER MOCK DATA
+
 export {
     testInitDataRaw,
     navLinks,
@@ -118,5 +167,9 @@ export {
     weeklyCheckInPointReward,
     friendReferralPointReward,
     tenFriendsReferralPointReward,
-    demoSocialMediaLinks
+    demoSocialMediaLinks,
+    mockDailyCheckInActivity,
+    mockDailyCheckInPoint,
+    mockProviderActivity,
+    mockProviderPoint
 }
