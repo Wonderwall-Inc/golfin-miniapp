@@ -52,15 +52,9 @@ export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }
     const convertUTCToLocal = (utcTime: string | undefined) => {
         if (!utcTime) return undefined;
         const date = new Date(utcTime);
-        return date.toLocaleString(undefined, {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: false,
-        });
+        const offset = date.getTimezoneOffset() * 60000; // offset in milliseconds
+        const localDate = new Date(date.getTime() - offset);
+        return localDate.toISOString().slice(0, 19); // Remove milliseconds and timezone info
     }
     return (
         <ActivityContext.Provider value={{
