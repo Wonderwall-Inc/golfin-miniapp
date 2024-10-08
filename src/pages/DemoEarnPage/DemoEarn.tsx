@@ -14,7 +14,7 @@ import { Progress } from "@/components/ui/progress"
 const Countdown = lazy(() => import('../../components/Countdown'))
 /* const Progress = lazy(() => import("@/components/ui/progress")) */
 import { updatePoint } from '@/apis/PointServices'
-import { dailyCheckInActivity, updateActivity } from '@/apis/ActivityServices'
+import { dailyCheckInActivity, updateActivity, weeklyCheckInActivity } from '@/apis/ActivityServices'
 import { batchUpdateRewardClaimedBySenderId, getFriend } from '@/apis/FriendServices'
 
 import { /* isYesterday, */ sgTimeNowByDayJs } from '@/utils'
@@ -62,43 +62,26 @@ const DemoEarn = ({ appLink }: { appLink: string }) => {
         const handleWeeklyReward = async () => {
             if (!activity?.login_streak || activity?.login_streak == 0 || activity?.login_streak !== 7) return; // Early exit if not a streak of 7
 
-            setIsWaitingPoint(true);
             setIsWaitingActivity(true);
+            setIsWaitingPoint(true);
             try {// Fetch existing point and update if necessary
-                if (point) {
-                    const updatePointPayload = {
-                        id: point.id,
-                        type: 'add', // REVIEW: add / minus point
-                        access_token: '',
-                        point_payload: {
-                            login_amount: weeklyCheckInPointReward, // extra_profit_per_hour: optional
-                        },
-                    };
-                    const updatedPoint = await updatePoint(updatePointPayload);
-                    if (updatedPoint && updatedPoint?.point_base.user_id) {
-                        setPoint(updatedPoint.point_base.point)
+                if (account?.id) {
+                    const weeklyCheckIn = await weeklyCheckInActivity({
+                        user_id: account.id,
+                        access_token: ''
+                    })
+                    if (weeklyCheckIn?.activity) {
+                        setActivity(weeklyCheckIn.activity)
                     }
-                }
-                if (activity) {
-                    const updateActivityPayload = { // Update activity data (assuming login streak reset)
-                        user_id: account?.id,
-                        id: activity?.id,
-                        access_token: '',
-                        activity: {
-                            logged_in: true, // Update logged_in state
-                            login_streak: 0, // Reset login streak
-                            total_logins: activity?.total_logins, // Increment total logins
-                            last_action_time: sgTime /* sgTimeNowByDayJs(), */
-                        },
-                    };
-                    const updatedActivity = await updateActivity(updateActivityPayload);
-                    setActivity(updatedActivity?.activity);
+                    if (weeklyCheckIn?.point) {
+                        setPoint(weeklyCheckIn.point)
+                    }
                 }
             } catch (error) {
                 console.error('Error handling weekly reward:', error);
             } finally {
-                setIsWaitingPoint(false);
                 setIsWaitingActivity(false);
+                setIsWaitingPoint(false);
             }
         };
 
@@ -234,10 +217,10 @@ const DemoDailyRewardComponent = ({ timeLeft, sgTime, isClicked, setIsClicked }:
                     access_token: ''
                 })
                 if (dailyCheckIn?.activity) {
-                    setActivity(dailyCheckIn?.activity)
+                    setActivity(dailyCheckIn.activity)
                 }
                 if (dailyCheckIn?.point) {
-                    setPoint(dailyCheckIn?.point)
+                    setPoint(dailyCheckIn.point)
                 }
             }
         } catch (error) {
@@ -324,7 +307,7 @@ const DemoDailyRewardComponent = ({ timeLeft, sgTime, isClicked, setIsClicked }:
                         Reward
                     </div> :
                         <div className="absolute w-[123px] top-[7px] left-[19px] [font-family:'Roboto-Medium',Helvetica] font-medium text-[#ffffff] text-xl text-center tracking-[0] leading-[22px]">
-                             Daily Reward
+                            Daily Reward
                             <br />
                             <Countdown targetDate={timeLeft}  /* dailyReward={dailyReward} setDailyReward={setDailyReward} */ />
                         </div>

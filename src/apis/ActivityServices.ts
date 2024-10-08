@@ -76,3 +76,14 @@ export async function dailyCheckInActivity(activityCheckIn: ActivityCheckInReque
         return undefined
     }
 }
+// ACTIVITY WEEKLY CHECK-IN
+export async function weeklyCheckInActivity(activityCheckIn: ActivityCheckInRequestType): Promise<ActivityCheckInResponseType | undefined> {
+    try {
+        const dbActivity = await api.put('/activity/weekly-check-in', activityCheckIn);
+        const dbActivityData = await dbActivity.data;
+        return dbActivityData
+    } catch (error) {
+        console.error('Error daily checking in activity:', error);
+        return undefined
+    }
+}
