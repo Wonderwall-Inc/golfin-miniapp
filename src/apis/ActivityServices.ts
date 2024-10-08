@@ -66,9 +66,9 @@ export async function updateActivity(activityUpdate: ActivityUpdateRequestType):
 }
 
 // ACTIVITY DAILY CHECK-IN
-export async function dailyCheckInActivity(activityCheckIn: ActivityCheckInRequestType ): Promise<ActivityCheckInResponseType | undefined> {
+export async function dailyCheckInActivity(activityCheckIn: ActivityCheckInRequestType): Promise<ActivityCheckInResponseType | undefined> {
     try {
-        const dbActivity = await api.post('/activity/daily-check-in', activityCheckIn);
+        const dbActivity = await api.put('/activity/daily-check-in', activityCheckIn);
         const dbActivityData = await dbActivity.data;
         return dbActivityData
     } catch (error) {

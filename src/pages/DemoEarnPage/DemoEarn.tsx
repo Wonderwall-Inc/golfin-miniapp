@@ -226,71 +226,77 @@ const DemoDailyRewardComponent = ({ timeLeft, sgTime, isClicked, setIsClicked }:
     const handleCheckInDailyReward = async () => {
         setIsWaitingActivity(true)
         setIsWaitingPoint(true)
-        if (account?.id) {
-            const dailyCheckInPayload = {
-                user_id: account?.id,
-                access_token: ''
+        try {
+            if (account?.id) {
+                const dailyCheckInPayload = {
+                    user_id: account?.id,
+                    access_token: ''
+                }
+                const dailyCheckIn = await dailyCheckInActivity(dailyCheckInPayload)
+                if (dailyCheckIn?.activity) {
+                    setActivity(dailyCheckIn?.activity)
+                }
+                if (dailyCheckIn?.point) {
+                    setPoint(dailyCheckIn?.point)
+                }
             }
-            const dailyCheckIn = await dailyCheckInActivity(dailyCheckInPayload)
-            if (dailyCheckIn?.activity) {
-                setActivity(dailyCheckIn?.activity)
-            }
-            if (dailyCheckIn?.point) {
-                setPoint(dailyCheckIn?.point)
-            }
+        } catch (error) {
+            console.error('Error processing daily check-in:', error);
+        } finally {
             setIsWaitingActivity(false)
             setIsWaitingPoint(false)
         }
-        /*       if (activity) { // check if last login date was just yesterday
-                  const updateActivityPayload = activity?.last_login_time && isYesterday(new Date(format(activity?.last_login_time.split('T')[0], 'yyyy-MM-dd'))) ?
-                      {
-                          id: activity.id,
-                          user_id: account?.id,
-                          access_token: '',
-                          activity: {
-                              logged_in: false,
-                              login_streak: activity.login_streak += 1,
-                              total_logins: activity.total_logins += 1,
-                              last_action_time: sgTime,
-                              last_login_time: sgTime
-                          }
-                      } : {
-                          id: activity?.id,
-                          access_token: '',
-                          user_id: account?.id,
-                          activity: {
-                              logged_in: false,
-                              login_streak: 1,
-                              total_logins: activity.total_logins += 1,
-                              last_action_time: sgTime,
-                              last_login_time: sgTime
-                          }
+    }
+    /*       if (activity) { // check if last login date was just yesterday
+              const updateActivityPayload = activity?.last_login_time && isYesterday(new Date(format(activity?.last_login_time.split('T')[0], 'yyyy-MM-dd'))) ?
+                  {
+                      id: activity.id,
+                      user_id: account?.id,
+                      access_token: '',
+                      activity: {
+                          logged_in: false,
+                          login_streak: activity.login_streak += 1,
+                          total_logins: activity.total_logins += 1,
+                          last_action_time: sgTime,
+                          last_login_time: sgTime
                       }
-                  const dbActivity = await updateActivity(updateActivityPayload)
-                  if (dbActivity) {
-                      setActivity(dbActivity.activity)
-                      setIsWaitingActivity(false)
+                  } : {
+                      id: activity?.id,
+                      access_token: '',
+                      user_id: account?.id,
+                      activity: {
+                          logged_in: false,
+                          login_streak: 1,
+                          total_logins: activity.total_logins += 1,
+                          last_action_time: sgTime,
+                          last_login_time: sgTime
+                      }
+                  }
+              const dbActivity = await updateActivity(updateActivityPayload)
+              if (dbActivity) {
+                  setActivity(dbActivity.activity)
+                  setIsWaitingActivity(false)
+              }
+          }
+  
+          setIsWaitingPoint(true)
+          if (point) {
+              const updatePointPayload = {
+                  id: point.id,
+                  type: 'add',
+                  access_token: '',
+                  point_payload: {
+                      login_amount: dailyCheckInPointReward,
                   }
               }
-      
-              setIsWaitingPoint(true)
-              if (point) {
-                  const updatePointPayload = {
-                      id: point.id,
-                      type: 'add',
-                      access_token: '',
-                      point_payload: {
-                          login_amount: dailyCheckInPointReward,
-                      }
-                  }
-                  const dbPoint = await updatePoint(updatePointPayload)
-      
-                  if (dbPoint && dbPoint?.point_base.user_id) {
-                      setPoint(dbPoint.point_base.point)
-                      setIsWaitingPoint(false)
-                  }
-              } */
-    }
+              const dbPoint = await updatePoint(updatePointPayload)
+  
+              if (dbPoint && dbPoint?.point_base.user_id) {
+                  setPoint(dbPoint.point_base.point)
+                  setIsWaitingPoint(false)
+              }
+          } */
+
 
     return (
         <div className={`h-[100px] cursor-pointer ${allowed != true && 'pointer-events-none'}`}
