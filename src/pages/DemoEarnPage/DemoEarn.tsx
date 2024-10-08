@@ -228,7 +228,9 @@ const DemoDailyRewardComponent = ({ timeLeft, sgTime, isClicked, setIsClicked }:
     const [h, setH] = useState('')
     useEffect(() => {
         const target = new Date(sgTime.split('T')[0])
-        const diff = target.getTime() - new Date().getTime()
+        console.log('target', target);
+        
+        const diff = +new Date(target) - +new Date();
         console.log('diff', diff);
         console.log('allowed', allowed);
 
