@@ -186,7 +186,7 @@ const DemoEarnComponent = ({ timeLeft, totalPointAmount, sgTime, isClicked, setI
 
 
 const DemoDailyRewardComponent = ({ timeLeft, sgTime, isClicked, setIsClicked }: DemoDailyRewardComponentProp) => {
-    const { setPoint, setIsWaitingPoint, point } = usePointContext()
+    const { setPoint, setIsWaitingPoint } = usePointContext()
     const { account } = useUserContext()
     const { setActivity, activity, setIsWaitingActivity } = useActivityContext()
     const [allowed, setAllowed] = useState(true)
@@ -210,44 +210,6 @@ const DemoDailyRewardComponent = ({ timeLeft, sgTime, isClicked, setIsClicked }:
     }, [activity?.last_action_time])
 
 
-
-    /*   useEffect(() => {
-          const handleWeeklyReward = async () => {
-              if (!activity?.login_streak || activity?.login_streak == 0 || activity?.login_streak !== 7) return; // Early exit if not a streak of 7
-  
-              setIsWaitingActivity(true);
-              setIsWaitingPoint(true);
-              try {// Fetch existing point and update if necessary
-                  if (account?.id) {
-                      const weeklyCheckIn = await weeklyCheckInActivity({
-                          user_id: account?.id,
-                          access_token: ''
-                      })
-                      if (weeklyCheckIn?.activity) {
-                          setActivity(prevActivity => ({
-                              ...prevActivity,
-                              ...weeklyCheckIn.activity
-                          }));
-                      }
-                      if (weeklyCheckIn?.point) {
-                          setPoint(prevPoint => ({
-                              ...prevPoint,
-                              ...weeklyCheckIn.point
-                          }));
-                      }
-                  }
-  
-              } catch (error) {
-                  console.error('Error handling weekly reward:', error);
-              } finally {
-                  setIsWaitingActivity(false);
-                  setIsWaitingPoint(false);
-              }
-          };
-  
-          handleWeeklyReward(); // Call the function on component mount
-      }, [account?.id]); */
-
     const handleCheckInDailyReward = async () => {
         setIsWaitingActivity(true)
         setIsWaitingPoint(true)
@@ -257,37 +219,12 @@ const DemoDailyRewardComponent = ({ timeLeft, sgTime, isClicked, setIsClicked }:
                     user_id: account?.id,
                     access_token: ''
                 })
-                if (dailyCheckIn?.activity && dailyCheckIn?.point) {
-                    if (dailyCheckIn?.activity?.login_streak % 7 == 0) {
-                        const weeklyCheckIn = await weeklyCheckInActivity({
-                            user_id: account?.id,
-                            access_token: ''
-                        })
-                        if (weeklyCheckIn?.activity) {
-                            setActivity(weeklyCheckIn.activity)
-                        }
-                        if (weeklyCheckIn?.point) {
-                            setPoint(weeklyCheckIn.point)
-                        }
-                    } else {
-                        setActivity(dailyCheckIn.activity)
-                        setPoint(dailyCheckIn.point)
-                    }
+                if (dailyCheckIn?.activity) {
+                    setActivity(dailyCheckIn.activity)
                 }
-
-                /* 
-                                if (activity?.login_streak == 7) {
-                                    const weeklyCheckIn = await weeklyCheckInActivity({
-                                        user_id: account?.id,
-                                        access_token: ''
-                                    })
-                                    if (weeklyCheckIn?.activity) {
-                                        setActivity(weeklyCheckIn.activity)
-                                    }
-                                    if (weeklyCheckIn?.point) {
-                                        setPoint(weeklyCheckIn.point)
-                                    }
-                                } */
+                if (dailyCheckIn?.point) {
+                    setPoint(dailyCheckIn.point)
+                }
             }
         } catch (error) {
             console.error('Error processing daily check-in:', error);
