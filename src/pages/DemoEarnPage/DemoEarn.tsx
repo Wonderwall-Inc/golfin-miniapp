@@ -1,6 +1,6 @@
 import WebApp from '@twa-dev/sdk'
 /* import { format } from 'date-fns' */
-import { lazy, memo, useEffect, useRef, useState } from 'react'
+import { lazy, memo, useEffect, useState } from 'react'
 
 import { useUserContext } from '../../contexts/UserContext'
 import { usePointContext } from '@/contexts/PointContext'
@@ -87,7 +87,7 @@ const DemoEarn = ({ appLink }: { appLink: string }) => {
                         activity: {
                             logged_in: true, // Update logged_in state
                             login_streak: 1, // Reset login streak
-                            total_logins: activity?.total_logins + 1, // Increment total logins
+                            total_logins: activity?.total_logins, // Increment total logins
                             last_action_time: sgTime /* sgTimeNowByDayJs(), */
                         },
                     };
