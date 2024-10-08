@@ -86,7 +86,7 @@ const DemoEarn = ({ appLink }: { appLink: string }) => {
                         access_token: '',
                         activity: {
                             logged_in: true, // Update logged_in state
-                            login_streak: 1, // Reset login streak
+                            login_streak: 0, // Reset login streak
                             total_logins: activity?.total_logins, // Increment total logins
                             last_action_time: sgTime /* sgTimeNowByDayJs(), */
                         },
