@@ -110,28 +110,6 @@ const friendReferralPointReward = 100
 
 const tenFriendsReferralPointReward = 3000
 
-// DEMO PAGE TEST DATA
-const mockDailyCheckInActivity = {
-    id: 1,
-    logged_in: false,
-    login_streak: 1,
-    total_logins: 1,
-    last_action_time: sgTime,
-    last_login_time: sgTime,
-    created_at: sgTime,
-    updated_at: sgTime,
-}
-
-const mockDailyCheckInPoint = {
-    id: 1,
-    login_amount: 2,
-    referral_amount: 0,
-    extra_profit_per_hour: 0,
-    created_at: sgTime,
-    updated_at: sgTime,
-}
-
-
 // ACTIVITY PROVIDER MOCK DATA
 const mockProviderActivity = {
     id: 1,
@@ -157,6 +135,35 @@ const mockProviderPoint = {
 
 // FRIEND PROVIDER MOCK DATA
 
+
+// DEMO PAGE TEST DATA
+const mockDailyCheckInActivity = {
+    id: 1,
+    logged_in: false,
+    login_streak: 1,
+    total_logins: 1,
+    last_action_time: sgTime,
+    last_login_time: sgTime,
+    created_at: sgTime,
+    updated_at: sgTime,
+}
+
+const mockDailyCheckInPoint = {
+    id: 1,
+    login_amount: 2,
+    referral_amount: 0,
+    extra_profit_per_hour: 0,
+    created_at: sgTime,
+    updated_at: sgTime,
+}
+
+const mockSingleFriendReferralPoint = {
+    ...mockProviderPoint,
+    id: mockProviderPoint?.id,
+    referral_amount: mockProviderPoint?.referral_amount + 3000,
+}
+
+
 export {
     testInitDataRaw,
     navLinks,
@@ -171,5 +178,6 @@ export {
     mockDailyCheckInActivity,
     mockDailyCheckInPoint,
     mockProviderActivity,
-    mockProviderPoint
+    mockProviderPoint,
+    mockSingleFriendReferralPoint
 }

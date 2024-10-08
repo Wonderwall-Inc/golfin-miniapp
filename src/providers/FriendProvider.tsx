@@ -26,7 +26,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
             if (existingFriend && existingFriend.sender && existingFriend.receiver) {
                 setFriend({ sender: existingFriend.sender, receiver: existingFriend.receiver })
                 setFriendNumber(existingFriend.sender?.length + existingFriend.receiver?.length) // total friend with me
-                if (existingFriend?.sender?.length % 10 == 0) {
+/*                 if (existingFriend?.sender?.length % 10 == 0) { */
                     const unclaimedFriends = existingFriend?.sender?.filter(f => !f.has_claimed)
 
                     if (unclaimedFriends?.length) {
@@ -34,7 +34,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                         setIsWaitingFriend(false)
                        /*  return existingFriend */
                     }
-                }
+                /* } */
                 setIsWaitingFriend(false)
           /*       return existingFriend */
             }
