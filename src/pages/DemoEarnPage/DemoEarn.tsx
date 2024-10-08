@@ -8,13 +8,11 @@ import { useActivityContext } from '@/contexts/ActivityContext'
 import { useFriendContext } from '@/contexts/FriendContext'
 
 import CoinIcon from '../../assets/images/02_earn_coin_new.png'
-/* import Countdown from '../../components/Countdown' */
 
 import { Progress } from "@/components/ui/progress"
 const Countdown = lazy(() => import('../../components/Countdown'))
-/* const Progress = lazy(() => import("@/components/ui/progress")) */
 import { updatePoint } from '@/apis/PointServices'
-import { dailyCheckInActivity, updateActivity, weeklyCheckInActivity } from '@/apis/ActivityServices'
+import { dailyCheckInActivity } from '@/apis/ActivityServices'
 import { batchUpdateRewardClaimedBySenderId, getFriend } from '@/apis/FriendServices'
 
 import { /* isYesterday, */ sgTimeNowByDayJs } from '@/utils'
@@ -26,7 +24,7 @@ import { DemoBonusComponentProp, DemoDailyRewardComponentProp, DemoEarnComponent
 const DemoEarn = ({ appLink }: { appLink: string }) => {
     const { account } = useUserContext()
     const { point, setPoint, setIsWaitingPoint } = usePointContext()
-    const { activity, setActivity, setIsWaitingActivity } = useActivityContext()
+    const { activity } = useActivityContext()
     const { setFriend, friendTrigger, setFriendTrigger, setIsWaitingFriend } = useFriendContext()
     const [timeLeft, setTimeLeft] = useState("")
     const [totalPointAmount, setTotalPointAmount] = useState(0)
@@ -196,56 +194,6 @@ const DemoDailyRewardComponent = ({ timeLeft, sgTime, isClicked, setIsClicked }:
             setIsWaitingPoint(false)
         }
     }
-    /*       if (activity) { // check if last login date was just yesterday
-              const updateActivityPayload = activity?.last_login_time && isYesterday(new Date(format(activity?.last_login_time.split('T')[0], 'yyyy-MM-dd'))) ?
-                  {
-                      id: activity.id,
-                      user_id: account?.id,
-                      access_token: '',
-                      activity: {
-                          logged_in: false,
-                          login_streak: activity.login_streak += 1,
-                          total_logins: activity.total_logins += 1,
-                          last_action_time: sgTime,
-                          last_login_time: sgTime
-                      }
-                  } : {
-                      id: activity?.id,
-                      access_token: '',
-                      user_id: account?.id,
-                      activity: {
-                          logged_in: false,
-                          login_streak: 1,
-                          total_logins: activity.total_logins += 1,
-                          last_action_time: sgTime,
-                          last_login_time: sgTime
-                      }
-                  }
-              const dbActivity = await updateActivity(updateActivityPayload)
-              if (dbActivity) {
-                  setActivity(dbActivity.activity)
-                  setIsWaitingActivity(false)
-              }
-          }
-  
-          setIsWaitingPoint(true)
-          if (point) {
-              const updatePointPayload = {
-                  id: point.id,
-                  type: 'add',
-                  access_token: '',
-                  point_payload: {
-                      login_amount: dailyCheckInPointReward,
-                  }
-              }
-              const dbPoint = await updatePoint(updatePointPayload)
-  
-              if (dbPoint && dbPoint?.point_base.user_id) {
-                  setPoint(dbPoint.point_base.point)
-                  setIsWaitingPoint(false)
-              }
-          } */
-
 
     return (
         <div className={`h-[100px] cursor-pointer ${allowed != true && 'pointer-events-none'}`}
@@ -275,10 +223,9 @@ const DemoDailyRewardComponent = ({ timeLeft, sgTime, isClicked, setIsClicked }:
                         <div className="absolute w-[123px] top-[7px] left-[19px] [font-family:'Roboto-Medium',Helvetica] font-medium text-[#ffffff] text-xl text-center tracking-[0] leading-[22px]">
                             Daily Reward
                             <br />
-                            <Countdown targetDate={timeLeft}  /* dailyReward={dailyReward} setDailyReward={setDailyReward} */ />
+                            <Countdown targetDate={timeLeft} />
                         </div>
                     }
-
                 </div>
 
                 <div className='bg-white text-black-400 border-white h-[50%] content-center text-center items-center w-[160px] rounded-[0px_0px_6px_6px]'>
