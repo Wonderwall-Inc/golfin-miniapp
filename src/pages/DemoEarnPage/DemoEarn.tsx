@@ -357,11 +357,12 @@ const DemoDailyRewardComponent = ({ timeLeft, sgTime, isClicked, setIsClicked }:
                     </div> :
                         <div className="absolute w-[123px] top-[7px] left-[19px] [font-family:'Roboto-Medium',Helvetica] font-medium text-[#ffffff] text-xl text-center tracking-[0] leading-[22px]"
                         >
-                            Daily Reward
+                           {/*  Daily Reward */}
+                           <span>{h}: {m}: {s}</span>
                             <br />
 
                             <Countdown targetDate={timeLeft}  /* dailyReward={dailyReward} setDailyReward={setDailyReward} */ />
-                            <span>{h}: {m}: {s}</span>
+                        
                         </div>
                     }
 
