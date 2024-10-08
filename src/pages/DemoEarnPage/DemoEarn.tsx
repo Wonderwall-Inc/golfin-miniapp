@@ -58,7 +58,7 @@ const DemoEarn = ({ appLink }: { appLink: string }) => {
         }
     }, [point])
 
-    useEffect(() => {
+/*     useEffect(() => {
         const handleWeeklyReward = async () => {
             if (!activity?.login_streak || activity?.login_streak == 0 || activity?.login_streak !== 7) return; // Early exit if not a streak of 7
 
@@ -88,7 +88,8 @@ const DemoEarn = ({ appLink }: { appLink: string }) => {
         };
 
         handleWeeklyReward(); // Call the function on component mount
-    }, [activity?.login_streak,/*  point, */ account?.id]); // Only re-run when login_streak changes
+    }, [activity?.login_streak,/*  point, account?.id]);  */
+    // Only re-run when login_streak changes
 
     useEffect(() => {
         const handleReferralReward = async () => {
@@ -218,11 +219,24 @@ const DemoDailyRewardComponent = ({ timeLeft, sgTime, isClicked, setIsClicked }:
                     user_id: account?.id,
                     access_token: ''
                 })
-                if (dailyCheckIn?.activity) {
-                    setActivity(dailyCheckIn.activity)
-                }
-                if (dailyCheckIn?.point) {
-                    setPoint(dailyCheckIn.point)
+                if (dailyCheckIn?.activity.login_streak == 7) {
+                    const weeklyCheckIn = await weeklyCheckInActivity({
+                        user_id: account?.id,
+                        access_token: ''
+                    })
+                    if (weeklyCheckIn?.activity) {
+                        setActivity(weeklyCheckIn.activity)
+                    }
+                    if (weeklyCheckIn?.point) {
+                        setPoint(weeklyCheckIn.point)
+                    }
+                } else {
+                    if (dailyCheckIn?.activity) {
+                        setActivity(dailyCheckIn.activity)
+                    }
+                    if (dailyCheckIn?.point) {
+                        setPoint(dailyCheckIn.point)
+                    }
                 }
             }
         } catch (error) {
