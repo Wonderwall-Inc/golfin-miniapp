@@ -9,7 +9,7 @@ import { getUserFriendRanking } from '@/apis/UserSevices'
 import { getPointRankingList } from '@/apis/PointServices'
 
 import Loader from '@/components/LoaderComponent/Loader'
-import CoinImage from '../../assets/images/02_earn_coin_new.png'
+import CoinImage from '../assets/images/02_earn_coin_new.png'
 
 import { mockPointRankingData, mockReferralRankingData } from '@/constants'
 import { PointRankingItemType, RankingTabPropsType, ReferralRankingItemType } from '@/type'
