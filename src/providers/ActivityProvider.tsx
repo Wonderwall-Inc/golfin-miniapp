@@ -7,27 +7,12 @@ import { createActivity, getActivity } from "@/apis/ActivityServices";
 
 import { ActivityBaseType } from "@/type";
 import { mockProviderActivity } from "@/constants";
+import { convertUTCToLocal } from "@/utils";
 
 export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const [activity, setActivity] = useState<ActivityBaseType | undefined>();
     const [isWaitingActivity, setIsWaitingActivity] = useState(false)
     const { account } = useUserContext()
-
-
-    const convertUTCToLocal = (utcTime: string | undefined) => {
-        if (!utcTime) return undefined;
-        const date = new Date(utcTime + 'Z'); // Append 'Z' to treat it as UTC
-        console.log('Input UTC time:', utcTime);
-        console.log('Date object created:', date.toISOString());
-
-        const localDate = new Date(date.getTime() + 8 * 60 * 60 * 1000);
-        console.log('Adjusted local date:', localDate.toISOString());
-
-        const result = localDate.toISOString().slice(0, 19);
-        console.log('Final result:', result);
-
-        return result;
-    }
 
     useEffect(() => {
         const fetchDbActivityData = async (accountId: number) => {
@@ -35,8 +20,10 @@ export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }
             if (existingActivity) {
                 setActivity({
                     ...existingActivity?.activity,
-                    last_login_time: convertUTCToLocal(existingActivity.activity.last_login_time),
-                    last_action_time: convertUTCToLocal(existingActivity.activity.last_action_time),
+                    last_login_time: existingActivity.activity.last_login_time,
+                    last_action_time: existingActivity.activity.last_action_time,
+                    /*    last_login_time: convertUTCToLocal(existingActivity.activity.last_login_time),
+                       last_action_time: convertUTCToLocal(existingActivity.activity.last_action_time), */
                 })
                 setIsWaitingActivity(false)
             } else {
