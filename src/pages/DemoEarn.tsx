@@ -2,15 +2,15 @@ import WebApp from '@twa-dev/sdk'
 /* import { format } from 'date-fns' */
 import { lazy, memo, useEffect, useState } from 'react'
 
-import { useUserContext } from '../../contexts/UserContext'
+import { useUserContext } from '../contexts/UserContext'
 import { usePointContext } from '@/contexts/PointContext'
 import { useActivityContext } from '@/contexts/ActivityContext'
 import { useFriendContext } from '@/contexts/FriendContext'
 
-import CoinIcon from '../../assets/images/02_earn_coin_new.png'
+import CoinIcon from '../assets/images/02_earn_coin_new.png'
 
 import { Progress } from "@/components/ui/progress"
-const Countdown = lazy(() => import('../../components/Countdown'))
+const Countdown = lazy(() => import('../components/Countdown'))
 import { updatePoint } from '@/apis/PointServices'
 import { dailyCheckInActivity } from '@/apis/ActivityServices'
 import { batchUpdateRewardClaimedBySenderId, getFriend } from '@/apis/FriendServices'

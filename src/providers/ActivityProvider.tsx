@@ -48,8 +48,6 @@ export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }
         }
     }, [account])
 
-    console.log(activity);
-
     return (
         <ActivityContext.Provider value={{
             activity,

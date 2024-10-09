@@ -19,11 +19,11 @@ import { testInitDataRaw, testInitDataThemeParams } from './constants'
 
 import Loader from './components/LoaderComponent/Loader'
 
-const DemoEarn = lazy(() => import('./pages/DemoEarnPage/DemoEarn'))
-const DemoRanking = lazy(() => import('./pages/DemoRanking/DemoRanking'))
-const DemoLinks = lazy(() => import('./pages/DemoLinksPage/DemoLinks'))
-const DemoProfile = lazy(() => import('./pages/DemoProfilePage/DemoProfile'))
-const DemoDev = lazy(() => import('./pages/DemoDevPage/DemoDev'))
+const DemoEarn = lazy(() => import('./pages/DemoEarn'))
+const DemoRanking = lazy(() => import('./pages/DemoRanking'))
+const DemoLinks = lazy(() => import('./pages/DemoLinks'))
+const DemoProfile = lazy(() => import('./pages/DemoProfile'))
+const DemoDev = lazy(() => import('./pages/DemoDev'))
 
 const App = () => {
   if (import.meta.env.VITE_MINI_APP_ENV == 'test') {

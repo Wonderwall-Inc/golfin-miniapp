@@ -50,8 +50,6 @@ const Countdown = ({ targetDate }: CountdownProps) => {
             }
         }
     }, [timerComponents])
-
-    console.log(timeLeft);
     
 
     /*  Object.keys(timeLeft).forEach((interval: any) => {
