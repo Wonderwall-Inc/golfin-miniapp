@@ -1,7 +1,7 @@
 import WebApp from '@twa-dev/sdk'
 import { lazy, Suspense, useEffect, useState } from 'react'
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
-import { initUtils, mockTelegramEnv, parseInitData } from '@telegram-apps/sdk'
+import { initUtils, mockTelegramEnv, parseInitData, parseThemeParams } from '@telegram-apps/sdk'
 import { Analytics } from "@vercel/analytics/react"
 
 import { useFriendContext } from './contexts/FriendContext'
@@ -15,7 +15,7 @@ import { Toaster } from './components/ui/toaster'
 import Footer from './components/FooterComponent/Footer'
 import DemoTitle from './components/DemoTitleComponent/DemoTitle'
 import Background from './components/BackgroundComponent/Background'
-import { testInitDataRaw } from './constants'
+import { testInitDataRaw, testInitDataThemeParams } from './constants'
 
 import Loader from './components/LoaderComponent/Loader'
 
@@ -29,21 +29,7 @@ const App = () => {
   if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
     const initDataRaw = new URLSearchParams(testInitDataRaw).toString();
     mockTelegramEnv({
-      themeParams: {
-        accentTextColor: '#6ab2f2',
-        bgColor: '#17212b',
-        buttonColor: '#5288c1',
-        buttonTextColor: '#ffffff',
-        destructiveTextColor: '#ec3942',
-        headerBgColor: '#17212b',
-        hintColor: '#708499',
-        linkColor: '#6ab3f3',
-        secondaryBgColor: '#232e3c',
-        sectionBgColor: '#17212b',
-        sectionHeaderTextColor: '#6ab3f3',
-        subtitleTextColor: '#708499',
-        textColor: '#f5f5f5',
-      },
+      themeParams: parseThemeParams(testInitDataThemeParams),
       initData: parseInitData(initDataRaw),
       initDataRaw,
       version: '7.2',

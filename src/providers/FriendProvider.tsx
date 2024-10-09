@@ -9,6 +9,7 @@ import { FriendContext } from "@/contexts/FriendContext"
 import { useUserContext } from "@/contexts/UserContext"
 
 import { FriendRetrievalRequestType, FriendStatusType, FriendWithIdsRetrievalResponseType } from "@/type"
+import { friendReferralPointReward } from "@/constants"
 
 export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const [friend, setFriend] = useState<FriendWithIdsRetrievalResponseType | undefined>()
@@ -61,7 +62,7 @@ export const FriendProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                             type: 'add',
                             access_token: '',
                             point_payload: {
-                                referral_amount: 100
+                                referral_amount: friendReferralPointReward
                             },
                         });
                         if (updatedPoint && updatedPoint?.point_base.user_id) {

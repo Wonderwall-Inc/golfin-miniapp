@@ -1,5 +1,4 @@
 import {
-    ActivityBaseType,
     ActivityCheckInRequestType,
     ActivityCheckInResponseType,
     ActivityCreateRequestType,
@@ -8,7 +7,6 @@ import {
     ActivityRetrievalResponseType,
     ActivityUpdateRequestType,
     ActivityUpdateResponseType,
-    PointType,
 } from '@/type';
 import api from './api';
 

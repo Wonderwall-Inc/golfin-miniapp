@@ -7,7 +7,6 @@ import { createActivity, getActivity } from "@/apis/ActivityServices";
 
 import { ActivityBaseType } from "@/type";
 import { mockProviderActivity } from "@/constants";
-import { convertUTCToLocal } from "@/utils";
 
 export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const [activity, setActivity] = useState<ActivityBaseType | undefined>();
@@ -22,8 +21,6 @@ export const ActivityProvider: React.FC<React.PropsWithChildren> = ({ children }
                     ...existingActivity?.activity,
                     last_login_time: existingActivity.activity.last_login_time,
                     last_action_time: existingActivity.activity.last_action_time,
-                    /*    last_login_time: convertUTCToLocal(existingActivity.activity.last_login_time),
-                       last_action_time: convertUTCToLocal(existingActivity.activity.last_action_time), */
                 })
                 setIsWaitingActivity(false)
             } else {
