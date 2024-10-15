@@ -209,6 +209,15 @@ const DemoWallet = () => {
         connectWeb3Auth();
     }, [isAuthenticated, loggedIn, getIdTokenClaims]);
 
+    const walletButtonLists = [
+        { label: 'getUserInfo', fx: getUserInfo, cto: 'Get User Info' },
+        { label: 'getAccounts', fx: getAccounts, cto: 'Get Accounts' },
+        { label: 'getBalance', fx: getBalance, cto: 'Get Balance' },
+        { label: 'signMessage', fx: signMessage, cto: 'Sign Message' },
+        { label: 'sendTransaction', fx: sendTransaction, cto: 'Send Tx' },
+        { label: 'logout', fx: logout, cto: 'Logout' },
+    ]
+
     const logoutView = (
         <Button onClick={login} className="card">
             Login
@@ -218,44 +227,18 @@ const DemoWallet = () => {
     const loginView = (
         <>
             <div className="text-black grid grid-cols-2 w-[100%]">
-                <div>
-                    <Button onClick={getUserInfo} className="card text-black">
-                        Get User Info
-                    </Button>
-                    <Button onClick={authenticateUser} className="card text-black">
-                        Authenticate User
-                    </Button>
-                </div>
-                <div>
-
-                    <Button onClick={getAccounts} className="card text-black">
-                        Get Accounts
-                    </Button>
-                    <Button onClick={getBalance} className="card text-black">
-                        Get Balance
-                    </Button>
-                </div>
-                <div>
-
-                    <Button onClick={signMessage} className="card text-black">
-                        Sign Message
-                    </Button>
-                    <Button onClick={sendTransaction} className="card text-black">
-                        Send Transaction
-                    </Button>
-                </div>
-                <div>
-                    <Button onClick={getPrivateKey} className="card text-black">
-                        Get Private Key
-                    </Button>
-                    <Button onClick={logout} className="card text-black">
-                        Log Out
-                    </Button>
+                {walletButtonLists.map((bt) => {
+                    return <Button
+                    key={bt.label}
+                    onClick={bt.fx}>
+                    {bt.cto}
+                </Button>
+                })}
+                <div id="console" style={{ whiteSpace: "pre-line" }} className="text-white w-[100px] h-[300px] overflow-scroll">
+                    <p style={{ whiteSpace: "pre-line" }}></p>
                 </div>
             </div>
-            <div id="console" style={{ whiteSpace: "pre-line" }} className="text-white w-[100px] h-[300px] overflow-scroll">
-                <p style={{ whiteSpace: "pre-line" }}></p>
-            </div>
+
         </>
     )
 
