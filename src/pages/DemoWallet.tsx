@@ -38,7 +38,7 @@ const web3authSfa = new Web3Auth({
     privateKeyProvider,
 });
 
-const DemoWallet = () => { 
+const DemoWallet = () => {
     const web3AuthProvider = web3authSfa.provider;
     const tonRpcInst = web3AuthProvider ? new TonRPC(web3AuthProvider) : null;
     const [isLoggingIn, setIsLoggingIn] = useState(false);
@@ -217,7 +217,7 @@ const DemoWallet = () => {
 
     const loginView = (
         <>
-            <div className="text-white grid grid-cols-2 w-[100%]">
+            <div className="grid grid-cols-2 w-[100%]">
                 <div>
                     <Button onClick={getUserInfo} className="card">
                         Get User Info
@@ -245,7 +245,7 @@ const DemoWallet = () => {
                     </Button>
                 </div>
             </div>
-            <div id="console" style={{ whiteSpace: "pre-line" }} className="w-[100px] h-[100px] overflow-scroll">
+            <div id="console" style={{ whiteSpace: "pre-line" }} className="text-white w-[100px] h-[100px] overflow-scroll">
                 <p style={{ whiteSpace: "pre-line" }}></p>
             </div>
         </>
