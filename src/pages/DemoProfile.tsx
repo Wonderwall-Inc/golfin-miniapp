@@ -21,9 +21,9 @@ const testnetRpc = await getHttpEndpoint({
     network: "testnet",
     protocol: "json-rpc",
 });
-const verifier = "w3a-a0-github-demo";
-const clientId =
-    "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
+const verifier = import.meta.env.VITE_WEB3AUTH_VERIFIER;
+
+const clientId = import.meta.env.VITE_WEB3AUTH_CLIENT_ID;
 
 const chainConfig = {
     chainNamespace: CHAIN_NAMESPACES.OTHER,
@@ -143,7 +143,7 @@ const DemoProfile = () => {
     const loginView = (
         <>
             <div className="flex-container">
-               {/*  <div>
+                {/*  <div>
                     <button onClick={tonRpcInst.getUserInfo} className="card">
                         Get User Info
                     </button>

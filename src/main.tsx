@@ -26,7 +26,7 @@ createRoot(document.getElementById('root')!).render(
             <PointProvider>
               <FriendProvider>
                 <Auth0Provider domain="web3auth.au.auth0.com"
-                  clientId="CxPlkQDkaBchPbSnJlMhILDB4JLCep73"
+                  clientId={import.meta.env.VITE_AUTH_ZERO_PROVIDER_CLIENT_ID}
                   authorizationParams={{
                     redirect_uri: window.location.origin,
                     connection: "email",
