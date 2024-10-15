@@ -1,14 +1,9 @@
 import type { IProvider } from "@web3auth/base";
-import { getHttpEndpoint } from "@orbs-network/ton-access";
+/* import { getHttpEndpoint } from "@orbs-network/ton-access"; */
 import TonWeb from "tonweb";
 import { Buffer } from 'buffer';
 
 window.Buffer = window.Buffer || Buffer
-
-const rpc = await getHttpEndpoint({
-    network: "testnet",
-    protocol: "json-rpc",
-});
 
 export default class TonRPC {
     private provider: IProvider;
@@ -16,7 +11,8 @@ export default class TonRPC {
 
     constructor(provider: IProvider) {
         this.provider = provider;
-        this.tonweb = new TonWeb(new TonWeb.HttpProvider(rpc));
+        this.tonweb = new TonWeb(new TonWeb.HttpProvider('https://testnet.toncenter.com/api/v2/jsonRPC',
+            { apiKey: import.meta.env.VITE_TON_TESTNET_API_KEY }));
     }
 
     async getAccounts(): Promise<string> {
@@ -29,7 +25,7 @@ export default class TonRPC {
             });
             const address = await wallet.getAddress();
             console.log(`address: ${address}`);
-            
+
             return address.toString(true, true, true);
         } catch (error) {
             console.error("Error getting accounts:", error);
@@ -71,7 +67,7 @@ export default class TonRPC {
 
             const transfer = wallet.methods.transfer({
                 secretKey: keyPair.secretKey,
-                toAddress: '0QCeWpE40bPUiuj-8ZfZd2VzMOxCMUuQFa_VKmdD8ssy5ukA',
+                toAddress: 'UQCJ_FiTxjFk-vIA7qbxjCxQG-H25CUWEAWu0tdF3pxeYSWG',
                 amount: TonWeb.utils.toNano('0.001'),
                 seqno: seqno,
                 payload: 'Hello, TON!',
