@@ -1,11 +1,12 @@
 import type { IProvider } from "@web3auth/base";
 import { getHttpEndpoint } from "@orbs-network/ton-access";
 import TonWeb from "tonweb";
+import { Buffer } from 'buffer';
 
 const rpc = await getHttpEndpoint({
     network: "testnet",
     protocol: "json-rpc",
-}); 
+});
 
 export default class TonRPC {
     private provider: IProvider;
@@ -32,8 +33,8 @@ export default class TonRPC {
         }
     }
 
-     getChainId(): string {
-        return "testnet"; 
+    getChainId(): string {
+        return "testnet";
     }
 
     async getBalance(): Promise<string> {
@@ -51,19 +52,19 @@ export default class TonRPC {
         try {
             const privateKey = await this.getPrivateKey();
             const keyPair = this.getKeyPairFromPrivateKey(privateKey);
-            
+
             const WalletClass = this.tonweb.wallet.all["v3R2"];
             const wallet = new WalletClass(this.tonweb.provider, { publicKey: keyPair.publicKey });
-    
+
             const address = await wallet.getAddress();
             console.log("Wallet address:", address.toString(true, true, true));
-    
+
             const balance = await this.tonweb.getBalance(address);
             console.log("Wallet balance:", TonWeb.utils.fromNano(balance.toString()));
-    
+
             let seqno = await wallet.methods.seqno().call() ?? 0;
             console.log("Using seqno:", seqno);
-    
+
             const transfer = wallet.methods.transfer({
                 secretKey: keyPair.secretKey,
                 toAddress: '0QCeWpE40bPUiuj-8ZfZd2VzMOxCMUuQFa_VKmdD8ssy5ukA',
@@ -72,10 +73,10 @@ export default class TonRPC {
                 payload: 'Hello, TON!',
                 sendMode: 3,
             });
-    
+
             console.log("Sending transaction...");
             const result = await transfer.send();
-            
+
             console.log(result);
             // Return the full result for display in uiConsole
             return result;
@@ -89,11 +90,11 @@ export default class TonRPC {
         try {
             const privateKey = await this.getPrivateKey();
             const keyPair = this.getKeyPairFromPrivateKey(privateKey);
-            
+
             const messageBytes = new TextEncoder().encode(message);
-            
+
             const signature = TonWeb.utils.nacl.sign.detached(messageBytes, keyPair.secretKey);
-            
+
             return Buffer.from(signature).toString('hex');
         } catch (error) {
             console.error("Error signing message:", error);
