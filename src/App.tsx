@@ -45,7 +45,7 @@ const App = () => {
 
   const [waitingType, setWaitingType] = useState("")
 
-  const { isWaitingUser } = useUserContext()
+  const { isWaitingUse, account } = useUserContext()
   const { isWaitingPoint } = usePointContext()
   const { isWaitingActivity } = useActivityContext()
   const { isWaitingFriend } = useFriendContext()
@@ -93,7 +93,9 @@ const App = () => {
                   <Route path='/ranking' element={<DemoRanking />} />
                   <Route path='/links' element={<DemoLinks utils={utils} appLink={`https://t.me/${MINI_APP_BOT_NAME}/${MINI_APP_NAME}/start?startapp=${WebApp.initDataUnsafe.user?.id}`} />} />
                   <Route path='/profile' element={<DemoProfile />} />
-                  <Route path='/dev' element={<DemoDev />} />
+
+                  {account?.app_info.admin == true && <Route path='/dev' element={<DemoDev />} />}
+                  {account?.app_info.admin == true && <Route path='/wallet' element={<DemoDev />} />}
                 </Routes>
               </Suspense>
             </Background>

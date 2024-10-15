@@ -46,6 +46,8 @@ const navLinks = [
     { label: 'Demo Ranking', url: '/ranking' },
     { label: 'Demo Links', url: '/links' },
     { label: 'Demo Profile', url: '/profile' },
+    { label: 'Demo Dev', url: '/dev' },
+    { label: 'Demo Wallet', url: '/wallet' },
 ]
 
 const demoSocialMediaLinks = [
