@@ -42,7 +42,7 @@ const privateKeyProvider = new CommonPrivateKeyProvider({
 // Initialize Web3Auth with necessary configurations
 const web3authSfa = new Web3Auth({
     clientId,
-    web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+    web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
     usePnPKey: false,
     privateKeyProvider,
 });
