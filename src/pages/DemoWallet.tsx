@@ -7,12 +7,12 @@ import TonRPC from '@/utils/tonRpc'
 
 import { useState, useEffect } from 'react'
 
-const DemoWallet = () => {
-    const testnetRpc = await getHttpEndpoint({
-        network: "testnet",
-        protocol: "json-rpc",
-    });
+const testnetRpc = await getHttpEndpoint({
+    network: "testnet",
+    protocol: "json-rpc",
+});
 
+const DemoWallet = () => {
     const chainConfig = {
         chainNamespace: CHAIN_NAMESPACES.OTHER,
         chainId: "testnet",
