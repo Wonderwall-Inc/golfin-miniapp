@@ -219,40 +219,38 @@ const DemoWallet = () => {
         <>
             <div className="text-black grid grid-cols-2 w-[100%]">
                 <div>
-                    <div>
-                        <Button onClick={getUserInfo} className="card">
-                            Get User Info
-                        </Button>
-                        <Button onClick={authenticateUser} className="card">
-                            Authenticate User
-                        </Button>
-                    </div>
-                    <div>
+                    <Button onClick={getUserInfo} className="card text-black">
+                        Get User Info
+                    </Button>
+                    <Button onClick={authenticateUser} className="card text-black">
+                        Authenticate User
+                    </Button>
+                </div>
+                <div>
 
-                        <Button onClick={getAccounts} className="card">
-                            Get Accounts
-                        </Button>
-                        <Button onClick={getBalance} className="card">
-                            Get Balance
-                        </Button>
-                    </div>
-                    <div>
+                    <Button onClick={getAccounts} className="card text-black">
+                        Get Accounts
+                    </Button>
+                    <Button onClick={getBalance} className="card text-black">
+                        Get Balance
+                    </Button>
+                </div>
+                <div>
 
-                        <Button onClick={signMessage} className="card">
-                            Sign Message
-                        </Button>
-                        <Button onClick={sendTransaction} className="card">
-                            Send Transaction
-                        </Button>
-                    </div>
-                    <div>
-                        <Button onClick={getPrivateKey} className="card">
-                            Get Private Key
-                        </Button>
-                        <Button onClick={logout} className="card">
-                            Log Out
-                        </Button>
-                    </div>
+                    <Button onClick={signMessage} className="card text-black">
+                        Sign Message
+                    </Button>
+                    <Button onClick={sendTransaction} className="card text-black">
+                        Send Transaction
+                    </Button>
+                </div>
+                <div>
+                    <Button onClick={getPrivateKey} className="card text-black">
+                        Get Private Key
+                    </Button>
+                    <Button onClick={logout} className="card text-black">
+                        Log Out
+                    </Button>
                 </div>
             </div>
             <div id="console" style={{ whiteSpace: "pre-line" }} className="text-white w-[100px] h-[300px] overflow-scroll">
