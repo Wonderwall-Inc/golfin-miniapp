@@ -234,7 +234,7 @@ const DemoProfile = () => {
 
     const loginView = (
         <>
-            <div className="flex-container">
+            <div className="flex-container h-[100px] overflow-y-scroll">
                 <div>
                     <button onClick={getUserInfo} className="card">
                         Get User Info
@@ -261,11 +261,7 @@ const DemoProfile = () => {
                         Log Out
                     </button>
                 </div>
-
-
-
             </div>
-
             <div id="console" style={{ whiteSpace: "pre-line" }}>
                 <p style={{ whiteSpace: "pre-line" }}></p>
             </div>
