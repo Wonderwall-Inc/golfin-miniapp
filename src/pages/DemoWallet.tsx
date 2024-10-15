@@ -219,7 +219,22 @@ const DemoWallet = () => {
     ]
 
     const logoutView = (
-        <Button onClick={login} className="card">
+        <Button onClick={login} className="card mx-auto 
+                            rounded-[8px] 
+                            py-[19px] 
+                            px-[25px] 
+                            w-[343px] 
+                            h-[56px] 
+                            items-center 
+                            justify-center 
+                            text-start 
+                            content-center 
+                            text-[20px]
+                            tracking-[0.38px]
+                            font-[500]
+                            gap-10
+                            bg-[rgba(255,255,255,0.20)]
+                            m-3">
             Login
         </Button>
     );
@@ -229,10 +244,10 @@ const DemoWallet = () => {
             <div className="text-black grid grid-cols-2 w-[100%]">
                 {walletButtonLists.map((bt) => {
                     return <Button
-                    key={bt.label}
-                    onClick={bt.fx}>
-                    {bt.cto}
-                </Button>
+                        key={bt.label}
+                        onClick={bt.fx}>
+                        {bt.cto}
+                    </Button>
                 })}
                 <div id="console" style={{ whiteSpace: "pre-line" }} className="text-white w-[100px] h-[300px] overflow-scroll">
                     <p style={{ whiteSpace: "pre-line" }}></p>
