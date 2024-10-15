@@ -95,6 +95,7 @@ const DemoProfile = () => {
             return;
         }
         const userInfo = await web3authSfa.getUserInfo();
+        console.log(userInfo);
         uiConsole(userInfo);
     };
 
@@ -130,6 +131,8 @@ const DemoProfile = () => {
 
             const rpc = new TonRPC(web3AuthProvider);
             const balance = await rpc.getBalance();
+            console.log(balance);
+            
             uiConsole(balance);
         }
     };
@@ -154,6 +157,8 @@ const DemoProfile = () => {
         if (web3AuthProvider) {
             const rpc = new TonRPC(web3AuthProvider);
             const result = await rpc.sendTransaction();
+            console.log(result);
+            
             uiConsole(result);
         }
     };
@@ -164,6 +169,7 @@ const DemoProfile = () => {
             return;
         }
         const userCredential = await web3authSfa.authenticateUser();
+        console.log(userCredential);
         uiConsole(userCredential);
     };
 
@@ -174,6 +180,8 @@ const DemoProfile = () => {
         }
         const rpc = new TonRPC(web3authSfa.provider);
         const privateKey = await rpc.getPrivateKey();
+        console.log(privateKey);
+        
         return privateKey;
     };
 
