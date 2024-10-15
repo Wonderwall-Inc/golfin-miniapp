@@ -6,6 +6,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import TonRPC from '@/utils/tonRpc'
 
 import { useState, useEffect } from 'react'
+import { Button } from "@/components/ui/button";
 
 const testnetRpc = await getHttpEndpoint({
     network: "testnet",
@@ -209,39 +210,39 @@ const DemoWallet = () => {
     }, [isAuthenticated, loggedIn, getIdTokenClaims]);
 
     const logoutView = (
-        <button onClick={login} className="card">
+        <Button onClick={login} className="card">
             Login
-        </button>
+        </Button>
     );
 
     const loginView = (
         <>
-            <div className="flex-container h-[100px] overflow-y-scroll">
+            <div className="flex-container overflow-y-scroll">
                 <div>
-                    <button onClick={getUserInfo} className="card">
+                    <Button onClick={getUserInfo} className="card">
                         Get User Info
-                    </button>
-                    <button onClick={authenticateUser} className="card">
+                    </Button>
+                    <Button onClick={authenticateUser} className="card">
                         Authenticate User
-                    </button>
-                    <button onClick={getAccounts} className="card">
+                    </Button>
+                    <Button onClick={getAccounts} className="card">
                         Get Accounts
-                    </button>
-                    <button onClick={getBalance} className="card">
+                    </Button>
+                    <Button onClick={getBalance} className="card">
                         Get Balance
-                    </button>
-                    <button onClick={signMessage} className="card">
+                    </Button>
+                    <Button onClick={signMessage} className="card">
                         Sign Message
-                    </button>
-                    <button onClick={sendTransaction} className="card">
+                    </Button>
+                    <Button onClick={sendTransaction} className="card">
                         Send Transaction
-                    </button>
-                    <button onClick={getPrivateKey} className="card">
+                    </Button>
+                    <Button onClick={getPrivateKey} className="card">
                         Get Private Key
-                    </button>
-                    <button onClick={logout} className="card">
+                    </Button>
+                    <Button onClick={logout} className="card">
                         Log Out
-                    </button>
+                    </Button>
                 </div>
             </div>
             <div id="console" style={{ whiteSpace: "pre-line" }}>
