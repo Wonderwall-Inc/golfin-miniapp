@@ -16,28 +16,28 @@ const verifier = import.meta.env.VITE_WEB3AUTH_VERIFIER;
 
 const clientId = import.meta.env.VITE_WEB3AUTH_CLIENT_ID;
 
-const DemoWallet = () => {
-    const chainConfig = {
-        chainNamespace: CHAIN_NAMESPACES.OTHER,
-        chainId: "testnet",
-        rpcTarget: testnetRpc,
-        displayName: "TON Testnet",
-        blockExplorerUrl: "https://testnet.tonscan.org",
-        ticker: "TON",
-        tickerName: "Toncoin",
-    };
+const chainConfig = {
+    chainNamespace: CHAIN_NAMESPACES.OTHER,
+    chainId: "testnet",
+    rpcTarget: testnetRpc,
+    displayName: "TON Testnet",
+    blockExplorerUrl: "https://testnet.tonscan.org",
+    ticker: "TON",
+    tickerName: "Toncoin",
+};
 
-    const privateKeyProvider = new CommonPrivateKeyProvider({
-        config: { chainConfig },
-    });
+const privateKeyProvider = new CommonPrivateKeyProvider({
+    config: { chainConfig },
+});
 
+const web3authSfa = new Web3Auth({
+    clientId,
+    web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
+    usePnPKey: false,
+    privateKeyProvider,
+});
 
-    const web3authSfa = new Web3Auth({
-        clientId,
-        web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
-        usePnPKey: false,
-        privateKeyProvider,
-    });
+const DemoWallet = () => { 
     const web3AuthProvider = web3authSfa.provider;
     const tonRpcInst = web3AuthProvider ? new TonRPC(web3AuthProvider) : null;
     const [isLoggingIn, setIsLoggingIn] = useState(false);
