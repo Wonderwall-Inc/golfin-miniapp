@@ -212,7 +212,9 @@ const DemoWallet = () => {
     const walletButtonLists = [
         { label: 'getUserInfo', fx: getUserInfo, cto: 'Get User Info' },
         { label: 'getAccounts', fx: getAccounts, cto: 'Get Accounts' },
+        { label: 'authUser', fx: authenticateUser, cto: 'Authenticate User' },
         { label: 'getBalance', fx: getBalance, cto: 'Get Balance' },
+        { label: 'getPrivateKey', fx: getPrivateKey, cto: 'Get Private Key' },
         { label: 'signMessage', fx: signMessage, cto: 'Sign Message' },
         { label: 'sendTransaction', fx: sendTransaction, cto: 'Send Tx' },
         { label: 'logout', fx: logout, cto: 'Logout' },
@@ -220,21 +222,21 @@ const DemoWallet = () => {
 
     const logoutView = (
         <Button onClick={login} className="mx-auto 
-                            rounded-[8px] 
-                            py-[19px] 
-                            px-[25px] 
-                            w-[343px] 
-                            h-[56px] 
-                            items-center 
-                            justify-center 
-                            text-start 
-                            content-center 
-                            text-[20px]
-                            tracking-[0.38px]
-                            font-[500]
-                            gap-10
-                            bg-[rgba(255,255,255,0.20)]
-                            m-3">
+            rounded-[8px] 
+            py-[19px] 
+            px-[25px] 
+            w-[343px] 
+            h-[56px] 
+            items-center 
+            justify-center 
+            text-start 
+            content-center 
+            text-[20px]
+            tracking-[0.38px]
+            font-[500]
+            gap-10
+            bg-[rgba(255,255,255,0.20)]
+            m-3">
             Login
         </Button>
     );
