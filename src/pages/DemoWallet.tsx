@@ -219,7 +219,7 @@ const DemoWallet = () => {
     ]
 
     const logoutView = (
-        <Button onClick={login} className="card mx-auto 
+        <Button onClick={login} className="mx-auto 
                             rounded-[8px] 
                             py-[19px] 
                             px-[25px] 
