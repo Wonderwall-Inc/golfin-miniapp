@@ -135,7 +135,7 @@ const DemoProfile = () => {
     }, [isAuthenticated, loggedIn, getIdTokenClaims]);
 
     const logoutView = (
-        <button onClick={login} className="card">
+        <button onClick={() => login()} className="card">
             Login
         </button>
     );
