@@ -3,6 +3,8 @@ import { getHttpEndpoint } from "@orbs-network/ton-access";
 import TonWeb from "tonweb";
 import { Buffer } from 'buffer';
 
+window.Buffer = window.Buffer || Buffer
+
 const rpc = await getHttpEndpoint({
     network: "testnet",
     protocol: "json-rpc",
