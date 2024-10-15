@@ -217,7 +217,7 @@ const DemoWallet = () => {
 
     const loginView = (
         <>
-            <div className="flex-container overflow-y-scroll">
+            <div className="text-white grid grid-cols-2 w-[100%]">
                 <div>
                     <Button onClick={getUserInfo} className="card">
                         Get User Info
@@ -245,7 +245,7 @@ const DemoWallet = () => {
                     </Button>
                 </div>
             </div>
-            <div id="console" style={{ whiteSpace: "pre-line" }}>
+            <div id="console" style={{ whiteSpace: "pre-line" }} className="w-[100px] h-[100px] overflow-scroll">
                 <p style={{ whiteSpace: "pre-line" }}></p>
             </div>
         </>
