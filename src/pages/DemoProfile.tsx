@@ -119,6 +119,8 @@ const DemoProfile = () => {
             const rpc = new TonRPC(web3AuthProvider);
             const userAccount = await rpc.getAccounts();
             uiConsole(userAccount);
+            console.log(userAccount);
+            
         }
     };
 
