@@ -89,10 +89,105 @@ const DemoProfile = () => {
 
         init();
     }, []);
+    const getUserInfo = async () => {
+        if (!provider) {
+            uiConsole("Web3Auth Single Factor Auth SDK not initialized yet");
+            return;
+        }
+        const userInfo = await web3authSfa.getUserInfo();
+        uiConsole(userInfo);
+    };
+
+    const logout = async () => {
+        if (!provider) {
+            uiConsole("Web3Auth Single Factor Auth SDK not initialized yet");
+            return;
+        }
+        await web3authSfa.logout();
+        setLoggedIn(false);
+        setProvider(null);
+        auth0Logout({ logoutParams: { returnTo: window.location.origin } });
+    };
+
+    const getAccounts = async () => {
+        if (!provider) {
+            uiConsole("No provider found");
+            return;
+        }
+        if (web3AuthProvider) {
+            const rpc = new TonRPC(web3AuthProvider);
+            const userAccount = await rpc.getAccounts();
+            uiConsole(userAccount);
+        }
+    };
+
+    const getBalance = async () => {
+        if (!provider) {
+            uiConsole("No provider found");
+            return;
+        }
+        if (web3AuthProvider) {
+
+            const rpc = new TonRPC(web3AuthProvider);
+            const balance = await rpc.getBalance();
+            uiConsole(balance);
+        }
+    };
+
+    const signMessage = async () => {
+        if (!provider) {
+            uiConsole("No provider found");
+            return;
+        }
+        if (web3AuthProvider) {
+            const rpc = new TonRPC(web3AuthProvider);
+            const result = await rpc.signMessage("Hello, TON!");
+            uiConsole(`Message signed. Signature: ${result}`);
+        }
+    };
+
+    const sendTransaction = async () => {
+        if (!provider) {
+            uiConsole("No provider found");
+            return;
+        }
+        if (web3AuthProvider) {
+            const rpc = new TonRPC(web3AuthProvider);
+            const result = await rpc.sendTransaction();
+            uiConsole(result);
+        }
+    };
+
+    const authenticateUser = async () => {
+        if (!provider) {
+            uiConsole("No provider found");
+            return;
+        }
+        const userCredential = await web3authSfa.authenticateUser();
+        uiConsole(userCredential);
+    };
+
+    const getPrivateKey = async () => {
+        if (!web3authSfa.provider) {
+            uiConsole("No provider found");
+            return "";
+        }
+        const rpc = new TonRPC(web3authSfa.provider);
+        const privateKey = await rpc.getPrivateKey();
+        return privateKey;
+    };
+
+    function uiConsole(...args: any[]): void {
+        const el = document.querySelector("#console>p");
+        if (el) {
+            el.innerHTML = JSON.stringify(args || {}, null, 2);
+        }
+    }
+    // Attempt to connect to Web3Auth when authenticated
 
     const login = async () => {
         if (!web3authSfa) {
-            window.alert("Web3Auth Single Factor Auth SDK not initialized yet");
+            uiConsole("Web3Auth Single Factor Auth SDK not initialized yet");
             return;
         }
         if (web3authSfa.status === "not_ready") {
@@ -100,42 +195,39 @@ const DemoProfile = () => {
         }
         await loginWithRedirect();
     };
-
-    // Attempt to connect to Web3Auth when authenticated
-    const connectWeb3Auth = async () => {
-        if (isAuthenticated && !loggedIn && web3authSfa.status === "ready") {
-            try {
-                setIsLoggingIn(true);
-                const idToken = (await getIdTokenClaims())?.__raw; // Retrieve raw ID token from Auth0
-                if (!idToken) {
-                    console.error("No ID token found");
-                    return;
-                }
-                const { payload } = decodeToken(idToken); // Decode the token to access its payload
-
-                // Connect to Web3Auth using the verifier, verifierId, and idToken
-                await web3authSfa.connect({
-                    verifier,
-                    verifierId: (payload as any).sub,
-                    idToken: idToken,
-                });
-                // Update state to reflect successful login
-                setIsLoggingIn(false);
-                setLoggedIn(true);
-                setProvider(web3authSfa.provider);
-            } catch (err) {
-                setIsLoggingIn(false);
-                console.error("Error during Web3Auth connection:", err);
-            }
-        }
-    };
-
     useEffect(() => {
+        const connectWeb3Auth = async () => {
+            if (isAuthenticated && !loggedIn && web3authSfa.status === "ready") {
+                try {
+                    setIsLoggingIn(true);
+                    const idToken = (await getIdTokenClaims())?.__raw; // Retrieve raw ID token from Auth0
+                    if (!idToken) {
+                        console.error("No ID token found");
+                        return;
+                    }
+                    const { payload } = decodeToken(idToken); // Decode the token to access its payload
+
+                    // Connect to Web3Auth using the verifier, verifierId, and idToken
+                    await web3authSfa.connect({
+                        verifier,
+                        verifierId: (payload as any).sub,
+                        idToken: idToken,
+                    });
+                    // Update state to reflect successful login
+                    setIsLoggingIn(false);
+                    setLoggedIn(true);
+                    setProvider(web3authSfa.provider);
+                } catch (err) {
+                    setIsLoggingIn(false);
+                    console.error("Error during Web3Auth connection:", err);
+                }
+            }
+        };
         connectWeb3Auth();
     }, [isAuthenticated, loggedIn, getIdTokenClaims]);
 
     const logoutView = (
-        <button onClick={() => login()} className="card">
+        <button onClick={login} className="card">
             Login
         </button>
     );
@@ -143,23 +235,46 @@ const DemoProfile = () => {
     const loginView = (
         <>
             <div className="flex-container">
-                {/*  <div>
-                    <button onClick={tonRpcInst.getUserInfo} className="card">
+                <div>
+                    <button onClick={getUserInfo} className="card">
                         Get User Info
                     </button>
                 </div>
                 <div>
-                    <button onClick={tonRpcInst.authenticateUser} className="card">
+                    <button onClick={authenticateUser} className="card">
                         Authenticate User
                     </button>
-                </div> */}
+                </div>
                 <div>
-                    <button onClick={() => tonRpcInst?.getAccounts()} className="card">
+                    <button onClick={getAccounts} className="card">
                         Get Accounts
                     </button>
                 </div>
-                {/* Add more buttons and implement the corresponding functions as per your need */}
-                ...
+                <div>
+                    <button onClick={getBalance} className="card">
+                        Get Balance
+                    </button>
+                </div>
+                <div>
+                    <button onClick={signMessage} className="card">
+                        Sign Message
+                    </button>
+                </div>
+                <div>
+                    <button onClick={sendTransaction} className="card">
+                        Send Transaction
+                    </button>
+                </div>
+                <div>
+                    <button onClick={getPrivateKey} className="card">
+                        Get Private Key
+                    </button>
+                </div>
+                <div>
+                    <button onClick={logout} className="card">
+                        Log Out
+                    </button>
+                </div>
             </div>
 
             <div id="console" style={{ whiteSpace: "pre-line" }}>
@@ -273,7 +388,6 @@ const DemoProfile = () => {
                 }
             </div>
             {isLoading || isLoggingIn ? <div>loading</div> : <div className="grid">{web3authSfa ? (loggedIn ? loginView : logoutView) : null}</div>}
-
 
         </ToastProvider >
     )
