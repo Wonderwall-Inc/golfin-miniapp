@@ -45,7 +45,7 @@ const App = () => {
 
   const [waitingType, setWaitingType] = useState("")
 
-  const { isWaitingUse, account } = useUserContext()
+  const { isWaitingUser, account } = useUserContext()
   const { isWaitingPoint } = usePointContext()
   const { isWaitingActivity } = useActivityContext()
   const { isWaitingFriend } = useFriendContext()
