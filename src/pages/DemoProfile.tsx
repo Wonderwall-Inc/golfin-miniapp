@@ -239,60 +239,45 @@ const DemoProfile = () => {
                     <button onClick={getUserInfo} className="card">
                         Get User Info
                     </button>
-                </div>
-                <div>
                     <button onClick={authenticateUser} className="card">
                         Authenticate User
                     </button>
-                </div>
-                <div>
                     <button onClick={getAccounts} className="card">
                         Get Accounts
                     </button>
-                </div>
-                <div>
                     <button onClick={getBalance} className="card">
                         Get Balance
                     </button>
-                </div>
-                <div>
                     <button onClick={signMessage} className="card">
                         Sign Message
                     </button>
-                </div>
-                <div>
                     <button onClick={sendTransaction} className="card">
                         Send Transaction
                     </button>
-                </div>
-                <div>
                     <button onClick={getPrivateKey} className="card">
                         Get Private Key
                     </button>
-                </div>
-                <div>
                     <button onClick={logout} className="card">
                         Log Out
                     </button>
                 </div>
-            </div>
 
-            <div id="console" style={{ whiteSpace: "pre-line" }}>
-                <p style={{ whiteSpace: "pre-line" }}></p>
-            </div>
-        </>
-    );
-    return (
-        <ToastProvider swipeDirection='up'>
-            <div>
-                {isWaitingUser == true ?
-                    <Loader isLoading={isWaitingUser} /> :
-                    <div className='text-white grid grid-cols-1'>
-                        <input
-                            placeholder='username'
-                            defaultValue={account?.telegram_info.username}
-                            type="text"
-                            className='mx-auto 
+                <div id="console" style={{ whiteSpace: "pre-line" }}>
+                    <p style={{ whiteSpace: "pre-line" }}></p>
+                </div>
+            </>
+            );
+            return (
+            <ToastProvider swipeDirection='up'>
+                <div>
+                    {isWaitingUser == true ?
+                        <Loader isLoading={isWaitingUser} /> :
+                        <div className='text-white grid grid-cols-1'>
+                            <input
+                                placeholder='username'
+                                defaultValue={account?.telegram_info.username}
+                                type="text"
+                                className='mx-auto 
                             rounded-[8px] 
                             py-[19px] 
                             px-[25px] 
@@ -308,10 +293,10 @@ const DemoProfile = () => {
                             gap-10
                             bg-[rgba(255,255,255,0.20)]
                             m-3'
-                            onChange={(e) => setUsername(e.target.value)} />
-                        <Button
-                            variant='default'
-                            className='mx-auto text-white font-bold
+                                onChange={(e) => setUsername(e.target.value)} />
+                            <Button
+                                variant='default'
+                                className='mx-auto text-white font-bold
                             [background:linear-gradient(158deg,rgba(169,231,29,1)_-7.35%,rgba(94,197,89,1)_84.4%)]
                             w-[343px]
                             h-[56px]
@@ -319,55 +304,20 @@ const DemoProfile = () => {
                             justify-center
                             items-center
                             rounded-[6px]'
-                            type='submit'
-                            onClick={async () => {
-                                if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
-                                    setIsWaitingUser(true)
-                                    if (username == account?.telegram_info.username) {
-                                        setIsWaitingUser(false)
-                                        return toast({
-                                            className: cn('bg-[#FFFAE6] rounded-[10px]'),
-                                            description: 'Username does not changed',
-                                            action: <ToastAction altText="Try again">Try again</ToastAction>,
-                                        })
-                                    }
-
-                                    else {
-                                        setIsWaitingUser(false)
-                                        return toast({
-                                            className: cn('bg-[#FFFAE6] rounded-[10px]'),
-                                            description:
-                                                <div className=''>
-                                                    Username is changed to { }
-                                                    <span className='font-semibold'>{username}</span>
-                                                </div>
-                                        })
-
-                                    }
-                                } else {
-                                    setIsWaitingUser(true)
-                                    if (username == account?.telegram_info.username) {
-                                        setIsWaitingUser(false)
-                                        return toast({
-                                            className: cn('bg-[#FFFAE6] rounded-[10px]'),
-                                            description: 'Same username',
-                                            action: <ToastAction altText="Try again">Try again</ToastAction>,
-                                        })
-                                    }
-                                    else {
-                                        const dbUser = await getUser({
-                                            access_token: '',
-                                            username: username
-                                        })
-                                        if (dbUser?.user_details.user_base.telegram_info.username == username) {
+                                type='submit'
+                                onClick={async () => {
+                                    if (import.meta.env.VITE_MINI_APP_ENV == 'test') {
+                                        setIsWaitingUser(true)
+                                        if (username == account?.telegram_info.username) {
                                             setIsWaitingUser(false)
                                             return toast({
                                                 className: cn('bg-[#FFFAE6] rounded-[10px]'),
-                                                description: 'Username already exists',
+                                                description: 'Username does not changed',
                                                 action: <ToastAction altText="Try again">Try again</ToastAction>,
                                             })
-                                        } else {
-                                            await handleUsernameChange(username)
+                                        }
+
+                                        else {
                                             setIsWaitingUser(false)
                                             return toast({
                                                 className: cn('bg-[#FFFAE6] rounded-[10px]'),
@@ -377,20 +327,55 @@ const DemoProfile = () => {
                                                         <span className='font-semibold'>{username}</span>
                                                     </div>
                                             })
+
+                                        }
+                                    } else {
+                                        setIsWaitingUser(true)
+                                        if (username == account?.telegram_info.username) {
+                                            setIsWaitingUser(false)
+                                            return toast({
+                                                className: cn('bg-[#FFFAE6] rounded-[10px]'),
+                                                description: 'Same username',
+                                                action: <ToastAction altText="Try again">Try again</ToastAction>,
+                                            })
+                                        }
+                                        else {
+                                            const dbUser = await getUser({
+                                                access_token: '',
+                                                username: username
+                                            })
+                                            if (dbUser?.user_details.user_base.telegram_info.username == username) {
+                                                setIsWaitingUser(false)
+                                                return toast({
+                                                    className: cn('bg-[#FFFAE6] rounded-[10px]'),
+                                                    description: 'Username already exists',
+                                                    action: <ToastAction altText="Try again">Try again</ToastAction>,
+                                                })
+                                            } else {
+                                                await handleUsernameChange(username)
+                                                setIsWaitingUser(false)
+                                                return toast({
+                                                    className: cn('bg-[#FFFAE6] rounded-[10px]'),
+                                                    description:
+                                                        <div className=''>
+                                                            Username is changed to { }
+                                                            <span className='font-semibold'>{username}</span>
+                                                        </div>
+                                                })
+                                            }
                                         }
                                     }
-                                }
-                            }}>
-                            <span className='text-white text-[20px] font-bold text-center'>SAVE</span>
-                        </Button>
-                        <a target='_blank' className='my-10' href='https://golfin.io/en/privacy-policy-en/'>Privacy Policy</a>
-                    </div >
-                }
-            </div>
-            {isLoading || isLoggingIn ? <div>loading</div> : <div className="grid">{web3authSfa ? (loggedIn ? loginView : logoutView) : null}</div>}
+                                }}>
+                                <span className='text-white text-[20px] font-bold text-center'>SAVE</span>
+                            </Button>
+                            <a target='_blank' className='my-10' href='https://golfin.io/en/privacy-policy-en/'>Privacy Policy</a>
+                        </div >
+                    }
+                </div>
+                {isLoading || isLoggingIn ? <div>loading</div> : <div className="grid">{web3authSfa ? (loggedIn ? loginView : logoutView) : null}</div>}
 
-        </ToastProvider >
-    )
+            </ToastProvider >
+            )
 }
 
-export default DemoProfile
+            export default DemoProfile
