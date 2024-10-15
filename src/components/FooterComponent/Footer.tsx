@@ -20,8 +20,6 @@ const Footer = () => {
                                 {nav.label == 'Demo Ranking' && <RankingIcon color={`${location.pathname == nav.url ? '#8ADD5D' : 'white'}`} />}
                                 {nav.label == 'Demo Links' && <LinkIcon color={`${location.pathname == nav.url ? '#8ADD5D' : 'white'}`} />}
                                 {nav.label == 'Demo Profile' && <ProfileIcon color={`${location.pathname == nav.url ? '#8ADD5D' : 'white'}`} />}
-                                {nav.label == 'Demo Dev' && <ProfileIcon color={`${location.pathname == nav.url ? '#8ADD5D' : 'white'}`} />}
-                                {nav.label == 'Demo Wallet' && <ProfileIcon color={`${location.pathname == nav.url ? '#8ADD5D' : 'white'}`} />}
                             </Link>
                         </div>
                     )
