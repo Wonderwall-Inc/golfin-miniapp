@@ -145,8 +145,26 @@ const DemoProfile = () => {
                         <a target='_blank' className='my-10' href='https://golfin.io/en/privacy-policy-en/'>Privacy Policy</a>
                         {account?.app_info.admin == true && (
                             <>
-                                <Button onClick={() => navigate('/dev')}>Dev</Button>
-                                <Button onClick={() => navigate('/wallet')}>Wallet</Button>
+                                <Button
+                                    className='mx-auto text-white font-bold
+                                 [background:linear-gradient(158deg,rgba(169,231,29,1)_-7.35%,rgba(94,197,89,1)_84.4%)]
+                                 w-[343px]
+                                 h-[56px]
+                                 gap-[10px]
+                                 justify-center
+                                 items-center
+                                 rounded-[6px]'
+                                    onClick={() => navigate('/dev')}>Dev</Button>
+                                <Button
+                                    className='mx-auto text-white font-bold
+                                 [background:linear-gradient(158deg,rgba(169,231,29,1)_-7.35%,rgba(94,197,89,1)_84.4%)]
+                                 w-[343px]
+                                 h-[56px]
+                                 gap-[10px]
+                                 justify-center
+                                 items-center
+                                 rounded-[6px]'
+                                    onClick={() => navigate('/wallet')}>Wallet</Button>
                             </>
                         )}
                     </div >

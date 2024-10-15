@@ -18,6 +18,7 @@ import Background from './components/BackgroundComponent/Background'
 import { testInitDataRaw, testInitDataThemeParams } from './constants'
 
 import Loader from './components/LoaderComponent/Loader'
+import DemoWallet from './pages/DemoWallet'
 
 const DemoEarn = lazy(() => import('./pages/DemoEarn'))
 const DemoRanking = lazy(() => import('./pages/DemoRanking'))
@@ -95,7 +96,7 @@ const App = () => {
                   <Route path='/profile' element={<DemoProfile />} />
 
                   {account?.app_info.admin == true && <Route path='/dev' element={<DemoDev />} />}
-                  {account?.app_info.admin == true && <Route path='/wallet' element={<DemoDev />} />}
+                  {account?.app_info.admin == true && <Route path='/wallet' element={<DemoWallet />} />}
                 </Routes>
               </Suspense>
             </Background>
