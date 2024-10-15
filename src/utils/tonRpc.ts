@@ -28,6 +28,8 @@ export default class TonRPC {
                 publicKey: keyPair.publicKey
             });
             const address = await wallet.getAddress();
+            console.log(`address: ${address}`);
+            
             return address.toString(true, true, true);
         } catch (error) {
             console.error("Error getting accounts:", error);
