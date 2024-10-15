@@ -12,6 +12,10 @@ const testnetRpc = await getHttpEndpoint({
     protocol: "json-rpc",
 });
 
+const verifier = import.meta.env.VITE_WEB3AUTH_VERIFIER;
+
+const clientId = import.meta.env.VITE_WEB3AUTH_CLIENT_ID;
+
 const DemoWallet = () => {
     const chainConfig = {
         chainNamespace: CHAIN_NAMESPACES.OTHER,
@@ -27,9 +31,7 @@ const DemoWallet = () => {
         config: { chainConfig },
     });
 
-    const verifier = import.meta.env.VITE_WEB3AUTH_VERIFIER;
 
-    const clientId = import.meta.env.VITE_WEB3AUTH_CLIENT_ID;
     const web3authSfa = new Web3Auth({
         clientId,
         web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
@@ -42,6 +44,8 @@ const DemoWallet = () => {
     const [loggedIn, setLoggedIn] = useState(false);
     const { isAuthenticated, isLoading, getIdTokenClaims, loginWithRedirect, logout: auth0Logout } = useAuth0();
     const [provider, setProvider] = useState<any>(null);
+
+
     useEffect(() => {
         const init = async () => {
             try {
@@ -57,37 +61,6 @@ const DemoWallet = () => {
 
         init();
     }, []);
-    useEffect(() => {
-        const connectWeb3Auth = async () => {
-            if (isAuthenticated && !loggedIn && web3authSfa.status === "ready") {
-                try {
-                    setIsLoggingIn(true);
-                    const idToken = (await getIdTokenClaims())?.__raw; // Retrieve raw ID token from Auth0
-                    if (!idToken) {
-                        console.error("No ID token found");
-                        return;
-                    }
-                    const { payload } = decodeToken(idToken); // Decode the token to access its payload
-
-                    // Connect to Web3Auth using the verifier, verifierId, and idToken
-                    await web3authSfa.connect({
-                        verifier,
-                        verifierId: (payload as any).sub,
-                        idToken: idToken,
-                    });
-                    // Update state to reflect successful login
-                    setIsLoggingIn(false);
-                    setLoggedIn(true);
-                    setProvider(web3authSfa.provider);
-                } catch (err) {
-                    setIsLoggingIn(false);
-                    console.error("Error during Web3Auth connection:", err);
-                }
-            }
-        };
-        connectWeb3Auth();
-    }, [isAuthenticated, loggedIn, getIdTokenClaims]);
-
     const getUserInfo = async () => {
         if (!provider) {
             uiConsole("Web3Auth Single Factor Auth SDK not initialized yet");
@@ -114,10 +87,12 @@ const DemoWallet = () => {
             uiConsole("No provider found");
             return;
         }
-        if (tonRpcInst) {
-            const userAccount = await tonRpcInst.getAccounts();
+        if (web3AuthProvider) {
+            const rpc = new TonRPC(web3AuthProvider);
+            const userAccount = await rpc.getAccounts();
             uiConsole(userAccount);
             console.log(userAccount);
+
         }
     };
 
@@ -126,8 +101,10 @@ const DemoWallet = () => {
             uiConsole("No provider found");
             return;
         }
-        if (tonRpcInst) {
-            const balance = await tonRpcInst.getBalance();
+        if (web3AuthProvider) {
+
+            const rpc = new TonRPC(web3AuthProvider);
+            const balance = await rpc.getBalance();
             console.log(balance);
 
             uiConsole(balance);
@@ -139,8 +116,9 @@ const DemoWallet = () => {
             uiConsole("No provider found");
             return;
         }
-        if (tonRpcInst) {
-            const result = await tonRpcInst.signMessage("Hello, TON!");
+        if (web3AuthProvider) {
+            const rpc = new TonRPC(web3AuthProvider);
+            const result = await rpc.signMessage("Hello, TON!");
             uiConsole(`Message signed. Signature: ${result}`);
         }
     };
@@ -150,8 +128,9 @@ const DemoWallet = () => {
             uiConsole("No provider found");
             return;
         }
-        if (tonRpcInst) {
-            const result = await tonRpcInst.sendTransaction();
+        if (web3AuthProvider) {
+            const rpc = new TonRPC(web3AuthProvider);
+            const result = await rpc.sendTransaction();
             console.log(result);
 
             uiConsole(result);
@@ -198,6 +177,36 @@ const DemoWallet = () => {
         }
         await loginWithRedirect();
     };
+    useEffect(() => {
+        const connectWeb3Auth = async () => {
+            if (isAuthenticated && !loggedIn && web3authSfa.status === "ready") {
+                try {
+                    setIsLoggingIn(true);
+                    const idToken = (await getIdTokenClaims())?.__raw; // Retrieve raw ID token from Auth0
+                    if (!idToken) {
+                        console.error("No ID token found");
+                        return;
+                    }
+                    const { payload } = decodeToken(idToken); // Decode the token to access its payload
+
+                    // Connect to Web3Auth using the verifier, verifierId, and idToken
+                    await web3authSfa.connect({
+                        verifier,
+                        verifierId: (payload as any).sub,
+                        idToken: idToken,
+                    });
+                    // Update state to reflect successful login
+                    setIsLoggingIn(false);
+                    setLoggedIn(true);
+                    setProvider(web3authSfa.provider);
+                } catch (err) {
+                    setIsLoggingIn(false);
+                    console.error("Error during Web3Auth connection:", err);
+                }
+            }
+        };
+        connectWeb3Auth();
+    }, [isAuthenticated, loggedIn, getIdTokenClaims]);
 
     const logoutView = (
         <button onClick={login} className="card">
@@ -207,7 +216,7 @@ const DemoWallet = () => {
 
     const loginView = (
         <>
-            <div className="flex-container overflow-y-scroll">
+            <div className="flex-container h-[100px] overflow-y-scroll">
                 <div>
                     <button onClick={getUserInfo} className="card">
                         Get User Info
